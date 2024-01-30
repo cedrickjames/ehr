@@ -1,6 +1,14 @@
 
+<?php 
+if (isset($_GET['rf'])) {
+  $rfid = $_GET['rf'];
+} else {
+$rfid = "not found";
 
-<nav class="fixed top-0 text-sm 2xl:text-xl border-gray-200 ">
+}
+?>
+
+<nav class=" top-0 text-sm 2xl:text-xl border-gray-200 ">
   <div class="w-screen flex flex-wrap items-center justify-between mx-auto px-4 2xl:px-auto p-1 2xl:p-4">
     <div class="flex">
     <span id="sidebarButton" type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation" class="block lg:hidden mx-10 ">
@@ -18,7 +26,7 @@
     </div>
   
   <div class="hidden md:flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-  <span class="pr-10  self-center  font-semibold whitespace-nowrap   text-[#193F9F] ">Nurse Janella</span>
+  <span class="pr-10  self-center  font-semibold whitespace-nowrap   text-[#193F9F] "><?php echo $_SESSION['name']; ?></span>
   <button type="button" class="flex mr-3 text-sm  rounded-full sm:mr-0 focus:ring-4 focus:ring-gray-300 " id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
           <span class="sr-only">Open user menu</span>
            <div class="w-10 h-10 rounded-full  ">
@@ -29,21 +37,13 @@
       <!-- Dropdown menu -->
       <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow  " id="user-dropdown">
         <div class="px-4 py-3">
-          <span class="block text-sm text-gray-900 ">Bonnie Green</span>
-          <span class="block text-sm  text-gray-500 truncate ">name@flowbite.com</span>
+          <span class="block text-sm text-gray-900 "><?php echo $_SESSION['name']; ?></span>
+          <span class="block text-sm  text-gray-500 truncate "><?php echo $_SESSION['userID']; ?></span>
         </div>
         <ul class="py-2" aria-labelledby="user-menu-button">
+          
           <li>
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Dashboard</a>
-          </li>
-          <li>
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Settings</a>
-          </li>
-          <li>
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Earnings</a>
-          </li>
-          <li>
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Sign out</a>
+            <a href="../logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Sign out</a>
           </li>
         </ul>
       </div>
@@ -125,7 +125,7 @@
     </div>
   </div>
   <!-- side bar drawer component -->
-  <div id="sidebar" class="text-xs 2xl:text-xl hidden lg:block mt-2 fixed top-16 left-0 z-40 h-screen p-4 pr-0 overflow-y-auto transition-transform    transform-none" tabindex="-1" aria-labelledby="sidebar-label" aria-modal="true" role="dialog">
+  <div id="sidebar" class="text-xs 2xl:text-xl hidden lg:block  fixed top-16 left-0 z-40 h-screen pl-4 pr-0 overflow-y-auto transition-transform    transform-none" tabindex="-1" aria-labelledby="sidebar-label" aria-modal="true" role="dialog">
 
    
       <!-- <button type="button"onclick="shows()"  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center   >
@@ -135,7 +135,7 @@
       <div class="2xl:py-5 pr-5 overflow-y-auto">
       <ul class="space-y-2">
           <li>
-              <a href="nurses/index.php" id="sidehome" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+              <a href="index.php" id="sidehome" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
                 <!-- <svg aria-hidden="true" class="w-6 h-6 text-gray-500 transition duration-75  group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg> -->
                 <!-- <svg aria-hidden="true" class="w-6 h-6 text-red-500 transition duration-75  group-hover:text-gray-900 dark:group-hover:text-white" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" zoomAndPan="magnify" viewBox="0 0 750 749.999995" height="1000" preserveAspectRatio="xMidYMid meet" version="1.0"><defs><clipPath id="9d01e478d3"><path d="M 113 214 L 639 214 L 639 689.25 L 113 689.25 Z M 113 214 " clip-rule="nonzero"/></clipPath></defs><path  d="M 691.773438 281.488281 L 585.324219 203.1875 L 585.324219 109.785156 C 585.324219 95.140625 573.441406 83.296875 558.816406 83.296875 L 515.734375 83.296875 C 501.089844 83.296875 489.226562 95.164062 489.226562 109.785156 L 489.226562 132.476562 L 408.0625 72.78125 C 390.453125 59.796875 361.621094 59.796875 344.011719 72.78125 L 60.300781 281.488281 C 42.6875 294.453125 38.894531 319.488281 51.855469 337.121094 L 59.699219 347.761719 C 72.640625 365.390625 97.675781 369.207031 115.265625 356.246094 L 344.011719 187.902344 C 361.621094 174.9375 390.453125 174.9375 408.0625 187.902344 L 636.785156 356.246094 C 654.398438 369.207031 679.410156 365.371094 692.355469 347.761719 L 700.214844 337.121094 C 713.160156 319.488281 709.363281 294.453125 691.773438 281.488281 Z M 691.773438 281.488281 " /><path  d="M 606.898438 370.886719 L 408 223.886719 C 390.410156 210.882812 361.664062 210.882812 344.074219 223.886719 L 145.175781 370.886719 C 127.585938 383.894531 113.191406 402.914062 113.191406 413.222656 L 113.191406 626.347656 C 113.191406 660.945312 142.851562 689.011719 179.460938 689.011719 L 300.929688 689.011719 L 300.929688 500.484375 C 300.929688 485.925781 312.855469 474.019531 327.417969 474.019531 L 424.613281 474.019531 C 439.175781 474.019531 451.101562 485.925781 451.101562 500.484375 L 451.101562 689.011719 L 572.589844 689.011719 C 609.179688 689.011719 638.820312 660.945312 638.820312 626.347656 L 638.820312 413.222656 C 638.839844 402.914062 624.488281 383.894531 606.898438 370.886719 Z M 606.898438 370.886719 " /></svg> -->
                 <!-- <i class="fa-solid fa-house"></i> -->
@@ -152,7 +152,7 @@
               </a>
           </li>
           <li>
-              <a href="index.php" id="sidemedrecord" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+              <a href="medicalRecord.php?rf=<?php echo $rfid; ?>" id="sidemedrecord" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
                 <!-- <svg aria-hidden="true" class="w-6 h-6 text-gray-500 transition duration-75  group-hover:text-gray-900 -white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg> -->
                 <!-- <i class="fa-solid fa-ticket"></i>
                -->
@@ -201,7 +201,7 @@
               </a>
           </li>
           <li>
-              <a href="fitToWork.php" id="fitToWorkSide" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+              <a href="fitToWork.php?rf=<?php echo $rfid; ?>" id="fitToWorkSide" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
               <svg class="w-6 h-6  " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                 width="1000" zoomAndPan="magnify" viewBox="0 0 750 749.999995" height="1000"
                 preserveAspectRatio="xMidYMid meet" version="1.0">
@@ -237,7 +237,7 @@
               </a>
           </li>
           <li>
-              <a href="consultation.php" id="consultationSide" class="   flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+              <a href="consultation.php?rf=<?php echo $rfid; ?>" id="consultationSide" class="   flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
               <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                 width="1000" zoomAndPan="magnify" viewBox="0 0 750 749.999995" height="1000"
                 preserveAspectRatio="xMidYMid meet" version="1.0">
@@ -314,7 +314,7 @@
               </a>
           </li>
           <li>
-              <a href="doctorsConsultation.php" id="sidepms" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+              <a href="doctorsConsultation.php?rf=<?php echo $rfid; ?>" id="sidepms" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
               <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" zoomAndPan="magnify" viewBox="0 0 750 749.999995" height="1000" preserveAspectRatio="xMidYMid meet" version="1.0"><defs><clipPath id="c12ce93f69"><path d="M 39 39 L 710.863281 39 L 710.863281 710.863281 L 39 710.863281 Z M 39 39 " clip-rule="nonzero"/></clipPath></defs><g clip-path="url(#c12ce93f69)"><path fill="#4d4d4d" d="M 479.3125 282.269531 C 472.914062 282.269531 467.722656 277.078125 467.722656 270.679688 C 467.722656 270.679688 467.722656 73.914062 467.722656 73.914062 C 467.722656 54.707031 452.15625 39.140625 432.949219 39.140625 L 317.042969 39.140625 C 297.835938 39.140625 282.269531 54.707031 282.269531 73.914062 L 282.269531 270.679688 C 282.269531 277.078125 277.078125 282.269531 270.679688 282.269531 C 270.679688 282.269531 73.914062 282.269531 73.914062 282.269531 C 54.707031 282.269531 39.140625 297.835938 39.140625 317.042969 L 39.140625 432.949219 C 39.140625 452.15625 54.707031 467.722656 73.914062 467.722656 L 270.679688 467.722656 C 277.078125 467.722656 282.269531 472.914062 282.269531 479.3125 C 282.269531 479.3125 282.269531 676.082031 282.269531 676.082031 C 282.269531 695.285156 297.835938 710.851562 317.042969 710.851562 L 432.949219 710.851562 C 452.15625 710.851562 467.722656 695.285156 467.722656 676.082031 L 467.722656 479.3125 C 467.722656 472.914062 472.914062 467.722656 479.3125 467.722656 C 479.3125 467.722656 676.082031 467.722656 676.082031 467.722656 C 695.285156 467.722656 710.851562 452.15625 710.851562 432.949219 L 710.851562 317.042969 C 710.851562 297.835938 695.285156 282.269531 676.082031 282.269531 Z M 479.3125 282.269531 " fill-opacity="1" fill-rule="evenodd"/></g></svg>  
               
               <span class="flex-1 ml-3 font-semibold whitespace-nowrap">Pre-Employment</span>
@@ -333,6 +333,7 @@
               <span class="flex-1 ml-3 font-semibold whitespace-nowrap">Healthy Lifestyle Program</span>
               </a>
           </li>
+          
         </ul>
     </div>
   </div>

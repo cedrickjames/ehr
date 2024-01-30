@@ -2,10 +2,6 @@
 session_start();
 
 include ("../includes/connect.php");
-if(!isset($_SESSION['connected'])){
-  header("location: ../logout.php");
-}
-
 ?>
 
 
@@ -15,6 +11,7 @@ if(!isset($_SESSION['connected'])){
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="../src/cdn_tailwindcss.js"></script>
+  <script src="index.js"></script>
 
   <script src="../node_modules/flowbite/dist/flowbite.min.js"></script>
   
@@ -25,12 +22,12 @@ if(!isset($_SESSION['connected'])){
 
 </head>
 <body  class="bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
-<?php require_once '../navbar.php';?>
+<?php require_once 'navbar.php';?>
 
 <div style= " background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));"class=" m-auto ml-52 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
   <div class="m-10 ">
 
-  <?php require_once '../que/quetable.php';?>
+  <?php require_once 'hrtable.php';?>
       
 
     

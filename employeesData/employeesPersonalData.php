@@ -1,5 +1,52 @@
+<?php
+// Check if the 'key1' parameter is set in the URL
+include ("../includes/connect.php");
+
+
+$rfid;
+$name = "Undefined";
+$age = 0;
+$sex = 'n/a';
+$address = 'n/a';
+$civilStatus = 'n/a';
+$employer = 'n/a';
+$secDept = 'n/a';
+$position = 'n/a';
+$dateHired = '01/01/1999';
+
+if (isset($_GET['rf'])) {
+    $rfid = $_GET['rf'];
+} else {
+  $rfid = "not found";
+
+}
+
+
+
+$sql1 = "SELECT employeespersonalinfo.rfidNumber, employeespersonalinfo.*
+FROM queing
+INNER JOIN employeespersonalinfo ON employeespersonalinfo.rfidNumber = queing.rfidNumber where employeespersonalinfo.rfidNumber = '$rfid';";
+$result = mysqli_query($con, $sql1);
+while($userRow = mysqli_fetch_assoc($result)){
+  $name = $userRow['Name'];
+  $age = $userRow['age']; 0;
+  $sex = $userRow['sex']; 
+  $address = $userRow['address']; 
+  $civilStatus = $userRow['civilStatus'];
+  $employer = $userRow['employer']; 
+  $secDept = $userRow['secDept']; 
+  $position = $userRow['position']; 
+  $dateHired = $userRow['dateHired']; 
+}
+
+
+
+// Check if the 'key2' parameter is set in the URL
+
+?>
+
 <div class="h-auto relative mb-5">
-<p class="mb-2 2xl:mb-5"><span class=" self-center text-[12px] 2xl:text-md font-semibold whitespace-nowrap   text-[#193F9F]">Employee's Personal Data</span></p>
+<p class="mb-2 2xl:mb-5"><span class=" self-center text-[12px] 2xl:text-lg font-semibold whitespace-nowrap   text-[#193F9F]">Employee's Personal Data</span></p>
 
 <div class="absolute top-0 right-0">
   
@@ -7,20 +54,23 @@
 </div>
         <div class="text-[10px] 2xl:text-sm rounded-lg bg-white/50 grid grid-cols-2 gap-2 w-full w-full p-2 2xl:p-4 ">
           <div class="">
-          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> NAME: </span><span style="font-family: sans-serif" class="tracking-wide uppercase self-center text-md font-bold    text-[#000000]">CEDRICK JAMES OROZO</span></p>
-          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> ADDRESS:  </span><span style="font-family: sans-serif" class="tracking-wide uppercase self-center text-md font-bold    text-[#000000]">PALANGUE 2, NAIC, CAVITE</span></p>
-          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> SEC/dept: </span><span style="font-family: sans-serif" class="tracking-wide uppercase self-center text-md font-bold    text-[#000000]">MIS/ADMINISTRATION</span></p>
-          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> POSITION:  </span><span style="font-family: sans-serif" class="tracking-wide uppercase self-center text-md font-bold    text-[#000000]">SPECIALIST</span></p>
+          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> NAME: </span><span style="font-family: sans-serif" class="tracking-wide uppercase self-center text-md font-bold    text-[#000000]"><?php echo $name; ?></span></p>
+          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> ADDRESS:  </span><span style="font-family: sans-serif" class="tracking-wide uppercase self-center text-md font-bold    text-[#000000]"><?php echo $address; ?></span></p>
+          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> SEC/dept: </span><span style="font-family: sans-serif" class="tracking-wide uppercase self-center text-md font-bold    text-[#000000]"><?php echo $secDept; ?></span></p>
+          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> POSITION:  </span><span style="font-family: sans-serif" class="tracking-wide uppercase self-center text-md font-bold    text-[#000000]"><?php echo $position; ?></span></p>
           </div>
           <div class="">
             <div class="grid grid-cols-2  w-full">
-          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> AGE:  </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"> 24 </span></p>
-          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> sex:  </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"> MALE</span></p>
+          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> AGE:  </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"> <?php echo $age; ?> </span></p>
+          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> sex:  </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"> <?php echo $sex; ?></span></p>
 
             </div>
-          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> civil:  </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]">sigle</span></p>
-          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> employer:  </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"> Glory (Philippines), Inc.</span></p>
-          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> date:  </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"> april 06, 2022</span></p>
+          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> civil:  </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"><?php echo $civilStatus; ?></span></p>
+          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> employer:  </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"> <?php echo $employer; ?></span></p>
+          <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> date:  </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"> <?php  $date_timestamp = strtotime($dateHired);
+$formatted_date = date('F d, Y', $date_timestamp);
+
+echo $formatted_date; ?></span></p>
           </div>
 
         </div>
