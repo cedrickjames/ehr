@@ -3,6 +3,10 @@
 
 session_start();
         // Set the timezone to Manila
+        include ("../includes/connect.php");
+if(!isset($_SESSION['connected'])){
+  header("location: ../logout.php");
+}
         date_default_timezone_set('Asia/Manila');
     ?>
 
@@ -67,6 +71,16 @@ $("#sidepms1").removeClass("bg-gray-200");
 $(".ftwIcon").attr("fill", "#FFFFFF"); 
 $(".homeIcon").attr("fill", "#4d4d4d"); 
 
+
+$(document).ready(function() {
+        $('#immediateHead').change(function() {
+            var selectedEmail = $(this).find('option:selected').data('email');
+            $('#immediateEmail').val(selectedEmail);
+        });
+    });
+
+
+    
 </script>
 </body>
 </html>

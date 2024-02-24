@@ -312,13 +312,50 @@ $rfid = "not found";
               </svg>
               <span class="flex-1 ml-3 font-semibold whitespace-nowrap">Consultation</span>
               </a>
+              <ul id="dropdown-example" class=" py-2 space-y-2">
+                  <li id="fromDoctorsSide">
+                     <a href="fromDoctor.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">From Doctor</a>
+                  </li>
+                  <li>
+                     <a href="#" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Completed</a>
+                  </li>
+                  <li  id="pendingConsultationSide">
+                     <a href="pending.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Pending</a>
+                  </li>
+            </ul>
           </li>
           <li>
-              <a href="doctorsConsultation.php?rf=<?php echo $rfid; ?>" id="sidepms" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
-              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" zoomAndPan="magnify" viewBox="0 0 750 749.999995" height="1000" preserveAspectRatio="xMidYMid meet" version="1.0"><defs><clipPath id="c12ce93f69"><path d="M 39 39 L 710.863281 39 L 710.863281 710.863281 L 39 710.863281 Z M 39 39 " clip-rule="nonzero"/></clipPath></defs><g clip-path="url(#c12ce93f69)"><path fill="#4d4d4d" d="M 479.3125 282.269531 C 472.914062 282.269531 467.722656 277.078125 467.722656 270.679688 C 467.722656 270.679688 467.722656 73.914062 467.722656 73.914062 C 467.722656 54.707031 452.15625 39.140625 432.949219 39.140625 L 317.042969 39.140625 C 297.835938 39.140625 282.269531 54.707031 282.269531 73.914062 L 282.269531 270.679688 C 282.269531 277.078125 277.078125 282.269531 270.679688 282.269531 C 270.679688 282.269531 73.914062 282.269531 73.914062 282.269531 C 54.707031 282.269531 39.140625 297.835938 39.140625 317.042969 L 39.140625 432.949219 C 39.140625 452.15625 54.707031 467.722656 73.914062 467.722656 L 270.679688 467.722656 C 277.078125 467.722656 282.269531 472.914062 282.269531 479.3125 C 282.269531 479.3125 282.269531 676.082031 282.269531 676.082031 C 282.269531 695.285156 297.835938 710.851562 317.042969 710.851562 L 432.949219 710.851562 C 452.15625 710.851562 467.722656 695.285156 467.722656 676.082031 L 467.722656 479.3125 C 467.722656 472.914062 472.914062 467.722656 479.3125 467.722656 C 479.3125 467.722656 676.082031 467.722656 676.082031 467.722656 C 695.285156 467.722656 710.851562 452.15625 710.851562 432.949219 L 710.851562 317.042969 C 710.851562 297.835938 695.285156 282.269531 676.082031 282.269531 Z M 479.3125 282.269531 " fill-opacity="1" fill-rule="evenodd"/></g></svg>  
+              <button id="preempside" type="button" aria-controls="companies" data-collapse-toggle="companies"  class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+              <svg class="w-6 h-6 preempIcon" fill="#4d4d4d" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" zoomAndPan="magnify" viewBox="0 0 750 749.999995" height="1000" preserveAspectRatio="xMidYMid meet" version="1.0"><defs><clipPath id="c12ce93f69"><path d="M 39 39 L 710.863281 39 L 710.863281 710.863281 L 39 710.863281 Z M 39 39 " clip-rule="nonzero"/></clipPath></defs><g clip-path="url(#c12ce93f69)"><path d="M 479.3125 282.269531 C 472.914062 282.269531 467.722656 277.078125 467.722656 270.679688 C 467.722656 270.679688 467.722656 73.914062 467.722656 73.914062 C 467.722656 54.707031 452.15625 39.140625 432.949219 39.140625 L 317.042969 39.140625 C 297.835938 39.140625 282.269531 54.707031 282.269531 73.914062 L 282.269531 270.679688 C 282.269531 277.078125 277.078125 282.269531 270.679688 282.269531 C 270.679688 282.269531 73.914062 282.269531 73.914062 282.269531 C 54.707031 282.269531 39.140625 297.835938 39.140625 317.042969 L 39.140625 432.949219 C 39.140625 452.15625 54.707031 467.722656 73.914062 467.722656 L 270.679688 467.722656 C 277.078125 467.722656 282.269531 472.914062 282.269531 479.3125 C 282.269531 479.3125 282.269531 676.082031 282.269531 676.082031 C 282.269531 695.285156 297.835938 710.851562 317.042969 710.851562 L 432.949219 710.851562 C 452.15625 710.851562 467.722656 695.285156 467.722656 676.082031 L 467.722656 479.3125 C 467.722656 472.914062 472.914062 467.722656 479.3125 467.722656 C 479.3125 467.722656 676.082031 467.722656 676.082031 467.722656 C 695.285156 467.722656 710.851562 452.15625 710.851562 432.949219 L 710.851562 317.042969 C 710.851562 297.835938 695.285156 282.269531 676.082031 282.269531 Z M 479.3125 282.269531 " fill-rule="evenodd"/></g></svg>  
               
-              <span class="flex-1 ml-3 font-semibold whitespace-nowrap">Pre-Employment</span>
-              </a>
+              <span class="flex-1 ml-3 font-semibold whitespace-nowrap mr-3">Pre-Employment </span>
+              <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                  </svg>
+              </button>
+              <ul id="companies" class="hidden  py-2 space-y-2">
+                  <li >
+                     <a id="gpiside" href="../preEmployment/index.php"  class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
+                  </li>
+                  <li>
+                     <a id="maximside" href="../preEmployment/maxim.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
+                  </li>
+                  <li >
+                     <a id="nippiside" href="../preEmployment/nippi.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
+                  </li>
+                  <li >
+                     <a id="powerlaneside" href="../preEmployment/powerlane.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+                  </li>
+                  <li >
+                     <a id="otreloside" href="../preEmployment/otrelo.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
+                  </li> <li >
+                     <a id="mangreatside"  href="../preEmployment/mangreat.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
+                  </li> <li >
+                     <a id="alarmside" href="../preEmployment/alarm.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+                  </li> <li >
+                     <a id="canteenside" href="../preEmployment/canteen.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
+                  </li>
+            </ul>
           </li>
           <li>
               <a href="devices.php" id="sidedevice" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">

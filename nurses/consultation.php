@@ -2,7 +2,13 @@
 <?php
 session_start();
         // Set the timezone to Manila
+        include ("../includes/connect.php");
+if(!isset($_SESSION['connected'])){
+  header("location: ../logout.php");
+}
         date_default_timezone_set('Asia/Manila');
+
+        
     ?>
 
 <!doctype html>

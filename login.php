@@ -24,6 +24,8 @@ if(isset( $_SESSION['connected'])){
           $_SESSION['name'] = $userRow['name'];
           $_SESSION['rfid'] = "";
           $_SESSION['department'] = $userRow['department'];
+          $_SESSION['lastQue'] = '';
+
 
 
           $_SESSION['connected']=true;
@@ -36,6 +38,9 @@ if(isset( $_SESSION['connected'])){
           }
           else if($level =='hr'){
             header("location:hr");
+          }
+          else if($level =='doctor'){
+            header("location:doctor");
           }
         }
       }

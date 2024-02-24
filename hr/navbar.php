@@ -77,43 +77,7 @@
                 <span class="ml-3">Home</span>
               </a>
           </li>
-          <li>
-              <a href="myRequest.php" id="sideMyRequest1" class="  flex items-center p-4 text-base font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
-                <!-- <svg aria-hidden="true" class="w-6 h-6 text-gray-500 transition duration-75  group-hover:text-gray-900 -white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg> -->
-                <i class="fa-solid fa-ticket"></i>
-                <span class="ml-3">My Request</span>
-              </a>
-          </li>
-          <li>
-              <a href="history.php" id="sidehistory1" class="  flex items-center p-4 text-base font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
-                
-              <i class="fa-solid fa-clock-rotate-left"></i> <span class="flex-1 ml-3 whitespace-nowrap">History</span>
-              </a>
-          </li>
-          <li>
-              <a href="user.php" id="sideuser1" class="   flex items-center p-4 text-base font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
-                
-              <i class="fa-solid fa-user"></i> <span class="flex-1 ml-3 whitespace-nowrap">User</span>
-              </a>
-          </li>
-          <li>
-              <a href="pms.php" id="sidepms1" class="  flex items-center p-4 text-base font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
-                
-              <i class="fa-solid fa-broom"></i> <span class="flex-1 ml-3 whitespace-nowrap">PMS</span>
-              </a>
-          </li>
-          <li>
-              <a href="devices.php" id="sidedevice1" class="  flex items-center p-4 text-base font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
-                
-              <i class="fa-solid fa-computer"></i> <span class="flex-1 ml-3 whitespace-nowrap">Devices</span>
-              </a>
-          </li>
-          <li>
-              <a href="documents.php" id="sidedocs1" class="flex items-center p-4 text-base font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
-                
-              <i class="fa-solid fa-file"></i> <span class="flex-1 ml-3 whitespace-nowrap">Documents</span>
-              </a>
-          </li>
+          
         </ul>
     </div>
   </div>

@@ -45,13 +45,13 @@ $cnsltnTemp = $_POST['cnsltnTemp'];
 $cnsltn02Sat = $_POST['cnsltn02Sat'];
 $cnsltnPr = $_POST['cnsltnPr'];
 $cnsltnRr = $_POST['cnsltnRr'];
-$cnsltnRemarks = $_POST['cnsltnRemarks'];
+// $cnsltnRemarks = $_POST['cnsltnRemarks'];
 $cnsltnOthersRemarks = $_POST['cnsltnOthersRemarks'];
-$cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
-$cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
+// $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
+// $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
 
   // echo $smoking;
-  $sql = "INSERT INTO `consultation`(`rfid`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `othersRemarks`, `statusComplete`, `withPendingLab`) VALUES ('$rfid','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnRemarks', '$cnsltnOthersRemarks', '$cnsltnCompleted', '$cnsltnWithPendingLab')";
+  $sql = "INSERT INTO `consultation`(`rfid`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`,  `othersRemarks`) VALUES ('$rfid','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr',  '$cnsltnOthersRemarks')";
   $results = mysqli_query($con,$sql);
 
  
@@ -139,7 +139,7 @@ $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
   <option selected value="Medication Only">Medication only</option>
   <option value="Medical Consultation">Medical Consultation</option>
   <option value="Medication and Medical Consultation">Medication and Medical Consultation</option>
-  <option value="Medication, Clinic Rest and Medical Consultation<">Medication, Clinic Rest and Medical Consultation</option>
+  <option value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
 
 
 </select>
@@ -247,7 +247,7 @@ $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
             
             
             </div>
-            <div class="col-span-4 flex gap-4">
+            <div class="hidden col-span-4 flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Remarks: </h3>
                 <select id="remarksSelect" name="cnsltnRemarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
   <option selected value="FTW">Fit To Work</option>
@@ -263,7 +263,7 @@ $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
              <input type="text" id="base-input" name="cnsltnOthersRemarks" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
 
-                <div class="col-span-4 flex gap-4">
+                <div class="hidden col-span-4 flex gap-4">
                 
 <h3 class="my-auto mb-4 font-semibold text-gray-900 ">Status</h3>
 <ul class="col-span-2 items-center w-full text-[10px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  ">

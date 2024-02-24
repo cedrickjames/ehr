@@ -17,14 +17,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $sql = "UPDATE `queing` SET `status`='processing', `nurseAssisting` = '$userID' WHERE `rfidNumber` = '$rfid'";
           $results = mysqli_query($con,$sql);
           
-          // Output the queNo
-          // echo "Button with queNo $queNo was clicked.";
-          
-
-          // You can use $queNo in further processing as needed
       }
+      else if (strpos($key, 'doneAssist_') === 0) {
+        // Extract the number from the button name
+        $queNo = substr($key, strlen('doneAssist_'));
+
+        $rfid =  $_POST['rfid'.$queNo];
+        // $_SESSION['rfid'] = $rfid;
+        $sql = "UPDATE `queing` SET `status`='done' WHERE `rfidNumber` = '$rfid'";
+        $results = mysqli_query($con,$sql);
+        
+        // echo $queNo;
+    }
+
   }
 } 
+
+
 ?>
 
 <div class="text-[9px] 2xl:text-lg mb-5">
@@ -68,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     LEFT JOIN
                         users
                     ON
-                        queing.nurseAssisting = users.idNumber ORDER BY
+                        queing.nurseAssisting = users.idNumber WHERE queing.status != 'done' ORDER BY
     queing.id ASC; 
                     ";
         $result = mysqli_query($con,$sql);
@@ -102,6 +111,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
 </svg>
 </button>
+
+<?php
+
+if($row['status'] == "waiting"){
+?>
 <button  <?php
             if($row['nurseAssisting'] == "" || $row['nurseAssisting'] == $userID){
               echo "";
@@ -122,10 +136,63 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 Assist
 </span>
 </button>
+<?php
+}else if($row['status'] == "processing" && $row['nurseAssisting'] != $userID){
+  ?>
+<button  <?php
+            if($row['nurseAssisting'] == "" || $row['nurseAssisting'] == $userID){
+              echo "";
+            } else {
+              echo "disabled";
+            }
+
+        ?>
+ id="assisBtn<?php echo $queNo;?>" type="submit" name="assist_<?php echo $queNo;?>"   class="relative inline-flex items-center justify-center p-0.5  me-2 overflow-hidden  font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white ">
+<span class="relative px-2 py-2 transition-all ease-in duration-75 <?php
+            if($row['nurseAssisting'] == "" || $row['nurseAssisting'] == $userID){
+              echo "bg-white group-hover:bg-opacity-0";
+            } else {
+              echo "bg-gray-300 ";
+            }
+
+        ?> rounded-md ">
+Assist
+</span>
+</button>
+<?php
+
+}
+else if($row['status'] == "processing" && $row['nurseAssisting'] == $userID){
+  ?>
+<button  <?php
+            if($row['nurseAssisting'] == "" || $row['nurseAssisting'] == $userID){
+              echo "";
+            } else {
+              echo "disabled";
+            }
+
+        ?>
+ id="assisDoneBtn<?php echo $queNo;?>" type="submit" name="doneAssist_<?php echo $queNo;?>"   class="relative inline-flex items-center justify-center p-0.5  me-2 overflow-hidden  font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-400 to-blue-600 group-hover:from-red-400 group-hover:to-blue-600 hover:text-white ">
+<span class="relative px-2 py-2 transition-all ease-in duration-75 <?php
+            if($row['nurseAssisting'] == "" || $row['nurseAssisting'] == $userID){
+              echo "bg-white group-hover:bg-opacity-0";
+            } else {
+              echo "bg-gray-300 ";
+            }
+
+        ?> rounded-md ">
+Done
+</span>
+</button>
+<?php
+
+}
+?>
+
                     </div>
 <!-- Dropdown menu -->
 <div id="dropdownDots<?php echo $queNo;?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $queNo;?>">
+    <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $queNo;?>">
       <li>
         <a href="../nurses/fitToWork.php?rf=<?php echo $row['rfidNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Fit To Work</a>
       </li>

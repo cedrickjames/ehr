@@ -1,5 +1,10 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+
+
 if (isset($_GET['rf'])) {
   $rfid = $_GET['rf'];
 } else {
@@ -13,10 +18,13 @@ INNER JOIN employeespersonalinfo ON employeespersonalinfo.rfidNumber = queing.rf
 $resultInfo = mysqli_query($con, $sqluserinfo);
 while($userRow = mysqli_fetch_assoc($resultInfo)){
   $department = $userRow['department'];
+  $name = $userRow['Name'];
+
 
 }
 
 
+$currentDate = date('Y-m-d');
 
 
 
@@ -49,11 +57,86 @@ $ftwRemarks = $_POST['ftwRemarks'];
 $ftwOthersRemarks = $_POST['ftwOthersRemarks'];
 $ftwCompleted = isset($_POST['ftwCompleted']) ? $_POST['ftwCompleted'] : "0";
 $ftwWithPendingLab = $_POST['ftwWithPendingLab'];
+$immediateEmail = $_POST['immediateEmail'];
+$immediateHead = $_POST['immediateHead'];
+
 
   // echo $smoking;
   $sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`, `fromDateOfSickLeave`, `toDateOfSickLeave`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `othersRemarks`, `statusComplete`, `withPedingLab`) VALUES ('head','$department','$rfid','$ftwDate','$ftwTime','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwSLDateFrom','$ftwSLDateTo','$ftwAbsenceReason','$ftwDiagnosis','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab')";
   $results = mysqli_query($con,$sql);
 
+
+  if($results){
+
+
+    // $sql1 = "Select * FROM `user` WHERE `username` = '$assigned'";
+    // $result = mysqli_query($con, $sql1);
+    // while($list=mysqli_fetch_assoc($result))
+    // {
+    // $personnelEmail=$list["email"];
+    // $perseonnelName=$list["name"];
+
+    // }
+       $sql2 = "Select * FROM `sender`";
+        $result2 = mysqli_query($con, $sql2);
+        while($list=mysqli_fetch_assoc($result2))
+        {
+        $account=$list["email"];
+        $accountpass=$list["password"];
+
+          } 
+
+          
+
+    $subject ='Fit to Work';
+    $message = 'Hi '.$immediateHead.',<br> <br> Mr./Ms. '.$name.' is now fit to work. <br><br><br><br> This is a generated email. Please do not reply. <br><br> Electronic Health System';
+    
+
+     require '../vendor/autoload.php';
+
+     $mail = new PHPMailer(true);       
+    //  email the admin               
+     try {
+      //Server settings
+        $mail->isSMTP();                                      // Set mailer to use SMTP
+        $mail->Host = 'mail.glorylocal.com.ph';                       // Specify main and backup SMTP servers
+        $mail->SMTPAuth = true;                               // Enable SMTP authentication
+        $mail->Username = $account;     // Your Email/ Server Email
+        $mail->Password = $accountpass;                     // Your Password
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true
+            )
+                                    );                         
+        $mail->SMTPSecure = 'none';                           
+        $mail->Port = 465;                                   
+
+        //Send Email
+        // $mail->setFrom('Helpdesk'); //eto ang mag front  notificationsys01@gmail.com
+        
+        //Recipients
+        $mail->setFrom('healthbenefits@glorylocal.com.ph', 'Health Benefits');
+        $mail->addAddress($immediateEmail);              
+        $mail->isHTML(true);                                  
+        $mail->Subject = $subject;
+        $mail->Body    = $message;
+        $mail->addCC('mis.dev@glory.com.ph');
+        $mail->send();
+
+              $_SESSION['message'] = 'Message has been sent';
+              echo "<script>alert('Email Sent') </script>";
+              echo "<script> location.href='index.php'; </script>";
+
+
+            // header("location: form.php");
+        } catch (Exception $e) {
+            $_SESSION['message'] = 'Message could not be sent. Mailer Error: '.$mail->ErrorInfo;
+        echo "<script>alert('Message could not be sent. Mailer Error.') </script>";
+
+        }
+  }
 
 }
 
@@ -72,14 +155,8 @@ $ftwWithPendingLab = $_POST['ftwWithPendingLab'];
 
             <div class="content-center flex gap-4 col-span-2">
             <h3 class=" my-auto font-semibold text-gray-900 ">Date: </h3>
-            <div class="relative w-full">
-  <div class="w-1/6 absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-     <svg class="m-1 2xl:m-auto w-3 2xl:w-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-      </svg>
-  </div>
-  <input datepicker datepicker-autohide type="text" name="ftwDate" class="h-full pl-5 2xl:pl-12 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-0 2xl:p-2.5  " placeholder="Date">
-</div>
+            <input type="date" name="medcertdate" value="<?php echo $currentDate; ?>" id="medcertdate" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+
             </div>
             <div class="flex gap-4 col-span-2">
             <h3 class="my-auto  font-semibold text-gray-900 ">Time: </h3>
@@ -135,35 +212,23 @@ $ftwWithPendingLab = $_POST['ftwWithPendingLab'];
             
 
             <div class="content-center flex gap-2 2xl:gap-4 col-span-3">
-            <div class="relative w-full">
-  <div class="w-1/2 2xl:w-1/6 absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-  <svg class="m-auto w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-      </svg>
-  </div>
-  <input datepicker datepicker-autohide type="text" name="ftwSLDateFrom" class="h-full pl-10 2xl:pl-12 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-0 2xl:p-2.5  " placeholder="From">
-</div>
-<div class="relative w-full">
-  <div class="w-1/2 2xl:w-1/6 absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-  <svg class="m-auto w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-      </svg>
-  </div>
-  <input datepicker datepicker-autohide type="text" name="ftwSLDateTo" class="h-full pl-10 2xl:pl-12 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-0 2xl:p-2.5  " placeholder="To">
-</div>
+            <input type="date" name="ftwSLDateFrom" value="<?php echo $currentDate; ?>"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+
+            <input type="date" name="ftwSLDateTo" value="<?php echo $currentDate; ?>"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+
 
 <h3 class=" my-auto font-semibold text-gray-900 ">Days</h3>
-      <input type="number"  id="base-input" name="ftwDays" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      <input type="number"   name="ftwDays" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
             </div>
 
             <div class="flex gap-4 col-span-2">
             <h3 class=" my-auto w-full font-semibold text-gray-900 ">Reason of Absence: </h3>
-             <input type="text" id="base-input" name="ftwAbsenceReason" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text"  name="ftwAbsenceReason" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="flex gap-4 col-span-2">
             <h3 class=" my-auto  font-semibold text-gray-900 ">Diagnosis: </h3>
-      <input type="text" id="base-input" name="ftwDiagnosis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      <input type="text"  name="ftwDiagnosis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
             </div>
             <div class="col-span-1">
@@ -171,42 +236,42 @@ $ftwWithPendingLab = $_POST['ftwWithPendingLab'];
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Blood Chemistry: </h3>
-             <input type="text" id="base-input" name="ftwBloodChem" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text"  name="ftwBloodChem" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="col-span-1">
             <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">CBC: </h3>
-             <input type="text" id="base-input" name="ftwCbc" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text"  name="ftwCbc" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="col-span-1">
             <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Urinalysis: </h3>
-             <input type="text" id="base-input" name="ftwUrinalysis" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text"  name="ftwUrinalysis" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="col-span-1">
             <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Fecalysis: </h3>
-             <input type="text" id="base-input" name="ftwFecalysis" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text"  name="ftwFecalysis" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="col-span-1">
             <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">X-ray: </h3>
-             <input type="text" id="base-input" name="ftwXray" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text"  name="ftwXray" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="col-span-1">
             <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Others: </h3>
-             <input type="text" id="base-input" name="ftwOthersLab" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text"  name="ftwOthersLab" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
 
             <div class="col-span-1">
@@ -217,23 +282,23 @@ $ftwWithPendingLab = $_POST['ftwWithPendingLab'];
             <div class="grid grid-cols-3 gap-4">
                 <div class="flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">BP: </h3>
-             <input type="text" id="base-input" name="ftwBp" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text"  name="ftwBp" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Temp: </h3>
-             <input type="text" id="base-input" name="ftwTemp" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text"  name="ftwTemp" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">02 Sat: </h3>
-             <input type="text" id="base-input" name="ftw02Sat" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text"  name="ftw02Sat" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">PR: </h3>
-             <input type="text" id="base-input" name="ftwPr" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text"  name="ftwPr" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">RR: </h3>
-             <input type="text" id="base-input" name="ftwRr" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text"  name="ftwRr" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
              
             </div>
@@ -253,7 +318,7 @@ $ftwWithPendingLab = $_POST['ftwWithPendingLab'];
                 </div>
                 <div class="col-span-4 flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Others: </h3>
-             <input type="text" id="base-input"  name="ftwOthersRemarks" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text"   name="ftwOthersRemarks" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
 
                 <div class="col-span-4 flex gap-4">
@@ -282,6 +347,34 @@ $ftwWithPendingLab = $_POST['ftwWithPendingLab'];
 </ul>
 
                 </div>
+
+                <div class="flex gap-4  col-span-2">
+                
+                <h3 class="my-auto  font-semibold text-gray-900 ">Immediate Head: </h3>
+    <select id="immediateHead" name="immediateHead" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+    <option selected disabled value="">Please select</option>
+   <?php
+         $sql1 = "Select * FROM `emaillist` WHERE `department` = '$department'";
+         $result = mysqli_query($con, $sql1);
+         while($list=mysqli_fetch_assoc($result))
+         {
+         $immediateName=$list["name"];
+         $email=$list["email"];
+
+         echo "<option value='$immediateName' data-email='$email' >$immediateName</option>";
+        
+         }
+      ?>
+    
+    </select>
+    
+                </div>
+                <div class="flex gap-4  col-span-2">
+                    
+                    <h3 class="my-auto  font-semibold text-gray-900 "> Email: </h3>
+             <input type="text" id="immediateEmail"  name="immediateEmail" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        
+                    </div>
                 <div class="col-span-4 justify-center flex">
                 <button type="submit" name="addFTW" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Record</button>
                 </div>

@@ -33,7 +33,7 @@
                     <tbody>
                     <?php
                         $cnsltnNo = 1;
-                        $sql="SELECT * FROM `consultation` WHERE `rfid` = '$rfid' ORDER BY `id` ASC; 
+                        $sql="SELECT * FROM `consultation` WHERE `rfid` = '$rfid' and `status` = 'done' ORDER BY `id` ASC; 
                     ";
         $result = mysqli_query($con,$sql);
         while($row=mysqli_fetch_assoc($result)){

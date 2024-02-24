@@ -1,7 +1,10 @@
 <?php
 
 session_start();
-
+include ("../includes/connect.php");
+if(!isset($_SESSION['connected'])){
+  header("location: ../logout.php");
+}
 ?>
 <!doctype html>
 <html>

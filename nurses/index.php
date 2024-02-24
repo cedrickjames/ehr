@@ -59,6 +59,89 @@ $("#sidepms1").removeClass("bg-gray-200");
 $(".homeIcon").attr("fill", "#FFFFFF"); 
 // $(".homeIcon").attr("fill", "#4d4d4d"); 
 
+
+
+
+const $targetEl = document.getElementById('sidebar');
+
+const options = {
+  placement: 'left',
+  backdrop: false,
+  bodyScrolling: true,
+  edge: false,
+  edgeOffset: '',
+  backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-30',
+  onHide: () => {
+      console.log('drawer is hidden');
+  },
+  onShow: () => {
+      console.log('drawer is shown');
+  },
+  onToggle: () => {
+      console.log('drawer has been toggled');
+  }
+};
+
+const drawer = new Drawer($targetEl, options);
+drawer.show();
+var show = true;
+
+
+var screenWidth = window.screen.width;   // Screen width in pixels
+var screenHeight = window.screen.height; // Screen height in pixels
+
+console.log("Screen width: " + screenWidth);
+console.log("Screen height: " + screenHeight);
+var sidebar=0;
+    
+
+
+function shows(){
+    if(show){
+        drawer.hide();
+        show = false;
+    }
+    else{
+        drawer.show();
+        show = true;
+    }
+    // var sidebar=0;
+    if(sidebar==0){
+    document.getElementById("mainContent").style.width="100%";  
+    document.getElementById("mainContent").style.marginLeft= "0px"; 
+    // document.getElementById("sidebar").style.opacity= ""; 
+    // document.getElementById("sidebar").style.transition = "all .1s";
+    
+    document.getElementById("mainContent").style.transition = "all .3s";
+    
+    
+    
+    
+    
+    
+    sidebar=1;
+    }
+    else{
+      document.getElementById("mainContent").style.width="calc(100% - 288px)";  
+    document.getElementById("mainContent").style.marginLeft= "288px";  
+    
+    sidebar=0;
+    }
+    
+
+}
+
+if (screenWidth <= 1132){
+    shows();
+
+}
+else{
+drawer.show();
+// sidebar=0;/
+    
+}
+
+
 </script>
 </body>
 </html>

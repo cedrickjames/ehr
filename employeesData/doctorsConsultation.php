@@ -1,5 +1,88 @@
+<?php
+
+if (isset($_GET['dcnsltn'])) {
+  $dcnsltn = $_GET['dcnsltn'];
+} else {
+$dcnsltn = "not found";
+
+}
+if (isset($_GET['rf'])) {
+  $rfid = $_GET['rf'];
+} else {
+$rfid = "not found";
+
+}
+$currentDate = date('Y-m-d');
 
 
+$sqluserinfo = "SELECT consultation.*, employeespersonalinfo.Name, medicalcertificate.*
+FROM consultation
+INNER JOIN employeespersonalinfo ON consultation.rfid = employeespersonalinfo.rfidNumber LEFT JOIN
+                        medicalcertificate
+                    ON
+                        consultation.id = medicalcertificate.consultationId WHERE consultation.id = '$dcnsltn';";
+$resultInfo = mysqli_query($con, $sqluserinfo);
+while($userRow = mysqli_fetch_assoc($resultInfo)){
+  $date = $userRow['date'];
+  $time = $userRow['time'];
+  $type = $userRow['type'];
+  $building = $userRow['building'];
+  $categories = $userRow['categories'];
+  $chiefComplaint = $userRow['chiefComplaint'];
+  $diagnosis = $userRow['diagnosis'];
+  $intervention = $userRow['intervention'];
+  $clinicRestFrom = $userRow['clinicRestFrom'];
+  $clinicRestTo = $userRow['clinicRestTo'];
+  $meds = $userRow['meds'];
+
+  $bloodChemistry = $userRow['bloodChemistry'];  
+  $cbc = $userRow['cbc'];  
+  $urinalysis = $userRow['urinalysis'];  
+  $fecalysis = $userRow['fecalysis'];  
+  $xray = $userRow['xray'];  
+  $others = $userRow['others'];  
+  $bp = $userRow['bp'];  
+  $temp = $userRow['temp'];  
+  $sat = $userRow['02sat'];  
+  $pr = $userRow['pr'];  
+  $rr = $userRow['rr'];  
+  $remarks = $userRow['remarks'];  
+  $othersRemarks = $userRow['othersRemarks'];  
+  $statusComplete = $userRow['statusComplete'];  
+  $withPendingLab = $userRow['withPendingLab'];
+  $Name = $userRow['Name'];
+  $consultationId = $userRow['consultationId'];
+
+
+
+
+
+}
+
+
+if(isset($_POST['submitDoctorsConsultation'])){
+
+  $finalDx = $_POST['finalDx'];
+  $sql = "UPDATE `consultation` SET `status` = 'nurse2', `finalDx`='$finalDx' WHERE `id` = '$dcnsltn'";
+  $results = mysqli_query($con,$sql);
+
+}
+
+if(isset($_POST['generateMedCert'])){
+
+  $medcertdate = $_POST['medcertdate'];
+  $treatedOn = $_POST['treatedOn'];
+  $dueTo = $_POST['dueTo'];
+  $diagnosis = $_POST['diagnosis'];
+  $remarksMed = $_POST['remarksMed'];
+
+  $sql = "INSERT INTO `medicalcertificate`(`rfid`, `consultationId`, `date`, `treatedOn`, `dueTo`, `diagnosis`, `remarks`) VALUES ('$rfid','$dcnsltn','$medcertdate','$treatedOn','$dueTo','$diagnosis','$remarksMed')";
+  $results = mysqli_query($con,$sql);
+
+}
+
+?>
+<form action="" method="POST">
 <div class="relative ">
 <p class="mb-2 2xl:mb-5"><span class=" self-center text-[12px] 2xl:text-lg font-semibold whitespace-nowrap   text-[#193F9F]">Consultation</span></p>
 
@@ -17,19 +100,19 @@
         <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
       </svg>
   </div>
-  <input datepicker datepicker-autohide type="text" class="h-full pl-5 2xl:pl-12 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl text-[10px]:2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-0 2xl:p-2.5  " placeholder="Date">
+  <input datepicker datepicker-autohide type="text" value="<?php echo $date; ?>" class="h-full pl-5 2xl:pl-12 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl text-[10px]:2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-0 2xl:p-2.5  " placeholder="Date">
 </div>
             </div>
             <div class="flex gap-4 col-span-2">
             <h3 class="my-auto  font-semibold text-gray-900 ">Time: </h3>
-            <input type="text" id="currentTime" name="currentTime" value="<?php echo date('h:i A'); ?>" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500">
+            <input type="text" id="currentTime" name="currentTime" value="<?php echo $time; ?>" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500">
             </div>
             <div class="flex gap-4  col-span-2">
                 
             <h3 class="my-auto  font-semibold text-gray-900 ">Type: </h3>
 <select id="categoriesSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-  <option selected value="initial">Initial</option>
-  <option value="followUp">Follow Up</option>
+  <option <?php if ($type == "Initial"){ echo "selected" ;} ?> value="Initial">Initial</option>
+  <option <?php if ($type == "Follow Up"){ echo "selected";} ?> value="Follow Up">Follow Up</option>
 
 </select>
 
@@ -38,10 +121,10 @@
                 
                 <h3 class="my-auto  font-semibold text-gray-900 ">Building:</h3>
     <select id="categoriesSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-      <option selected value="GPI1">GPI 1</option>
-      <option value="GPI5">GPI 5</option>
-      <option value="GPI7">GPI 7</option>
-      <option value="GPI8">GPI 8</option>
+      <option <?php if ($building == "GPI 1"){ echo "selected" ;} ?> value="GPI 1">GPI 1</option>
+      <option <?php if ($building == "GPI 5"){ echo "selected" ;} ?> value="GPI 5">GPI 5</option>
+      <option <?php if ($building == "GPI 7"){ echo "selected" ;} ?> value="GPI 7">GPI 7</option>
+      <option <?php if ($building == "GPI 8"){ echo "selected" ;} ?> value="GPI 8">GPI 8</option>
     </select>
     
                 </div>
@@ -51,10 +134,10 @@
                     
                     <h3 class="my-auto w-1/2 font-semibold text-gray-900 ">Medical Category:</h3>
         <select id="categoriesSelect" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option selected value="common">Common</option>
-          <option value="longTerm">Long Term</option>
-          <option value="maternity">Maternity</option>
-          <option value="workRelated">Work Related</option>
+          <option <?php if ($categories == "common"){ echo "selected" ;} ?> value="common">Common</option>
+          <option <?php if ($categories == "Long Term"){ echo "selected" ;} ?> value="Long Term">Long Term</option>
+          <option <?php if ($categories == "Maternity"){ echo "selected" ;} ?> value="Maternity">Maternity</option>
+          <option <?php if ($categories == "Work Related"){ echo "selected" ;} ?> value="Work Related">Work Related</option>
         </select>
         
                     </div>
@@ -63,20 +146,20 @@
 
             <div class="flex gap-4 col-span-2">
             <h3 class=" my-auto w-full font-semibold text-gray-900 ">Chief Compliant: </h3>
-             <input type="text" id="base-input" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" value="<?php echo $chiefComplaint; ?>" id="base-input" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="flex gap-4 col-span-2">
             <h3 class=" my-auto  font-semibold text-gray-900 ">Diagnosis: </h3>
-      <input type="text" id="base-input" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      <input type="text" value="<?php echo $diagnosis; ?>" id="base-input" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
             </div>
             <div class="col-span-4 flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Intervention: </h3>
                 <select id="remarksSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-  <option selected value="medicationOnly">Medication only</option>
-  <option value="medConsult">Medical Consultation</option>
-  <option value="medmedConsult">Medication and Medical Consultation</option>
-  <option value="medClinicRest">Medication, Clinic Rest and Medical Consultation</option>
+                <option <?php if ($intervention == "Medication Only"){ echo "selected" ;} ?> value="Medication Only">Medication only</option>
+                <option <?php if ($intervention == "Medical Consultation"){ echo "selected" ;} ?> value="Medical Consultation">Medical Consultation</option>
+                <option <?php if ($intervention == "Medication and Medical Consultation"){ echo "selected" ;} ?> value="Medication and Medical Consultation">Medication and Medical Consultation</option>
+                <option <?php if ($intervention == "Medication, Clinic Rest and Medical Consultation"){ echo "selected" ;} ?> value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
 
 
 </select>
@@ -90,23 +173,23 @@
             <div class="content-center flex gap-2 2xl:gap-4 col-span-3">
             <div class="relative w-full">
   <div class="w-1/2 2xl:w-1/6 absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-  <svg class="m-auto w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+  <svg class="mx-2 w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
         <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
       </svg>
   </div>
-  <input datepicker datepicker-autohide type="text" class="h-full pl-10 2xl:pl-12 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-0 2xl:p-2.5  " placeholder="From">
+  <input datepicker datepicker-autohide value="<?php echo $clinicRestFrom ?>" type="text" class="h-full pl-6 2xl:pl-12 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-0 2xl:p-2.5  " placeholder="From">
 </div>
 <div class="relative w-full">
   <div class="w-1/2 2xl:w-1/6 absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-  <svg class="m-auto w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+  <svg class="mx-2 w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
         <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
       </svg>
   </div>
-  <input datepicker datepicker-autohide type="text" class="h-full pl-10 2xl:pl-12 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-0 2xl:p-2.5  " placeholder="To">
+  <input datepicker datepicker-autohide value="<?php echo $clinicRestTo ?>" type="text" class="h-full pl-6 2xl:pl-12 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-0 2xl:p-2.5  " placeholder="To">
 </div>
 
 <h3 class=" my-auto font-semibold text-gray-900 ">Meds</h3>
-      <input type="text" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      <input type="text"  value="<?php echo $meds; ?>" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
             </div>
 
@@ -115,42 +198,42 @@
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Blood Chemistry: </h3>
-             <input type="text" id="base-input" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" value="<?php echo $bloodChemistry; ?>" id="base-input" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="col-span-1">
             <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">CBC: </h3>
-             <input type="text" id="base-input" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" value="<?php echo $cbc; ?>" id="base-input" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="col-span-1">
             <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Urinalysis: </h3>
-             <input type="text" id="base-input" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" value="<?php echo $urinalysis; ?>" id="base-input" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="col-span-1">
             <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Fecalysis: </h3>
-             <input type="text" id="base-input" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" id="base-input" value="<?php echo $fecalysis; ?>" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="col-span-1">
             <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">X-ray: </h3>
-             <input type="text" id="base-input" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" id="base-input" value="<?php echo $xray; ?>" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="col-span-1">
             <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Others: </h3>
-             <input type="text" id="base-input" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" id="base-input" value="<?php echo $others; ?>" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
 
             <div class="col-span-1">
@@ -161,23 +244,23 @@
             <div class="grid grid-cols-3 gap-4">
                 <div class="flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">BP: </h3>
-             <input type="text" id="base-input" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" id="base-input" value="<?php echo $bp; ?>" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Temp: </h3>
-             <input type="text" id="base-input" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" id="base-input" value="<?php echo $temp; ?>" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">02 Sat: </h3>
-             <input type="text" id="base-input" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" id="base-input" value="<?php echo $sat; ?>" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">PR: </h3>
-             <input type="text" id="base-input" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" id="base-input" value="<?php echo $pr; ?>" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">RR: </h3>
-             <input type="text" id="base-input" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" id="base-input" value="<?php echo $rr; ?>" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
              
             </div>
@@ -187,28 +270,45 @@
             <div class="col-span-4 flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Remarks: </h3>
                 <select id="remarksSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-  <option selected value="FTW">Fit To Work</option>
-  <option value="LFTW">Late FTW</option>
-  <option value="noMedCert">No Medical Certificate</option>
-  <option value="others">Others</option>
+  <option <?php if ($remarks == "FTW"){ echo "selected" ;} ?> value="FTW">Fit To Work</option>
+  <option <?php if ($remarks == "Late FTW"){ echo "selected" ;} ?> value="Late FTW">Late FTW</option>
+  <option <?php if ($remarks == "No Medical Certificate"){ echo "selected" ;} ?>value="No Medical Certificate">No Medical Certificate</option>
+  <option <?php if ($remarks == "Others"){ echo "selected" ;} ?>value="Others">Others</option>
 
 
 </select>
                 </div>
                 <div class="col-span-4 flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Others: </h3>
-             <input type="text" id="base-input" class="  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" value="<?php echo $othersRemarks;?>" id="base-input" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="col-span-4 flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Final Dx: </h3>
-             <input type="text" id="base-input" class="  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" name="finalDx"  id="base-input" class="  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                </div>
+                <div class="col-span-4 flex gap-4">
+                <h3 class=" my-auto  font-semibold text-gray-900 ">Medical Certificate: </h3>
+            
+                <?php 
+                if($consultationId !="")
+                {
+                
+                  echo "<a href='../medicalCertificate.php?rf=$rfid&mdcrtid=$consultationId' target='_blank'  class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>View Medcert</a>";
+                } else{
+                  ?> <button data-modal-target="medcert" data-modal-toggle="medcert" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                  Generate
+                </button>
+
+                <?php
+                }?>
+                
                 </div>
                 <div class="col-span-4 gap-4 justify-center flex h-14">
-                <button type="button" class="text-center inline-flex items-center text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[9px] 2xl:text-xl px-5 py-1 text-center me-2 mb-2">
+                <button type="submit" name="submitDoctorsConsultation" class="text-center inline-flex items-center text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[9px] 2xl:text-xl px-5 py-1 text-center me-2 mb-2">
                 <?php require_once '../src/navBarIcons/proceed.svg' ?>  
                     
-                Record</button>
-                <button type="button" class="text-center inline-flex items-center text-white bg-gradient-to-r from-[#115400]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[9px] 2xl:text-xl px-5 py-1 text-center me-2 mb-2">
+                Proceed</button>
+                <button type="button" data-modal-target="medcert" data-modal-toggle="medcert" class="hidden text-center inline-flex items-center text-white bg-gradient-to-r from-[#115400]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[9px] 2xl:text-xl px-5 py-1 text-center me-2 mb-2">
                 <?php require_once '../src/navBarIcons/medcert.svg' ?>  
                 Med Cert</button>
 
@@ -218,3 +318,60 @@
 
                 
       </div>
+
+</form>
+
+<div id="medcert" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative py-4 w-full max-w-4xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="font-semibold text-gray-900 dark:text-white">
+                    Create Medical Certificate
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-[12px] w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="medcert">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form class="p-4 md:p-5" method="POST"  action="">
+                <div class="grid gap-4 mb-4 grid-cols-2">
+                  
+                <div class="col-span-2 sm:col-span-1">
+                        <label for="medcertname" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                        <input type="text" value="<?php echo $Name; ?>" name="medcertname" id="medcertname" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Patient Name" >
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label for="medcertdate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
+                        <input type="date" name="medcertdate" value="<?php echo $currentDate; ?>" id="medcertdate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+
+                    </div>
+                
+                    <div class="col-span-2">
+                        <label for="treatedOn" class="block mb-2 text-[12px] font-medium text-gray-900 dark:text-white">Was examined and treated on</label>
+                        <textarea id="treatedOn" name="treatedOn" rows="1" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" ></textarea>                    
+                    </div>
+                    <div class="col-span-2">
+                        <label for="dueTo" class="block mb-2 text-[12px] font-medium text-gray-900 dark:text-white">due to</label>
+                        <textarea id="dueTo" name="dueTo" rows="1" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" ></textarea>                    
+                    </div>
+                    <div class="col-span-2">
+                        <label for="diagnosis" class="block mb-2 text-[12px] font-medium text-gray-900 dark:text-white">Diagnosis: </label>
+                        <textarea id="diagnosis" name="diagnosis" rows="1" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" ></textarea>                    
+                    </div>
+                    <div class="col-span-2">
+                        <label for="remarksMed" class="block mb-2 text-[12px] font-medium text-gray-900 dark:text-white">Remarks: </label>
+                        <textarea id="remarksMed" name="remarksMed" rows="1" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" ></textarea>                    
+                    </div>
+                </div>
+                <button type="submit" name="generateMedCert" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Generate Med Cert
+                </button>
+            </form>
+        </div>
+    </div>
+</div> 
