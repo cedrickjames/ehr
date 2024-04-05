@@ -26,7 +26,34 @@ if(isset( $_SESSION['connected'])){
           $_SESSION['department'] = $userRow['department'];
           $_SESSION['lastQue'] = '';
 
-
+          $_SESSION['ftwDate']="";
+          $_SESSION['ftwTime']="";
+          $_SESSION['ftwCategories']="";
+          $_SESSION['ftwBuilding']="";
+          $_SESSION['ftwConfinement']="";
+          $_SESSION['ftwMedCategory']="";
+          $_SESSION['ftwSLDateFrom']="";
+          $_SESSION['ftwSLDateTo']="";
+          $_SESSION['ftwDays'] = "";
+          $_SESSION['ftwAbsenceReason']="";
+          $_SESSION['ftwDiagnosis']="";
+          $_SESSION['ftwBloodChem']="";
+          $_SESSION['ftwCbc']="";
+          $_SESSION['ftwUrinalysis']="";
+          $_SESSION['ftwFecalysis']="";
+          $_SESSION['ftwXray']="";
+          $_SESSION['ftwOthersLab']="";
+          $_SESSION['ftwBp']="";
+          $_SESSION['ftwTemp']="";
+          $_SESSION['ftw02Sat']="";
+          $_SESSION['ftwPr']="";
+          $_SESSION['ftwRr']="";
+          $_SESSION['ftwRemarks']="";
+          $_SESSION['ftwOthersRemarks']="";
+          $_SESSION['ftwCompleted']="";
+          $_SESSION['ftwWithPendingLab']="";
+          $_SESSION['immediateEmail']="";
+          $_SESSION['immediateHead']="";
 
           $_SESSION['connected']=true;
 

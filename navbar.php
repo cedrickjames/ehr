@@ -41,7 +41,9 @@ $rfid = "not found";
           <span class="block text-sm  text-gray-500 truncate "><?php echo $_SESSION['userID']; ?></span>
         </div>
         <ul class="py-2" aria-labelledby="user-menu-button">
-          
+        <li>
+            <a href="../que" target="_blank" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Queing</a>
+          </li>
           <li>
             <a href="../logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Sign out</a>
           </li>
@@ -310,7 +312,7 @@ $rfid = "not found";
                     fill-opacity="1" fill-rule="nonzero" />
                 </g>
               </svg>
-              <span class="flex-1 ml-3 font-semibold whitespace-nowrap">Consultation</span>
+              <span class="flex-1 ml-3 font-semibold whitespace-nowrap">Clinic Visit</span>
               </a>
               <ul id="dropdown-example" class=" py-2 space-y-2">
                   <li id="fromDoctorsSide">

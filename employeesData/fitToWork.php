@@ -1,9 +1,6 @@
 <?php
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
-
 
 if (isset($_GET['rf'])) {
   $rfid = $_GET['rf'];
@@ -40,6 +37,7 @@ $ftwConfinement = $_POST['ftwConfinement'];
 $ftwMedCategory = $_POST['ftwMedCategory'];
 $ftwSLDateFrom = $_POST['ftwSLDateFrom'];
 $ftwSLDateTo = $_POST['ftwSLDateTo'];
+$ftwDays = $_POST['ftwDays'];
 $ftwAbsenceReason = $_POST['ftwAbsenceReason'];
 $ftwDiagnosis = $_POST['ftwDiagnosis'];
 $ftwBloodChem = $_POST['ftwBloodChem'];
@@ -62,7 +60,7 @@ $immediateHead = $_POST['immediateHead'];
 
 
   // echo $smoking;
-  $sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`, `fromDateOfSickLeave`, `toDateOfSickLeave`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `othersRemarks`, `statusComplete`, `withPedingLab`) VALUES ('head','$department','$rfid','$ftwDate','$ftwTime','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwSLDateFrom','$ftwSLDateTo','$ftwAbsenceReason','$ftwDiagnosis','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab')";
+  $sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `othersRemarks`, `statusComplete`, `withPedingLab`) VALUES ('head','$department','$rfid','$ftwDate','$ftwTime','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab')";
   $results = mysqli_query($con,$sql);
 
 
@@ -155,7 +153,7 @@ $immediateHead = $_POST['immediateHead'];
 
             <div class="content-center flex gap-4 col-span-2">
             <h3 class=" my-auto font-semibold text-gray-900 ">Date: </h3>
-            <input type="date" name="medcertdate" value="<?php echo $currentDate; ?>" id="medcertdate" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+            <input type="date" name="ftwDate" value="<?php echo $currentDate; ?>" id="ftwDate" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
 
             </div>
             <div class="flex gap-4 col-span-2">
@@ -212,13 +210,19 @@ $immediateHead = $_POST['immediateHead'];
             
 
             <div class="content-center flex gap-2 2xl:gap-4 col-span-3">
-            <input type="date" name="ftwSLDateFrom" value="<?php echo $currentDate; ?>"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+              <div class="relative">
+              <input type="date" name="ftwSLDateFrom" id="ftwSLDateFrom" value="<?php echo $currentDate; ?>"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+            <label for="ftwSLDateFrom" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">From</label>
 
-            <input type="date" name="ftwSLDateTo" value="<?php echo $currentDate; ?>"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+              </div>
+              <div class="relative">
+            <input type="date" name="ftwSLDateTo" id="ftwSLDateTo"  value="<?php echo $currentDate; ?>"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+            <label for="ftwSLDateTo" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">To</label>
+            </div>
 
 
 <h3 class=" my-auto font-semibold text-gray-900 ">Days</h3>
-      <input type="number"   name="ftwDays" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      <input type="number"   name="ftwDays"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
             </div>
 
@@ -228,7 +232,65 @@ $immediateHead = $_POST['immediateHead'];
             </div>
             <div class="flex gap-4 col-span-2">
             <h3 class=" my-auto  font-semibold text-gray-900 ">Diagnosis: </h3>
-      <input type="text"  name="ftwDiagnosis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      <!-- <input type="text"  name="ftwDiagnosis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
+      <select id="ftwDiagnosiOption" name="ftwDiagnosis" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+      <option selected disabled >Select Diagnosis</option>
+      <option value="addDiagnosisButton" >Add Diagnosis</option>
+      <?php
+         $sql1 = "Select * FROM `diagnosis`";
+         $result = mysqli_query($con, $sql1);
+         while($list=mysqli_fetch_assoc($result))
+         {
+         $diagnosis=$list["diagnosisName"];
+         
+
+         echo "<option value='$diagnosis' >$diagnosis</option>";
+        
+         }
+      ?>
+    
+    </select>
+
+
+
+
+
+    <div id="addDiagnosis" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative w-full max-w-md max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    Add Diagnosis
+                </h3>
+                <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="addDiagnosis">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-4 md:p-5">
+                <form class="space-y-4" action="#">
+                    <div>
+                
+                        <input type="text" name="diagnosis" id="diagnosis" class="mb-4 bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" />
+                    </div>
+                    
+                   
+                    <button type="button" onclick="addDiagnosis()" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add</button>
+                   
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 
             </div>
             <div class="col-span-1">
@@ -324,18 +386,18 @@ $immediateHead = $_POST['immediateHead'];
                 <div class="col-span-4 flex gap-4">
                 
 <h3 class="my-auto mb-4 font-semibold text-gray-900 ">Status</h3>
-<ul class="col-span-2 items-center w-full text-[12px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  ">
+<ul class="col-span-2 items-center w-full  text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  ">
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
         <div class="gap-2 flex items-center ps-3">
             <input id="vue-checkbox-list" type="checkbox"  name="ftwCompleted"  value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">
-            <label for="vue-checkbox-list" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 ">Completed</label>
+            <label for="vue-checkbox-list" class="w-full py-3 ms-2  text-gray-900 ">Completed</label>
         </div>
     </li>
 
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
         <div class="gap-2 flex items-center ps-3">
             <input id="vue-checkbox-list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">
-            <label for="vue-checkbox-list" class=" py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 ">With Pending Lab</label>
+            <label for="vue-checkbox-list" class=" py-3 ms-2  text-gray-900 ">With Pending Lab</label>
             <div class="relative z-0 group">
       <input type="text" name="ftwWithPendingLab" id="floating_email" class="block py-2.5 px-0  text-[12px] 2xl:text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
       <label for="floating_email" class="peer-focus:font-medium absolute text-[12px] 2xl:text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"></label>
@@ -375,11 +437,20 @@ $immediateHead = $_POST['immediateHead'];
              <input type="text" id="immediateEmail"  name="immediateEmail" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
         
                     </div>
-                <div class="col-span-4 justify-center flex">
+                <div class="col-span-4 justify-center flex gap-2">
                 <button type="submit" name="addFTW" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Record</button>
+                <button type="submit" name="proceedToConsultation" class="w-64 text-white bg-gradient-to-r from-[#9b0066]  to-[#ca9ac1] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300  shadow-lg shadow-pink-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Proceed to Consultation</button>
+
                 </div>
         
 
 </div>
 </form>
       </div>
+
+
+
+      <script>
+        
+
+      </script>

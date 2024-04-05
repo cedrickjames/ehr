@@ -15,7 +15,7 @@ $rfid = "not found";
 $currentDate = date('Y-m-d');
 
 
-$sqluserinfo = "SELECT consultation.*, employeespersonalinfo.Name, medicalcertificate.*
+$sqluserinfo = "SELECT consultation.*, employeespersonalinfo.Name, medicalcertificate.id as medcertID, medicalcertificate.rfid as medcertRfid, medicalcertificate.consultationId, medicalcertificate.date as medcertDate, medicalcertificate.treatedOn, medicalcertificate.dueTo, medicalcertificate.diagnosis as medcertDiag, medicalcertificate.remarks as medcertRemarks
 FROM consultation
 INNER JOIN employeespersonalinfo ON consultation.rfid = employeespersonalinfo.rfidNumber LEFT JOIN
                         medicalcertificate
@@ -94,14 +94,8 @@ if(isset($_POST['generateMedCert'])){
 
             <div class="content-center flex gap-4 col-span-2">
             <h3 class=" my-auto font-semibold text-gray-900 ">Date: </h3>
-            <div class="relative w-full">
-  <div class="w-1/6 absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-     <svg class="m-1 2xl:m-auto w-3 2xl:w-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-      </svg>
-  </div>
-  <input datepicker datepicker-autohide type="text" value="<?php echo $date; ?>" class="h-full pl-5 2xl:pl-12 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl text-[10px]:2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-0 2xl:p-2.5  " placeholder="Date">
-</div>
+            <input type="date" value="<?php $formattedDate = date("Y-m-d", strtotime($date));
+    echo $formattedDate; ?>" name="cnsltnClinicRestFrom" id="fromDate"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
             </div>
             <div class="flex gap-4 col-span-2">
             <h3 class="my-auto  font-semibold text-gray-900 ">Time: </h3>
@@ -171,21 +165,17 @@ if(isset($_POST['generateMedCert'])){
             
 
             <div class="content-center flex gap-2 2xl:gap-4 col-span-3">
-            <div class="relative w-full">
-  <div class="w-1/2 2xl:w-1/6 absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-  <svg class="mx-2 w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-      </svg>
-  </div>
-  <input datepicker datepicker-autohide value="<?php echo $clinicRestFrom ?>" type="text" class="h-full pl-6 2xl:pl-12 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-0 2xl:p-2.5  " placeholder="From">
+            <div class="relative">
+
+<input type="date" value="<?php $formattedDate = date("Y-m-d", strtotime($clinicRestFrom));
+    echo $formattedDate; ?>" name="cnsltnClinicRestFrom" id="fromDate"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+<label for="fromDate" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">From</label>
 </div>
-<div class="relative w-full">
-  <div class="w-1/2 2xl:w-1/6 absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-  <svg class="mx-2 w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-      </svg>
-  </div>
-  <input datepicker datepicker-autohide value="<?php echo $clinicRestTo ?>" type="text" class="h-full pl-6 2xl:pl-12 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-0 2xl:p-2.5  " placeholder="To">
+<div class="relative">
+
+<input type="date" value="<?php $formattedDate = date("Y-m-d", strtotime($clinicRestTo));
+    echo $formattedDate; ?>" name="cnsltnClinicRestTo" id="toDate"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+<label for="toDate"  class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">To</label>
 </div>
 
 <h3 class=" my-auto font-semibold text-gray-900 ">Meds</h3>

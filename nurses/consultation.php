@@ -71,6 +71,106 @@ $("#sidepms1").removeClass("bg-gray-200");
 $(".consultationIcon").attr("fill", "#FFFFFF"); 
 $(".homeIcon").attr("fill", "#4d4d4d"); 
 
+
+
+const $tagertDiagnosisModal = document.getElementById('addDiagnosis');
+
+const optionsDiagnosisModal = {
+placement: 'center-center',
+backdrop: 'static',
+backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
+closable: true,
+onHide: () => {
+console.log('modal is hidden');
+},
+onShow: () => {
+console.log('modal is shown');
+
+},
+onToggle: () => {
+console.log('modal has been toggled');
+
+}
+};
+const modalDiagnosis = new Modal($tagertDiagnosisModal, optionsDiagnosisModal);
+
+
+
+
+    $(document).ready(function() {
+      $("#interventionSelect").change(function() {
+
+if ($(this).val() === "Clinic Rest Only") {
+  $("#clinicRestLabel").removeClass("hidden");
+  $("#clinicRestTime").removeClass("hidden");
+
+    // Remove the "hidden" class from the input with id "medLab"
+  
+    console.log("kasjhdkas");
+
+}
+else{
+  $("#clinicRestLabel").addClass("hidden");
+  $("#clinicRestTime").addClass("hidden");
+} 
+});
+
+
+  // Attach change event handler to remarksSelect
+  $("#ftwDiagnosiOption").change(function() {
+
+  
+      // Check if the selected option is the one you want
+      if ($(this).val() === "addDiagnosisButton") {
+          // Remove the "hidden" class from the input with id "medLab"
+          modalDiagnosis.toggle();
+          // console.log("kasjhdkas");
+
+      } 
+  });
+});
+
+function addDiagnosis(){
+var diagnosis = document.getElementById("diagnosis").value;
+console.log(diagnosis);
+
+var addDiagnosis = new XMLHttpRequest();
+addDiagnosis.open("POST", "addDiagnosis.php", true);
+addDiagnosis.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+addDiagnosis.onreadystatechange = function() {
+    if (addDiagnosis.readyState === XMLHttpRequest.DONE) {
+        if (addDiagnosis.status === 200) {
+            // Update was successful
+            console.log(addDiagnosis);
+
+        
+        } else {
+            console.log("Error: " + addDiagnosis.status);
+        }
+    }
+};
+
+// Construct the data to be updated
+var data = "addedDiagnosis=" + encodeURIComponent(diagnosis);
+
+var optionValue = $("#diagnosis").val();
+
+$("#ftwDiagnosiOption").append($('<option>', {
+                    value: optionValue,
+                    text: optionValue
+                }));
+// data += "&computername="+ encodeURIComponent(result);
+
+// Add any other parameters needed for the update
+
+addDiagnosis.send(data);
+
+
+}
+
+
+
+
 </script>
 </body>
 </html>

@@ -1,4 +1,6 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 if (isset($_GET['dcnsltn'])) {
   $dcnsltn = $_GET['dcnsltn'];
@@ -7,12 +9,34 @@ $dcnsltn = "not found";
 
 }
 
-$sqluserinfo = "SELECT consultation.*, employeespersonalinfo.Name, medicalcertificate.*
+if (isset($_GET['rf'])) {
+  $rfid = $_GET['rf'];
+} else {
+$rfid = "not found";
+
+}
+
+
+
+$sqluserinfo = "SELECT employeespersonalinfo.rfidNumber, employeespersonalinfo.*
+FROM queing
+INNER JOIN employeespersonalinfo ON employeespersonalinfo.rfidNumber = queing.rfidNumber where employeespersonalinfo.rfidNumber = '$rfid';";
+$resultInfo = mysqli_query($con, $sqluserinfo);
+while($userRow = mysqli_fetch_assoc($resultInfo)){
+  $department = $userRow['department'];
+  $name = $userRow['Name'];
+
+
+}
+
+
+
+$sqluserinfo = "SELECT consultation.*, employeespersonalinfo.Name, medicalcertificate.id as medcertID, medicalcertificate.rfid as medcertRfid, medicalcertificate.consultationId, medicalcertificate.date as medcertDate, medicalcertificate.treatedOn, medicalcertificate.dueTo, medicalcertificate.diagnosis as medcertDiag, medicalcertificate.remarks as medcertRemarks
 FROM consultation
 INNER JOIN employeespersonalinfo ON consultation.rfid = employeespersonalinfo.rfidNumber LEFT JOIN
                         medicalcertificate
                     ON
-                        consultation.id = medicalcertificate.consultationId WHERE consultation.id = '$dcnsltn';";
+                        consultation.id = medicalcertificate.consultationId WHERE consultation.id  = '$dcnsltn';";
 $resultInfo = mysqli_query($con, $sqluserinfo);
 while($userRow = mysqli_fetch_assoc($resultInfo)){
   $date = $userRow['date'];
@@ -47,6 +71,14 @@ while($userRow = mysqli_fetch_assoc($resultInfo)){
   $Name = $userRow['Name'];
   $consultationId = $userRow['consultationId'];
 
+  $ftwCategories =$userRow['ftwCategories'];
+  $ftwConfinement =$userRow['ftwConfinement'];
+  $ftwSLDateFrom =$userRow['ftwDateOfSickLeaveFrom'];
+  $ftwSLDateTo =$userRow['ftwDateOfSickLeaveTo'];
+  $ftwDays =$userRow['ftwDays'];
+  $ftwReasonOfAbsence =$userRow['ftwReasonOfAbsence'];
+
+
 
 }
 
@@ -54,14 +86,148 @@ while($userRow = mysqli_fetch_assoc($resultInfo)){
 if(isset($_POST['submitFromDoctorsConsultation'])){
 
   $remarksSelect2 = $_POST['remarksSelect2'];
-  $othersRemarks = $_POST['othersRemarks'];
-  $medLab = $_POST['medLab'];
-  $medDis = $_POST['medDis'];
-$cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
-$cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
 
-  $sql = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `othersRemarks` = '$othersRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab', WHERE `id` = '$dcnsltn'";
-  $results = mysqli_query($con,$sql);
+  if($remarksSelect2 == "FTW"){
+    $othersRemarks = $_POST['othersRemarks'];
+    $medLab = $_POST['medLab'];
+    $medDis = $_POST['medDis'];
+  $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
+  $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
+  
+    $sql = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `othersRemarks` = '$othersRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab', WHERE `id` = '$dcnsltn'";
+    $results = mysqli_query($con,$sql);
+
+
+
+    $cnsltnDate = $_POST['cnsltnDate'];
+$cnsltnTime = $_POST['cnsltnTime'];
+$cnsltnType = $_POST['cnsltnType'];
+
+$ftwCtnCategories = $_POST['ftwCtnCategories'];
+$ftwCtnConfinement = $_POST['ftwCtnConfinement'];
+$ftwCtnSLDateFrom = $_POST['ftwCtnSLDateFrom'];
+$ftwCtnSLDateTo = $_POST['ftwCtnSLDateTo'];
+$ftwCtnDays = $_POST['ftwCtnDays'];
+$ftwCtnAbsenceReason = $_POST['ftwCtnAbsenceReason'];
+
+
+
+$cnsltnCategories = $_POST['cnsltnCategories'];
+$cnsltnBuilding = $_POST['cnsltnBuilding'];
+// $cnsltnChiefComplaint = $_POST['cnsltnChiefComplaint'];
+$cnsltnDiagnosis = $_POST['cnsltnDiagnosis'];
+// $cnsltnIntervention = $_POST['cnsltnIntervention'];
+$cnsltnClinicRestFrom = $_POST['cnsltnClinicRestFrom'];
+$cnsltnClinicRestTo = $_POST['cnsltnClinicRestTo'];
+// $cnsltnMeds = $_POST['cnsltnMeds'];
+$cnsltnBloodChem = $_POST['cnsltnBloodChem'];
+$cnsltnCbc = $_POST['cnsltnCbc'];
+$cnsltnUrinalysis = $_POST['cnsltnUrinalysis'];
+$cnsltnFecalysis = $_POST['cnsltnFecalysis'];
+$cnsltnXray = $_POST['cnsltnXray'];
+$cnsltnOthersLab = $_POST['cnsltnOthersLab'];
+$cnsltnBp = $_POST['cnsltnBp'];
+$cnsltnTemp = $_POST['cnsltnTemp'];
+$cnsltn02Sat = $_POST['cnsltn02Sat'];
+$cnsltnPr = $_POST['cnsltnPr'];
+$cnsltnRr = $_POST['cnsltnRr'];
+
+$immediateEmail = $_POST['immediateEmail'];
+$immediateHead = $_POST['immediateHead'];
+
+
+    $sql1 = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `othersRemarks` = '$othersRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
+    $results1 = mysqli_query($con,$sql1);
+  
+
+$sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `othersRemarks`, `statusComplete`, `withPedingLab`) VALUES ('head','$department','$rfid','$cnsltnDate','$cnsltnTime','$cnsltnCategories','$cnsltnBuilding','$ftwCtnConfinement','$ftwCtnCategories','$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason','$cnsltnDiagnosis','$cnsltnBloodChem','$cnsltnCbc','$cnsltnUrinalysis','$cnsltnFecalysis','$cnsltnXray','$cnsltnOthersLab','$cnsltnBp','$cnsltnTemp','$cnsltn02Sat','$cnsltnPr','$cnsltnRr','$remarksSelect2','$othersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab')";
+$results = mysqli_query($con,$sql);
+
+
+if($results){
+
+
+  // $sql1 = "Select * FROM `user` WHERE `username` = '$assigned'";
+  // $result = mysqli_query($con, $sql1);
+  // while($list=mysqli_fetch_assoc($result))
+  // {
+  // $personnelEmail=$list["email"];
+  // $perseonnelName=$list["name"];
+
+  // }
+     $sql2 = "Select * FROM `sender`";
+      $result2 = mysqli_query($con, $sql2);
+      while($list=mysqli_fetch_assoc($result2))
+      {
+      $account=$list["email"];
+      $accountpass=$list["password"];
+
+        } 
+
+        
+
+  $subject ='Fit to Work';
+  $message = 'Hi '.$immediateHead.',<br> <br> Mr./Ms. '.$name.' is now fit to work. <br><br><br><br> This is a generated email. Please do not reply. <br><br> Electronic Health System';
+  
+
+   require '../vendor/autoload.php';
+
+   $mail = new PHPMailer(true);       
+  //  email the admin               
+   try {
+    //Server settings
+      $mail->isSMTP();                                      // Set mailer to use SMTP
+      $mail->Host = 'mail.glorylocal.com.ph';                       // Specify main and backup SMTP servers
+      $mail->SMTPAuth = true;                               // Enable SMTP authentication
+      $mail->Username = $account;     // Your Email/ Server Email
+      $mail->Password = $accountpass;                     // Your Password
+      $mail->SMTPOptions = array(
+          'ssl' => array(
+          'verify_peer' => false,
+          'verify_peer_name' => false,
+          'allow_self_signed' => true
+          )
+                                  );                         
+      $mail->SMTPSecure = 'none';                           
+      $mail->Port = 465;                                   
+
+      //Send Email
+      // $mail->setFrom('Helpdesk'); //eto ang mag front  notificationsys01@gmail.com
+      
+      //Recipients
+      $mail->setFrom('healthbenefits@glorylocal.com.ph', 'Health Benefits');
+      $mail->addAddress($immediateEmail);              
+      $mail->isHTML(true);                                  
+      $mail->Subject = $subject;
+      $mail->Body    = $message;
+      $mail->addCC('mis.dev@glory.com.ph');
+      $mail->send();
+
+            $_SESSION['message'] = 'Message has been sent';
+            echo "<script>alert('Email Sent') </script>";
+            echo "<script> location.href='index.php'; </script>";
+
+
+          // header("location: form.php");
+      } catch (Exception $e) {
+          $_SESSION['message'] = 'Message could not be sent. Mailer Error: '.$mail->ErrorInfo;
+      echo "<script>alert('Message could not be sent. Mailer Error.') </script>";
+
+      }
+}
+
+  }
+  else{
+    $othersRemarks = $_POST['othersRemarks'];
+    $medLab = $_POST['medLab'];
+    $medDis = $_POST['medDis'];
+  $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
+  $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
+  
+    $sql = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `othersRemarks` = '$othersRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
+    $results = mysqli_query($con,$sql);
+  
+  }
 
 }
 
@@ -78,23 +244,20 @@ $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
 
             <div class="content-center flex gap-4 col-span-2">
             <h3 class=" my-auto font-semibold text-gray-900 ">Date: </h3>
-            <div class="relative w-full">
-  <div class="w-1/6 absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-     <svg class="m-1 2xl:m-auto w-3 2xl:w-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-      </svg>
-  </div>
-  <input datepicker datepicker-autohide type="text" value="<?php echo $date; ?>" class="h-full pl-5 2xl:pl-12 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl text-[10px]:2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-0 2xl:p-2.5  " placeholder="Date">
-</div>
+            <input type="date" value="<?php $formattedDate = date("Y-m-d", strtotime($date));
+    echo $formattedDate; ?>" name="cnsltnDate" id="fromDate"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
             </div>
             <div class="flex gap-4 col-span-2">
             <h3 class="my-auto  font-semibold text-gray-900 ">Time: </h3>
-            <input type="text" id="currentTime" name="currentTime" value="<?php echo $time; ?>" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500">
+            <input type="text" id="cnsltnTime" name="cnsltnTime" value="<?php echo $time; ?>" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500">
             </div>
+
+            
+
             <div class="flex gap-4  col-span-2">
                 
             <h3 class="my-auto  font-semibold text-gray-900 ">Type: </h3>
-<select id="categoriesSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+<select id="categoriesSelect" name="cnsltnType" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
   <option <?php if ($type == "Initial"){ echo "selected" ;} ?> value="Initial">Initial</option>
   <option <?php if ($type == "Follow Up"){ echo "selected";} ?> value="Follow Up">Follow Up</option>
 
@@ -104,7 +267,7 @@ $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
             <div class="flex gap-4  col-span-2">
                 
                 <h3 class="my-auto  font-semibold text-gray-900 ">Building:</h3>
-    <select id="categoriesSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+    <select id="" name="cnsltnBuilding" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
       <option <?php if ($building == "GPI 1"){ echo "selected" ;} ?> value="GPI 1">GPI 1</option>
       <option <?php if ($building == "GPI 5"){ echo "selected" ;} ?> value="GPI 5">GPI 5</option>
       <option <?php if ($building == "GPI 7"){ echo "selected" ;} ?> value="GPI 7">GPI 7</option>
@@ -117,7 +280,7 @@ $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
                 <div class="flex gap-4  col-span-3">
                     
                     <h3 class="my-auto w-1/2 font-semibold text-gray-900 ">Medical Category:</h3>
-        <select id="categoriesSelect" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+        <select id=""  name="cnsltnCategories" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option <?php if ($categories == "common"){ echo "selected" ;} ?> value="common">Common</option>
           <option <?php if ($categories == "Long Term"){ echo "selected" ;} ?> value="Long Term">Long Term</option>
           <option <?php if ($categories == "Maternity"){ echo "selected" ;} ?> value="Maternity">Maternity</option>
@@ -130,11 +293,11 @@ $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
 
             <div class="flex gap-4 col-span-2">
             <h3 class=" my-auto w-full font-semibold text-gray-900 ">Chief Compliant: </h3>
-             <input type="text" value="<?php echo $chiefComplaint; ?>" id="base-input" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" value="<?php echo $chiefComplaint; ?>" id="" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="flex gap-4 col-span-2">
             <h3 class=" my-auto  font-semibold text-gray-900 ">Diagnosis: </h3>
-      <input type="text" value="<?php echo $diagnosis; ?>" id="base-input" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      <input type="text" value="<?php echo $diagnosis; ?>" name="cnsltnDiagnosis" id="" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
             </div>
             <div class="col-span-4 flex gap-4">
@@ -155,25 +318,21 @@ $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
             
 
             <div class="content-center flex gap-2 2xl:gap-4 col-span-3">
-            <div class="relative w-full">
-  <div class="w-1/2 2xl:w-1/6 absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-  <svg class="mx-2 w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-      </svg>
-  </div>
-  <input datepicker datepicker-autohide value="<?php echo $clinicRestFrom ?>" type="text" class="h-full pl-6 2xl:pl-12 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-0 2xl:p-2.5  " placeholder="From">
+            <div class="relative">
+
+<input type="date" value="<?php $formattedDate = date("Y-m-d", strtotime($clinicRestFrom));
+    echo $formattedDate; ?>" name="cnsltnClinicRestFrom" id="fromDate"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+<label for="fromDate" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">From</label>
 </div>
-<div class="relative w-full">
-  <div class="w-1/2 2xl:w-1/6 absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-  <svg class="mx-2 w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-      </svg>
-  </div>
-  <input datepicker datepicker-autohide value="<?php echo $clinicRestTo ?>" type="text" class="h-full pl-6 2xl:pl-12 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-0 2xl:p-2.5  " placeholder="To">
+<div class="relative">
+
+<input type="date" value="<?php $formattedDate = date("Y-m-d", strtotime($clinicRestTo));
+    echo $formattedDate; ?>" name="cnsltnClinicRestTo" id="toDate"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+<label for="toDate"  class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">To</label>
 </div>
 
 <h3 class=" my-auto font-semibold text-gray-900 ">Meds</h3>
-      <input type="text"  value="<?php echo $meds; ?>" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      <input type="text"  value="<?php echo $meds; ?>" id="" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
             </div>
 
@@ -182,42 +341,42 @@ $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Blood Chemistry: </h3>
-             <input type="text" value="<?php echo $bloodChemistry; ?>" id="base-input" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" name="cnsltnBloodChem" value="<?php echo $bloodChemistry; ?>" id="" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="col-span-1">
             <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">CBC: </h3>
-             <input type="text" value="<?php echo $cbc; ?>" id="base-input" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" name="cnsltnCbc" value="<?php echo $cbc; ?>" id="" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="col-span-1">
             <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Urinalysis: </h3>
-             <input type="text" value="<?php echo $urinalysis; ?>" id="base-input" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" name="cnsltnUrinalysis" value="<?php echo $urinalysis; ?>" id="" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="col-span-1">
             <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Fecalysis: </h3>
-             <input type="text" id="base-input" value="<?php echo $fecalysis; ?>" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" name="cnsltnFecalysis" id="" value="<?php echo $fecalysis; ?>" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="col-span-1">
             <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">X-ray: </h3>
-             <input type="text" id="base-input" value="<?php echo $xray; ?>" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" name="cnsltnXray" id="cnsltnXray" value="<?php echo $xray; ?>" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="col-span-1">
             <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
             </div>
             <div class="flex gap-4 col-span-3">
             <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Others: </h3>
-             <input type="text" id="base-input" value="<?php echo $others; ?>" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" name="cnsltnOthersLab" id="" value="<?php echo $others; ?>" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
 
             <div class="col-span-1">
@@ -228,23 +387,23 @@ $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
             <div class="grid grid-cols-3 gap-4">
                 <div class="flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">BP: </h3>
-             <input type="text" id="base-input" value="<?php echo $bp; ?>" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" id="" name="cnsltnBp" value="<?php echo $bp; ?>" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Temp: </h3>
-             <input type="text" id="base-input" value="<?php echo $temp; ?>" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" id="" name="cnsltnTemp" value="<?php echo $temp; ?>" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">02 Sat: </h3>
-             <input type="text" id="base-input" value="<?php echo $sat; ?>" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" id="" name="cnsltn02Sat" value="<?php echo $sat; ?>" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">PR: </h3>
-             <input type="text" id="base-input" value="<?php echo $pr; ?>" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" id="" name="cnsltnPr" value="<?php echo $pr; ?>" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">RR: </h3>
-             <input type="text" id="base-input" value="<?php echo $rr; ?>" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" id="" name="cnsltnRr" value="<?php echo $rr; ?>" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
              
             </div>
@@ -254,6 +413,7 @@ $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
             <div class="col-span-4 flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Remarks: </h3>
                 <select id="remarksSelect2" name="remarksSelect2" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+  <option selected disabled >Select</option>
   <option <?php if ($remarks == "FTW"){ echo "selected" ;} ?> value="FTW">Fit To Work</option>
   <option <?php if ($remarks == "Late FTW"){ echo "selected" ;} ?> value="Late FTW">Late FTW</option>
   <option <?php if ($remarks == "No Medical Certificate"){ echo "selected" ;} ?>value="No Medical Certificate">No Medical Certificate</option>
@@ -265,27 +425,114 @@ $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
   <input type="text" name="medDis"   placeholder="Medication Dispense" id="medDis" class="hidden  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
                 </div>
+
+
+
+
+
+
+
+
+
+<div  id="ftwdiv1" class="hidden flex gap-4  col-span-4">
+<hr style="width:100%; height: 2px;  margin-bottom: 0px;     background-color: #969696; ">
+</div>
+
+                <div id="ftwdiv2" class="hidden flex gap-4  col-span-2">
+                
+                <h3 class="my-auto  font-semibold text-gray-900 ">Categories: </h3>
+    <select id="categoriesSelect" name="ftwCtnCategories" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+      <option <?php if ($ftwCategories == "counted"){ echo "selected" ;} ?> value="counted">Counted</option>
+      <option <?php if ($ftwCategories == "notCounted"){ echo "selected" ;} ?> value="notCounted">Not Counted</option>
+    
+    </select>
+    
+                </div>
+                <div id="ftwdiv3" class="hidden flex gap-4  col-span-2">
+                
+                <h3 class="my-auto  font-semibold text-gray-900 ">Confinement Type: </h3>
+    <select id="categoriesSelect" name="ftwCtnConfinement" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+      <option <?php if ($ftwConfinement == "Hospital Confinement"){ echo "selected" ;} ?> value="Hospital Confinement">Hospital Confinement</option>
+      <option <?php if ($ftwConfinement == "Home Confinement"){ echo "selected" ;} ?> value="Home Confinement">Home Confinement</option>
+    
+    </select>
+    
+                </div>
+
+                <div id="ftwdiv4" class="hidden content-centerhidden flex gap-4 col-span-1">
+            <h3 class="w-full my-auto font-semibold text-gray-900 ">Date of Sick Leave</h3>
+
+            </div>
+            
+
+            <div id="ftwdiv5" class=" content-center hidden flex gap-2 2xl:gap-4 col-span-3">
+            <input type="date" name="ftwCtnSLDateFrom" value="<?php echo $ftwSLDateFrom; ?>"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+
+            <input type="date" name="ftwCtnSLDateTo" value="<?php echo $ftwSLDateTo; ?>"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+
+
+<h3 class=" my-auto font-semibold text-gray-900 ">Days</h3>
+      <input type="number"   name="ftwCtnDays"  value="<?php echo $ftwDays;?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+
+            </div>
+            <div id="ftwdiv6" class="hidden flex gap-4 col-span-4">
+            <h3 class=" my-auto  font-semibold text-gray-900 ">Reason of Absence: </h3>
+             <input type="text" value="<?php echo $ftwReasonOfAbsence;?>" name="ftwCtnAbsenceReason" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+            </div>
+            <div id="ftwdiv7" class="hidden flex gap-4  col-span-2">
+                
+                <h3 class="my-auto  font-semibold text-gray-900 ">Immediate Head: </h3>
+    <select id="immediateHead" name="immediateHead" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+    <option selected disabled value="">Please select</option>
+   <?php
+         $sql1 = "Select * FROM `emaillist` WHERE `department` = '$department'";
+         $result = mysqli_query($con, $sql1);
+         while($list=mysqli_fetch_assoc($result))
+         {
+         $immediateName=$list["name"];
+         $email=$list["email"];
+
+         echo "<option value='$immediateName' data-email='$email' >$immediateName</option>";
+        
+         }
+      ?>
+    
+    </select>
+    
+                </div>
+                <div id="ftwdiv8" class="hidden flex gap-4  col-span-2">
+                    
+                    <h3 class="my-auto  font-semibold text-gray-900 "> Email: </h3>
+             <input type="text" id="immediateEmail"  name="immediateEmail" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        
+                    </div>
+
+            <div id="ftwdiv9" class="hidden flex gap-4  col-span-4">
+<hr style="width:100%; height: 2px;  margin-bottom: 0px;     background-color: #969696;">
+</div>
+
+
+
+
+
                 <div class="col-span-4 flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Others: </h3>
-             <input type="text" value="<?php echo $othersRemarks;?>" name="othersRemarks" id="base-input" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" value="<?php echo $othersRemarks;?>" name="othersRemarks" id="" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="col-span-4 flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Final Dx: </h3>
-             <input type="text" name="finalDx" value="<?php echo $finalDx;?>"  id="base-input" class="  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" name="finalDx" value="<?php echo $finalDx;?>"  id="" class="  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="col-span-4 flex gap-4">
-                <h3 class=" my-auto  font-semibold text-gray-900 ">Medical Certificate: </h3>
+                
             
                 <?php 
                 if($consultationId !="")
                 {
                 
-                  echo "<a href='../medicalCertificate.php?rf=$rfid&mdcrtid=$consultationId' target='_blank'  class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>View Medcert</a>";
+                  echo "<h3 class='my-auto  font-semibold text-gray-900 '>Medical Certificate: </h3> <a href='../medicalCertificate.php?rf=$rfid&mdcrtid=$consultationId' target='_blank'  class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>View Medcert</a>";
                 } else{
-                  ?> <button data-modal-target="medcert" data-modal-toggle="medcert" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                  Generate
-                </button>
-
+                  ?> 
                 <?php
                 }?>
                 

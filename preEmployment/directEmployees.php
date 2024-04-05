@@ -90,7 +90,7 @@ $resultInfo = mysqli_query($con, $addEmployeeGpi);
         <a type="button" data-modal-target="importDirectEmployees" data-modal-toggle="importDirectEmployees" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Import Data</a>
       </li>
       <li>
-        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Export Template</a>
+        <a type="button" onclick="exportTemplate()" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Export Template</a>
       </li>
  
     </ul>
@@ -349,4 +349,102 @@ $resultInfo = mysqli_query($con, $addEmployeeGpi);
 document.getElementById("employer").addEventListener("keydown", function(event) {
     event.preventDefault(); // Prevent typing into the input field
 });
+
+
+function exportTemplate (){
+
+  var rows =[];
+
+           column1 = 'rfidNumber';
+           column2 = 'idNumber';
+           column3 = 'Name';
+           column4 = 'age';
+           column5 = 'sex';
+           column6 = 'address';
+           column7 = 'civilStatus';
+           column8 = 'employer';
+           column9 = 'department';
+           column10 = 'secDept';
+           column11 = 'position';
+           column12 = 'dateHired';
+
+           rows.push(
+               [
+                   column1,
+                   column2,
+                   column3,
+                   column4,
+                   column5,
+                   column6,
+                   column7,
+                   column8,
+                   column9,
+                   column10,
+                   column11,
+                   column12,       
+               ]
+           );
+           
+  for(var i=0,row; i < 1;i++){
+           column1 = "Change format to 'Text'";
+           column2 = '';
+           column3 = '';
+
+           column4 = '';
+           column5 = '';
+           column6 = '';
+           column7 = '';
+           column8 = 'GPI';
+           column9 = '';
+           column10 = '';
+           column11 = '';
+           column12 = '';
+
+
+
+
+           
+           rows.push(
+               [
+                   column1,
+                   column2,
+                   column3,
+                   column4,
+                   column5,
+                   column6,
+                   column7,
+                   column8,
+                   column9,
+                   column10,
+                   column11,
+                   column12,
+
+
+           
+               ]
+           );
+
+  }
+  csvContent = "data:text/csv;charset=utf-8,";
+        /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
+        rows.forEach(function(rowArray){
+          row = rowArray.join('","');
+          row = '"' + row + '"';
+          csvContent += row + "\r\n";
+      });
+ 
+       /* create a hidden <a> DOM node and set its download attribute */
+       var encodedUri = encodeURI(csvContent);
+       var link = document.createElement("a");
+       link.setAttribute("href", encodedUri);
+       link.setAttribute("download", "GPI Employees Template.csv");
+       document.body.appendChild(link);
+        /* download the data file named "Stock_Price_Report.csv" */
+       link.click();
+
+
+    
+
+}
+
 </script>

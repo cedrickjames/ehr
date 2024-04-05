@@ -49,7 +49,7 @@ if($num_rowsQue ==0){
 <section class="static h-full ">
   <nav class="z-20 relative">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-    <a href="homepageclinic.php" class="flex items-center space-x-3 rtl:space-x-reverse">
+    <a href="../nurses" class="flex items-center space-x-3 rtl:space-x-reverse">
         <img src="../src/Logo 1.png" class="h-8" alt="Clinic Logo" />
         <span class="self-center text-2xl font-semibold whitespace-nowrap  text-[#193F9F]">GPI Clinic</span>
     </a>

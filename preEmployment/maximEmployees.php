@@ -90,7 +90,7 @@ $resultInfo = mysqli_query($con, $addEmployeeGpi);
         <a type="button" data-modal-target="importDirectEmployees" data-modal-toggle="importDirectEmployees" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Import Data</a>
       </li>
       <li>
-        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Export Template</a>
+        <a type="button" onclick="exportTemplate()" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Export Template</a>
       </li>
  
     </ul>
@@ -193,7 +193,7 @@ $resultInfo = mysqli_query($con, $addEmployeeGpi);
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-2 border-b rounded-t dark:border-gray-600">
                 <h3 class=" font-semibold text-gray-900 dark:text-white">
-                    Add New Direct Employee
+                    Add New Maxim Employee
                 </h3>
                 <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="addDirectEmployees">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -310,7 +310,7 @@ $resultInfo = mysqli_query($con, $addEmployeeGpi);
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-2 border-b rounded-t dark:border-gray-600">
                 <h3 class=" font-semibold text-gray-900 dark:text-white">
-                    Import Direct Employees
+                    Import Maxim Employees
                 </h3>
                 <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="importDirectEmployees">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -333,7 +333,7 @@ $resultInfo = mysqli_query($con, $addEmployeeGpi);
                 </div>
                 <button type="submit" name="addNewEmployeesImport"class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                    Import Direct Employees
+                    Import Maxim Employees
                 </button>
             </form>
         </div>
@@ -349,4 +349,102 @@ $resultInfo = mysqli_query($con, $addEmployeeGpi);
 document.getElementById("employer").addEventListener("keydown", function(event) {
     event.preventDefault(); // Prevent typing into the input field
 });
+
+
+function exportTemplate (){
+
+  var rows =[];
+
+           column1 = 'rfidNumber';
+           column2 = 'idNumber';
+           column3 = 'Name';
+           column4 = 'age';
+           column5 = 'sex';
+           column6 = 'address';
+           column7 = 'civilStatus';
+           column8 = 'employer';
+           column9 = 'department';
+           column10 = 'secDept';
+           column11 = 'position';
+           column12 = 'dateHired';
+
+           rows.push(
+               [
+                   column1,
+                   column2,
+                   column3,
+                   column4,
+                   column5,
+                   column6,
+                   column7,
+                   column8,
+                   column9,
+                   column10,
+                   column11,
+                   column12,       
+               ]
+           );
+           
+  for(var i=0,row; i < 1;i++){
+           column1 = "Change format to 'Text'";
+           column2 = '';
+           column3 = '';
+
+           column4 = '';
+           column5 = '';
+           column6 = '';
+           column7 = '';
+           column8 = 'Maxim';
+           column9 = '';
+           column10 = '';
+           column11 = '';
+           column12 = '';
+
+
+
+
+           
+           rows.push(
+               [
+                   column1,
+                   column2,
+                   column3,
+                   column4,
+                   column5,
+                   column6,
+                   column7,
+                   column8,
+                   column9,
+                   column10,
+                   column11,
+                   column12,
+
+
+           
+               ]
+           );
+
+  }
+  csvContent = "data:text/csv;charset=utf-8,";
+        /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
+        rows.forEach(function(rowArray){
+          row = rowArray.join('","');
+          row = '"' + row + '"';
+          csvContent += row + "\r\n";
+      });
+ 
+       /* create a hidden <a> DOM node and set its download attribute */
+       var encodedUri = encodeURI(csvContent);
+       var link = document.createElement("a");
+       link.setAttribute("href", encodedUri);
+       link.setAttribute("download", "Maxim Employees Template.csv");
+       document.body.appendChild(link);
+        /* download the data file named "Stock_Price_Report.csv" */
+       link.click();
+
+
+    
+
+}
+
 </script>
