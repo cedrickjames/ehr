@@ -100,6 +100,35 @@ $(document).ready(function() {
 
 
 $(document).ready(function() {
+  var selectedRemarksValue = $('#remarksSelect2').find('option:selected').val();
+    console.log(selectedRemarksValue);
+    if(selectedRemarksValue == 'FTW'){
+      
+      $('#ftwdiv1').removeClass('hidden');
+      $('#ftwdiv2').removeClass('hidden');
+      $('#ftwdiv3').removeClass('hidden');
+      $('#ftwdiv4').removeClass('hidden');
+      $('#ftwdiv5').removeClass('hidden');
+      $('#ftwdiv6').removeClass('hidden');
+      $('#ftwdiv7').removeClass('hidden');
+      $('#ftwdiv8').removeClass('hidden');
+      $('#ftwdiv9').removeClass('hidden');
+
+
+
+    }
+    else{
+      $('#ftwdiv1').addClass('hidden');
+      $('#ftwdiv2').addClass('hidden');
+      $('#ftwdiv3').addClass('hidden');
+      $('#ftwdiv4').addClass('hidden');
+      $('#ftwdiv5').addClass('hidden');
+      $('#ftwdiv6').addClass('hidden');
+      $('#ftwdiv7').addClass('hidden');
+      $('#ftwdiv8').addClass('hidden');
+      $('#ftwdiv9').addClass('hidden');
+
+    }
         $('#remarksSelect2').change(function() {
           var selectedRemarksValue = $(this).find('option:selected').val();
     console.log(selectedRemarksValue);

@@ -85,7 +85,7 @@ while($userRow = mysqli_fetch_assoc($resultInfo)){
 
 if(isset($_POST['submitFromDoctorsConsultation'])){
 
-  $remarksSelect2 = $_POST['remarksSelect2'];
+  $remarksSelect2 = $_POST['remarksSelect3'];
 
   if($remarksSelect2 == "FTW"){
     $othersRemarks = $_POST['othersRemarks'];
@@ -167,7 +167,7 @@ if($results){
         
 
   $subject ='Fit to Work';
-  $message = 'Hi '.$immediateHead.',<br> <br> Mr./Ms. '.$name.' is now fit to work. <br><br><br><br> This is a generated email. Please do not reply. <br><br> Electronic Health System';
+  $message = 'Hi '.$immediateHead.',<br> <br> Mr./Ms. '.$name.' is now fit to work. <br><br> Details <br>Name: '.$name.'<br>Sect/Dept: '.$secDept.' <br>Reason of Absence: '.$ftwCtnAbsenceReason.'<br>Date of Absence: '.$ftwCtnSLDateFrom.' - '.$ftwCtnSLDateTo.'<br>No. of Day/s: '.$ftwCtnDays.' <br>Remarks: '.$remarks.'<br><br><br><br>  This is a generated email. Please do not reply. <br><br> Electronic Health System';
   
 
    require '../vendor/autoload.php';
@@ -412,8 +412,8 @@ if($results){
             </div>
             <div class="col-span-4 flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Remarks: </h3>
-                <select id="remarksSelect2" name="remarksSelect2" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-  <option selected disabled >Select</option>
+                <select id="remarksSelect2" name="remarksSelect3" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+  <option selected value="">Select</option>
   <option <?php if ($remarks == "FTW"){ echo "selected" ;} ?> value="FTW">Fit To Work</option>
   <option <?php if ($remarks == "Late FTW"){ echo "selected" ;} ?> value="Late FTW">Late FTW</option>
   <option <?php if ($remarks == "No Medical Certificate"){ echo "selected" ;} ?>value="No Medical Certificate">No Medical Certificate</option>
@@ -521,7 +521,7 @@ if($results){
                 </div>
                 <div class="col-span-4 flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Final Dx: </h3>
-             <input type="text" name="finalDx" value="<?php echo $finalDx;?>"  id="" class="  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" name="finalDx" value="<?php echo $finalDx;?>"  id="" class="  bg-gray-50 border border-gray-300 text-gray-900 w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="col-span-4 flex gap-4">
                 
@@ -540,17 +540,17 @@ if($results){
                 <div class=" col-span-4 flex gap-4">
                 
                 <h3 class="my-auto mb-4 font-semibold text-gray-900 ">Status</h3>
-                <ul class="col-span-2 items-center w-full text-[10px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  ">
+                <ul class="col-span-2 items-center w-full text-[10px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  " require>
                     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
                         <div class="gap-2 flex items-center ps-3">
-                            <input id="vue-checkbox-list" type="checkbox" name="cnsltnCompleted" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                            <input id="vue-checkbox-list" checked type="radio" name="cnsltnCompleted" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                             <label for="vue-checkbox-list" class="w-full py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">Completed</label>
                         </div>
                     </li>
                 
                     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
                         <div class="gap-2 flex items-center ps-3">
-                            <input id="vue-checkbox-list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                            <input id="vue-checkbox-list" type="radio" value="" name="cnsltnCompleted" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                             <label for="vue-checkbox-list" class=" py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">With Pending Lab</label>
                             <div class="relative z-0 group">
                       <input type="text" name="cnsltnWithPendingLab" id="floating_email" class="block py-2.5 px-0  text-[10px] 2xl:text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
@@ -562,7 +562,9 @@ if($results){
                 
                 </ul>
                 
+               
                                 </div>
+
                 <div class="col-span-4 gap-4 justify-center flex h-14">
                 <button type="submit" name="submitFromDoctorsConsultation" class="text-center inline-flex items-center text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[9px] 2xl:text-xl px-5 py-1 text-center me-2 mb-2">
                 <?php require_once '../src/navBarIcons/proceed.svg' ?>  

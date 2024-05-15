@@ -70,6 +70,41 @@ $(".medcertIcon").attr("fill", "#FFFFFF");
 $(".proceedIcon").attr("fill", "#FFFFFF"); 
 
 
+
+
+$(document).ready(function(){
+   
+        var selectedValue = $("#remarksSelect").val();
+        console.log(selectedValue)
+        if(selectedValue == "Clinic Rest Only" || selectedValue == "Medication, Clinic Rest and Medical Consultation") {
+            $('#clinicrest').removeClass('hidden');     
+        } else {
+          $('#meds').removeClass('col-span-3');
+            $('#meds').addClass('col-span-4');
+            $('#fromtotime').addClass('hidden');
+            $('#clinicrest').addClass('hidden');
+            $('#meds').removeClass('col-span-3');
+
+        }
+        $('#remarksSelect').change(function(){
+          var selectedValue = $("#remarksSelect").val();
+        console.log(selectedValue)
+        if(selectedValue == "Clinic Rest Only" || selectedValue == "Medication, Clinic Rest and Medical Consultation") {
+            $('#clinicrest').removeClass('hidden');
+            $('#meds').removeClass('col-span-2');
+            $('#meds').removeClass('col-span-4');
+
+            $('#meds').addClass('col-span-2');
+            
+        } else {
+          $('#meds').removeClass('col-span-2');
+            $('#meds').addClass('col-span-4');
+            $('#clinicrest').addClass('hidden');
+
+        }
+        });
+});
+
 </script>
 </body>
 </html>

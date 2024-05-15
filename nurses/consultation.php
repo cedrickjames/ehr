@@ -23,8 +23,9 @@ if(!isset($_SESSION['connected'])){
   <link rel="stylesheet" href="../fontawesome-free-6.2.0-web/css/all.min.css">
   <link rel="stylesheet" href="../node_modules/DataTables/datatables.min.css">
   <script src="../node_modules/flowbite/dist/datepicker.js"></script>
-
+  <link href="../node_modules/select2/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="../node_modules/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="../styles.css"/>
 
 </head>
 <body  class="bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
@@ -55,6 +56,7 @@ if(!isset($_SESSION['connected'])){
 <script type="text/javascript" src="../node_modules/DataTables/datatables.min.js"></script>
     <script type="text/javascript" src="../node_modules/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js"></script>
     
+    <script src="../node_modules/select2/dist/js/select2.min.js"></script>
 
     <script type="text/javascript" src="index.js"></script>
 <script>
@@ -70,6 +72,27 @@ $("#sideMyRequest1").removeClass("bg-gray-200");
 $("#sidepms1").removeClass("bg-gray-200");
 $(".consultationIcon").attr("fill", "#FFFFFF"); 
 $(".homeIcon").attr("fill", "#4d4d4d"); 
+
+
+$(".js-diagnosis").select2({
+  tags: true
+});
+
+$(".js-meds").select2({
+  tags: true
+});
+
+
+function addSelectedValue(value, qty) {
+  console.log(value);
+    $('#cnsltnMeds').append($('<option>', {
+      value: value + "("+qty+")",
+      text: value + "("+qty+")",
+      selected: true
+    }));
+  }
+
+
 
 
 
@@ -100,18 +123,35 @@ const modalDiagnosis = new Modal($tagertDiagnosisModal, optionsDiagnosisModal);
     $(document).ready(function() {
       $("#interventionSelect").change(function() {
 
-if ($(this).val() === "Clinic Rest Only") {
-  $("#clinicRestLabel").removeClass("hidden");
+if ($(this).val() === "Clinic Rest Only" || $(this).val() === "Medication, Clinic Rest and Medical Consultation") {
+
+  if($(this).val() === "Clinic Rest Only"){
+    $("#clinicRestLabel").removeClass("hidden");
   $("#clinicRestTime").removeClass("hidden");
 
-    // Remove the "hidden" class from the input with id "medLab"
+  $("#medsqtydiv").addClass("hidden");
+  $("#medsdiv").addClass("hidden");
+
+
+
   
-    console.log("kasjhdkas");
+
+  }else{
+    $("#clinicRestLabel").removeClass("hidden");
+  $("#clinicRestTime").removeClass("hidden");
+  $("#medsqtydiv").removeClass("hidden");
+  $("#medsdiv").removeClass("hidden");
+  }
+
+    // Remove the "hidden" class from the input with id "medLab"
+
 
 }
 else{
   $("#clinicRestLabel").addClass("hidden");
   $("#clinicRestTime").addClass("hidden");
+  $("#medsqtydiv").removeClass("hidden");
+  $("#medsdiv").removeClass("hidden");
 } 
 });
 
@@ -169,6 +209,18 @@ addDiagnosis.send(data);
 }
 
 
+$(document).ready(function() {
+
+    $('#addmedsbtn').click(function() {
+
+      
+    });
+
+
+    
+
+
+});
 
 
 </script>

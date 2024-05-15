@@ -6,3 +6,28 @@
 .animate-spin-slow {
   animation: spin-slow 15s linear infinite; /* Adjust the duration for the desired speed */
 }
+
+.select2 {
+  width: 100% !important;
+  height: 90% !important;
+}
+
+.select2-selection {
+  width: 100% !important;
+  height: 90% !important;
+}
+.selection {
+  width: 100% !important;
+  height: 90% !important;
+  display: block;
+}
+.select2-selection__rendered{
+  width: 100% !important;
+  height: 90% !important;
+}
+#select2-cnsltnMeds-results{
+  display: none;
+}
+.select2-results__options{
+font-size: 10px;
+}

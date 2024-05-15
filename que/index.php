@@ -132,7 +132,7 @@ if($num_rowsQue ==0){
                     LEFT JOIN
                         users
                     ON
-                        queing.nurseAssisting = users.idNumber where queing.status = 'processing' ORDER BY
+                        queing.nurseAssisting = users.idNumber where queing.status = 'processing' OR queing.status = 'waiting' ORDER BY
     queing.id desc; 
                     ";
         $result = mysqli_query($con,$sql);

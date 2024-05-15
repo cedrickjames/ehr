@@ -34,6 +34,8 @@ while($userRow = mysqli_fetch_assoc($resultInfo)){
   $clinicRestFrom = $userRow['clinicRestFrom'];
   $clinicRestTo = $userRow['clinicRestTo'];
   $meds = $userRow['meds'];
+  $medsQty = $userRow['medsQty'];
+  
 
   $bloodChemistry = $userRow['bloodChemistry'];  
   $cbc = $userRow['cbc'];  
@@ -154,33 +156,39 @@ if(isset($_POST['generateMedCert'])){
                 <option <?php if ($intervention == "Medical Consultation"){ echo "selected" ;} ?> value="Medical Consultation">Medical Consultation</option>
                 <option <?php if ($intervention == "Medication and Medical Consultation"){ echo "selected" ;} ?> value="Medication and Medical Consultation">Medication and Medical Consultation</option>
                 <option <?php if ($intervention == "Medication, Clinic Rest and Medical Consultation"){ echo "selected" ;} ?> value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
-
+                <option <?php if ($intervention == "Clinic Rest Only"){ echo "selected" ;} ?>  value="Clinic Rest Only">Clinic Rest Only</option>
 
 </select>
                 </div>
-                <div class="content-center flex gap-4 col-span-1">
-            <h3 class="w-full my-auto font-semibold text-gray-900 ">Clinic Rest:</h3>
-
-            </div>
-            
-
-            <div class="content-center flex gap-2 2xl:gap-4 col-span-3">
+                <div id="clinicrest" class="hidden content-center flex gap-4 col-span-2">
+            <h3 class=" my-auto font-semibold text-gray-900  ">Clinic Rest:</h3>
+           
             <div class="relative">
 
-<input type="date" value="<?php $formattedDate = date("Y-m-d", strtotime($clinicRestFrom));
-    echo $formattedDate; ?>" name="cnsltnClinicRestFrom" id="fromDate"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+<input type="time" value="<?php echo $clinicRestFrom; ?>" name="cnsltnClinicRestFrom" id="fromDate"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
 <label for="fromDate" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">From</label>
 </div>
 <div class="relative">
 
-<input type="date" value="<?php $formattedDate = date("Y-m-d", strtotime($clinicRestTo));
-    echo $formattedDate; ?>" name="cnsltnClinicRestTo" id="toDate"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+<input type="time" value="<?php echo $clinicRestTo; ?>" name="cnsltnClinicRestTo" id="toDate"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
 <label for="toDate"  class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">To</label>
 </div>
+            </div>
+            
 
-<h3 class=" my-auto font-semibold text-gray-900 ">Meds</h3>
-      <input type="text"  value="<?php echo $meds; ?>" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+            <div id="meds" class="content-center flex gap-2 2xl:gap-4 col-span-2">
+            <div class="relative">
+      <input type="text"  value="<?php echo $meds; ?>" id="medsid" class="bg-gray-50 border border-gray-300 text-gray-900   rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      <label for="medsid" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Meds</label>
+      </div>
+      <div class="flex gap-4  col-span-2">
+      <div class="relative">
 
+          <input type="number" id="medsqtyid" value="<?php echo $medsQty; ?>"  name="cnsltnMedsQuantity" class="bg-gray-50 border border-gray-300 text-gray-900   rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      <label for="medsqtyid" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Quantity</label>
+            
+        </div>
+                    </div>
             </div>
 
             <div class="col-span-1">
@@ -343,7 +351,9 @@ if(isset($_POST['generateMedCert'])){
                 
                     <div class="col-span-2">
                         <label for="treatedOn" class="block mb-2 text-[12px] font-medium text-gray-900 dark:text-white">Was examined and treated on</label>
-                        <textarea id="treatedOn" name="treatedOn" rows="1" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" ></textarea>                    
+                        <!-- <textarea id="treatedOn" name="treatedOn" rows="1" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" ></textarea>                     -->
+                        <input type="date" name="treatedOn" value="<?php echo $currentDate; ?>" id="medcertdate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+
                     </div>
                     <div class="col-span-2">
                         <label for="dueTo" class="block mb-2 text-[12px] font-medium text-gray-900 dark:text-white">due to</label>

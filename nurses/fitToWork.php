@@ -68,6 +68,8 @@ if(isset($_POST['proceedToConsultation'])){
   <link rel="stylesheet" href="../fontawesome-free-6.2.0-web/css/all.min.css">
   <link rel="stylesheet" href="../node_modules/DataTables/datatables.min.css">
   <script src="../node_modules/flowbite/dist/datepicker.js"></script>
+  <link href="../node_modules/select2/dist/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="../styles.css"/>
 
 <link rel="stylesheet" type="text/css" href="../node_modules/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css"/>
 
@@ -100,7 +102,7 @@ if(isset($_POST['proceedToConsultation'])){
 
 <script type="text/javascript" src="../node_modules/DataTables/datatables.min.js"></script>
     <script type="text/javascript" src="../node_modules/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js"></script>
-    
+    <script src="../node_modules/select2/dist/js/select2.min.js"></script>
 
     <script type="text/javascript" src="index.js"></script>
 <script>
@@ -116,6 +118,27 @@ $("#sideMyRequest1").removeClass("bg-gray-200");
 $("#sidepms1").removeClass("bg-gray-200");
 $(".ftwIcon").attr("fill", "#FFFFFF"); 
 $(".homeIcon").attr("fill", "#4d4d4d"); 
+
+
+$(".js-diagnosis").select2({
+  tags: true
+});
+
+
+
+$(".js-meds").select2({
+  tags: true
+});
+
+
+function addSelectedValue(value, qty) {
+  console.log(value);
+    $('#cnsltnMeds').append($('<option>', {
+      value: value + "("+qty+")",
+      text: value + "("+qty+")",
+      selected: true
+    }));
+  }
 
 
 $(document).ready(function() {

@@ -16,6 +16,7 @@ $resultInfo = mysqli_query($con, $sqluserinfo);
 while($userRow = mysqli_fetch_assoc($resultInfo)){
   $department = $userRow['department'];
   $name = $userRow['Name'];
+  $secDept = $userRow['secDept'];
 
 
 }
@@ -87,7 +88,7 @@ $immediateHead = $_POST['immediateHead'];
           
 
     $subject ='Fit to Work';
-    $message = 'Hi '.$immediateHead.',<br> <br> Mr./Ms. '.$name.' is now fit to work. <br><br><br><br> This is a generated email. Please do not reply. <br><br> Electronic Health System';
+    $message = 'Hi '.$immediateHead.',<br> <br> Mr./Ms. '.$name.' is now fit to work. <br><br> Details <br>Name: '.$name.'<br>Sect/Dept: '.$secDept.' <br>Reason of Absence: '.$ftwAbsenceReason.'<br>Date of Absence: '.$ftwSLDateFrom.' - '.$ftwSLDateTo.'<br>No. of Day/s: '.$ftwDays.' <br>Remarks: '.$ftwRemarks.'<br>Others: '.$ftwOthersRemarks.'<br><br><br><br> This is a generated email. Please do not reply. <br><br> Electronic Health System';
     
 
      require '../vendor/autoload.php';
@@ -151,18 +152,18 @@ $immediateHead = $_POST['immediateHead'];
 </div>
 <div class="text-[9px] 2xl:text-lg  rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full w-full p-4 ">
 
-            <div class="content-center flex gap-4 col-span-2">
-            <h3 class=" my-auto font-semibold text-gray-900 ">Date: </h3>
+            <div class="content-center  col-span-2">
+            <label class="block  my-auto font-semibold text-gray-900 ">Date: </label>
             <input type="date" name="ftwDate" value="<?php echo $currentDate; ?>" id="ftwDate" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
 
             </div>
-            <div class="flex gap-4 col-span-2">
-            <h3 class="my-auto  font-semibold text-gray-900 ">Time: </h3>
+            <div class=" col-span-2">
+            <label class="block my-auto  font-semibold text-gray-900 ">Time: </label>
             <input type="text" id="currentTime" name="ftwTime" value="<?php echo date('h:i A'); ?>" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500">
             </div>
-            <div class="flex gap-4  col-span-2">
+            <div class="  col-span-2">
                 
-            <h3 class="my-auto  font-semibold text-gray-900 ">Categories: </h3>
+            <label class="block my-auto  font-semibold text-gray-900 ">Categories: </label>
 <select id="categoriesSelect" name="ftwCategories" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
   <option selected value="counted">Counted</option>
   <option value="notCounted">Not Counted</option>
@@ -170,9 +171,9 @@ $immediateHead = $_POST['immediateHead'];
 </select>
 
             </div>
-            <div class="flex gap-4  col-span-2">
+            <div class="  col-span-2">
                 
-                <h3 class="my-auto  font-semibold text-gray-900 ">Building:</h3>
+                <label class="block my-auto  font-semibold text-gray-900 ">Building:</label>
     <select id="buildingSelect" name="ftwBuilding" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
       <option selected value="GPI1">GPI 1</option>
       <option value="GPI 5">GPI 5</option>
@@ -182,9 +183,9 @@ $immediateHead = $_POST['immediateHead'];
     
                 </div>
 
-                <div class="flex gap-4  col-span-2">
+                <div class="  col-span-2">
                 
-                <h3 class="my-auto  font-semibold text-gray-900 ">Confinement Type: </h3>
+                <label class="block my-auto  font-semibold text-gray-900 ">Confinement Type: </label>
     <select id="categoriesSelect" name="ftwConfinement" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
       <option selected value="Hospital Confinement">Hospital Confinement</option>
       <option value="Home Confinement">Home Confinement</option>
@@ -192,9 +193,9 @@ $immediateHead = $_POST['immediateHead'];
     </select>
     
                 </div>
-                <div class="flex gap-4  col-span-2">
+                <div class="  col-span-2">
                     
-                    <h3 class="my-auto  font-semibold text-gray-900 ">Medical Category:</h3>
+                    <label class="block my-auto  font-semibold text-gray-900 ">Medical Category:</label>
         <select id="categoriesSelect" name="ftwMedCategory" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option selected value="Common">Common</option>
           <option value="Long Term">Long Term</option>
@@ -203,37 +204,39 @@ $immediateHead = $_POST['immediateHead'];
         </select>
         
                     </div>
-                    <div class="content-center flex gap-4 col-span-1">
-            <h3 class="w-full my-auto font-semibold text-gray-900 ">Date of Sick Leave</h3>
-
-            </div>
-            
-
-            <div class="content-center flex gap-2 2xl:gap-4 col-span-3">
-              <div class="relative">
-              <input type="date" name="ftwSLDateFrom" id="ftwSLDateFrom" value="<?php echo $currentDate; ?>"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
-            <label for="ftwSLDateFrom" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">From</label>
+            <div class="content-center  col-span-2">
+            <label class="block w-full my-auto font-semibold text-gray-900 ">Date of Sick Leave</label>
+              <div class="flex gap-2 w-full">
+                <div class="relative w-1/2">
+                   <input type="date" name="ftwSLDateFrom" id="ftwSLDateFrom" value="<?php echo $currentDate; ?>"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+                   <label for="ftwSLDateFrom" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">From</label>
 
               </div>
-              <div class="relative">
-            <input type="date" name="ftwSLDateTo" id="ftwSLDateTo"  value="<?php echo $currentDate; ?>"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
-            <label for="ftwSLDateTo" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">To</label>
+              <div class="relative w-1/2">
+                <input type="date" name="ftwSLDateTo" id="ftwSLDateTo"  value="<?php echo $currentDate; ?>"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+                  <label for="ftwSLDateTo" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">To</label>
+              </div>
+             </div>
+                 </div>
+            
+
+            <div class="content-center col-span-2">
+    
+
+
+<label  class=" block my-auto font-semibold text-gray-900 ">Days</label>
+      <input type="number"   name="ftwDays"  class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+
             </div>
 
-
-<h3 class=" my-auto font-semibold text-gray-900 ">Days</h3>
-      <input type="number"   name="ftwDays"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-
-            </div>
-
-            <div class="flex gap-4 col-span-2">
-            <h3 class=" my-auto w-full font-semibold text-gray-900 ">Reason of Absence: </h3>
+            <div class=" gap-4 col-span-2">
+            <label class="block  my-auto w-full font-semibold text-gray-900 ">Reason of Absence: </label>
              <input type="text"  name="ftwAbsenceReason" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
-            <div class="flex gap-4 col-span-2">
-            <h3 class=" my-auto  font-semibold text-gray-900 ">Diagnosis: </h3>
+            <div class=" gap-4 col-span-2">
+            <label class="block  my-auto  font-semibold text-gray-900 ">Diagnosis: </label>
       <!-- <input type="text"  name="ftwDiagnosis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
-      <select id="ftwDiagnosiOption" name="ftwDiagnosis" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+      <select id="ftwDiagnosiOption" name="ftwDiagnosis" class="js-diagnosis bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
       <option selected disabled >Select Diagnosis</option>
       <option value="addDiagnosisButton" >Add Diagnosis</option>
       <?php
@@ -260,11 +263,11 @@ $immediateHead = $_POST['immediateHead'];
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+            <div class= "items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <label class="block text-xl font-semibold text-gray-900 dark:text-white">
                     Add Diagnosis
-                </h3>
-                <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="addDiagnosis">
+                </label>
+                <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="addDiagnosis">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                     </svg>
@@ -293,73 +296,117 @@ $immediateHead = $_POST['immediateHead'];
 
 
             </div>
-            <div class="col-span-1">
+         <div class="grid grid-cols-4 col-span-4" id="fdsghfsdfdghfghfdgh">
+            <div class="col-span-4">
+           
+           <label class="block  my-auto font-semibold text-gray-900 ">Medicine (Add medicine below): </label>
+           <select name="cnsltnMeds[]"  id="cnsltnMeds" multiple="multiple" class="form-control js-meds w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      
+
+        </select>
+            <!-- <input type="text"  name="cnsltnMeds"  disabled value="<?php echo $ftwAbsenceReason ?>" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
+           </div>
+   
+        <div id="medicineDiv" class="grid grid-cols-4 gap-1 col-span-4 mt-2">
+          <div id="medicineDiv1" class="grid grid-cols-4 gap-1 col-span-4">
+          <div id="medsdiv" class="col-span-2">
+            <label class="block  my-auto font-semibold text-gray-900 ">What's your medicine? </label>
+                
+      <input type="text" id="nameOfMedicine" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+
+            </div>
+            
+            <div id="medsqtydiv" class=" col-span-2">
+              <div class="w-full">
+              <label class="block  my-auto font-semibold text-gray-900 ">Choose quantity:</label>
+              <div class="flex relative ">
+              <div class="relative flex items-center max-w-[8rem]">
+        <button type="button" id="decrement-button" data-input-counter-decrement="quantityMeds" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+            <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+            </svg>
+        </button>
+        <input type="text" name="cnsltnMedsQuantity" id="quantityMeds" data-input-counter data-input-counter-min="1" data-input-counter-max="50" aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" value="1" required />
+        <button type="button" id="increment-button" data-input-counter-increment="quantityMeds" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+            <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+            </svg>
+        </button>
+        
+    </div>
+     
+    <button type="button" id="addmedsbtn" onclick="addSelectedValue(document.getElementById('nameOfMedicine').value, document.getElementById('quantityMeds').value)" class="ml-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  p-2 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Add to list
+</button>
+              </div>
+
+
+              </div>
+            <!-- <input type="number"  name="cnsltnMedsQuantity" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
+
+    
+                </div>
+          </div>
+        
+        </div>
+        </div>
+            <div class="col-span-4">
             <h3 class=" my-auto w-full font-semibold text-gray-900 ">Laboratory: </h3>
             </div>
-            <div class="flex gap-4 col-span-3">
-            <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Blood Chemistry: </h3>
-             <input type="text"  name="ftwBloodChem" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+            <div class="ml-4 grid grid-cols-4  col-span-4 gap-1">
+            <div class= "col-span-2">
+            <label class="block my-auto  font-semibold text-gray-900 ">Blood Chemistry: </label>
+             <input type="text"  name="ftwBloodChem" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
-            <div class="col-span-1">
-            <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
+            
+            <div class= "col-span-2">
+            <label class="block my-auto  font-semibold text-gray-900 ">CBC: </label>
+             <input type="text"  name="ftwCbc" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
-            <div class="flex gap-4 col-span-3">
-            <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">CBC: </h3>
-             <input type="text"  name="ftwCbc" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+            
+            <div class= "col-span-2">
+            <label class="block my-auto  font-semibold text-gray-900 ">Urinalysis: </label>
+             <input type="text"  name="ftwUrinalysis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
-            <div class="col-span-1">
-            <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
+            
+            <div class= "col-span-2">
+            <label class="block my-auto  font-semibold text-gray-900 ">Fecalysis: </label>
+             <input type="text"  name="ftwFecalysis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
-            <div class="flex gap-4 col-span-3">
-            <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Urinalysis: </h3>
-             <input type="text"  name="ftwUrinalysis" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+            
+            <div class= "col-span-2">
+            <label class="block my-auto  font-semibold text-gray-900 ">X-ray: </label>
+             <input type="text"  name="ftwXray" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
-            <div class="col-span-1">
-            <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
+            
+            <div class= "col-span-2">
+            <label class="block my-auto  font-semibold text-gray-900 ">Others: </label>
+             <input type="text"  name="ftwOthersLab" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
-            <div class="flex gap-4 col-span-3">
-            <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Fecalysis: </h3>
-             <input type="text"  name="ftwFecalysis" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+            <div class="col-span-4">
+            <h3 class=" my-auto w-full font-semibold text-gray-900 ">Vital Signs: </h3>
             </div>
-            <div class="col-span-1">
-            <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
-            </div>
-            <div class="flex gap-4 col-span-3">
-            <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">X-ray: </h3>
-             <input type="text"  name="ftwXray" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-            </div>
-            <div class="col-span-1">
-            <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
-            </div>
-            <div class="flex gap-4 col-span-3">
-            <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Others: </h3>
-             <input type="text"  name="ftwOthersLab" class=" w-3/4 bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-            </div>
-
-            <div class="col-span-1">
-            <h3 class="w-full my-auto  font-semibold text-gray-900 "></h3>
-            </div>
-            <div class="flex gap-4 col-span-3">
-            <h3 class="w-1/4 mt-2  font-semibold text-gray-900 ">Vital Signs: </h3>
-            <div class="grid grid-cols-3 gap-4">
-                <div class="flex gap-4">
-                <h3 class=" my-auto  font-semibold text-gray-900 ">BP: </h3>
+            
+            <div class= " flex col-span-3">
+            
+            <div class="grid grid-cols-3 gap-1">
+                <div class= "">
+                <label class="block  my-auto  font-semibold text-gray-900 ">BP: </label>
              <input type="text"  name="ftwBp" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
-                <div class="flex gap-4">
-                <h3 class=" my-auto  font-semibold text-gray-900 ">Temp: </h3>
+                <div class= "">
+                <label class="block  my-auto  font-semibold text-gray-900 ">Temp: </label>
              <input type="text"  name="ftwTemp" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
-                <div class="flex gap-4">
-                <h3 class=" my-auto  font-semibold text-gray-900 ">02 Sat: </h3>
+                <div class= "">
+                <label class="block  my-auto  font-semibold text-gray-900 ">02 Sat: </label>
              <input type="text"  name="ftw02Sat" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
-                <div class="flex gap-4">
-                <h3 class=" my-auto  font-semibold text-gray-900 ">PR: </h3>
+                <div class= "">
+                <label class="block  my-auto  font-semibold text-gray-900 ">PR: </label>
              <input type="text"  name="ftwPr" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
-                <div class="flex gap-4">
-                <h3 class=" my-auto  font-semibold text-gray-900 ">RR: </h3>
+                <div class= "">
+                <label class="block  my-auto  font-semibold text-gray-900 ">RR: </label>
              <input type="text"  name="ftwRr" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
              
@@ -367,25 +414,26 @@ $immediateHead = $_POST['immediateHead'];
             
             
             </div>
-            <div class="col-span-4 flex gap-4">
-                <h3 class=" my-auto  font-semibold text-gray-900 ">Remarks: </h3>
+            </div>
+            <div class="col-span-4 ">
+                <label class="block  my-auto  font-semibold text-gray-900 ">Remarks: </label>
                 <select id="remarksSelect" name="ftwRemarks"  class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-  <option selected value="FTW">Fit To Work</option>
-  <option value="LFTW">Late FTW</option>
-  <option value="noMedCert">No Medical Certificate</option>
-  <option value="others">Others</option>
+  <option selected value="Fit to Work">Fit To Work</option>
+  <option value="Late Fit to Work">Late FTW</option>
+  <option value="no Medical Certificate">No Medical Certificate</option>
+  <option value="Others">Others</option>
 
 
 </select>
                 </div>
-                <div class="col-span-4 flex gap-4">
-                <h3 class=" my-auto  font-semibold text-gray-900 ">Others: </h3>
+                <div class="col-span-4 gap-4">
+                <label class="block  my-auto  font-semibold text-gray-900 ">Others: </label>
              <input type="text"   name="ftwOthersRemarks" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
 
-                <div class="col-span-4 flex gap-4">
+                <div class="col-span-4 gap-4">
                 
-<h3 class="my-auto mb-4 font-semibold text-gray-900 ">Status</h3>
+<label class="block my-auto  font-semibold text-gray-900 ">Status</label>
 <ul class="col-span-2 items-center w-full  text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  ">
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
         <div class="gap-2 flex items-center ps-3">
@@ -410,9 +458,9 @@ $immediateHead = $_POST['immediateHead'];
 
                 </div>
 
-                <div class="flex gap-4  col-span-2">
-                
-                <h3 class="my-auto  font-semibold text-gray-900 ">Immediate Head: </h3>
+                <div class=" gap-4  col-span-2">
+                <label class="block my-auto  font-semibold text-gray-900 ">Immediate Head:</label>
+              
     <select id="immediateHead" name="immediateHead" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
     <option selected disabled value="">Please select</option>
    <?php
@@ -431,9 +479,9 @@ $immediateHead = $_POST['immediateHead'];
     </select>
     
                 </div>
-                <div class="flex gap-4  col-span-2">
+                <div class=" gap-4  col-span-2">
+                <label class="block my-auto  font-semibold text-gray-900 ">Email:</label>
                     
-                    <h3 class="my-auto  font-semibold text-gray-900 "> Email: </h3>
              <input type="text" id="immediateEmail"  name="immediateEmail" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
         
                     </div>
