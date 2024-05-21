@@ -59,9 +59,16 @@ $ftwWithPendingLab = $_POST['ftwWithPendingLab'];
 $immediateEmail = $_POST['immediateEmail'];
 $immediateHead = $_POST['immediateHead'];
 
+$ftwMeds = $_POST['ftwMeds'];
+
+   
+if($ftwMeds!=""){
+  
+$ftwMeds = implode(', ', $ftwMeds);
+}
 
   // echo $smoking;
-  $sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `othersRemarks`, `statusComplete`, `withPedingLab`) VALUES ('head','$department','$rfid','$ftwDate','$ftwTime','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab')";
+  $sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `othersRemarks`, `statusComplete`, `withPedingLab`) VALUES ('head','$department','$rfid','$ftwDate','$ftwTime','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab')";
   $results = mysqli_query($con,$sql);
 
 
@@ -296,11 +303,11 @@ $immediateHead = $_POST['immediateHead'];
 
 
             </div>
-         <div class="grid grid-cols-4 col-span-4" id="fdsghfsdfdghfghfdgh">
+         <div class="grid grid-cols-4 col-span-4" id="medicineDivs">
             <div class="col-span-4">
            
            <label class="block  my-auto font-semibold text-gray-900 ">Medicine (Add medicine below): </label>
-           <select name="cnsltnMeds[]"  id="cnsltnMeds" multiple="multiple" class="form-control js-meds w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+           <select name="ftwMeds[]"  id="ftwMeds" multiple="multiple" class="form-control js-meds w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       
 
         </select>
@@ -420,7 +427,7 @@ $immediateHead = $_POST['immediateHead'];
                 <select id="remarksSelect" name="ftwRemarks"  class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
   <option selected value="Fit to Work">Fit To Work</option>
   <option value="Late Fit to Work">Late FTW</option>
-  <option value="no Medical Certificate">No Medical Certificate</option>
+  <option value="No Medical Certificate">No Medical Certificate</option>
   <option value="Others">Others</option>
 
 

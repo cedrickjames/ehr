@@ -65,23 +65,26 @@ while($userRow = mysqli_fetch_assoc($resultInfo)){
 if(isset($_POST['submitDoctorsConsultation'])){
 
   $finalDx = $_POST['finalDx'];
-  $sql = "UPDATE `consultation` SET `status` = 'nurse2', `finalDx`='$finalDx' WHERE `id` = '$dcnsltn'";
+  $remarksSelect = $_POST['remarksSelect'];
+
+  
+  $sql = "UPDATE `consultation` SET `status` = 'nurse2', `remarks` = '$remarksSelect', `finalDx`='$finalDx' WHERE `id` = '$dcnsltn'";
   $results = mysqli_query($con,$sql);
 
 }
 
-if(isset($_POST['generateMedCert'])){
+// if(isset($_POST['generateMedCert'])){
 
-  $medcertdate = $_POST['medcertdate'];
-  $treatedOn = $_POST['treatedOn'];
-  $dueTo = $_POST['dueTo'];
-  $diagnosis = $_POST['diagnosis'];
-  $remarksMed = $_POST['remarksMed'];
+//   $medcertdate = $_POST['medcertdate'];
+//   $treatedOn = $_POST['treatedOn'];
+//   $dueTo = $_POST['dueTo'];
+//   $diagnosis = $_POST['diagnosis'];
+//   $remarksMed = $_POST['remarksMed'];
 
-  $sql = "INSERT INTO `medicalcertificate`(`rfid`, `consultationId`, `date`, `treatedOn`, `dueTo`, `diagnosis`, `remarks`) VALUES ('$rfid','$dcnsltn','$medcertdate','$treatedOn','$dueTo','$diagnosis','$remarksMed')";
-  $results = mysqli_query($con,$sql);
+//   $sql = "INSERT INTO `medicalcertificate`(`rfid`, `consultationId`, `date`, `treatedOn`, `dueTo`, `diagnosis`, `remarks`) VALUES ('$rfid','$dcnsltn','$medcertdate','$treatedOn','$dueTo','$diagnosis','$remarksMed')";
+//   $results = mysqli_query($con,$sql);
 
-}
+// }
 
 ?>
 <form action="" method="POST">
@@ -267,17 +270,17 @@ if(isset($_POST['generateMedCert'])){
             </div>
             <div class="col-span-4 flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Remarks: </h3>
-                <select id="remarksSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-  <option <?php if ($remarks == "FTW"){ echo "selected" ;} ?> value="FTW">Fit To Work</option>
+                <select id="remarksSelect" name="remarksSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+  <option <?php if ($remarks == "Fit To Work"){ echo "selected" ;} ?> value="Fit To Work">Fit To Work</option>
   <option <?php if ($remarks == "Late FTW"){ echo "selected" ;} ?> value="Late FTW">Late FTW</option>
-  <option <?php if ($remarks == "No Medical Certificate"){ echo "selected" ;} ?>value="No Medical Certificate">No Medical Certificate</option>
-  <option <?php if ($remarks == "Others"){ echo "selected" ;} ?>value="Others">Others</option>
+  <option <?php if ($remarks == "No Medical Certificate"){ echo "selected" ;} ?> value="No Medical Certificate">No Medical Certificate</option>
+  <option <?php if ($remarks == "Others"){ echo "selected" ;} ?> value="Others">Others</option>
 
 
 </select>
                 </div>
                 <div class="col-span-4 flex gap-4">
-                <h3 class=" my-auto  font-semibold text-gray-900 ">Others: </h3>
+                <h3 class=" my-auto  font-semibold text-gray-900 ">Nurse Notes: </h3>
              <input type="text" value="<?php echo $othersRemarks;?>" id="base-input" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="col-span-4 flex gap-4">
@@ -286,20 +289,12 @@ if(isset($_POST['generateMedCert'])){
                 </div>
                 <div class="col-span-4 flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Medical Certificate: </h3>
-            
-                <?php 
-                if($consultationId !="")
-                {
-                
-                  echo "<a href='../medicalCertificate.php?rf=$rfid&mdcrtid=$consultationId' target='_blank'  class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>View Medcert</a>";
-                } else{
-                  ?> <button data-modal-target="medcert" data-modal-toggle="medcert" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                <button data-modal-target="medcert" data-modal-toggle="medcert" id="generateMedcert" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                   Generate
                 </button>
-
-                <?php
-                }?>
-                
+             
+                <a href='../medicalCertificate.php?rf=<?php echo $rfid;?>&mdcrtid=<?php echo $dcnsltn;?>' target='_blank' id="viewmedcert" class='hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>View Medcert</a>
+               
                 </div>
                 <div class="col-span-4 gap-4 justify-center flex h-14">
                 <button type="submit" name="submitDoctorsConsultation" class="text-center inline-flex items-center text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[9px] 2xl:text-xl px-5 py-1 text-center me-2 mb-2">
@@ -336,7 +331,7 @@ if(isset($_POST['generateMedCert'])){
                 </button>
             </div>
             <!-- Modal body -->
-            <form class="p-4 md:p-5" method="POST"  action="">
+            <form class="p-4 md:p-5"   action="#">
                 <div class="grid gap-4 mb-4 grid-cols-2">
                   
                 <div class="col-span-2 sm:col-span-1">
@@ -352,7 +347,7 @@ if(isset($_POST['generateMedCert'])){
                     <div class="col-span-2">
                         <label for="treatedOn" class="block mb-2 text-[12px] font-medium text-gray-900 dark:text-white">Was examined and treated on</label>
                         <!-- <textarea id="treatedOn" name="treatedOn" rows="1" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" ></textarea>                     -->
-                        <input type="date" name="treatedOn" value="<?php echo $currentDate; ?>" id="medcertdate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                        <input type="date" name="treatedOn" value="<?php echo $currentDate; ?>" id="treatedOn" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
 
                     </div>
                     <div class="col-span-2">
@@ -368,10 +363,75 @@ if(isset($_POST['generateMedCert'])){
                         <textarea id="remarksMed" name="remarksMed" rows="1" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" ></textarea>                    
                     </div>
                 </div>
-                <button type="submit" name="generateMedCert" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <button type="button" onclick="generateMedCert()"  class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     Generate Med Cert
                 </button>
             </form>
         </div>
     </div>
 </div> 
+
+
+<script>
+function generateMedCert(){
+  // console.log("lkasdhf");
+
+  var url = new URL(window.location.href);
+
+var rfValue = url.searchParams.get("rf");
+var dcnsltnValue = url.searchParams.get("dcnsltn");
+var medcertdate = document.getElementById("medcertdate").value;
+var treatedOn = document.getElementById("treatedOn").value;
+var dueTo = document.getElementById("dueTo").value;
+var diagnosis = document.getElementById("diagnosis").value;
+var remarksMed = document.getElementById("remarksMed").value;
+
+console.log(rfValue, dcnsltnValue, medcertdate, treatedOn, dueTo, diagnosis, remarksMed)
+
+
+
+
+var generateMedicalCert = new XMLHttpRequest();
+generateMedicalCert.open("POST", "generateMedicalCert.php", true);
+generateMedicalCert.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+generateMedicalCert.onreadystatechange = function() {
+    if (generateMedicalCert.readyState === XMLHttpRequest.DONE) {
+        if (generateMedicalCert.status === 200) {
+            // Update was successful
+            console.log(generateMedicalCert);
+
+        
+        } else {
+            console.log("Error: " + generateMedicalCert.status);
+        }
+    }
+};
+
+// Construct the data to be updated
+var data = "rfValue=" + encodeURIComponent(rfValue);
+data += "&dcnsltnValue="+ encodeURIComponent(dcnsltnValue);
+data += "&medcertdate="+ encodeURIComponent(medcertdate);
+data += "&treatedOn="+ encodeURIComponent(treatedOn);
+data += "&dueTo="+ encodeURIComponent(dueTo);
+data += "&diagnosis="+ encodeURIComponent(diagnosis);
+data += "&remarksMed="+ encodeURIComponent(remarksMed);
+
+
+
+// Add any other parameters needed for the update
+
+generateMedicalCert.send(data);
+
+
+var divElement = document.getElementById('generateMedcert');
+
+// Remove the class from the div
+divElement.classList.add('hidden');
+
+var divElement2 = document.getElementById('viewmedcert');
+
+// Remove the class from the div
+divElement2.classList.remove('hidden');
+  
+}
+  </script>

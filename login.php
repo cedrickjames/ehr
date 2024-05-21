@@ -15,7 +15,7 @@ if(isset( $_SESSION['connected'])){
       $sql1 = "Select * FROM `users` WHERE `userName`='$username'";
       $result = mysqli_query($con, $sql1);
       $numrows = mysqli_num_rows($result);
-
+      if($numrows >=1){
       while($userRow = mysqli_fetch_assoc($result)){
         $userpass = $userRow['password'];
         $level = $userRow['type'];
@@ -54,7 +54,6 @@ if(isset( $_SESSION['connected'])){
           $_SESSION['ftwWithPendingLab']="";
           $_SESSION['immediateEmail']="";
           $_SESSION['immediateHead']="";
-
           $_SESSION['connected']=true;
 
           if($level =='nurse'){
@@ -70,7 +69,14 @@ if(isset( $_SESSION['connected'])){
             header("location:doctor");
           }
         }
+        else{
+          echo "<script>alert('Wrong password.');</script>";
+        }
       }
+    }
+    else{
+      echo "<script>alert('User not found.');</script>";
+    }
     }
 
 ?>

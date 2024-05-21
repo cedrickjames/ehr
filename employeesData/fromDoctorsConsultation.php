@@ -87,14 +87,14 @@ if(isset($_POST['submitFromDoctorsConsultation'])){
 
   $remarksSelect2 = $_POST['remarksSelect3'];
 
-  if($remarksSelect2 == "FTW"){
+  if($remarksSelect2 == "Fit to Work"){
     $othersRemarks = $_POST['othersRemarks'];
     $medLab = $_POST['medLab'];
     $medDis = $_POST['medDis'];
   $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
   $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
   
-    $sql = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `othersRemarks` = '$othersRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab', WHERE `id` = '$dcnsltn'";
+    $sql = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `othersRemarks` = '$othersRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
     $results = mysqli_query($con,$sql);
 
 
@@ -136,8 +136,8 @@ $immediateEmail = $_POST['immediateEmail'];
 $immediateHead = $_POST['immediateHead'];
 
 
-    $sql1 = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `othersRemarks` = '$othersRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
-    $results1 = mysqli_query($con,$sql1);
+    // $sql1 = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `othersRemarks` = '$othersRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
+    // $results1 = mysqli_query($con,$sql1);
   
 
 $sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `othersRemarks`, `statusComplete`, `withPedingLab`) VALUES ('head','$department','$rfid','$cnsltnDate','$cnsltnTime','$cnsltnCategories','$cnsltnBuilding','$ftwCtnConfinement','$ftwCtnCategories','$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason','$cnsltnDiagnosis','$cnsltnBloodChem','$cnsltnCbc','$cnsltnUrinalysis','$cnsltnFecalysis','$cnsltnXray','$cnsltnOthersLab','$cnsltnBp','$cnsltnTemp','$cnsltn02Sat','$cnsltnPr','$cnsltnRr','$remarksSelect2','$othersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab')";
@@ -167,7 +167,7 @@ if($results){
         
 
   $subject ='Fit to Work';
-  $message = 'Hi '.$immediateHead.',<br> <br> Mr./Ms. '.$name.' is now fit to work. <br><br> Details <br>Name: '.$name.'<br>Sect/Dept: '.$secDept.' <br>Reason of Absence: '.$ftwCtnAbsenceReason.'<br>Date of Absence: '.$ftwCtnSLDateFrom.' - '.$ftwCtnSLDateTo.'<br>No. of Day/s: '.$ftwCtnDays.' <br>Remarks: '.$remarks.'<br><br><br><br>  This is a generated email. Please do not reply. <br><br> Electronic Health System';
+  $message = 'Hi '.$immediateHead.',<br> <br> Mr./Ms. '.$name.' is now fit to work. <br><br> Details <br>Name: '.$name.'<br>Sect/Dept: '.$secDept.' <br>Reason of Absence: '.$ftwCtnAbsenceReason.'<br>Date of Absence: '.$ftwCtnSLDateFrom.' - '.$ftwCtnSLDateTo.'<br>No. of Day/s: '.$ftwCtnDays.' <br>Remarks: '.$remarksSelect2.'<br>Others: '.$othersRemarks.'<br><br><br><br>  This is a generated email. Please do not reply. <br><br> Electronic Health System';
   
 
    require '../vendor/autoload.php';
@@ -413,13 +413,12 @@ if($results){
             <div class="col-span-4 flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Remarks: </h3>
                 <select id="remarksSelect2" name="remarksSelect3" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-  <option selected value="">Select</option>
-  <option <?php if ($remarks == "FTW"){ echo "selected" ;} ?> value="FTW">Fit To Work</option>
+  <option <?php if ($remarks == "Fit To Work"){ echo "selected" ;} ?> value="Fit to Work">Fit To Work</option>
   <option <?php if ($remarks == "Late FTW"){ echo "selected" ;} ?> value="Late FTW">Late FTW</option>
-  <option <?php if ($remarks == "No Medical Certificate"){ echo "selected" ;} ?>value="No Medical Certificate">No Medical Certificate</option>
-  <option <?php if ($remarks == "For Medical Laboratory"){ echo "selected" ;} ?>value="For Medical Laboratory">For Medical Laboratory</option>
-  <option <?php if ($remarks == "For Medication Dispense"){ echo "selected" ;} ?>value="For Medication Dispense">For Medication Dispense</option>
-  <option <?php if ($remarks == "Others"){ echo "selected" ;} ?>value="Others">Others</option>
+  <option <?php if ($remarks == "No Medical Certificate"){ echo "selected" ;} ?> value="No Medical Certificate">No Medical Certificate</option>
+  <option <?php if ($remarks == "For Medical Laboratory"){ echo "selected" ;} ?> value="For Medical Laboratory">For Medical Laboratory</option>
+  <option <?php if ($remarks == "For Medication Dispense"){ echo "selected" ;} ?> value="For Medication Dispense">For Medication Dispense</option>
+  <option <?php if ($remarks == "Others"){ echo "selected" ;} ?> value="Others">Others</option>
   </select>
   <input type="text" name="medLab" placeholder="Medical Laboratory"  id="medLab" class="hidden  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
   <input type="text" name="medDis"   placeholder="Medication Dispense" id="medDis" class="hidden  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
@@ -516,7 +515,7 @@ if($results){
 
 
                 <div class="col-span-4 flex gap-4">
-                <h3 class=" my-auto  font-semibold text-gray-900 ">Others: </h3>
+                <h3 class=" my-auto  font-semibold text-gray-900 ">Nurse Notes: </h3>
              <input type="text" value="<?php echo $othersRemarks;?>" name="othersRemarks" id="" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class="col-span-4 flex gap-4">

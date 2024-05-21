@@ -102,7 +102,7 @@ $(document).ready(function() {
 $(document).ready(function() {
   var selectedRemarksValue = $('#remarksSelect2').find('option:selected').val();
     console.log(selectedRemarksValue);
-    if(selectedRemarksValue == 'FTW'){
+    if(selectedRemarksValue == 'Fit to Work'){
       
       $('#ftwdiv1').removeClass('hidden');
       $('#ftwdiv2').removeClass('hidden');
@@ -132,7 +132,7 @@ $(document).ready(function() {
         $('#remarksSelect2').change(function() {
           var selectedRemarksValue = $(this).find('option:selected').val();
     console.log(selectedRemarksValue);
-    if(selectedRemarksValue == 'FTW'){
+    if(selectedRemarksValue == 'Fit to Work'){
       
       $('#ftwdiv1').removeClass('hidden');
       $('#ftwdiv2').removeClass('hidden');

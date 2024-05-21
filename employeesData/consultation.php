@@ -49,6 +49,15 @@ $ftwCompleted = $_SESSION['ftwCompleted'];
 $ftwWithPendingLab = $_SESSION['ftwWithPendingLab'];
 $immediateEmail = $_SESSION['immediateEmail'];
 
+// $ftwMeds = $_SESSION['ftwMeds'];
+if (isset($_SESSION['ftwMeds'])) {
+  $ftwMeds = $_SESSION['ftwMeds'];
+  // Your code here
+} else {
+  $ftwMeds = "";
+  // Handle the case where $_SESSION['ftwMeds'] is not set
+}
+// echo $ftwMeds;
 if(isset($_POST['addConsultation'])){
 
 $cnsltnDate = $_POST['cnsltnDate'];
@@ -61,6 +70,7 @@ $ftwCtnSLDateFrom = $_POST['ftwCtnSLDateFrom'];
 $ftwCtnSLDateTo = $_POST['ftwCtnSLDateTo'];
 $ftwCtnDays = $_POST['ftwCtnDays'];
 $ftwCtnAbsenceReason = $_POST['ftwCtnAbsenceReason'];
+$ftwCtnRemarks = $_POST['ftwCtnRemarks'];
 
 
 
@@ -92,13 +102,13 @@ $cnsltnTemp = $_POST['cnsltnTemp'];
 $cnsltn02Sat = $_POST['cnsltn02Sat'];
 $cnsltnPr = $_POST['cnsltnPr'];
 $cnsltnRr = $_POST['cnsltnRr'];
-// $cnsltnRemarks = $_POST['cnsltnRemarks'];
+$cnsltnRemarks = $_POST['cnsltnRemarks'];
 $cnsltnOthersRemarks = $_POST['cnsltnOthersRemarks'];
 // $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
 // $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
 
   // echo $smoking;
-  $sql = "INSERT INTO `consultation`(`rfid`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`medsQty`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`,  `othersRemarks`,`ftwApproval`, `ftwDepartment`, `ftwCategories`, `ftwConfinement`,`ftwDateOfSickLeaveFrom`, `ftwDateOfSickLeaveTo`,`ftwDays`, `ftwReasonOfAbsence`) VALUES ('$rfid','doc','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds','$cnsltnMedsQuantity', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr',  '$cnsltnOthersRemarks', 'head', '$department','$ftwCtnCategories','$ftwCtnConfinement','$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason')";
+  $sql = "INSERT INTO `consultation`(`rfid`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`medsQty`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `othersRemarks`,`ftwApproval`, `ftwDepartment`, `ftwCategories`, `ftwConfinement`,`ftwDateOfSickLeaveFrom`, `ftwDateOfSickLeaveTo`,`ftwDays`, `ftwReasonOfAbsence`, `ftwRemarks`) VALUES ('$rfid','doc','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds','$cnsltnMedsQuantity', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnRemarks', '$cnsltnOthersRemarks', 'head', '$department','$ftwCtnCategories','$ftwCtnConfinement','$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason','$ftwCtnRemarks')";
   $results = mysqli_query($con,$sql);
 
  
@@ -170,7 +180,17 @@ $cnsltnOthersRemarks = $_POST['cnsltnOthersRemarks'];
             <h3 class=" my-auto w-full font-semibold text-gray-900 ">Reason of Absence: </h3>
              <input type="text" value="<?php echo $ftwAbsenceReason;?>" name="ftwCtnAbsenceReason" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
+            <div class="col-span-4 hidden">
+                <label class="block  my-auto  font-semibold text-gray-900 ">Remarks: </label>
+                <select id="remarksSelect" name="ftwCtnRemarks"  class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+  <option <?php if ($ftwRemarks == "Fit to Work"){ echo "selected" ;} ?> value="Fit to Work">Fit To Work</option>
+  <option <?php if ($ftwRemarks == "Late Fit to Work"){ echo "selected" ;} ?> value="Late Fit to Work">Late FTW</option>
+  <option <?php if ($ftwRemarks == "No Medical Certificate"){ echo "selected" ;} ?> value="no Medical Certificate">No Medical Certificate</option>
+  <option <?php if ($ftwRemarks == "Others"){ echo "selected" ;} ?> value="Others">Others</option>
 
+
+</select>
+                </div>
             <div class="col-span-2">
             <label class="block  my-auto font-semibold text-gray-900 ">Type: </label>
                 
@@ -290,9 +310,8 @@ $cnsltnOthersRemarks = $_POST['cnsltnOthersRemarks'];
             <div class="col-span-4">
             <label class="block  my-auto font-semibold text-gray-900 ">Intervention: </label>
                     
-                    <select id="interventionSelect" name="cnsltnIntervention" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-  <option selected disabled>Select</option>
-  <option  value="Medication Only">Medication only</option>
+                    <select id="interventionSelect" name="cnsltnIntervention" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+  <option selected value="Medication Only">Medication only</option>
   <option value="Medical Consultation">Medical Consultation</option>
   <option value="Medication and Medical Consultation">Medication and Medical Consultation</option>
   <option value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
@@ -327,7 +346,26 @@ $cnsltnOthersRemarks = $_POST['cnsltnOthersRemarks'];
            
            <label class="block  my-auto font-semibold text-gray-900 ">Medicine (Add medicine below): </label>
            <select name="cnsltnMeds[]"  id="cnsltnMeds" multiple="multiple" class="form-control js-meds w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-      
+           <?php
+
+// Split the string into an array using the comma as the delimiter
+if($ftwMeds != ""){
+  $medicines = explode(", ", $ftwMeds );
+
+$options = "";
+foreach ($medicines as $medicine) {
+    // Add the whitespace before the value to match the desired output
+    $options .= '<option selected value="' . $medicine . '">' . $medicine . '</option>' . PHP_EOL;
+}
+
+echo $options;
+}
+
+?>
+
+            <?php 
+            
+            ?>
 
         </select>
             <!-- <input type="text"  name="cnsltnMeds"  disabled value="<?php echo $ftwAbsenceReason ?>" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
@@ -453,13 +491,14 @@ $cnsltnOthersRemarks = $_POST['cnsltnOthersRemarks'];
 
                 </div>
             
-            <div class="hidden col-span-4 flex gap-4">
-                <h3 class=" my-auto  font-semibold text-gray-900 ">Remarks: </h3>
+            <div class=" col-span-4 ">
+                <!-- <h3 class=" my-auto  font-semibold text-gray-900 ">Remarks: </h3> -->
+                <label class="block  my-auto font-semibold text-gray-900 ">Remarks: </label>
                 <select id="remarksSelect" name="cnsltnRemarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-  <option selected value="FTW">Fit To Work</option>
-  <option value="Late FTW">Late FTW</option>
-  <option value="No Medical Certificate">No Medical Certificate</option>
-  <option value="Others">Others</option>
+  <option <?php if ($ftwRemarks == "Fit To Work"){ echo "selected" ;} ?>  value="Fit To Work">Fit To Work</option>
+  <option <?php if ($ftwRemarks == "Late FTW"){ echo "selected" ;} ?>  value="Late FTW">Late FTW</option>
+  <option <?php if ($ftwRemarks == "No Medical Certificate"){ echo "selected" ;} ?>  value="No Medical Certificate">No Medical Certificate</option>
+  <option <?php if ($ftwRemarks == "Others"){ echo "selected" ;} ?>  value="Others">Others</option>
 
 
 </select>
@@ -470,23 +509,24 @@ $cnsltnOthersRemarks = $_POST['cnsltnOthersRemarks'];
              <input type="text" value="<?php echo $ftwOthersRemarks;?>"  name="cnsltnOthersRemarks" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
 
-                <div class="hidden col-span-4 flex gap-4">
+                <div class=" col-span-4 ">
+                <label class="block  my-auto font-semibold text-gray-900 ">Status: </label>
                 
-<h3 class="my-auto mb-4 font-semibold text-gray-900 ">Status</h3>
+<!-- <h3 class="my-auto mb-4 font-semibold text-gray-900 ">Status</h3> -->
 <ul class="col-span-2 items-center w-full text-[10px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  ">
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
         <div class="gap-2 flex items-center ps-3">
-            <input id="vue-checkbox-list" type="checkbox" name="cnsltnCompleted" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <input id="vue-checkbox-list" type="checkbox" <?php if($_SESSION['ftwCompleted'] == 1){ echo "checked";};?> name="cnsltnCompleted" value="1" class=" w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
             <label for="vue-checkbox-list" class="w-full py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">Completed</label>
         </div>
     </li>
 
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
         <div class="gap-2 flex items-center ps-3">
-            <input id="vue-checkbox-list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <input id="vue-checkbox-list" type="checkbox" <?php if($_SESSION['ftwWithPendingLab'] !=""){ echo "checked";};?> value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
             <label for="vue-checkbox-list" class=" py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">With Pending Lab</label>
             <div class="relative z-0 group">
-      <input type="text" name="cnsltnWithPendingLab" id="floating_email" class="block py-2.5 px-0  text-[10px] 2xl:text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
+      <input type="text" name="cnsltnWithPendingLab" value="<?php echo $_SESSION['ftwWithPendingLab'];?>" id="floating_email" class="block py-2.5 px-0  text-[10px] 2xl:text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
       <label for="floating_email" class="peer-focus:font-medium absolute text-[10px] 2xl:text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"></label>
   </div>
         </div>

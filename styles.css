@@ -31,3 +31,6 @@
 .select2-results__options{
 font-size: 10px;
 }
+#select2-ftwMeds-results{
+  display: none;
+}

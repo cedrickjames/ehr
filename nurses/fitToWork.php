@@ -50,6 +50,17 @@ if(isset($_POST['proceedToConsultation'])){
   $_SESSION['ftwWithPendingLab'] = $_POST['ftwWithPendingLab'];
   $_SESSION['immediateEmail'] = $_POST['immediateEmail'];
   
+
+  $ftwMeds = $_POST['ftwMeds'];
+   
+  if($ftwMeds!=""){
+  
+  $ftwMeds = implode(', ', $ftwMeds);
+  }
+
+$_SESSION['ftwMeds'] = $ftwMeds;
+
+
   header("location:consultation.php?rf=$rfid");
 
 
@@ -133,7 +144,7 @@ $(".js-meds").select2({
 
 function addSelectedValue(value, qty) {
   console.log(value);
-    $('#cnsltnMeds').append($('<option>', {
+    $('#ftwMeds').append($('<option>', {
       value: value + "("+qty+")",
       text: value + "("+qty+")",
       selected: true
@@ -145,6 +156,17 @@ $(document).ready(function() {
         $('#immediateHead').change(function() {
             var selectedEmail = $(this).find('option:selected').data('email');
             $('#immediateEmail').val(selectedEmail);
+        });
+
+        $("#categoriesSelect").change(function() {
+          if ($(this).val() === "counted") {
+            $("#medicineDivs").removeClass("hidden");
+
+          }
+          else{
+            $("#medicineDivs").addClass("hidden");
+          }
+
         });
     });
 

@@ -253,7 +253,7 @@ $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
             <div class="col-span-4 flex gap-4">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Remarks: </h3>
                 <select id="remarksSelect2" name="remarksSelect2" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-  <option <?php if ($remarks == "FTW"){ echo "selected" ;} ?> value="FTW">Fit To Work</option>
+  <option <?php if ($remarks == "Fit to Work"){ echo "selected" ;} ?> value="Fit to Work">Fit To Work</option>
   <option <?php if ($remarks == "Late FTW"){ echo "selected" ;} ?> value="Late FTW">Late FTW</option>
   <option <?php if ($remarks == "No Medical Certificate"){ echo "selected" ;} ?>value="No Medical Certificate">No Medical Certificate</option>
   <option <?php if ($remarks == "For Medical Laboratory"){ echo "selected" ;} ?>value="For Medical Laboratory">For Medical Laboratory</option>
