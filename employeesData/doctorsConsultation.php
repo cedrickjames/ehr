@@ -70,6 +70,10 @@ if(isset($_POST['submitDoctorsConsultation'])){
   
   $sql = "UPDATE `consultation` SET `status` = 'nurse2', `remarks` = '$remarksSelect', `finalDx`='$finalDx' WHERE `id` = '$dcnsltn'";
   $results = mysqli_query($con,$sql);
+  if($results){
+    echo "<script>alert('Successfull') </script>";
+    echo "<script> location.href='index.php'; </script>";
+}
 
 }
 
@@ -97,18 +101,21 @@ if(isset($_POST['submitDoctorsConsultation'])){
 </div>
 <div class="text-[9px] 2xl:text-lg  rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full w-full p-4 ">
 
-            <div class="content-center flex gap-4 col-span-2">
-            <h3 class=" my-auto font-semibold text-gray-900 ">Date: </h3>
+            <div class="col-span-2">
+            <label for="fromDate" class="block  my-auto font-semibold text-gray-900 ">Date: </label>
+            
             <input type="date" value="<?php $formattedDate = date("Y-m-d", strtotime($date));
     echo $formattedDate; ?>" name="cnsltnClinicRestFrom" id="fromDate"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
             </div>
-            <div class="flex gap-4 col-span-2">
-            <h3 class="my-auto  font-semibold text-gray-900 ">Time: </h3>
+            <div class="col-span-2">
+            <label for="currentTime" class="block  my-auto font-semibold text-gray-900 ">Time: </label>
+            <!-- <h3 class="my-auto  font-semibold text-gray-900 ">Time: </h3> -->
             <input type="text" id="currentTime" name="currentTime" value="<?php echo $time; ?>" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500">
             </div>
-            <div class="flex gap-4  col-span-2">
+            <div class="col-span-2">
+            <label for="categoriesSelect" class="block  my-auto font-semibold text-gray-900 ">Type: </label>
                 
-            <h3 class="my-auto  font-semibold text-gray-900 ">Type: </h3>
+            <!-- <h3 class="my-auto  font-semibold text-gray-900 ">Type: </h3> -->
 <select id="categoriesSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
   <option <?php if ($type == "Initial"){ echo "selected" ;} ?> value="Initial">Initial</option>
   <option <?php if ($type == "Follow Up"){ echo "selected";} ?> value="Follow Up">Follow Up</option>
@@ -116,10 +123,11 @@ if(isset($_POST['submitDoctorsConsultation'])){
 </select>
 
             </div>
-            <div class="flex gap-4  col-span-2">
+            <div class="col-span-2">
+            <label for="buildingSelect" class="block  my-auto font-semibold text-gray-900 ">Building: </label>
                 
-                <h3 class="my-auto  font-semibold text-gray-900 ">Building:</h3>
-    <select id="categoriesSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                <!-- <h3 class="my-auto  font-semibold text-gray-900 ">Building:</h3> -->
+    <select id="buildingSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
       <option <?php if ($building == "GPI 1"){ echo "selected" ;} ?> value="GPI 1">GPI 1</option>
       <option <?php if ($building == "GPI 5"){ echo "selected" ;} ?> value="GPI 5">GPI 5</option>
       <option <?php if ($building == "GPI 7"){ echo "selected" ;} ?> value="GPI 7">GPI 7</option>
@@ -129,9 +137,10 @@ if(isset($_POST['submitDoctorsConsultation'])){
                 </div>
 
        
-                <div class="flex gap-4  col-span-3">
+                <div class="col-span-2">
+            <label for="categoriesSelect" class="block  my-auto font-semibold text-gray-900 ">Medical Category: </label>
                     
-                    <h3 class="my-auto w-1/2 font-semibold text-gray-900 ">Medical Category:</h3>
+                    <!-- <h3 class="my-auto w-1/2 font-semibold text-gray-900 ">Medical Category:</h3> -->
         <select id="categoriesSelect" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option <?php if ($categories == "common"){ echo "selected" ;} ?> value="common">Common</option>
           <option <?php if ($categories == "Long Term"){ echo "selected" ;} ?> value="Long Term">Long Term</option>
@@ -143,16 +152,16 @@ if(isset($_POST['submitDoctorsConsultation'])){
                   
        
 
-            <div class="flex gap-4 col-span-2">
+            <div class="col-span-2">
             <h3 class=" my-auto w-full font-semibold text-gray-900 ">Chief Compliant: </h3>
              <input type="text" value="<?php echo $chiefComplaint; ?>" id="base-input" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
-            <div class="flex gap-4 col-span-2">
+            <!-- <div class="col-span-2">
             <h3 class=" my-auto  font-semibold text-gray-900 ">Diagnosis: </h3>
       <input type="text" value="<?php echo $diagnosis; ?>" id="base-input" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
-            </div>
-            <div class="col-span-4 flex gap-4">
+            </div> -->
+            <div class="col-span-2">
                 <h3 class=" my-auto  font-semibold text-gray-900 ">Intervention: </h3>
                 <select id="remarksSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                 <option <?php if ($intervention == "Medication Only"){ echo "selected" ;} ?> value="Medication Only">Medication only</option>
@@ -163,7 +172,7 @@ if(isset($_POST['submitDoctorsConsultation'])){
 
 </select>
                 </div>
-                <div id="clinicrest" class="hidden content-center flex gap-4 col-span-2">
+                <div id="clinicrest" class="hidden content-center col-span-2">
             <h3 class=" my-auto font-semibold text-gray-900  ">Clinic Rest:</h3>
            
             <div class="relative">
@@ -178,21 +187,24 @@ if(isset($_POST['submitDoctorsConsultation'])){
 </div>
             </div>
             
+<div class="col-span-2">
+<div id="meds" class="content-center flex gap-2 2xl:gap-4 col-span-2">
+            <div class="">
+      <label for="" class="block  my-auto font-semibold text-gray-900 ">Meds</label>
 
-            <div id="meds" class="content-center flex gap-2 2xl:gap-4 col-span-2">
-            <div class="relative">
       <input type="text"  value="<?php echo $meds; ?>" id="medsid" class="bg-gray-50 border border-gray-300 text-gray-900   rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-      <label for="medsid" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Meds</label>
       </div>
       <div class="flex gap-4  col-span-2">
       <div class="relative">
+      <label for="" class="block  my-auto font-semibold text-gray-900 ">Quantity</label>
 
           <input type="number" id="medsqtyid" value="<?php echo $medsQty; ?>"  name="cnsltnMedsQuantity" class="bg-gray-50 border border-gray-300 text-gray-900   rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-      <label for="medsqtyid" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Quantity</label>
-            
+      <!-- <label for="medsqtyid" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Quantity</label> -->
         </div>
                     </div>
             </div>
+</div>
+ 
 
             <div class="col-span-1">
             <h3 class=" my-auto w-full font-semibold text-gray-900 ">Laboratory: </h3>

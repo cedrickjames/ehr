@@ -1,6 +1,8 @@
 <?php
 session_start();
 include ("../includes/connect.php");
+$userID = $_SESSION['userID'];
+
 
 if(isset($_POST['addQue'])){
     $cardNumber = $_POST['cardNumber'];

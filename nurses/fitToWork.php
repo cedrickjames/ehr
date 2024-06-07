@@ -64,7 +64,13 @@ $_SESSION['ftwMeds'] = $ftwMeds;
   header("location:consultation.php?rf=$rfid");
 
 
+
+  
 }
+
+
+$userID = $_SESSION['userID'];
+
     ?>
 
 <!doctype html>

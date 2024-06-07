@@ -62,6 +62,11 @@ $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
   $sql = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `othersRemarks` = '$othersRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab', WHERE `id` = '$dcnsltn'";
   $results = mysqli_query($con,$sql);
 
+  if($results){
+    echo "<script>alert('Successfull') </script>";
+    echo "<script> location.href='index.php'; </script>";
+  
+   }
 }
 
 ?>

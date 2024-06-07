@@ -8,6 +8,8 @@ if(!isset($_SESSION['connected'])){
 }
         date_default_timezone_set('Asia/Manila');
 
+        $userID = $_SESSION['userID'];
+
         
     ?>
 

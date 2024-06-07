@@ -59,11 +59,10 @@ if(isset($_POST['editPastMed'])){
     $sql = "UPDATE `pastmedicalhistory` SET `smoking`='$smoking',`drugs`='$drugs',`alcohol`='$alcohol',`asthma`='$asthma',`ptb`='$ptb',`diabetes`='$diabetes',`heartDisease`='$heartDisease',`hpn`='$hpn',`renalDisease`='$renalDisease',`adequate`='$adequate',`inadequate`='$inadequate',`menorrhagia`='$menorrhagia',`metrorrhagia`='$metrorrhagia',`amenorrhea`='$amenorrhea',`dysmenorrhea`='$dysmenorrhea',`othersFH`='$othersFHInput',`pastAndPresentMedHistory`='$pastPresentMed',`far`='$far',`near`='$near',`surgicalHistory`='$surgicalHistory',`presentMedication`='$presentMedication',`allergies`='$allergies',`intervalMH`='$interval',`duration`='$duration',`flow`='$flow',`gravida`='$gravida',`para`='$para',`termBirth`='$termBirth',`livingChildren`='$livingChildren',`preTermBirth`='$preTermBirth',`abortion`='$abortionMiscarriage',`multiplePregnancies`='$multiplePregnancies' WHERE `rfidNumber` = '$rfid';";
     $results = mysqli_query($con,$sql);
 
-    // if($results){
-    //         echo $results;
-    // }else{
-    //     echo $results;
-    // }
+    if($results){
+        echo "<script>alert('Successfull') </script>";
+        echo "<script> location.href='index.php'; </script>";
+    }
 
 }
 

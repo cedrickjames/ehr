@@ -28,6 +28,11 @@ if(isset($_POST['addNewEmployeeManual'])){
     $addEmployeeGpi = "INSERT INTO `employeespersonalinfo`(`rfidNumber`, `idNumber`, `Name`, `age`, `sex`, `address`, `civilStatus`, `employer`, `department`, `secDept`, `position`, `dateHired`) VALUES ('$rfid','$idNumber','$name','$age','$sex','$address','$civilStatus','$employer','$department','$section','$position','$dateHired')";
     $resultInfo = mysqli_query($con, $addEmployeeGpi);
 
+    if($resultInfo){
+        echo "<script>alert('Successfull') </script>";
+        echo "<script> location.href='index.php'; </script>";
+      
+       }
 
 
 
@@ -69,6 +74,13 @@ $position = $row['10'];
 $dateHired = $row['11'];
 $addEmployeeGpi = "INSERT INTO `employeespersonalinfo`(`rfidNumber`, `idNumber`, `Name`, `age`, `sex`, `address`, `civilStatus`, `employer`, `department`, `secDept`, `position`, `dateHired`) VALUES ('$rfid','$idNumber','$name','$age','$sex','$address','$civilStatus','$employer','$department','$section','$position','$dateHired')";
 $resultInfo = mysqli_query($con, $addEmployeeGpi);
+
+if($resultInfo){
+    echo "<script>alert('Successfull') </script>";
+    echo "<script> location.href='index.php'; </script>";
+  
+   }
+
             }
             $count = 1;
           

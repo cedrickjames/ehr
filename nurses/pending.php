@@ -6,6 +6,9 @@ if(!isset($_SESSION['connected'])){
   header("location: ../logout.php");
 }
 
+
+$userID = $_SESSION['userID'];
+
 ?>
 
 

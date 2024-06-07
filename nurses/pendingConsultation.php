@@ -8,6 +8,10 @@ if(!isset($_SESSION['connected'])){
   header("location: ../logout.php");
 }
         date_default_timezone_set('Asia/Manila');
+
+        
+$userID = $_SESSION['userID'];
+
     ?>
 
 <!doctype html>

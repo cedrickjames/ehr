@@ -44,6 +44,14 @@ medicalcertificate.id ASC; ";
         $date = $userRow['date'];
         $date1 = strtotime($date);
 $formatted_date = date('F d, Y', $date1);
+
+
+
+$date2 = strtotime($treatedOn);
+$formatted_date_treated_on = date('F d, Y', $date2);
+
+
+
       }
     $html ='<!DOCTYPE html>
     <html lang="en">
@@ -100,8 +108,8 @@ $formatted_date = date('F d, Y', $date1);
     <table>
 
     <tr >
-    <td style="width:38%" >was examined and treated on</td>
-     <td  class="underline">'.$treatedOn.'</td>
+    <td style="width:38%" >was examined and treated on </td>
+     <td  class="underline">&nbsp; ' .$formatted_date_treated_on.'</td>
      <td style="width:10%" > due to</td>
    
 
