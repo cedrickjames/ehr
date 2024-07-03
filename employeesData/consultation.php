@@ -49,12 +49,69 @@ $ftwCompleted = $_SESSION['ftwCompleted'];
 $ftwWithPendingLab = $_SESSION['ftwWithPendingLab'];
 $immediateEmail = $_SESSION['immediateEmail'];
 
+$ftwTime = date('h:i A');
+if (isset($_GET['cnsltn'])) {
+    $cnsltn = $_GET['cnsltn'];
+    
+ $sqlcnslt="SELECT * FROM `consultation` WHERE `rfid` = '$rfid' and `id` = '$cnsltn' ORDER BY `id` ASC; 
+ ";
+$resultcnslt = mysqli_query($con,$sqlcnslt);
+while($row=mysqli_fetch_assoc($resultcnslt)){
+
+
+  $currentDate = $row['date'];
+  $nurseId = $row['nurseAssisting'];
+  $ftwTime = $row['time'];
+  $ftwCategories = $row['categories'];
+  $ftwBuilding = $row['building'];
+  $ftwConfinement = $row['ftwConfinement'];
+  $ftwMedCategory = $row['ftwCategories'];
+  $ftwSLDateFrom = $row['ftwDateOfSickLeaveFrom'];
+  $ftwSLDateTo = $row['ftwDateOfSickLeaveTo'];
+  $ftwDays = $row['ftwDays'];
+  
+  $ftwAbsenceReason = $row['chiefComplaint'];
+  $ftwDiagnosis = $row['diagnosis'];
+  $ftwBloodChem = $row['bloodChemistry'];
+  $ftwCbc = $row['cbc'];
+  $ftwUrinalysis = $row['urinalysis'];
+  $ftwFecalysis = $row['fecalysis'];
+  $ftwXray = $row['xray'];
+  $ftwOthersLab = $row['others'];
+  $ftwBp = $row['bp'];
+  $ftwTemp = $row['temp'];
+  $ftw02Sat = $row['02sat'];
+  $ftwPr = $row['pr'];
+  $ftwRr = $row['rr'];
+  $ftwRemarks = $row['remarks'];
+  $ftwOthersRemarks = $row['othersRemarks'];
+  $ftwCompleted = $row['statusComplete'];
+  $ftwWithPendingLab = $row['withPendingLab'];
+  $ftwMeds = $row['meds'];
+
+  // $immediateEmail = $row['date'];
+  
+  
+}
+
+  } else {
+  $cnsltn = "not found";
+  
+  }
+
+
+
+
+
 // $ftwMeds = $_SESSION['ftwMeds'];
 if (isset($_SESSION['ftwMeds'])) {
   $ftwMeds = $_SESSION['ftwMeds'];
   // Your code here
 } else {
-  $ftwMeds = "";
+  if(!isset($ftwMeds)){
+    $ftwMeds = "";
+  }
+  
   // Handle the case where $_SESSION['ftwMeds'] is not set
 }
 // echo $ftwMeds;
@@ -141,7 +198,7 @@ $cnsltnOthersRemarks = $_POST['cnsltnOthersRemarks'];
             </div>
             <div class="col-span-2">
             <label class="block  my-auto font-semibold text-gray-900 ">Time: </label>
-            <input type="text" name="cnsltnTime" id="currentTime" name="currentTime" value="<?php echo date('h:i A'); ?>" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+            <input type="text" name="cnsltnTime" id="currentTime" name="currentTime" value="<?php echo $ftwTime; ?>" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
             </div>
             <div class="hidden col-span-2">
                 
@@ -351,7 +408,7 @@ $cnsltnOthersRemarks = $_POST['cnsltnOthersRemarks'];
            <label class="block  my-auto font-semibold text-gray-900 ">Medicine (Add medicine below): </label>
            <select name="cnsltnMeds[]"  id="cnsltnMeds" multiple="multiple" class="form-control js-meds w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
            <?php
-
+// echo $ftwMeds;
 // Split the string into an array using the comma as the delimiter
 if($ftwMeds != ""){
   $medicines = explode(", ", $ftwMeds );
@@ -380,7 +437,7 @@ echo $options;
           <div id="medsdiv" class="col-span-2">
             <label class="block  my-auto font-semibold text-gray-900 ">What's your medicine? </label>
                 
-      <input type="text" id="nameOfMedicine" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      <input type="text"  id="nameOfMedicine" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
             </div>
             
@@ -459,7 +516,7 @@ echo $options;
             <div class="col-span-4">
             <h3 class=" my-auto w-full font-semibold text-gray-900 ">Vital Signs: </h3>
             </div>
-            <div class="flex col-span-3">
+            <div class=" col-span-4">
            
             <div class="grid grid-cols-3 gap-1">
                 <div class="">
@@ -520,14 +577,14 @@ echo $options;
 <ul class="col-span-2 items-center w-full text-[10px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  ">
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
         <div class="gap-2 flex items-center ps-3">
-            <input id="vue-checkbox-list" type="checkbox" <?php if($_SESSION['ftwCompleted'] == 1){ echo "checked";};?> name="cnsltnCompleted" value="1" class=" w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <input id="vue-checkbox-list" type="checkbox" <?php if($ftwCompleted == 1){ echo "checked";};?> name="cnsltnCompleted" value="1" class=" w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
             <label for="vue-checkbox-list" class="w-full py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">Completed</label>
         </div>
     </li>
 
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
         <div class="gap-2 flex items-center ps-3">
-            <input id="vue-checkbox-list" type="checkbox" <?php if($_SESSION['ftwWithPendingLab'] !=""){ echo "checked";};?> value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <input id="vue-checkbox-list" type="checkbox" <?php if($ftwWithPendingLab !=""){ echo "checked";};?> value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
             <label for="vue-checkbox-list" class=" py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">With Pending Lab</label>
             <div class="relative z-0 group">
       <input type="text" name="cnsltnWithPendingLab" value="<?php echo $_SESSION['ftwWithPendingLab'];?>" id="floating_email" class="block py-2.5 px-0  text-[10px] 2xl:text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />

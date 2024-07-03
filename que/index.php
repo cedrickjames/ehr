@@ -15,10 +15,10 @@ $resultCheck = mysqli_query($con, $checkRFID);
 $num_rows = mysqli_num_rows($resultCheck);
 if($num_rows >=1){
 
-    $checkQue = "SELECT * FROM `queing` WHERE `rfidNumber` = '$cardNumber'";
+    $checkQue = "SELECT * FROM `queing` WHERE `rfidNumber` = '$cardNumber' and `status` = 'processing'";
 $resultCheckQue = mysqli_query($con, $checkQue);
 $num_rowsQue = mysqli_num_rows($resultCheckQue);
-
+// echo "asasd", $num_rowsQue;
 if($num_rowsQue ==0){
 
     $addQue = "INSERT INTO `queing`(`rfidNumber`, `status`) VALUES ('$cardNumber','waiting')";
@@ -95,22 +95,25 @@ if($num_rowsQue ==0){
             />
             <button class="hidden" type="submit" name="addQue"></button>
         <h1 class="text-[#193F9F] text-sm font-bold text-center mt-2 mb-2 uppercase "><?php 
-
+  // echo $_SESSION['lastQue'];
         if($_SESSION['lastQue']!= ''){
           $cardNumberSession = $_SESSION['lastQue'];
           $sqlCheckQue = "SELECT * from `employeespersonalinfo` WHERE `rfidNumber` = $cardNumberSession;";
   
           $resultlast = mysqli_query($con,$sqlCheckQue);
-          $num_rows1 = mysqli_num_rows($resultlast);
-          if($num_rows1 >=1){
-              while($row=mysqli_fetch_assoc($resultlast)){
-                  ?> You're now added to the que <span class="text-green-900"> <?php
-                  echo $row['Name'];
-              }
+          if($resultlast){
+            $num_rows1 = mysqli_num_rows($resultlast);
+            if($num_rows1 >=1){
+                while($row=mysqli_fetch_assoc($resultlast)){
+                    ?> You're now added to the que <span class="text-green-900"> <?php
+                    echo $row['Name'];
+                }
+            }
+            else{
+                ?> <span class="text-red-900"> You are not registered! <?php
+            }
           }
-          else{
-              ?> <span class="text-red-900"> You are not registered! <?php
-          }
+
         }
         
 

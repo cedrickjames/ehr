@@ -25,6 +25,83 @@ while($userRow = mysqli_fetch_assoc($resultInfo)){
 $currentDate = date('Y-m-d');
 
 
+$ftwTime = date('h:i A');
+
+
+if (isset($_GET['ftw'])) {
+  $ftw = $_GET['ftw'];
+  
+$sqlcnslt="SELECT * FROM `fittowork` WHERE `rfid` = '$rfid' and `id` = '$ftw' ORDER BY `id` ASC; 
+";
+$resultcnslt = mysqli_query($con,$sqlcnslt);
+while($row=mysqli_fetch_assoc($resultcnslt)){
+
+
+$currentDate = $row['date'];
+$ftwTime = $row['time'];
+$ftwCategories = $row['categories'];
+$ftwBuilding = $row['building'];
+$ftwConfinement = $row['confinementType'];
+$ftwMedCategory = $row['medicalCategory'];
+$ftwSLDateFrom = $row['fromDateOfSickLeave'];
+$ftwSLDateTo = $row['toDateOfSickLeave'];
+$ftwDays = $row['days'];
+
+$ftwAbsenceReason = $row['reasonOfAbsence'];
+$ftwDiagnosis = $row['diagnosis'];
+$ftwBloodChem = $row['bloodChemistry'];
+$ftwCbc = $row['cbc'];
+$ftwUrinalysis = $row['urinalysis'];
+$ftwFecalysis = $row['fecalysis'];
+$ftwXray = $row['xray'];
+$ftwOthersLab = $row['others'];
+$ftwBp = $row['bp'];
+$ftwTemp = $row['temp'];
+$ftw02Sat = $row['02sat'];
+$ftwPr = $row['pr'];
+$ftwRr = $row['rr'];
+$ftwRemarks = $row['remarks'];
+$ftwOthersRemarks = $row['othersRemarks'];
+$ftwCompleted = $row['statusComplete'];
+$ftwWithPendingLab = $row['withPedingLab'];
+
+$ftwMeds =$row['medicine'];
+// $immediateEmail = $row['date'];
+
+
+}
+
+} else {
+$cnsltn = "not found";
+$ftwCategories = "";
+$ftwBuilding ="";
+$ftwConfinement="";
+$ftwMedCategory ="";
+$ftwSLDateFrom ="";
+$ftwSLDateTo ="";
+$ftwDays ="";
+
+$ftwAbsenceReason ="";
+$ftwDiagnosis ="";
+$ftwBloodChem ="";
+$ftwCbc ="";
+$ftwUrinalysis ="";
+$ftwFecalysis ="";
+$ftwXray ="";
+$ftwOthersLab ="";
+$ftwBp ="";
+$ftwTemp ="";
+$ftw02Sat ="";
+$ftwPr ="";
+$ftwRr ="";
+$ftwRemarks ="";
+$ftwOthersRemarks ="";
+$ftwCompleted ="";
+$ftwWithPendingLab ="";
+
+$ftwMeds ="";
+}
+
 
 
 if(isset($_POST['addFTW'])){
@@ -166,14 +243,14 @@ $ftwMeds = implode(', ', $ftwMeds);
             </div>
             <div class=" col-span-2">
             <label class="block my-auto  font-semibold text-gray-900 ">Time: </label>
-            <input type="text" id="currentTime" name="ftwTime" value="<?php echo date('h:i A'); ?>" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500">
+            <input type="text" id="currentTime" name="ftwTime" value="<?php echo $ftwTime; ?>" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500">
             </div>
             <div class="  col-span-2">
                 
             <label class="block my-auto  font-semibold text-gray-900 ">Categories: </label>
 <select id="categoriesSelect" name="ftwCategories" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-  <option selected value="counted">Counted</option>
-  <option value="notCounted">Not Counted</option>
+  <option <?php if ($ftwCategories == "counted"){ echo "selected" ;} ?> value="counted">Counted</option>
+  <option <?php if ($ftwCategories == "notCounted"){ echo "selected" ;} ?> value="notCounted">Not Counted</option>
 
 </select>
 
@@ -182,10 +259,10 @@ $ftwMeds = implode(', ', $ftwMeds);
                 
                 <label class="block my-auto  font-semibold text-gray-900 ">Building:</label>
     <select id="buildingSelect" name="ftwBuilding" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-      <option selected value="GPI1">GPI 1</option>
-      <option value="GPI 5">GPI 5</option>
-      <option value="GPI 7">GPI 7</option>
-      <option value="GPI 8">GPI 8</option>
+      <option <?php if ($ftwBuilding == "GPI 1"){ echo "selected" ;} ?> value="GPI 1">GPI 1</option>
+      <option <?php if ($ftwBuilding == "GPI 5"){ echo "selected" ;} ?> value="GPI 5">GPI 5</option>
+      <option <?php if ($ftwBuilding == "GPI 7"){ echo "selected" ;} ?> value="GPI 7">GPI 7</option>
+      <option <?php if ($ftwBuilding == "GPI 8"){ echo "selected" ;} ?> value="GPI 8">GPI 8</option>
     </select>
     
                 </div>
@@ -194,8 +271,8 @@ $ftwMeds = implode(', ', $ftwMeds);
                 
                 <label class="block my-auto  font-semibold text-gray-900 ">Confinement Type: </label>
     <select id="categoriesSelect" name="ftwConfinement" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-      <option selected value="Hospital Confinement">Hospital Confinement</option>
-      <option value="Home Confinement">Home Confinement</option>
+      <option <?php if ($ftwConfinement == "Hospital Confinement"){ echo "selected" ;} ?> value="Hospital Confinement">Hospital Confinement</option>
+      <option <?php if ($ftwConfinement == "Home Confinement"){ echo "selected" ;} ?> value="Home Confinement">Home Confinement</option>
     
     </select>
     
@@ -204,10 +281,10 @@ $ftwMeds = implode(', ', $ftwMeds);
                     
                     <label class="block my-auto  font-semibold text-gray-900 ">Medical Category:</label>
         <select id="categoriesSelect" name="ftwMedCategory" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option selected value="Common">Common</option>
-          <option value="Long Term">Long Term</option>
-          <option value="Maternity">Maternity</option>
-          <option value="Work Related">Work Related</option>
+          <option <?php if ($ftwMedCategory == "common"){ echo "selected" ;} ?>   value="common">Common</option>
+          <option <?php if ($ftwMedCategory == "Long Term"){ echo "selected" ;} ?> value="Long Term">Long Term</option>
+          <option <?php if ($ftwMedCategory == "Maternity"){ echo "selected" ;} ?>  value="Maternity">Maternity</option>
+          <option <?php if ($ftwMedCategory == "Work Related"){ echo "selected" ;} ?> value="Work Related">Work Related</option>
         </select>
         
                     </div>
@@ -238,7 +315,7 @@ $ftwMeds = implode(', ', $ftwMeds);
 
             <div class=" gap-4 col-span-2">
             <label class="block  my-auto w-full font-semibold text-gray-900 ">Reason of Absence: </label>
-             <input type="text"  name="ftwAbsenceReason" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" value="<?php echo $ftwAbsenceReason ?>"  name="ftwAbsenceReason" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class=" gap-4 col-span-2">
             <label class="block  my-auto  font-semibold text-gray-900 ">Diagnosis: </label>
@@ -252,13 +329,14 @@ $ftwMeds = implode(', ', $ftwMeds);
          while($list=mysqli_fetch_assoc($result))
          {
          $diagnosis=$list["diagnosisName"];
-         
+         ?>
+         <option <?php if ($ftwDiagnosis == $diagnosis){ echo "selected" ;} ?> value=<?php echo $diagnosis; ?> ><?php echo $diagnosis; ?></option>
+         <?php
 
-         echo "<option value='$diagnosis' >$diagnosis</option>";
+        //  echo "<option value='$diagnosis' >$diagnosis</option>";
         
          }
       ?>
-    
     </select>
 
 
@@ -309,7 +387,26 @@ $ftwMeds = implode(', ', $ftwMeds);
            <label class="block  my-auto font-semibold text-gray-900 ">Medicine (Add medicine below): </label>
            <select name="ftwMeds[]"  id="ftwMeds" multiple="multiple" class="form-control js-meds w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       
+           <?php
+// echo $ftwMeds;
+// Split the string into an array using the comma as the delimiter
+if($ftwMeds != ""){
+  $medicines = explode(", ", $ftwMeds );
 
+$options = "";
+foreach ($medicines as $medicine) {
+    // Add the whitespace before the value to match the desired output
+    $options .= '<option selected value="' . $medicine . '">' . $medicine . '</option>' . PHP_EOL;
+}
+
+echo $options;
+}
+
+?>
+
+            <?php 
+            
+            ?>
         </select>
             <!-- <input type="text"  name="cnsltnMeds"  disabled value="<?php echo $ftwAbsenceReason ?>" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
            </div>
@@ -362,32 +459,32 @@ $ftwMeds = implode(', ', $ftwMeds);
             <div class="ml-4 grid grid-cols-4  col-span-4 gap-1">
             <div class= "col-span-2">
             <label class="block my-auto  font-semibold text-gray-900 ">Blood Chemistry: </label>
-             <input type="text"  name="ftwBloodChem" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" value="<?php echo $ftwBloodChem;?>" name="ftwBloodChem" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             
             <div class= "col-span-2">
             <label class="block my-auto  font-semibold text-gray-900 ">CBC: </label>
-             <input type="text"  name="ftwCbc" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" value="<?php echo $ftwCbc;?>"  name="ftwCbc" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             
             <div class= "col-span-2">
             <label class="block my-auto  font-semibold text-gray-900 ">Urinalysis: </label>
-             <input type="text"  name="ftwUrinalysis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" value="<?php echo $ftwUrinalysis;?>" name="ftwUrinalysis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             
             <div class= "col-span-2">
             <label class="block my-auto  font-semibold text-gray-900 ">Fecalysis: </label>
-             <input type="text"  name="ftwFecalysis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" value="<?php echo $ftwFecalysis;?>"  name="ftwFecalysis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             
             <div class= "col-span-2">
             <label class="block my-auto  font-semibold text-gray-900 ">X-ray: </label>
-             <input type="text"  name="ftwXray" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" value="<?php echo $ftwXray;?>"  name="ftwXray" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             
             <div class= "col-span-2">
             <label class="block my-auto  font-semibold text-gray-900 ">Others: </label>
-             <input type="text"  name="ftwOthersLab" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" value="<?php echo $ftwOthersLab;?>" name="ftwOthersLab" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="col-span-4">
             <h3 class=" my-auto w-full font-semibold text-gray-900 ">Vital Signs: </h3>
@@ -398,23 +495,23 @@ $ftwMeds = implode(', ', $ftwMeds);
             <div class="grid grid-cols-3 gap-1">
                 <div class= "">
                 <label class="block  my-auto  font-semibold text-gray-900 ">BP: </label>
-             <input type="text"  name="ftwBp" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text"  value="<?php echo $ftwBp;?>" name="ftwBp" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class= "">
                 <label class="block  my-auto  font-semibold text-gray-900 ">Temp: </label>
-             <input type="text"  name="ftwTemp" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" value="<?php echo $ftwTemp;?>" name="ftwTemp" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class= "">
                 <label class="block  my-auto  font-semibold text-gray-900 ">02 Sat: </label>
-             <input type="text"  name="ftw02Sat" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text"  value="<?php echo $ftw02Sat;?>" name="ftw02Sat" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class= "">
                 <label class="block  my-auto  font-semibold text-gray-900 ">PR: </label>
-             <input type="text"  name="ftwPr" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" value="<?php echo $ftwPr;?>" name="ftwPr" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
                 <div class= "">
                 <label class="block  my-auto  font-semibold text-gray-900 ">RR: </label>
-             <input type="text"  name="ftwRr" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text" value="<?php echo $ftwRr;?>" name="ftwRr" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
              
             </div>
@@ -425,17 +522,18 @@ $ftwMeds = implode(', ', $ftwMeds);
             <div class="col-span-4 ">
                 <label class="block  my-auto  font-semibold text-gray-900 ">Remarks: </label>
                 <select id="remarksSelect" name="ftwRemarks"  class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-  <option selected value="Fit to Work">Fit To Work</option>
-  <option value="Late Fit to Work">Late FTW</option>
-  <option value="No Medical Certificate">No Medical Certificate</option>
-  <option value="Others">Others</option>
+                <option <?php if ($ftwRemarks == "Fit To Work"){ echo "selected" ;} ?>  value="Fit To Work">Fit To Work</option>
+  <option <?php if ($ftwRemarks == "Late FTW"){ echo "selected" ;} ?>  value="Late FTW">Late FTW</option>
+  <option <?php if ($ftwRemarks == "No Medical Certificate"){ echo "selected" ;} ?>  value="No Medical Certificate">No Medical Certificate</option>
+  <option <?php if ($ftwRemarks == "Others"){ echo "selected" ;} ?>  value="Others">Others</option>
+
 
 
 </select>
                 </div>
                 <div class="col-span-4 gap-4">
                 <label class="block  my-auto  font-semibold text-gray-900 ">Others: </label>
-             <input type="text"   name="ftwOthersRemarks" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+             <input type="text"  value="<?php echo $ftwOthersRemarks;?>" name="ftwOthersRemarks" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
 
                 <div class="col-span-4 gap-4">
@@ -444,17 +542,17 @@ $ftwMeds = implode(', ', $ftwMeds);
 <ul class="col-span-2 items-center w-full  text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  ">
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
         <div class="gap-2 flex items-center ps-3">
-            <input id="vue-checkbox-list" type="checkbox"  name="ftwCompleted"  value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">
+            <input id="vue-checkbox-list" type="checkbox"   <?php if($ftwCompleted == 1){ echo "checked";};?>  name="ftwCompleted"  value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">
             <label for="vue-checkbox-list" class="w-full py-3 ms-2  text-gray-900 ">Completed</label>
         </div>
     </li>
 
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
         <div class="gap-2 flex items-center ps-3">
-            <input id="vue-checkbox-list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">
+            <input id="vue-checkbox-list" type="checkbox"  <?php if($ftwWithPendingLab !=""){ echo "checked";};?> value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">
             <label for="vue-checkbox-list" class=" py-3 ms-2  text-gray-900 ">With Pending Lab</label>
             <div class="relative z-0 group">
-      <input type="text" name="ftwWithPendingLab" id="floating_email" class="block py-2.5 px-0  text-[12px] 2xl:text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
+      <input type="text" name="ftwWithPendingLab" value="<?php echo $_SESSION['ftwWithPendingLab'];?>" id="floating_email" class="block py-2.5 px-0  text-[12px] 2xl:text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
       <label for="floating_email" class="peer-focus:font-medium absolute text-[12px] 2xl:text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"></label>
   </div>
         </div>

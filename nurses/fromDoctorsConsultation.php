@@ -99,6 +99,79 @@ $(document).ready(function() {
 
         }
     });
+
+
+    if ($("#interventionSelect").val() === "Clinic Rest Only" || $("#interventionSelect").val() === "Medication, Clinic Rest and Medical Consultation") {
+
+if($("#interventionSelect").val() === "Clinic Rest Only"){
+  $("#clinicRestLabel").removeClass("hidden");
+$("#clinicRestTime").removeClass("hidden");
+
+$("#medsqtydiv").addClass("hidden");
+$("#medsdiv").addClass("hidden");
+
+
+
+
+
+}else{
+  $("#clinicRestLabel").removeClass("hidden");
+$("#clinicRestTime").removeClass("hidden");
+$("#medsqtydiv").removeClass("hidden");
+$("#medsdiv").removeClass("hidden");
+}
+$("#interventionId").removeClass("col-span-2");
+$("#interventionId").addClass("col-span-4");
+  // Remove the "hidden" class from the input with id "medLab"
+
+
+}
+else{
+  $("#interventionId").removeClass("col-span-4");
+  $("#interventionId").addClass("col-span-2");
+
+$("#clinicRestLabel").addClass("hidden");
+$("#clinicRestTime").addClass("hidden");
+$("#medsqtydiv").removeClass("hidden");
+$("#medsdiv").removeClass("hidden");
+} 
+    $("#interventionSelect").change(function() {
+
+if ($(this).val() === "Clinic Rest Only" || $(this).val() === "Medication, Clinic Rest and Medical Consultation") {
+
+  if($(this).val() === "Clinic Rest Only"){
+    $("#clinicRestLabel").removeClass("hidden");
+  $("#clinicRestTime").removeClass("hidden");
+
+  $("#medsqtydiv").addClass("hidden");
+  $("#medsdiv").addClass("hidden");
+
+  }else{
+    $("#clinicRestLabel").removeClass("hidden");
+  $("#clinicRestTime").removeClass("hidden");
+  $("#medsqtydiv").removeClass("hidden");
+  $("#medsdiv").removeClass("hidden");
+  }
+
+  $("#interventionId").removeClass("col-span-2");
+$("#interventionId").addClass("col-span-4");
+    // Remove the "hidden" class from the input with id "medLab"
+
+
+}
+else{
+  $("#interventionId").removeClass("col-span-4");
+  $("#interventionId").addClass("col-span-2");
+
+  
+  $("#clinicRestLabel").addClass("hidden");
+  $("#clinicRestTime").addClass("hidden");
+  $("#medsqtydiv").removeClass("hidden");
+  $("#medsdiv").removeClass("hidden");
+} 
+});
+
+
 });
 
 

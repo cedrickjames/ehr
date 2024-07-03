@@ -1,3 +1,6 @@
+
+
+
 <div class="text-[9px] 2xl:text-lg mb-5">
 <p class="mb-2"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Previous Consultation</span></p>
 
@@ -9,6 +12,7 @@
                     <thead>
                         <tr>
                         <th >No.</th>
+                        <th>Action</th>
                             <th >Status</th>
                             <th >Date</th>
                             <th >Time</th>
@@ -39,9 +43,13 @@
         while($row=mysqli_fetch_assoc($result)){
 
                 ?>
-
+                
                 <tr>
                 <td> <?php echo $cnsltnNo;?> </td>  
+                <td>
+                <button type="button"  onclick="showData(<?php echo $row['id'];?>)" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Show</button>    
+                </td>  
+
                 <td> <?php if($row['statusComplete'] == true){ echo "Completed";} else {echo "With Pending Lab";}?> </td>  
                 <td> <?php echo $row['date'];?> </td>  
                 <td> <?php echo $row['time'];?> </td> 
@@ -74,3 +82,22 @@
                     </div>
 
         </div>
+
+
+        <script>
+
+            function showData(consultId){
+                var currentUrl = window.location.href; // Get the current URL
+            var url = new URL(currentUrl);
+            var rfParam = url.searchParams.get('rf');
+            if (rfParam) {
+                // Construct the new URL by appending the consultId
+
+                window.location.href = "consultation.php?rf="+ rfParam + '&cnsltn=' + consultId; // Navigate to the new URL
+            } else {
+                console.error('The "rf" parameter is not present in the current URL.');
+            }
+            
+            }
+
+</script>

@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
           $rfid =  $_POST['rfid'.$queNo];
           $_SESSION['rfid'] = $rfid;
-          $sql = "UPDATE `queing` SET `status`='processing', `nurseAssisting` = '$userID' WHERE `rfidNumber` = '$rfid'";
+          $sql = "UPDATE `queing` SET `status`='processing', `nurseAssisting` = '$userID' WHERE `rfidNumber` = '$rfid' and `status` = 'waiting'";
           $results = mysqli_query($con,$sql);
           
       }
