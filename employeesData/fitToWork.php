@@ -9,16 +9,20 @@ $rfid = "not found";
 
 }
 
-$sqluserinfo = "SELECT employeespersonalinfo.rfidNumber, employeespersonalinfo.*
+
+$sqluserinfo = "SELECT employeespersonalinfo.rfidNumber, employeespersonalinfo.*, queing.*, users.email
 FROM queing
-INNER JOIN employeespersonalinfo ON employeespersonalinfo.rfidNumber = queing.rfidNumber where employeespersonalinfo.rfidNumber = '$rfid';";
+
+INNER JOIN employeespersonalinfo ON employeespersonalinfo.rfidNumber = queing.rfidNumber 
+INNER JOIN users ON users.idNumber = queing.nurseAssisting
+where employeespersonalinfo.rfidNumber = '$rfid' AND queing.status = 'processing';";
+
 $resultInfo = mysqli_query($con, $sqluserinfo);
 while($userRow = mysqli_fetch_assoc($resultInfo)){
   $department = $userRow['department'];
   $name = $userRow['Name'];
   $secDept = $userRow['secDept'];
-
-
+  $nurse_email = $userRow['email'];
 }
 
 
@@ -148,28 +152,14 @@ $ftwMeds = implode(', ', $ftwMeds);
   $sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `othersRemarks`, `statusComplete`, `withPedingLab`) VALUES ('head','$department','$rfid','$ftwDate','$ftwTime','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab')";
   $results = mysqli_query($con,$sql);
 
-
   if($results){
-
-
-    // $sql1 = "Select * FROM `user` WHERE `username` = '$assigned'";
-    // $result = mysqli_query($con, $sql1);
-    // while($list=mysqli_fetch_assoc($result))
-    // {
-    // $personnelEmail=$list["email"];
-    // $perseonnelName=$list["name"];
-
-    // }
        $sql2 = "Select * FROM `sender`";
-        $result2 = mysqli_query($con, $sql2);
+       $result2 = mysqli_query($con, $sql2);
         while($list=mysqli_fetch_assoc($result2))
         {
         $account=$list["email"];
         $accountpass=$list["password"];
-
-          } 
-
-          
+        } 
 
     $subject ='Fit to Work';
     $message = 'Hi '.$immediateHead.',<br> <br> Mr./Ms. '.$name.' is now fit to work. <br><br> Details <br>Name: '.$name.'<br>Sect/Dept: '.$secDept.' <br>Reason of Absence: '.$ftwAbsenceReason.'<br>Date of Absence: '.$ftwSLDateFrom.' - '.$ftwSLDateTo.'<br>No. of Day/s: '.$ftwDays.' <br>Remarks: '.$ftwRemarks.'<br>Others: '.$ftwOthersRemarks.'<br><br><br><br> This is a generated email. Please do not reply. <br><br> Electronic Health System';
@@ -201,11 +191,13 @@ $ftwMeds = implode(', ', $ftwMeds);
         
         //Recipients
         $mail->setFrom('healthbenefits@glorylocal.com.ph', 'Health Benefits');
-        $mail->addAddress($immediateEmail);              
+        // $mail->addAddress($immediateEmail);      
+        // $mail->AddCC($nurse_email);             
+        $mail->addAddress('o.bugarin@glory.com.ph');      
+        $mail->AddCC('k.marero@glorylocal.com.ph');     
         $mail->isHTML(true);                                  
         $mail->Subject = $subject;
         $mail->Body    = $message;
-        $mail->addCC('mis.dev@glory.com.ph');
         $mail->send();
 
               $_SESSION['message'] = 'Message has been sent';
@@ -396,7 +388,7 @@ if($ftwMeds != ""){
 $options = "";
 foreach ($medicines as $medicine) {
     // Add the whitespace before the value to match the desired output
-    $options .= '<option selected value="' . $medicine . '">' . $medicine . '</option>' . PHP_EOL;
+    $options .= '<option selected value="' . $medicine . '" >' . $medicine . '</option>' . PHP_EOL;
 }
 
 echo $options;
@@ -569,11 +561,11 @@ echo $options;
     <select id="immediateHead" name="immediateHead" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
     <option selected disabled value="">Please select</option>
    <?php
-         $sql1 = "Select * FROM `emaillist` WHERE `department` = '$department'";
+         $sql1 = "Select * FROM `employeespersonalinfo` WHERE `department` = '$department' AND `level` = 'head'";
          $result = mysqli_query($con, $sql1);
          while($list=mysqli_fetch_assoc($result))
          {
-         $immediateName=$list["name"];
+         $immediateName=$list["Name"];
          $email=$list["email"];
 
          echo "<option value='$immediateName' data-email='$email' >$immediateName</option>";

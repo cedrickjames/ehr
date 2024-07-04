@@ -1,3 +1,35 @@
+<?php
+session_start();
+include ("includes/connect.php");
+
+// if(isset( $_SESSION['connected'])){
+
+//   header("location: nurses");
+  
+//     }
+
+    if (isset($_POST['register'])) {
+      $idnumber = $_POST['idnumber'];
+      $name = $_POST['name'];
+      $email = $_POST['email'];
+      $userDepartment = $_POST['userDepartment'];
+      $userType = $_POST['userType'];
+      $password = $_POST['password'];
+      $password = password_hash($password, PASSWORD_DEFAULT);
+      $userName = strpos($name, " ");
+      $userName = substr($name, 0, $userName);
+
+      $sql = "INSERT INTO `users`(`idNumber`, `name`, `userName`, `password`, `type`, `department`,`email`, `status`) VALUES ('$idnumber','$name','$userName','$password','$userType','$userDepartment', '$email', 0)";
+      $results = mysqli_query($con, $sql);
+
+      if ($result)
+      {
+        
+      }
+    }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,37 +71,79 @@
       <div class=" pt-20 px-28 2xl:pt-40 2xl:px-40 w-full md:w-8/12 lg:w-6/12 mb-12 md:mb-0">
 
 
-        <form method="post" action="login.php">
+        <form method="post" action="signup.php">
 
-        <h1 class="text-[#193F9F] text-xl font-bold text-center mb-10 uppercase ">Sign in here</h1>
+        <h1 class="text-[#193F9F] text-xl font-bold text-center mb-10 uppercase ">Sign up here</h1>
         <!-- <h1 class="text-gray-400 text-xl font-bold text-center mb-10">Welcome to Helpdesk System</h1> -->
 
-          <!-- password input -->
+          <!-- Id Number -->
             <div class="mb-4">
             <input
               type="text"
-              name="username"
+              name="idnumber"
               autocomplete="off"
               class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              placeholder="User Name"
+              placeholder="Employee Number"
             />
           </div>
+            <!-- Name -->
+            <div class="mb-4">
+            <input
+              type="text"
+              name="name"
+              autocomplete="off"
+              class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              placeholder="Name"
+            />
+          </div>
+        <!-- Email -->
+          <div class="mb-4">
+            <input
+              type="text"
+              name="email"
+              autocomplete="off"
+              class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              placeholder="Email"
+            />
+          </div>
+          <!-- User Type -->
+            <div class="mb-4">
+            <select id="userType" name="userType" class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
+                <option value="" disabled selected>User Type</option>
+                <option value="doctor">Doctor</option>
+                <option value="head">Head</option>
+                <option value="nurse">Nurse</option>
+                <option value="hr">HR</option>
+              </select>
+            </div>
+    <!-- Department -->
+     <div class="mb-4">            
+      <select id="userDepartment" name="userDepartment" class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
+      <option value="" disabled selected>Department</option>
+        <?php
+        $sql = "SELECT DISTINCT TRIM(department) AS department FROM users";
+        $result = mysqli_query($con, $sql);
+
+        while ($row = mysqli_fetch_assoc($result)) {
+        ?> <option value="<?php echo $row['department']; ?>"><?php echo $row['department']; ?></option> <?php } ?>
+        </select>
+      </div>
 
           <!-- Password input -->
           <div class="mb-4">
             <input type="password" name="password" class=" w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Password">
           </div>
-          <div class="mb-4">
+          <!-- <div class="mb-4">
             <input type="password" name="password" class=" w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Password">
-          </div>
+          </div> -->
 
 
           <!-- Submit button -->
-          <button type="submit" name="submit" class="mb-2 inline-block px-7 py-3 bg-[#2F5A8D] text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full" data-mdb-ripple="true" data-mdb-ripple-color="light">
+          <button type="submit" name="register" class="mb-2 inline-block px-7 py-3 bg-[#2F5A8D] text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full" data-mdb-ripple="true" data-mdb-ripple-color="light">
             Register
           </button>
           <div class="justify-center flex">
-          <a href="login.php" class="text-[#193F9F] m-auto text-xs font-bold text-center mb-10 uppercase ">Already have an account? <span class="underline">Signin here!</span></a>
+          <a href="login.php" class="text-[#193F9F] m-auto text-xs font-bold text-center mb-10 uppercase ">Already have an account? <span class="underline">Sign in here!</span></a>
 
           </div>
   
