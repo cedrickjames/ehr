@@ -11,20 +11,22 @@ if(isset( $_SESSION['connected'])){
     if(isset($_POST['login'])){
       $username = $_POST['username'];
       $password = $_POST['password'];
-
-      $sql1 = "Select * FROM `users` WHERE `userName`='$username'";
+      $sql1 = "Select * FROM `users` WHERE `userName`='$username' AND `status` = '1'";
       $result = mysqli_query($con, $sql1);
       $numrows = mysqli_num_rows($result);
       if($numrows >=1){
       while($userRow = mysqli_fetch_assoc($result)){
         $userpass = $userRow['password'];
         $level = $userRow['type'];
-        if($password == $userpass){
+        $email = $userRow['email'];
+        if (password_verify($password, $userpass)) 
+      {
           $_SESSION['userID'] = $userRow['idNumber'];
           $_SESSION['name'] = $userRow['name'];
           $_SESSION['rfid'] = "";
           $_SESSION['department'] = $userRow['department'];
           $_SESSION['lastQue'] = '';
+          $_SESSION['email'] = $email;
 
           $_SESSION['ftwDate']="";
           $_SESSION['ftwTime']="";
@@ -149,10 +151,10 @@ if(isset( $_SESSION['connected'])){
           <button type="submit" name="login" class="mb-2 inline-block px-7 py-3 bg-[#2F5A8D] text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full" data-mdb-ripple="true" data-mdb-ripple-color="light">
             Proceed
           </button>
-          <div class="justify-center flex">
-          <a href="signup.php" class="text-[#193F9F] m-auto text-xs font-bold text-center mb-10 uppercase ">Not register Yet? <span class="underline">Signup here!</span></a>
+          <!-- <div class="justify-center flex">
+          <a href="signup.php" class="text-[#193F9F] m-auto text-xs font-bold text-center mb-10 uppercase ">Not register Yet? <span class="underline">Sign up here!</span></a>
 
-          </div>
+          </div> -->
   
         </form>
 
