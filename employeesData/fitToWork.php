@@ -21,7 +21,7 @@ $resultInfo = mysqli_query($con, $sqluserinfo);
 while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $department = $userRow['department'];
   $name = $userRow['Name'];
-  $secDept = $userRow['secDept'];
+  $section = $userRow['section'];
   $nurse_email = $userRow['email'];
 }
 
@@ -158,7 +158,7 @@ if (isset($_POST['addFTW'])) {
     }
 
     $subject = 'Fit to Work';
-    $message = 'Hi ' . $immediateHead . ',<br> <br> Mr./Ms. ' . $name . ' is now fit to work. <br><br> Details <br>Name: ' . $name . '<br>Sect/Dept: ' . $secDept . ' <br>Reason of Absence: ' . $ftwAbsenceReason . '<br>Date of Absence: ' . $ftwSLDateFrom . ' - ' . $ftwSLDateTo . '<br>No. of Day/s: ' . $ftwDays . ' <br>Remarks: ' . $ftwRemarks . '<br>Others: ' . $ftwOthersRemarks . '<br><br><br><br> This is a generated email. Please do not reply. <br><br> Electronic Health System';
+    $message = 'Hi ' . $immediateHead . ',<br> <br> Mr./Ms. ' . $name . ' is now fit to work. <br><br> Details <br>Name: ' . $name . '<br>Sect/Dept: ' . $section . ' <br>Reason of Absence: ' . $ftwAbsenceReason . '<br>Date of Absence: ' . $ftwSLDateFrom . ' - ' . $ftwSLDateTo . '<br>No. of Day/s: ' . $ftwDays . ' <br>Remarks: ' . $ftwRemarks . '<br>Others: ' . $ftwOthersRemarks . '<br><br><br><br> This is a generated email. Please do not reply. <br><br> Electronic Health System';
 
 
     require '../vendor/autoload.php';
@@ -672,7 +672,7 @@ if (isset($_POST['updateFTW'])) {
 
       <div class="col-span-4 justify-center flex gap-2">
         <?php
-        if ($ftw == "" || $ftw == NULL) { ?>
+        if (!isset($_GET['ftw'])) { ?>
           <button type="submit" name="addFTW" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Record</button>
 
           <button type="submit" name="proceedToConsultation" class="w-64 text-white bg-gradient-to-r from-[#9b0066]  to-[#ca9ac1] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300  shadow-lg shadow-pink-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Proceed to Consultation</button>
@@ -692,8 +692,5 @@ if (isset($_POST['updateFTW'])) {
 
 
 <script>
-  <?php echo $_GET['ftw'] ?>
-  if (element.getAttribute("data-reco") == 1) {
-    $("#buttonPrintDiv").addClass("hidden");
-  }
+
 </script>

@@ -11,7 +11,7 @@ if (isset($_GET['rf'])) {
     <p class="mb-2"><span class=" self-center text-md font-semibold whitespace-nowrap  text-[#193F9F]">Sick Leave (Fit to Work)</span></p>
 
     <div id="" class="">
-        <div class=" p-4 rounded-lg  bg-gray-50 " id="headApproval" role="tabpanel" aria-labelledby="profile-tab">
+        <div class=" p-4 rounded-lg  bg-gray-50 " id="" role="tabpanel" aria-labelledby="profile-tab">
             <section class="mt-2 2xl:mt-10">
                 <table id="sickLeave" class="display text-[9px] 2xl:text-sm" style="width:100%">
                     <thead>
@@ -53,7 +53,7 @@ if (isset($_GET['rf'])) {
                                 <td><?php echo $row['medicalCategory'] ?></td>
                                 <td><?php echo $row['confinementType'] ?></td>
                                 <td><?php echo $date_of_absence ?></td>
-                                <td><?php echo $row[''] ?></td>
+                                <td> <?php echo $row['bloodChemistry'] . ' ' . $row['cbc'] . ' ' . $row['urinalysis'] . ' ' . $row['fecalysis'] . ' ' . $row['xray'] . ' ' . $row['others'] . ' ' . $row['bp'] . ' ' . $row['temp'] . ' ' . $row['02sat'] . ' ' . $row['pr'] . ' ' . $row['rr']; ?> </td>
                                 <td><?php echo $row['remarks'] ?></td>
 
                             </tr>
