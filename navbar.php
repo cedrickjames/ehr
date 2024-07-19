@@ -128,7 +128,7 @@ if (isset($_POST['submitNewPassword'])) {
 <!-- drawer component -->
 
 <!-- side bar drawer component -->
-<div id="sidebar" class="text-xs 2xl:text-xl hidden lg:block  fixed top-16 left-0 z-40 h-screen pl-4 pr-0 overflow-y-auto transition-transform    transform-none" tabindex="-1" aria-labelledby="sidebar-label" aria-modal="true" role="dialog">
+<div id="drawer-navigation" class="text-xs 2xl:text-xl hidden lg:block  fixed top-16 left-0 z-40 h-screen pl-4 pr-0 overflow-y-auto transition-transform    transform-none" tabindex="-1" aria-labelledby="drawer-navigation-label" aria-modal="true" role="dialog">
 
 
   <!-- <button type="button"onclick="shows()"  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center   >
