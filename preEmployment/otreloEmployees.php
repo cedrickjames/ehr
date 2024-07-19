@@ -27,11 +27,11 @@ if (isset($_POST['addPreEmployment'])) {
     $others = $_POST['others'];
     $followupstatus = $_POST['followupstatus'];
     $status = $_POST['status'];
-    $assessor = $_POST['assessor'];
+    $attendee = $_POST['attendee'];
     $confirmationdate = $_POST['confirmationdate'];
     $fmc = $_POST['fmc'];
 
-    $addPreEmploymentOtrelo = "INSERT INTO `preemployment`(`dateReceived`, `datePerformed`, `rfidNumber`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `assessor`,`confirmationDate`, `FMC`) VALUES ('$date_received','$date_performed','$rfid','$name','$section','$imc','$oeh','$pe','$cbc','$ua','$fa','$cxr','$va', '$den', '$dt', '$pt', '$others', '$followupstatus', '$status','$assessor', '$confirmationdate', '$fmc')";
+    $addPreEmploymentOtrelo = "INSERT INTO `preemployment`(`dateReceived`, `datePerformed`, `rfidNumber`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`,`confirmationDate`, `FMC`) VALUES ('$date_received','$date_performed','$rfid','$name','$section','$imc','$oeh','$pe','$cbc','$ua','$fa','$cxr','$va', '$den', '$dt', '$pt', '$others', '$followupstatus', '$status','$attendee', '$confirmationdate', '$fmc')";
     $resultInfo = mysqli_query($con, $addPreEmploymentOtrelo);
 
     if ($resultInfo) {
@@ -60,11 +60,11 @@ if (isset($_POST['editPreEmployment'])) {
     $others = $_POST['editOthers'];
     $followupstatus = $_POST['editFollowupstatus'];
     $status = $_POST['editStatus'];
-    $assessor = $_POST['editAssessor'];
+    $attendee = $_POST['editAttendee'];
     $confirmationdate = $_POST['editConfirmationdate'];
     $fmc = $_POST['editFmc'];
 
-    $editPreEmploymentOtrelo = "UPDATE `preemployment`SET `dateReceived`='$date_received' , `datePerformed` = '$date_performed', `name`= '$name', `section`= '$section', `IMC`= '$imc', `OEH`= '$oeh', `PE`= '$pe', `CBC`= '$cbc', `U_A`= '$ua', `FA`= '$fa', `CXR`= '$cxr', `VA`= '$va', `DEN`= '$den', `DT`= '$dt', `PT`= '$pt', `otherTest`= '$others', `followUpStatus`= '$followupstatus', `status`= '$status', `assessor` = '$assessor',`confirmationDate`= '$confirmationdate', `FMC`= '$fmc' WHERE `rfidNumber`='$rfid'";
+    $editPreEmploymentOtrelo = "UPDATE `preemployment`SET `dateReceived`='$date_received' , `datePerformed` = '$date_performed', `name`= '$name', `section`= '$section', `IMC`= '$imc', `OEH`= '$oeh', `PE`= '$pe', `CBC`= '$cbc', `U_A`= '$ua', `FA`= '$fa', `CXR`= '$cxr', `VA`= '$va', `DEN`= '$den', `DT`= '$dt', `PT`= '$pt', `otherTest`= '$others', `followUpStatus`= '$followupstatus', `status`= '$status', `attendee` = '$attendee',`confirmationDate`= '$confirmationdate', `FMC`= '$fmc' WHERE `rfidNumber`='$rfid'";
     $resultInfo = mysqli_query($con, $editPreEmploymentOtrelo);
 
     if ($resultInfo) {
@@ -124,7 +124,7 @@ function saveToDatabase($con, $data, $count)
             $otherTest = $row['14'];
             $followUpStatus = $row['15'];
             $status = $row['16'];
-            $assessor = $row['17'];
+            $attendee = $row['17'];
             $confirmationDate = $row['18'];
             $FMC = $row['19'];
 
@@ -144,10 +144,10 @@ function saveToDatabase($con, $data, $count)
                 $result1 = mysqli_query($con, "SELECT * FROM `preemployment` WHERE `rfidNumber` = '$rfidNumber'");
                 $numrows = mysqli_num_rows($result1);
                 if ($numrows > 0) {
-                    $addPreEmploymentOtrelo = "UPDATE `preemployment` SET `dateReceived` = '$dateReceived', `datePerformed` = '$datePerformed', `name`='$name', `section`='$section', `IMC` = '$IMC', `OEH`='$OEH', `PE` = '$PE', `CBC` ='$CBC', `U_A` = '$U_A', `FA`='$FA', `CXR` ='$CXR', `VA`='$VA', `DEN`='$DEN', `DT`='$DT', `PT` = '$PT', `otherTest` = '$otherTest', `followUpStatus` = '$followUpStatus', `status`='$status', `assessor`='$assessor', `confirmationDate`='$confirmationDate', `FMC`='$FMC' WHERE `rfidNumber` = '$rfidNumber'";
+                    $addPreEmploymentOtrelo = "UPDATE `preemployment` SET `dateReceived` = '$dateReceived', `datePerformed` = '$datePerformed', `name`='$name', `section`='$section', `IMC` = '$IMC', `OEH`='$OEH', `PE` = '$PE', `CBC` ='$CBC', `U_A` = '$U_A', `FA`='$FA', `CXR` ='$CXR', `VA`='$VA', `DEN`='$DEN', `DT`='$DT', `PT` = '$PT', `otherTest` = '$otherTest', `followUpStatus` = '$followUpStatus', `status`='$status', `attendee`='$attendee', `confirmationDate`='$confirmationDate', `FMC`='$FMC' WHERE `rfidNumber` = '$rfidNumber'";
                     $resultInfo = mysqli_query($con, $addPreEmploymentOtrelo);
                 } else {
-                    $addPreEmploymentOtrelo = "INSERT INTO `preemployment`(`dateReceived`, `datePerformed`, `rfidNumber`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `assessor`,`confirmationDate`, `FMC`) VALUES ('$dateReceived','$datePerformed','$rfidNumber','$name','$section','$IMC','$OEH','$PE','$CBC','$U_A','$FA','$CXR', '$VA', '$DEN', '$DT', '$PT', ' $otherTest', ' $followUpStatus', '$status', '$assessor', '$confirmationDate', '$FMC')";
+                    $addPreEmploymentOtrelo = "INSERT INTO `preemployment`(`dateReceived`, `datePerformed`, `rfidNumber`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`,`confirmationDate`, `FMC`) VALUES ('$dateReceived','$datePerformed','$rfidNumber','$name','$section','$IMC','$OEH','$PE','$CBC','$U_A','$FA','$CXR', '$VA', '$DEN', '$DT', '$PT', ' $otherTest', ' $followUpStatus', '$status', '$attendee', '$confirmationDate', '$FMC')";
                     $resultInfo = mysqli_query($con, $addPreEmploymentOtrelo);
                 }
             }
@@ -262,7 +262,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
                                         <div id="dropdownDots<?php echo $queNo; ?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                                             <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $queNo; ?>">
                                                 <li>
-                                                    <a type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['rfidNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date_received="<?php echo $row['dateReceived']; ?>" data-date_performed="<?php echo $row['datePerformed']; ?>" data-imc="<?php echo $row['IMC']; ?>" data-oeh="<?php echo $row['OEH']; ?>" data-pe="<?php echo $row['PE']; ?>" data-cbc="<?php echo $row['CBC']; ?>" data-ua="<?php echo $row['U_A']; ?>" data-fa="<?php echo $row['FA']; ?>" data-cxr="<?php echo $row['CXR']; ?>" data-va="<?php echo $row['VA']; ?>" data-den="<?php echo $row['DEN']; ?>" data-dt="<?php echo $row['DT']; ?>" data-pt="<?php echo $row['PT']; ?>" data-others="<?php echo $row['otherTest']; ?>" data-followupstatus="<?php echo $row['followUpStatus']; ?>" data-status="<?php echo $row['status']; ?>" data-assessor="<?php echo $row['assessor']; ?>" data-confirmationdate="<?php echo $row['confirmationDate']; ?>" data-fmc="<?php echo $row['FMC']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit Pre-Employment Record</a>
+                                                    <a type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['rfidNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date_received="<?php echo $row['dateReceived']; ?>" data-date_performed="<?php echo $row['datePerformed']; ?>" data-imc="<?php echo $row['IMC']; ?>" data-oeh="<?php echo $row['OEH']; ?>" data-pe="<?php echo $row['PE']; ?>" data-cbc="<?php echo $row['CBC']; ?>" data-ua="<?php echo $row['U_A']; ?>" data-fa="<?php echo $row['FA']; ?>" data-cxr="<?php echo $row['CXR']; ?>" data-va="<?php echo $row['VA']; ?>" data-den="<?php echo $row['DEN']; ?>" data-dt="<?php echo $row['DT']; ?>" data-pt="<?php echo $row['PT']; ?>" data-others="<?php echo $row['otherTest']; ?>" data-followupstatus="<?php echo $row['followUpStatus']; ?>" data-status="<?php echo $row['status']; ?>" data-attendee="<?php echo $row['attendee']; ?>" data-confirmationdate="<?php echo $row['confirmationDate']; ?>" data-fmc="<?php echo $row['FMC']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit Pre-Employment Record</a>
                                                 </li>
 
                                             </ul>
@@ -398,8 +398,8 @@ if (isset($_POST['addPreEmploymentImport'])) {
 
                     </div>
                     <div class="col-span-2">
-                        <label for="assessor" class="block mb-1  text-gray-900 dark:text-white">Assessor</label>
-                        <input type="text" name="assessor" id="assessor" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nurse/Doctor" required="">
+                        <label for="attendee" class="block mb-1  text-gray-900 dark:text-white">Attendee</label>
+                        <input type="text" name="attendee" id="attendee" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nurse/Doctor" required="">
                     </div>
                     <div class="col-span-2">
                         <label for="confirmationdate" class="block mb-1  text-gray-900 dark:text-white">Confirmation Date</label>
@@ -563,8 +563,8 @@ if (isset($_POST['addPreEmploymentImport'])) {
 
                     </div>
                     <div class="col-span-2">
-                        <label for="editAssessor" class="block mb-1  text-gray-900 dark:text-white">Assessor</label>
-                        <input type="text" name="editAssessor" id="editAssessor" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nurse/Doctor" required="">
+                        <label for="editAttendee" class="block mb-1  text-gray-900 dark:text-white">Attendee</label>
+                        <input type="text" name="editAttendee" id="editAttendee" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nurse/Doctor" required="">
                     </div>
                     <div class="col-span-2">
                         <label for="editConfirmationdate" class="block mb-1  text-gray-900 dark:text-white">Confirmation Date</label>
@@ -642,7 +642,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
         document.getElementById("editOthers").value = element.getAttribute("data-others");
         document.getElementById("editFollowupstatus").value = element.getAttribute("data-followupstatus");
         document.getElementById("editStatus").value = element.getAttribute("data-status");
-        document.getElementById("editAssessor").value = element.getAttribute("data-assessor");
+        document.getElementById("editAttendee").value = element.getAttribute("data-attendee");
         document.getElementById("editConfirmationdate").value = element.getAttribute("data-confirmationdate");
         document.getElementById("editFmc").value = element.getAttribute("data-fmc");
     }
@@ -672,7 +672,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
         column15 = 'Other Test';
         column16 = 'Follow Up Status';
         column17 = 'Status';
-        column18 = 'Assessor';
+        column18 = 'Attendee';
         column19 = 'Confirmation Date';
         column20 = 'FMC';
 

@@ -66,7 +66,7 @@ if (isset($_GET['ftw'])) {
     $ftwRemarks = $row['remarks'];
     $ftwOthersRemarks = $row['othersRemarks'];
     $ftwCompleted = $row['statusComplete'];
-    $ftwWithPendingLab = $row['withPedingLab'];
+    $ftwWithPendingLab = $row['withPendingLab'];
 
     $ftwMeds = $row['medicine'];
     // $immediateEmail = $row['date'];
@@ -146,7 +146,7 @@ if (isset($_POST['addFTW'])) {
   }
 
   // echo $smoking;
-  $sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `othersRemarks`, `statusComplete`, `withPedingLab`) VALUES ('head','$department','$rfid','$ftwDate','$ftwTime','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab')";
+  $sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `othersRemarks`, `statusComplete`, `withPendingLab`) VALUES ('head','$department','$rfid','$ftwDate','$ftwTime','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab')";
   $results = mysqli_query($con, $sql);
 
   if ($results) {
@@ -247,7 +247,7 @@ if (isset($_POST['updateFTW'])) {
     $ftwMeds = implode(', ', $ftwMeds);
   }
 
-  $sql = "UPDATE `fittowork` SET `department`='$department',`rfid`='$rfid',`date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`othersRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPedingLab`='$ftwWithPendingLab' WHERE `id`= '$ftw'";
+  $sql = "UPDATE `fittowork` SET `department`='$department',`rfid`='$rfid',`date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`othersRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab' WHERE `id`= '$ftw'";
   $results = mysqli_query($con, $sql);
   if ($results) {
     echo "<script>alert('Record updated succesfully!')</script>";
@@ -341,9 +341,9 @@ if (isset($_POST['updateFTW'])) {
 
         <label class="block my-auto  font-semibold text-gray-900 ">Medical Category:</label>
         <select id="categoriesSelect" name="ftwMedCategory" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option <?php if ($ftwMedCategory == "common") {
+          <option <?php if ($ftwMedCategory == "Common") {
                     echo "selected";
-                  } ?> value="common">Common</option>
+                  } ?> value="Common">Common</option>
           <option <?php if ($ftwMedCategory == "Long Term") {
                     echo "selected";
                   } ?> value="Long Term">Long Term</option>
@@ -473,9 +473,7 @@ if (isset($_POST['updateFTW'])) {
 
             ?>
 
-            <?php
 
-            ?>
           </select>
           <!-- <input type="text"  name="cnsltnMeds"  disabled value="<?php echo $ftwAbsenceReason ?>" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
         </div>
@@ -591,9 +589,9 @@ if (isset($_POST['updateFTW'])) {
       <div class="col-span-4 ">
         <label class="block  my-auto  font-semibold text-gray-900 ">Remarks: </label>
         <select id="remarksSelect" name="ftwRemarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option <?php if ($ftwRemarks == "Fit To Work") {
+          <option <?php if ($ftwRemarks == "Fit to Work") {
                     echo "selected";
-                  } ?> value="Fit To Work">Fit To Work</option>
+                  } ?> value="Fit to Work">Fit To Work</option>
           <option <?php if ($ftwRemarks == "Late FTW") {
                     echo "selected";
                   } ?> value="Late FTW">Late FTW</option>

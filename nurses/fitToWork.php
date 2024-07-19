@@ -91,16 +91,31 @@ $userID = $_SESSION['userID'];
   <?php require_once '../navbar.php'; ?>
 
   <div style=" background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));" class=" m-auto ml-52 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
-    <div class="mb-5 grid grid-cols-1 sm:grid-cols-11 gap-4 w-full ">
-      <div class="overflow-y-auto h-screen relative  sm:col-span-6 ">
-        <?php require_once '../employeesData/employeesPersonalData.php'; ?>
-        <?php require_once '../employeesData/fitToWork.php'; ?>
-      </div>
-      <div class="overflow-y-auto h-screen sm:col-span-5">
-        <?php require_once '../employeesData/ftwTable.php'; ?>
-      </div>
-    </div>
+    <?php
+    if ($rfid == "not found") {
+      echo "<div class='m-10'>";
+      require_once '../employeesData/ftwTable.php';
+      echo "</div>";
+    } else {
+      echo "<div class='mb-5 grid grid-cols-1 sm:grid-cols-11 gap-4 w-full'>
+      <div class='overflow-y-auto h-screen relative  sm:col-span-6 '>";
+
+      require_once '../employeesData/employeesPersonalData.php';
+      require_once '../employeesData/fitToWork.php';
+
+      echo "</div>
+      <div class='overflow-y-auto h-screen sm:col-span-5'>";
+
+      require_once '../employeesData/ftwInfo.php';
+
+      echo "</div>
+    </div>";
+    } ?>
+
   </div>
+
+
+
 
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 
