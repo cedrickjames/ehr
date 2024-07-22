@@ -64,7 +64,7 @@ if (isset($_GET['rf'])) {
                                 <td> <?php echo $row['clinicRestTo']; ?> </td>
                                 <td> <?php echo $row['meds']; ?> </td>
                                 <td> <?php echo $row['bloodChemistry'] . ' ' . $row['cbc'] . ' ' . $row['urinalysis'] . ' ' . $row['fecalysis'] . ' ' . $row['xray'] . ' ' . $row['others'] . ' ' . $row['bp'] . ' ' . $row['temp'] . ' ' . $row['02sat'] . ' ' . $row['pr'] . ' ' . $row['rr']; ?> </td>
-                                <td> <?php echo $row['othersRemarks']; ?> </td>
+                                <td> <?php echo $row['otherRemarks']; ?> </td>
                                 <td> <?php echo $row['remarks']; ?> </td>
                                 <td> <?php echo $row['withPendingLab']; ?> </td>
 

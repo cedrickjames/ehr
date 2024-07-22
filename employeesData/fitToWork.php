@@ -35,8 +35,7 @@ $ftwTime = date('h:i A');
 if (isset($_GET['ftw'])) {
   $ftw = $_GET['ftw'];
 
-  $sqlcnslt = "SELECT * FROM `fittowork` WHERE `rfid` = '$rfid' and `id` = '$ftw' ORDER BY `id` ASC; 
-";
+  $sqlcnslt = "SELECT * FROM `fittowork` WHERE `rfid` = '$rfid' and `id` = '$ftw' ORDER BY `id` ASC;";
   $resultcnslt = mysqli_query($con, $sqlcnslt);
   while ($row = mysqli_fetch_assoc($resultcnslt)) {
 
@@ -64,7 +63,7 @@ if (isset($_GET['ftw'])) {
     $ftwPr = $row['pr'];
     $ftwRr = $row['rr'];
     $ftwRemarks = $row['remarks'];
-    $ftwOthersRemarks = $row['othersRemarks'];
+    $ftwOthersRemarks = $row['otherRemarks'];
     $ftwCompleted = $row['statusComplete'];
     $ftwWithPendingLab = $row['withPendingLab'];
 
@@ -146,7 +145,7 @@ if (isset($_POST['addFTW'])) {
   }
 
   // echo $smoking;
-  $sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `othersRemarks`, `statusComplete`, `withPendingLab`) VALUES ('head','$department','$rfid','$ftwDate','$ftwTime','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab')";
+  $sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`) VALUES ('head','$department','$rfid','$ftwDate','$ftwTime','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab')";
   $results = mysqli_query($con, $sql);
 
   if ($results) {
@@ -247,7 +246,7 @@ if (isset($_POST['updateFTW'])) {
     $ftwMeds = implode(', ', $ftwMeds);
   }
 
-  $sql = "UPDATE `fittowork` SET `department`='$department',`rfid`='$rfid',`date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`othersRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab' WHERE `id`= '$ftw'";
+  $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab' WHERE `id`= '$ftw';";
   $results = mysqli_query($con, $sql);
   if ($results) {
     echo "<script>alert('Record updated succesfully!')</script>";
@@ -296,9 +295,9 @@ if (isset($_POST['updateFTW'])) {
           <option <?php if ($ftwCategories == "counted") {
                     echo "selected";
                   } ?> value="counted">Counted</option>
-          <option <?php if ($ftwCategories == "notCounted") {
+          <option <?php if ($ftwCategories == "not counted") {
                     echo "selected";
-                  } ?> value="notCounted">Not Counted</option>
+                  } ?> value="not counted">Not Counted</option>
 
         </select>
 
@@ -377,7 +376,7 @@ if (isset($_POST['updateFTW'])) {
 
 
         <label class=" block my-auto font-semibold text-gray-900 ">Days</label>
-        <input type="number" name="ftwDays" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        <input type="number" value="<?php echo $ftwDays ?>" name="ftwDays" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
       </div>
 
@@ -388,7 +387,7 @@ if (isset($_POST['updateFTW'])) {
       <div class=" gap-4 col-span-2">
         <label class="block  my-auto  font-semibold text-gray-900 ">Diagnosis: </label>
         <!-- <input type="text"  name="ftwDiagnosis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
-        <select id="ftwDiagnosiOption" name="ftwDiagnosis" class="js-diagnosis bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+        <select id="ftwDiagnosiOption" name="ftwDiagnosis" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option selected disabled>Select Diagnosis</option>
           <option value="addDiagnosisButton">Add Diagnosis</option>
           <?php

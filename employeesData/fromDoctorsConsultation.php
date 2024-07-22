@@ -60,7 +60,7 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $pr = $userRow['pr'];
   $rr = $userRow['rr'];
   $remarks = $userRow['remarks'];
-  $othersRemarks = $userRow['othersRemarks'];
+  $otherRemarks = $userRow['otherRemarks'];
   $finalDx = $userRow['finalDx'];
 
   $statusComplete = $userRow['statusComplete'];
@@ -82,13 +82,13 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
   $remarksSelect2 = $_POST['remarksSelect3'];
 
   if ($remarksSelect2 == "Fit to Work") {
-    $othersRemarks = $_POST['othersRemarks'];
+    $otherRemarks = $_POST['otherRemarks'];
     $medLab = $_POST['medLab'];
     $medDis = $_POST['medDis'];
     $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
     $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
 
-    $sql = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `othersRemarks` = '$othersRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
+    $sql = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `otherRemarks` = '$otherRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
     $results = mysqli_query($con, $sql);
 
 
@@ -132,11 +132,11 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
 
 
-    // $sql1 = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `othersRemarks` = '$othersRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
+    // $sql1 = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `otherRemarks` = '$otherRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
     // $results1 = mysqli_query($con,$sql1);
 
 
-    $sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `othersRemarks`, `statusComplete`, `withPendingLab`) VALUES ('head','$department','$rfid','$cnsltnDate','$cnsltnTime','$cnsltnCategories','$cnsltnBuilding','$ftwCtnConfinement','$ftwCtnCategories', '$cnsltnMeds' , '$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason','$cnsltnDiagnosis','$cnsltnBloodChem','$cnsltnCbc','$cnsltnUrinalysis','$cnsltnFecalysis','$cnsltnXray','$cnsltnOthersLab','$cnsltnBp','$cnsltnTemp','$cnsltn02Sat','$cnsltnPr','$cnsltnRr','$remarksSelect2','$othersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab')";
+    $sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`) VALUES ('head','$department','$rfid','$cnsltnDate','$cnsltnTime','$cnsltnCategories','$cnsltnBuilding','$ftwCtnConfinement','$ftwCtnCategories', '$cnsltnMeds' , '$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason','$cnsltnDiagnosis','$cnsltnBloodChem','$cnsltnCbc','$cnsltnUrinalysis','$cnsltnFecalysis','$cnsltnXray','$cnsltnOthersLab','$cnsltnBp','$cnsltnTemp','$cnsltn02Sat','$cnsltnPr','$cnsltnRr','$remarksSelect2','$otherRemarks','$cnsltnCompleted','$cnsltnWithPendingLab')";
     $results = mysqli_query($con, $sql);
 
 
@@ -161,7 +161,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
 
       $subject = 'Fit to Work';
-      $message = 'Hi ' . $immediateHead . ',<br> <br> Mr./Ms. ' . $name . ' is now fit to work. <br><br> Details <br>Name: ' . $name . '<br>Sect/Dept: ' . $section . ' <br>Reason of Absence: ' . $ftwCtnAbsenceReason . '<br>Date of Absence: ' . $ftwCtnSLDateFrom . ' - ' . $ftwCtnSLDateTo . '<br>No. of Day/s: ' . $ftwCtnDays . ' <br>Remarks: ' . $remarksSelect2 . '<br>Others: ' . $othersRemarks . '<br><br><br><br>  This is a generated email. Please do not reply. <br><br> Electronic Health System';
+      $message = 'Hi ' . $immediateHead . ',<br> <br> Mr./Ms. ' . $name . ' is now fit to work. <br><br> Details <br>Name: ' . $name . '<br>Sect/Dept: ' . $section . ' <br>Reason of Absence: ' . $ftwCtnAbsenceReason . '<br>Date of Absence: ' . $ftwCtnSLDateFrom . ' - ' . $ftwCtnSLDateTo . '<br>No. of Day/s: ' . $ftwCtnDays . ' <br>Remarks: ' . $remarksSelect2 . '<br>Others: ' . $otherRemarks . '<br><br><br><br>  This is a generated email. Please do not reply. <br><br> Electronic Health System';
 
 
       require '../vendor/autoload.php';
@@ -209,13 +209,13 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
       }
     }
   } else {
-    $othersRemarks = $_POST['othersRemarks'];
+    $otherRemarks = $_POST['otherRemarks'];
     $medLab = $_POST['medLab'];
     $medDis = $_POST['medDis'];
     $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
     $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
 
-    $sql = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `othersRemarks` = '$othersRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
+    $sql = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `otherRemarks` = '$otherRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
     $results = mysqli_query($con, $sql);
   }
 }
@@ -485,9 +485,9 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
           <option <?php if ($ftwCategories == "counted") {
                     echo "selected";
                   } ?> value="counted">Counted</option>
-          <option <?php if ($ftwCategories == "notCounted") {
+          <option <?php if ($ftwCategories == "not counted") {
                     echo "selected";
-                  } ?> value="notCounted">Not Counted</option>
+                  } ?> value="not counted">Not Counted</option>
 
         </select>
 
@@ -563,7 +563,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
       <div class="col-span-4 flex gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Nurse Notes: </h3>
-        <input type="text" value="<?php echo $othersRemarks; ?>" name="othersRemarks" id="" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        <input type="text" value="<?php echo $otherRemarks; ?>" name="otherRemarks" id="" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       </div>
       <div class="col-span-4 flex gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Final Dx: </h3>

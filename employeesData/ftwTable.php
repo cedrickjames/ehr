@@ -9,6 +9,54 @@ if (isset($_POST['excelReport'])) {
     </script>
 <?php
 }
+
+
+if (isset($_POST['updateFTW2'])) {
+    $ftw = $_POST['ftwId'];
+    $ftwDate = $_POST['ftwDate'];
+    $ftwTime = $_POST['ftwTime'];
+    $ftwCategories = $_POST['ftwCategories'];
+    $ftwBuilding = $_POST['ftwBuilding'];
+    $ftwConfinement = $_POST['ftwConfinement'];
+    $ftwMedCategory = $_POST['ftwMedCategory'];
+    $ftwSLDateFrom = $_POST['ftwSLDateFrom'];
+    $ftwSLDateTo = $_POST['ftwSLDateTo'];
+    $ftwDays = $_POST['ftwDays'];
+    $ftwAbsenceReason = $_POST['ftwAbsenceReason'];
+    $ftwDiagnosis = $_POST['ftwDiagnosis'];
+    $ftwBloodChem = $_POST['ftwBloodChem'];
+    $ftwCbc = $_POST['ftwCbc'];
+    $ftwUrinalysis = $_POST['ftwUrinalysis'];
+    $ftwFecalysis = $_POST['ftwFecalysis'];
+    $ftwXray = $_POST['ftwXray'];
+    $ftwOthersLab = $_POST['ftwOthersLab'];
+    $ftwBp = $_POST['ftwBp'];
+    $ftwTemp = $_POST['ftwTemp'];
+    $ftw02Sat = $_POST['ftw02Sat'];
+    $ftwPr = $_POST['ftwPr'];
+    $ftwRr = $_POST['ftwRr'];
+    $ftwRemarks = $_POST['ftwRemarks'];
+    $ftwOthersRemarks = $_POST['ftwOthersRemarks'];
+    $ftwCompleted = isset($_POST['ftwCompleted']) ? $_POST['ftwCompleted'] : "0";
+    $ftwWithPendingLab = $_POST['ftwWithPendingLab'];
+    $immediateEmail = $_POST['immediateEmail'];
+    $immediateHead = $_POST['immediateHead'];
+
+    $ftwMeds = $_POST['ftwMeds'];
+
+    if ($ftwMeds != "") {
+        $ftwMeds = implode(', ', $ftwMeds);
+    }
+
+    $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab' WHERE `id`= '$ftw';";
+    $results = mysqli_query($con, $sql);
+    if ($results) {
+        echo "<script>alert('Record updated succesfully!')</script>";
+    } else {
+        echo "<script>alert('There's a problem updating.')</script>";
+    }
+}
+
 ?>
 
 
@@ -61,8 +109,7 @@ if (isset($_POST['excelReport'])) {
                             <tr>
                                 <td> <?php echo $ftwNo; ?> </td>
                                 <td>
-                                    <!-- <button type="button" onclick="showData(this)" data-id="<?php echo $row['id']; ?>" data-rfid="<?php echo $row['rfid']; ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Show</button> -->
-                                    <button type="button" onclick="showEditModal(this)" data-id="<?php echo $row['id']; ?>" data-name="<?php echo $row['Name']; ?>" data-date="<?php echo $row['date']; ?>" data-time="<?php echo $row['time']; ?>" data-category="<?php echo $row['categories']; ?>" data-building="<?php echo $row['building']; ?>" data-reasonofabsence="<?php echo $row['reasonOfAbsence']; ?>" data-diagnosis="<?php echo $row['diagnosis']; ?>" data-medicalcategory="<?php echo $row['medicalCategory']; ?>" data-confinementtype="<?php echo $row['confinementType']; ?>" data-fromdateofsickleave="<?php echo $row['fromDateOfSickLeave']; ?>" data-todateofsickleave="<?php echo $row['toDateOfSickLeave']; ?>" data-sldays="<?php echo $row['days']; ?>" data-bloodchemistry="<?php echo $row['bloodChemistry']; ?>" data-cbc="<?php echo $row['cbc']; ?>" data-urinalysis="<?php echo $row['urinalysis']; ?>" data-fecalysis="<?php echo $row['fecalysis']; ?>" data-xray="<?php echo $row['xray']; ?>" data-others="<?php echo $row['others']; ?>" data-bp="<?php echo $row['bp']; ?>" data-temp="<?php echo $row['temp']; ?>" data-02sat="<?php echo $row['02sat']; ?>" data-pr="<?php echo $row['pr']; ?>" data-rr="<?php echo $row['rr']; ?>" data-othersremarks="<?php echo $row['othersRemarks']; ?>" data-remarks="<?php echo $row['remarks']; ?>" data-statuscomplete="<?php echo $row['statusComplete']; ?>" data-withpendinglab="<?php echo $row['withPendingLab']; ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button>
+                                    <button type="button" onclick="showEditModal(this)" data-id="<?php echo $row['id']; ?>" data-name="<?php echo $row['Name']; ?>" data-date="<?php echo $row['date']; ?>" data-time="<?php echo $row['time']; ?>" data-category="<?php echo $row['categories']; ?>" data-building="<?php echo $row['building']; ?>" data-reasonofabsence="<?php echo $row['reasonOfAbsence']; ?>" data-diagnosis="<?php echo $row['diagnosis']; ?>" data-medicalcategory="<?php echo $row['medicalCategory']; ?>" data-medicine="<?php echo $row['medicine']; ?>" data-confinementtype="<?php echo $row['confinementType']; ?>" data-fromdateofsickleave="<?php echo $row['fromDateOfSickLeave']; ?>" data-todateofsickleave="<?php echo $row['toDateOfSickLeave']; ?>" data-sldays="<?php echo $row['days']; ?>" data-bloodchemistry="<?php echo $row['bloodChemistry']; ?>" data-cbc="<?php echo $row['cbc']; ?>" data-urinalysis="<?php echo $row['urinalysis']; ?>" data-fecalysis="<?php echo $row['fecalysis']; ?>" data-xray="<?php echo $row['xray']; ?>" data-others="<?php echo $row['others']; ?>" data-bp="<?php echo $row['bp']; ?>" data-temp="<?php echo $row['temp']; ?>" data-02sat="<?php echo $row['02sat']; ?>" data-pr="<?php echo $row['pr']; ?>" data-rr="<?php echo $row['rr']; ?>" data-othersremarks="<?php echo $row['otherRemarks']; ?>" data-remarks="<?php echo $row['remarks']; ?>" data-statuscomplete="<?php echo $row['statusComplete']; ?>" data-withpendinglab="<?php echo $row['withPendingLab']; ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button>
                                 </td>
                                 <td> <?php echo $row['date']; ?> </td>
                                 <td> <?php echo $row['time']; ?> </td>
@@ -76,7 +123,7 @@ if (isset($_POST['excelReport'])) {
                                 <td> <?php echo $row['toDateOfSickLeave']; ?> </td>
                                 <td> <?php echo $row['bloodChemistry'] . ' ' . $row['cbc'] . ' ' . $row['urinalysis'] . ' ' . $row['fecalysis'] . ' ' . $row['xray'] . ' ' . $row['others']; ?> </td>
                                 <td> <?php echo $row['bp'] . ' ' . $row['temp'] . ' ' . $row['02sat'] . ' ' . $row['pr'] . ' ' . $row['rr']; ?> </td>
-                                <td> <?php echo $row['othersRemarks']; ?> </td>
+                                <td> <?php echo $row['otherRemarks']; ?> </td>
                                 <td> <?php echo $row['remarks']; ?> </td>
                                 <td> <?php echo $status ?> </td>
                             </tr>
@@ -168,7 +215,7 @@ if (isset($_POST['excelReport'])) {
 
             <form method="POST" action="">
                 <div class="text-[9px] 2xl:text-lg  rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full w-full p-4 ">
-                    <input type="hidden" name="ftwId" id="ftwId">
+                    <input type="text" name="ftwId" id="ftwId" class="hidden">
                     <div class="col-span-4 gap-4">
                         <label class="block  my-auto  font-semibold text-gray-900 ">Name: </label>
                         <input type="text" name="ftwName" id="ftwName" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
@@ -187,7 +234,7 @@ if (isset($_POST['excelReport'])) {
                         <label class="block my-auto  font-semibold text-gray-900 ">Categories: </label>
                         <select id="ftwCategories" name="ftwCategories" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                             <option value="counted">Counted</option>
-                            <option value="notCounted">Not Counted</option>
+                            <option value="not counted">Not Counted</option>
                         </select>
 
                     </div>
@@ -276,38 +323,7 @@ if (isset($_POST['excelReport'])) {
                             ?>
                         </select>
 
-                        <div id="addDiagnosis" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                            <div class="relative w-full max-w-md max-h-full">
-                                <!-- Modal content -->
-                                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                                    <!-- Modal header -->
-                                    <div class="items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                                        <label class="block text-xl font-semibold text-gray-900 dark:text-white">
-                                            Add Diagnosis
-                                        </label>
-                                        <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="addDiagnosis">
-                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                            </svg>
-                                            <span class="sr-only">Close modal</span>
-                                        </button>
-                                    </div>
-                                    <!-- Modal body -->
-                                    <div class="p-4 md:p-5">
-                                        <form class="space-y-4" action="#">
-                                            <div>
 
-                                                <input type="text" name="diagnosis" id="diagnosis" class="mb-4 bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" />
-                                            </div>
-
-
-                                            <button type="button" onclick="addDiagnosis()" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add</button>
-
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
 
 
@@ -320,11 +336,10 @@ if (isset($_POST['excelReport'])) {
                             <label class="block  my-auto font-semibold text-gray-900 ">Medicine (Add medicine below): </label>
                             <select name="ftwMeds[]" id="ftwMeds" multiple="multiple" class="form-control js-meds w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
-
+                                <option></option>
                             </select>
 
                         </div>
-
                         <div id="medicineDiv" class="grid grid-cols-4 gap-1 col-span-4 mt-2">
                             <div id="medicineDiv1" class="grid grid-cols-4 gap-1 col-span-4">
                                 <div id="medsdiv" class="col-span-2">
@@ -366,6 +381,7 @@ if (isset($_POST['excelReport'])) {
                             </div>
 
                         </div>
+
                     </div>
                     <div class="col-span-4">
                         <h3 class=" my-auto w-full font-semibold text-gray-900 ">Laboratory: </h3>
@@ -478,7 +494,7 @@ if (isset($_POST['excelReport'])) {
                     </div>
 
                     <div class="col-span-4 justify-center flex gap-2">
-                        <button type="submit" name="updateFTW" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Update Record</button>
+                        <button type="submit" name="updateFTW2" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Update Record</button>
 
                     </div>
                 </div>
@@ -538,6 +554,21 @@ if (isset($_POST['excelReport'])) {
             document.getElementById("ftwWithPendingLabStatus").checked = true;
         }
 
+        str = element.getAttribute("data-medicine");
+        medicine = str.split(',');
+        console.log("medicine: " + medicine);
+
+        function addSelectedValue(value) {
+            $('#ftwMeds').append($('<option>', {
+                value: value,
+                text: value,
+                selected: true
+            }));
+        }
+        medicine.forEach(function(value) {
+            addSelectedValue(value);
+        });
+
         document.getElementById("ftwId").value = element.getAttribute("data-id");
         document.getElementById("ftwName").value = element.getAttribute("data-name");
         document.getElementById("ftwDate").value = element.getAttribute("data-date");
@@ -547,6 +578,7 @@ if (isset($_POST['excelReport'])) {
         document.getElementById("ftwAbsenceReason").value = element.getAttribute("data-reasonofabsence");
         document.getElementById("ftwDiagnosis").value = element.getAttribute("data-diagnosis");
         document.getElementById("ftwMedCategory").value = element.getAttribute("data-medicalcategory");
+        // document.getElementById("ftwMeds").value = element.getAttribute("data-medicine");
         document.getElementById("ftwConfinement").value = element.getAttribute("data-confinementtype");
         document.getElementById("ftwSLDateFrom").value = element.getAttribute("data-fromdateofsickleave");
         document.getElementById("ftwSLDateTo").value = element.getAttribute("data-todateofsickleave");

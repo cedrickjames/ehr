@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `consultation` (
   `remarks` varchar(30) DEFAULT NULL,
   `medicalLab` varchar(200) DEFAULT NULL,
   `medicationDispense` varchar(200) DEFAULT NULL,
-  `othersRemarks` varchar(500) DEFAULT NULL,
+  `otherRemarks` varchar(500) DEFAULT NULL,
   `statusComplete` tinyint(1) DEFAULT NULL,
   `withPendingLab` varchar(100) DEFAULT NULL,
   `finalDx` varchar(1000) DEFAULT NULL,
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `consultation` (
 -- Dumping data for table `consultation`
 --
 
-INSERT INTO `consultation` (`id`, `rfid`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`, `medsQty`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `medicalLab`, `medicationDispense`, `othersRemarks`, `statusComplete`, `withPendingLab`, `finalDx`, `ftwApproval`, `ftwDepartment`, `ftwCategories`, `ftwConfinement`, `ftwDateOfSickLeaveFrom`, `ftwDateOfSickLeaveTo`, `ftwDays`, `ftwReasonOfAbsence`, `ftwRemarks`) VALUES
+INSERT INTO `consultation` (`id`, `rfid`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`, `medsQty`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `medicalLab`, `medicationDispense`, `otherRemarks`, `statusComplete`, `withPendingLab`, `finalDx`, `ftwApproval`, `ftwDepartment`, `ftwCategories`, `ftwConfinement`, `ftwDateOfSickLeaveFrom`, `ftwDateOfSickLeaveTo`, `ftwDays`, `ftwReasonOfAbsence`, `ftwRemarks`) VALUES
 (34, '0012511458', 'done', 'GP-23-781', '2024-05-21', '09:52 AM', 'Initial', 'common', 'GPI 1', 'LBM', 'IMS', 'Medication Only', '', '', 'Diatabs(1)', 1, '', '', '', '', '', '', '', '', '', '', '', 'Fit to Work', '', '', 'This is a nurse remarks', 1, '', 'This is a sample Final Dx', 'head', 'Administration', 'counted', 'Home Confinement', '2024-05-17', '2024-05-17', 1, 'LBM', 'Others'),
 (35, '0012511458', 'done', 'GP-23-781', '2024-05-21', '10:26 AM', 'Initial', 'common', 'GPI 1', 'LBM', 'IMS', 'Medication Only', '', '', 'Diatabs(1)', 1, '', '', '', '', '', '', '', '', '', '', '', 'Fit to Work', '', '', 'This is a nurse others remarks', 1, '', 'This is a sample Final Dx', 'head', 'Administration', 'counted', 'Hospital Confinement', '2024-05-21', '2024-05-21', 0, 'LBM', 'Fit to Work'),
 (36, '0012521874', 'done', 'GP-23-781', '2024-06-04', '12:52 PM', 'Initial', 'common', 'GPI 1', 'Severe Headache', 'IMS', 'Medication Only', '', '', 'Diatabs(1)', 1, '', '', '', '', '', '', '', '', '', '', '', 'Fit to Work', '', '', 'Rest for 1 week', 1, '', 'This is a sample Final Dx', 'head', 'Administration', 'counted', 'Hospital Confinement', '2024-06-04', '2024-06-04', 0, '', 'Fit to Work'),
@@ -295,7 +295,7 @@ CREATE TABLE IF NOT EXISTS `fittowork` (
   `pr` varchar(30) DEFAULT NULL,
   `rr` varchar(30) DEFAULT NULL,
   `remarks` varchar(30) DEFAULT NULL,
-  `othersRemarks` varchar(500) DEFAULT NULL,
+  `otherRemarks` varchar(500) DEFAULT NULL,
   `statusComplete` tinyint(1) DEFAULT 0,
   `withPendingLab` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -304,15 +304,15 @@ CREATE TABLE IF NOT EXISTS `fittowork` (
 -- Dumping data for table `fittowork`
 --
 
-INSERT INTO `fittowork` (`id`, `approval`, `department`, `rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`, `medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`, `days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `othersRemarks`, `statusComplete`, `withPendingLab`) VALUES
-(36, 'head', 'Administration', '0012511458', '2024-05-21', '10:26 AM', 'notCounted', 'GPI 5', 'Hospital Confinement', 'Common', NULL, '2024-05-21', '2024-05-21', 0, 'LBM', 'IMS', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', 'Fit to Work', 'This is a nurse others remarks', 0, 'Test'),
+INSERT INTO `fittowork` (`id`, `approval`, `department`, `rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`, `medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`, `days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`) VALUES
+(36, 'head', 'Administration', '0012511458', '2024-05-21', '10:26 AM', 'not counted', 'GPI 5', 'Hospital Confinement', 'Common', NULL, '2024-05-21', '2024-05-21', 0, 'LBM', 'IMS', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', 'Fit to Work', 'This is a nurse others remarks', 0, 'Test'),
 (37, 'head', 'Administration', '0012521874', '2024-06-04', '12:41 PM', 'counted', 'GPI 1', 'Hospital Confinement', 'Common', 'Diatabs(1)', '2024-06-04', '2024-06-04', 1, 'LBM', 'IMS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Fit to Work', NULL, 1, NULL),
 (38, 'head', 'Administration', '0012511458', '2024-05-21', '09:52 AM', 'counted', 'GPI 1', 'Home Confinement', 'Common', NULL, '2024-05-17', '2024-05-17', 1, 'LBM', 'IMS', '', '', '', '', '', '', '', '', '', '', '', 'Fit to Work', 'This is a nurse remarks', 1, ''),
 (39, 'head', 'Administration', '0012521874', '2024-06-04', '12:52 PM', 'counted', 'GPI 1', 'Hospital Confinement', 'Common', NULL, '2024-06-04', '2024-06-04', 0, '', 'IMS', '', '', '', '', '', '', '', '', '', '', '', 'Fit to Work', 'Rest for 1 week', 1, ''),
 (40, 'head', 'Administration', '0012521874', '2024-06-25', '09:42 AM', 'counted', 'GPI 1', 'Home Confinement', 'Common', NULL, '2024-06-25', '2024-06-25', 1, 'Severe Headache', '', 'abc', 'def', 'ghi', 'jkl', 'mno', 'pwr', 'stu', 'vwx', 'yz', '12', '3', 'Fit to Work', 'Rest for 1 week', 1, ''),
 (41, 'head', 'Administration', '0012521874', '2024-06-25', '12:24 PM', 'counted', 'GPI 1', 'Home Confinement', 'Common', NULL, '2024-06-25', '2024-06-25', 1, 'Severe Headache', 'diagnosis2', '123', '456', '789', '10 11 12', 'n/a', 'n/a', '110/80', '36.5', '233', 'n/a', '3', 'Fit to Work', 'Rest for 1 week', 1, ''),
-(42, 'head', 'Administration', '0012511458', '2024-06-24', '08:58 AM', 'notCounted', 'GPI 1', 'Hospital Confinement', 'Common', NULL, '2024-06-25', '2024-06-25', 1, 'Severe Headache', 'Stress', '', '', '', '', '', '', '', '', '', '', '', 'Fit to Work', 'Rest', 1, ''),
-(44, 'head', 'Administration', '0013572190', '2024-06-25', '01:03 PM', 'notCounted', 'GPI 1', 'Home Confinement', 'Long Term', 'asda(1)', '2024-06-25', '2024-06-25', 0, 'Severe Headache', 'diagnosis2', '', '', '', '', '', '', '', '', '', '', '', 'Fit to Work', 'Rest for 1 week', 1, ''),
+(42, 'head', 'Administration', '0012511458', '2024-06-24', '08:58 AM', 'not counted', 'GPI 1', 'Hospital Confinement', 'Common', NULL, '2024-06-25', '2024-06-25', 1, 'Severe Headache', 'Stress', '', '', '', '', '', '', '', '', '', '', '', 'Fit to Work', 'Rest', 1, ''),
+(44, 'head', 'Administration', '0013572190', '2024-06-25', '01:03 PM', 'not counted', 'GPI 1', 'Home Confinement', 'Long Term', 'asda(1)', '2024-06-25', '2024-06-25', 0, 'Severe Headache', 'diagnosis2', '', '', '', '', '', '', '', '', '', '', '', 'Fit to Work', 'Rest for 1 week', 1, ''),
 (45, 'head', 'ICT', '00048584956', '2024-07-03', '07:31 AM', 'counted', 'GPI 1', 'Hospital Confinement', 'Common', 'Diatabs(3), biogesic(1)', '2024-07-03', '2024-07-03', 1, 'sample of reason of absence', 'this', '', '', '', '', '', '', '', '', '', '', '', 'Fit to Work', 'This is a nurse remarks', 1, ''),
 (46, 'head', 'ICT', '0013618307', '2024-07-04', '08:57 AM', 'counted', 'GPI 1', 'Home Confinement', 'Common', 'test(4)', '2024-07-03', '2024-07-03', 1, 'headache', 'test', '', '', '', '', '', '', '', '', '', '', '', 'Fit to Work', 'test', 1, ''),
 (47, 'head', 'ICT', '0013618307', '2024-07-04', '08:57 AM', 'counted', 'GPI 1', 'Home Confinement', 'Common', 'test(4)', '2024-07-04', '2024-07-04', 0, 'headache', '', '', '', '', '', '', '', '', '', '', '', '', 'Fit to Work', 'test', 1, ''),
@@ -322,7 +322,7 @@ INSERT INTO `fittowork` (`id`, `approval`, `department`, `rfid`, `date`, `time`,
 (51, 'head', 'ICT', '0012511458', '2024-07-05', '08:24 AM', 'counted', 'GPI 1', 'Hospital Confinement', 'Common', 'sssss(3)', '2024-07-05', '2024-07-05', 1, 'test', 'depressed', '', '', '', '', '', '', '', '', '', '', '', 'Fit to Work', 'gggggggg', 1, ''),
 (52, 'head', 'ICT', '0013618307', '2024-07-05', '08:51 AM', 'counted', 'GPI 1', 'Hospital Confinement', 'Common', '', '2024-07-05', '2024-07-05', 1, '', '', '', '', '', '', '', '', '', '', '', '', '', 'Fit to Work', '', 0, ''),
 (53, 'head', 'ICT', '00048584956', '2024-07-05', '01:35 PM', 'counted', 'GPI 1', 'Hospital Confinement', 'Common', 'test(5)', '2024-07-05', '2024-07-05', 1, 'headache', 'diagnosis2', '1', '2', '3', '3', '3', '3', '3', '3', '3', '3', '3', 'Fit to Work', 'test', 1, ''),
-(54, 'head', 'ICT', '0013618307', '2024-07-08', '12:13 PM', 'notCounted', 'GPI 1', 'Hospital Confinement', 'Common', 'paracetamol(3)', '2024-07-05', '2024-07-05', 1, 'headache', 'IMS', '', '', '', '', '', '', '', '', '', '', '', 'Fit to Work', '', 1, ''),
+(54, 'head', 'ICT', '0013618307', '2024-07-08', '12:13 PM', 'not counted', 'GPI 1', 'Hospital Confinement', 'Common', 'paracetamol(3)', '2024-07-05', '2024-07-05', 1, 'headache', 'IMS', '', '', '', '', '', '', '', '', '', '', '', 'Fit to Work', '', 1, ''),
 (55, 'head', 'ICT', '0009727321', '2024-07-08', '03:08 PM', 'counted', 'GPI 1', 'Hospital Confinement', 'Common', 'test(5)', '2024-07-05', '2024-07-05', 1, 'test', 'Diarrhea', '', '', '', '', '', '', '', '', '', '', '', 'Fit to Work', '', 1, '');
 
 -- --------------------------------------------------------
