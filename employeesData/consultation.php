@@ -325,7 +325,7 @@ if (isset($_POST['addConsultation'])) {
       <div class="col-span-2">
         <label class="block  my-auto font-semibold text-gray-900 ">Diagnosis: </label>
         <!-- <input type="text"  name="cnsltnDiagnosis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
-        <select id="ftwDiagnosiOption" name="cnsltnDiagnosis" class=" js-diagnosis bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+        <select id="ftwDiagnosiOption" name="cnsltnDiagnosis" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option selected disabled>Select Diagnosis</option>
           <option value="addDiagnosisButton">Add Diagnosis</option>
           <?php

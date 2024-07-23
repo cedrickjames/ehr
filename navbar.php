@@ -188,7 +188,7 @@ if (isset($_POST['submitNewPassword'])) {
         </a>
       </li>
       <li>
-        <a href="fitToWork.php?rf=<?php echo $rfid; ?>" id="fitToWorkSide" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+        <a href="fitToWork.php" id="fitToWorkSide" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
           <svg class="w-6 h-6  " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" zoomAndPan="magnify" viewBox="0 0 750 749.999995" height="1000" preserveAspectRatio="xMidYMid meet" version="1.0">
             <defs>
               <clipPath id="804c23b4c9">

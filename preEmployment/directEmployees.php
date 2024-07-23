@@ -203,8 +203,9 @@ if (isset($_POST['addPreEmploymentImport'])) {
 ?>
 <div class="text-[9px] 2xl:text-lg mb-5">
     <div class="flex justify-between">
-        <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Direct Employees</span></p>
+        <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Pre-employment Records - Direct Employees</span></p>
 
+        <!-- <button type="button" data-dropdown-toggle="options" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800  rounded-lg  px-5 py-2.5 text-center me-2 mb-2">Add</button> -->
         <button type="button" data-dropdown-toggle="options" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800  rounded-lg  px-5 py-2.5 text-center me-2 mb-2">Options</button>
         <div id="options" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
             <ul class="py-2  text-gray-700 dark:text-gray-200" aria-labelledby="options">
@@ -231,26 +232,42 @@ if (isset($_POST['addPreEmploymentImport'])) {
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Name</th>
-                                <th>Employer</th>
                                 <th>Action</th>
+                                <th>Date received </th>
+                                <th>Date performed </th>
+                                <th>Name </th>
+                                <th>Section </th>
+                                <th>IMC</th>
+                                <th>OEH</th>
+                                <th>PE</th>
+                                <th>CBC</th>
+                                <th>UA</th>
+                                <th>FA</th>
+                                <th>CXR</th>
+                                <th>VA</th>
+                                <th>DEN</th>
+                                <th>DT</th>
+                                <th>PT</th>
+                                <th>Others</th>
+                                <th>Follow up Status</th>
+                                <th>Status</th>
+                                <th>FMC</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            $queNo = 1;
-                            $sql = "SELECT p.*, e.employer, e.Name, e.section, e.rfidNumber FROM employeespersonalinfo e JOIN preemployment p ON e.rfidNumber = p.rfidNumber WHERE e.employer = 'GPI'";
+                            $preEmpNo = 1;
+                            $sql = "SELECT p.*, e.employer, e.Name, e.section, e.rfidNumber FROM preemployment p 
+                                    JOIN employeespersonalinfo e ON e.rfidNumber = p.rfidNumber WHERE e.employer = 'GPI' ORDER BY `id` ASC";
                             $result = mysqli_query($con, $sql);
-                            while ($row = mysqli_fetch_assoc($result)) {
-
-                            ?> <tr>
-                                    <td> <?php echo $queNo; ?> </td>
-                                    <td> <?php echo $row['Name']; ?> </td>
-                                    <td><?php echo $row['employer']; ?> </td>
+                            while ($row = mysqli_fetch_assoc($result)) { ?>
+                                <tr>
+                                    <td><?php echo $preEmpNo; ?></td>
+                                    <!-- <td> <button type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['rfidNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date_received="<?php echo $row['dateReceived']; ?>" data-date_performed="<?php echo $row['datePerformed']; ?>" data-imc="<?php echo $row['IMC']; ?>" data-oeh="<?php echo $row['OEH']; ?>" data-pe="<?php echo $row['PE']; ?>" data-cbc="<?php echo $row['CBC']; ?>" data-ua="<?php echo $row['U_A']; ?>" data-fa="<?php echo $row['FA']; ?>" data-cxr="<?php echo $row['CXR']; ?>" data-va="<?php echo $row['VA']; ?>" data-den="<?php echo $row['DEN']; ?>" data-dt="<?php echo $row['DT']; ?>" data-pt="<?php echo $row['PT']; ?>" data-others="<?php echo $row['otherTest']; ?>" data-followupstatus="<?php echo $row['followUpStatus']; ?>" data-status="<?php echo $row['status']; ?>" data-attendee="<?php echo $row['attendee']; ?>" data-confirmationdate="<?php echo $row['confirmationDate']; ?>" data-fmc="<?php echo $row['FMC']; ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button></td> -->
                                     <td>
                                         <div class="content-center flex flex-wrap justify-center gap-2">
-                                            <input type="text" class="hidden" name="rfid<?php echo $queNo; ?>" value="<?php echo $row['rfidNumber']; ?>">
-                                            <button id="dropdownMenuIconButton<?php echo $queNo; ?>" data-dropdown-toggle="dropdownDots<?php echo $queNo; ?>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900  rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 bg-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
+                                            <input type="text" class="hidden" name="rfid<?php echo $preEmpNo; ?>" value="<?php echo $row['rfidNumber']; ?>">
+                                            <button id="dropdownMenuIconButton<?php echo $preEmpNo; ?>" data-dropdown-toggle="dropdownDots<?php echo $preEmpNo; ?>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900  rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 bg-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
                                                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
                                                     <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
                                                 </svg>
@@ -259,8 +276,8 @@ if (isset($_POST['addPreEmploymentImport'])) {
 
                                         </div>
                                         <!-- Dropdown menu -->
-                                        <div id="dropdownDots<?php echo $queNo; ?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                                            <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $queNo; ?>">
+                                        <div id="dropdownDots<?php echo $preEmpNo; ?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                                            <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $preEmpNo; ?>">
                                                 <li>
                                                     <a type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['rfidNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date_received="<?php echo $row['dateReceived']; ?>" data-date_performed="<?php echo $row['datePerformed']; ?>" data-imc="<?php echo $row['IMC']; ?>" data-oeh="<?php echo $row['OEH']; ?>" data-pe="<?php echo $row['PE']; ?>" data-cbc="<?php echo $row['CBC']; ?>" data-ua="<?php echo $row['U_A']; ?>" data-fa="<?php echo $row['FA']; ?>" data-cxr="<?php echo $row['CXR']; ?>" data-va="<?php echo $row['VA']; ?>" data-den="<?php echo $row['DEN']; ?>" data-dt="<?php echo $row['DT']; ?>" data-pt="<?php echo $row['PT']; ?>" data-others="<?php echo $row['otherTest']; ?>" data-followupstatus="<?php echo $row['followUpStatus']; ?>" data-status="<?php echo $row['status']; ?>" data-attendee="<?php echo $row['attendee']; ?>" data-confirmationdate="<?php echo $row['confirmationDate']; ?>" data-fmc="<?php echo $row['FMC']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit Pre-Employment Record</a>
                                                 </li>
@@ -269,13 +286,28 @@ if (isset($_POST['addPreEmploymentImport'])) {
 
                                         </div>
                                     </td>
-
-                                </tr> <?php
-
-                                        $queNo++;
-                                    }
-                                        ?>
-
+                                    <td><?php echo $row['dateReceived'] ?></td>
+                                    <td><?php echo $row['datePerformed'] ?></td>
+                                    <td><?php echo $row['Name'] ?></td>
+                                    <td><?php echo $row['section'] ?></td>
+                                    <td><?php echo $row['IMC'] ?></td>
+                                    <td><?php echo $row['OEH'] ?></td>
+                                    <td><?php echo $row['PE'] ?></td>
+                                    <td><?php echo $row['CBC'] ?></td>
+                                    <td><?php echo $row['U_A'] ?></td>
+                                    <td><?php echo $row['FA'] ?></td>
+                                    <td><?php echo $row['CXR'] ?></td>
+                                    <td><?php echo $row['VA'] ?></td>
+                                    <td><?php echo $row['DEN'] ?></td>
+                                    <td><?php echo $row['DT'] ?></td>
+                                    <td><?php echo $row['PT'] ?></td>
+                                    <td><?php echo $row['otherTest'] ?></td>
+                                    <td><?php echo $row['followUpStatus'] ?></td>
+                                    <td><?php echo $row['status'] ?></td>
+                                    <td><?php echo $row['FMC'] ?></td>
+                                </tr>
+                            <?php $preEmpNo++;
+                            } ?>
                         </tbody>
                     </table>
                 </section>

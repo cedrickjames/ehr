@@ -29,8 +29,11 @@ if (isset($_GET['rf'])) {
                             <th>Date of Absence From</th>
                             <th>Date of Absence To</th>
                             <th>Laboratory</th>
-                            <th>Others</th>
+                            <th>Vital Signs</th>
                             <th>Remarks</th>
+                            <th>Other Remarks</th>
+                            <th>Status</th>
+
 
 
                             <!-- <th>Days Late</th> -->
@@ -61,9 +64,52 @@ if (isset($_GET['rf'])) {
                                 <td> <?php echo $row['confinementType']; ?> </td>
                                 <td> <?php echo $row['fromDateOfSickLeave']; ?> </td>
                                 <td> <?php echo $row['toDateOfSickLeave']; ?> </td>
-                                <td> <?php echo $row['bloodChemistry'] . ' ' . $row['cbc'] . ' ' . $row['urinalysis'] . ' ' . $row['fecalysis'] . ' ' . $row['xray'] . ' ' . $row['others'] . ' ' . $row['bp'] . ' ' . $row['temp'] . ' ' . $row['02sat'] . ' ' . $row['pr'] . ' ' . $row['rr']; ?> </td>
-                                <td> <?php echo $row['otherRemarks']; ?> </td>
+                                <td> <?php
+
+                                        if ($row['bloodChemistry'] != "") {
+                                            echo "bloodchem: " . $row['bloodChemistry'] . " ";
+                                        }
+                                        if ($row['cbc'] != "") {
+                                            echo "cbc: " . $row['cbc'] . " ";
+                                        }
+                                        if ($row['urinalysis'] != "") {
+                                            echo "urinalysis: " . $row['urinalysis'] . " ";
+                                        }
+                                        if ($row['fecalysis'] != "") {
+                                            echo "fecalysis: " . $row['fecalysis'] . " ";
+                                        }
+                                        if ($row['xray'] != "") {
+                                            echo "xray: " . $row['xray'] . " ";
+                                        }
+                                        if ($row['others'] != "") {
+                                            echo "others: " . $row['others'] . " ";
+                                        }
+                                        ?> </td>
+                                <td> <?php
+
+                                        if ($row['bp'] != "") {
+                                            echo "bp: " . $row['bp'] . " ";
+                                        }
+                                        if ($row['temp'] != "") {
+                                            echo "temp: " . $row['temp'] . " ";
+                                        }
+                                        if ($row['02sat'] != "") {
+                                            echo "02sat: " . $row['02sat'] . " ";
+                                        }
+                                        if ($row['pr'] != "") {
+                                            echo "pr: " . $row['pr'] . " ";
+                                        }
+                                        if ($row['rr'] != "") {
+                                            echo "rr: " . $row['rr'] . " ";
+                                        }
+                                        ?> </td>
                                 <td> <?php echo $row['remarks']; ?> </td>
+                                <td> <?php echo $row['otherRemarks']; ?> </td>
+                                <td> <?php if ($row['statusComplete'] == 1 || $row['statusComplete'] == true) {
+                                            echo "Completed ";
+                                        } elseif ($row['withPendingLab'] != NULL || $row['withPendingLab'] != "") {
+                                            echo "With pending laboratory: " . $row['withPendingLab'];
+                                        } ?></td>
                             </tr>
 
 

@@ -89,8 +89,8 @@ if (isset($_POST['updateFTW2'])) {
                             <th>Date of Absence To</th>
                             <th>Laboratory</th>
                             <th>Vital Signs</th>
-                            <th>Others</th>
                             <th>Remarks</th>
+                            <th>Other Remarks</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -103,9 +103,9 @@ if (isset($_POST['updateFTW2'])) {
                         while ($row = mysqli_fetch_assoc($result)) {
 
 
-                            if ($row['statusComplete'] == true) {
+                            if ($row['statusComplete'] == true || $row['statusComplete'] == 1) {
                                 $status = "Completed";
-                            } elseif ($row['withPendingLab'] != NULL) {
+                            } elseif ($row['withPendingLab'] != NULL || $row['withPendingLab'] != "") {
                                 $status = "With pending laboratory: " . $row['withPendingLab'];
                             }
                         ?>
@@ -125,10 +125,47 @@ if (isset($_POST['updateFTW2'])) {
                                 <td> <?php echo $row['confinementType']; ?> </td>
                                 <td> <?php echo $row['fromDateOfSickLeave']; ?> </td>
                                 <td> <?php echo $row['toDateOfSickLeave']; ?> </td>
-                                <td> <?php echo $row['bloodChemistry'] . ' ' . $row['cbc'] . ' ' . $row['urinalysis'] . ' ' . $row['fecalysis'] . ' ' . $row['xray'] . ' ' . $row['others']; ?> </td>
-                                <td> <?php echo $row['bp'] . ' ' . $row['temp'] . ' ' . $row['02sat'] . ' ' . $row['pr'] . ' ' . $row['rr']; ?> </td>
-                                <td> <?php echo $row['otherRemarks']; ?> </td>
+                                <td> <?php
+
+                                        if ($row['bloodChemistry'] != "") {
+                                            echo "bloodchem: " . $row['bloodChemistry'] . " ";
+                                        }
+                                        if ($row['cbc'] != "") {
+                                            echo "cbc: " . $row['cbc'] . " ";
+                                        }
+                                        if ($row['urinalysis'] != "") {
+                                            echo "urinalysis: " . $row['urinalysis'] . " ";
+                                        }
+                                        if ($row['fecalysis'] != "") {
+                                            echo "fecalysis: " . $row['fecalysis'] . " ";
+                                        }
+                                        if ($row['xray'] != "") {
+                                            echo "xray: " . $row['xray'] . " ";
+                                        }
+                                        if ($row['others'] != "") {
+                                            echo "others: " . $row['others'] . " ";
+                                        }
+                                        ?> </td>
+                                <td> <?php
+
+                                        if ($row['bp'] != "") {
+                                            echo "bp: " . $row['bp'] . " ";
+                                        }
+                                        if ($row['temp'] != "") {
+                                            echo "temp: " . $row['temp'] . " ";
+                                        }
+                                        if ($row['02sat'] != "") {
+                                            echo "02sat: " . $row['02sat'] . " ";
+                                        }
+                                        if ($row['pr'] != "") {
+                                            echo "pr: " . $row['pr'] . " ";
+                                        }
+                                        if ($row['rr'] != "") {
+                                            echo "rr: " . $row['rr'] . " ";
+                                        }
+                                        ?> </td>
                                 <td> <?php echo $row['remarks']; ?> </td>
+                                <td> <?php echo $row['otherRemarks']; ?> </td>
                                 <td> <?php echo $status ?> </td>
                             </tr>
 
@@ -517,34 +554,34 @@ if (isset($_POST['updateFTW2'])) {
     function showEditModal(element) {
 
         modalEdit.toggle();
-        console.log("id: " + element.getAttribute("data-id"));
-        console.log("name: " + element.getAttribute("data-name"));
-        console.log("date: " + element.getAttribute("data-date"));
-        console.log("time: " + element.getAttribute("data-time"));
-        console.log("category: " + element.getAttribute("data-category"));
-        console.log("building: " + element.getAttribute("data-building"));
-        console.log("reasonofabsence: " + element.getAttribute("data-reasonofabsence"));
-        console.log("diagnosis: " + element.getAttribute("data-diagnosis"));
-        console.log("medicalcategory: " + element.getAttribute("data-medicalcategory"));
-        console.log("confinementtype: " + element.getAttribute("data-confinementtype"));
-        console.log("fromdateofsickleave: " + element.getAttribute("data-fromdateofsickleave"));
-        console.log("todateofsickleave: " + element.getAttribute("data-todateofsickleave"));
-        console.log("sldays: " + element.getAttribute("data-sldays"));
-        console.log("bloodchemistry: " + element.getAttribute("data-bloodchemistry"));
-        console.log("cbc: " + element.getAttribute("data-cbc"));
-        console.log("urinalysis: " + element.getAttribute("data-urinalysis"));
-        console.log("fecalysis: " + element.getAttribute("data-fecalysis"));
-        console.log("xray: " + element.getAttribute("data-xray"));
-        console.log("others: " + element.getAttribute("data-others"));
-        console.log("bp: " + element.getAttribute("data-bp"));
-        console.log("temp: " + element.getAttribute("data-temp"));
-        console.log("02sat: " + element.getAttribute("data-02sat"));
-        console.log("pr: " + element.getAttribute("data-pr"));
-        console.log("rr: " + element.getAttribute("data-rr"));
-        console.log("othersremarks: " + element.getAttribute("data-othersremarks"));
-        console.log("remarks: " + element.getAttribute("data-remarks"));
-        console.log("statuscomplete: " + element.getAttribute("data-statuscomplete"));
-        console.log("withpendinglab: " + element.getAttribute("data-withpendinglab"));
+        // console.log("id: " + element.getAttribute("data-id"));
+        // console.log("name: " + element.getAttribute("data-name"));
+        // console.log("date: " + element.getAttribute("data-date"));
+        // console.log("time: " + element.getAttribute("data-time"));
+        // console.log("category: " + element.getAttribute("data-category"));
+        // console.log("building: " + element.getAttribute("data-building"));
+        // console.log("reasonofabsence: " + element.getAttribute("data-reasonofabsence"));
+        // console.log("diagnosis: " + element.getAttribute("data-diagnosis"));
+        // console.log("medicalcategory: " + element.getAttribute("data-medicalcategory"));
+        // console.log("confinementtype: " + element.getAttribute("data-confinementtype"));
+        // console.log("fromdateofsickleave: " + element.getAttribute("data-fromdateofsickleave"));
+        // console.log("todateofsickleave: " + element.getAttribute("data-todateofsickleave"));
+        // console.log("sldays: " + element.getAttribute("data-sldays"));
+        // console.log("bloodchemistry: " + element.getAttribute("data-bloodchemistry"));
+        // console.log("cbc: " + element.getAttribute("data-cbc"));
+        // console.log("urinalysis: " + element.getAttribute("data-urinalysis"));
+        // console.log("fecalysis: " + element.getAttribute("data-fecalysis"));
+        // console.log("xray: " + element.getAttribute("data-xray"));
+        // console.log("others: " + element.getAttribute("data-others"));
+        // console.log("bp: " + element.getAttribute("data-bp"));
+        // console.log("temp: " + element.getAttribute("data-temp"));
+        // console.log("02sat: " + element.getAttribute("data-02sat"));
+        // console.log("pr: " + element.getAttribute("data-pr"));
+        // console.log("rr: " + element.getAttribute("data-rr"));
+        // console.log("othersremarks: " + element.getAttribute("data-othersremarks"));
+        // console.log("remarks: " + element.getAttribute("data-remarks"));
+        // console.log("statuscomplete: " + element.getAttribute("data-statuscomplete"));
+        // console.log("withpendinglab: " + element.getAttribute("data-withpendinglab"));
 
         if (element.getAttribute("data-statuscomplete") == 1) {
             document.getElementById("ftwCompleted").checked = true;
@@ -573,7 +610,7 @@ if (isset($_POST['updateFTW2'])) {
             });
         }
 
-        console.log("medicine: " + medicine);
+        // console.log("medicine: " + medicine);
         document.getElementById("ftwId").value = element.getAttribute("data-id");
         document.getElementById("ftwName").value = element.getAttribute("data-name");
         document.getElementById("ftwDate").value = element.getAttribute("data-date");
