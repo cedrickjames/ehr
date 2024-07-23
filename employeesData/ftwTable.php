@@ -37,10 +37,14 @@ if (isset($_POST['updateFTW2'])) {
     $ftwRr = $_POST['ftwRr'];
     $ftwRemarks = $_POST['ftwRemarks'];
     $ftwOthersRemarks = $_POST['ftwOthersRemarks'];
-    $ftwCompleted = isset($_POST['ftwCompleted']) ? $_POST['ftwCompleted'] : "0";
+    $ftwCompleted = $_POST['ftwCompleted'];
     $ftwWithPendingLab = $_POST['ftwWithPendingLab'];
-    $immediateEmail = $_POST['immediateEmail'];
-    $immediateHead = $_POST['immediateHead'];
+
+    if ($ftwCompleted == "on") {
+        $status = 1;
+    } else {
+        $status = 0;
+    }
 
     $ftwMeds = $_POST['ftwMeds'];
 
@@ -48,7 +52,7 @@ if (isset($_POST['updateFTW2'])) {
         $ftwMeds = implode(', ', $ftwMeds);
     }
 
-    $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab' WHERE `id`= '$ftw';";
+    $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$status',`withPendingLab`='$ftwWithPendingLab' WHERE `id`= '$ftw';";
     $results = mysqli_query($con, $sql);
     if ($results) {
         echo "<script>alert('Record updated succesfully!')</script>";
@@ -302,22 +306,16 @@ if (isset($_POST['updateFTW2'])) {
                     </div>
                     <div class=" gap-4 col-span-2">
                         <label class="block  my-auto  font-semibold text-gray-900 ">Diagnosis: </label>
-                        <!-- <input type="text"  name="ftwDiagnosis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
                         <select id="ftwDiagnosis" name="ftwDiagnosis" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                            <option selected disabled>Select Diagnosis</option>
-                            <option value="addDiagnosisButton">Add Diagnosis</option>
+
                             <?php
                             $sql1 = "Select * FROM `diagnosis`";
                             $result = mysqli_query($con, $sql1);
                             while ($list = mysqli_fetch_assoc($result)) {
                                 $diagnosis = $list["diagnosisName"];
                             ?>
-                                <option <?php if ($ftwDiagnosis == $diagnosis) {
-                                            echo "selected";
-                                        } ?> value=<?php echo $diagnosis; ?>><?php echo $diagnosis; ?></option>
+                                <option><?php echo $diagnosis; ?></option>
                             <?php
-
-                                //  echo "<option value='$diagnosis' >$diagnosis</option>";
 
                             }
                             ?>
@@ -336,7 +334,7 @@ if (isset($_POST['updateFTW2'])) {
                             <label class="block  my-auto font-semibold text-gray-900 ">Medicine (Add medicine below): </label>
                             <select name="ftwMeds[]" id="ftwMeds" multiple="multiple" class="form-control js-meds w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
-                                <option></option>
+                                <!-- <option></option> -->
                             </select>
 
                         </div>
@@ -359,7 +357,7 @@ if (isset($_POST['updateFTW2'])) {
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
                                                     </svg>
                                                 </button>
-                                                <input type="text" name="cnsltnMedsQuantity" id="quantityMeds" data-input-counter data-input-counter-min="1" data-input-counter-max="50" aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" value="1" required />
+                                                <input type="text" name="cnsltnMedsQuantity" id="quantityMeds" data-input-counter data-input-counter-min="1" data-input-counter-max="50" aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" value="1" />
                                                 <button type="button" id="increment-button" data-input-counter-increment="quantityMeds" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                                     <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
@@ -472,14 +470,14 @@ if (isset($_POST['updateFTW2'])) {
                         <ul class="col-span-2 items-center w-full  text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  ">
                             <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
                                 <div class="gap-2 flex items-center ps-3">
-                                    <input id="ftwCompleted" type="checkbox" name="ftwCompleted" value="true" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">
+                                    <input id="ftwCompleted" type="checkbox" name="ftwCompleted" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">
                                     <label for="ftwCompleted" class="w-full py-3 ms-2  text-gray-900 ">Completed</label>
                                 </div>
                             </li>
 
                             <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
                                 <div class="gap-2 flex items-center ps-3">
-                                    <input name="ftwWithPendingLabStatus" id="ftwWithPendingLabStatus" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">
+                                    <input name="ftwWithPendingLabStatus" id="ftwWithPendingLabStatus" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">
                                     <label for="vue-checkbox-list" class=" py-3 ms-2  text-gray-900 ">With Pending Lab</label>
                                     <div class="relative z-0 group">
                                         <input type="text" name="ftwWithPendingLab" id="ftwWithPendingLab" class="block py-2.5 px-0  text-[12px] 2xl:text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
@@ -517,6 +515,7 @@ if (isset($_POST['updateFTW2'])) {
     const modalEdit = new Modal(editFittowork, FittoworkModal);
 
     function showEditModal(element) {
+
         modalEdit.toggle();
         console.log("id: " + element.getAttribute("data-id"));
         console.log("name: " + element.getAttribute("data-name"));
@@ -549,6 +548,10 @@ if (isset($_POST['updateFTW2'])) {
 
         if (element.getAttribute("data-statuscomplete") == 1) {
             document.getElementById("ftwCompleted").checked = true;
+
+        } else {
+            document.getElementById("ftwCompleted").checked = false;
+
         }
         if (element.getAttribute("data-withpendinglab") != "") {
             document.getElementById("ftwWithPendingLabStatus").checked = true;
@@ -556,19 +559,21 @@ if (isset($_POST['updateFTW2'])) {
 
         str = element.getAttribute("data-medicine");
         medicine = str.split(',');
-        console.log("medicine: " + medicine);
-
-        function addSelectedValue(value) {
-            $('#ftwMeds').append($('<option>', {
-                value: value,
-                text: value,
-                selected: true
-            }));
+        $('#ftwMeds').empty();
+        if (medicine != "") {
+            function addSelectedValue(value) {
+                $('#ftwMeds').append($('<option>', {
+                    value: value,
+                    text: value,
+                    selected: true
+                }));
+            }
+            medicine.forEach(function(value) {
+                addSelectedValue(value);
+            });
         }
-        medicine.forEach(function(value) {
-            addSelectedValue(value);
-        });
 
+        console.log("medicine: " + medicine);
         document.getElementById("ftwId").value = element.getAttribute("data-id");
         document.getElementById("ftwName").value = element.getAttribute("data-name");
         document.getElementById("ftwDate").value = element.getAttribute("data-date");
@@ -578,7 +583,6 @@ if (isset($_POST['updateFTW2'])) {
         document.getElementById("ftwAbsenceReason").value = element.getAttribute("data-reasonofabsence");
         document.getElementById("ftwDiagnosis").value = element.getAttribute("data-diagnosis");
         document.getElementById("ftwMedCategory").value = element.getAttribute("data-medicalcategory");
-        // document.getElementById("ftwMeds").value = element.getAttribute("data-medicine");
         document.getElementById("ftwConfinement").value = element.getAttribute("data-confinementtype");
         document.getElementById("ftwSLDateFrom").value = element.getAttribute("data-fromdateofsickleave");
         document.getElementById("ftwSLDateTo").value = element.getAttribute("data-todateofsickleave");
