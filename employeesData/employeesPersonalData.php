@@ -17,7 +17,7 @@ if ($rfid == "not found") {
   $address = 'n/a';
   $civilStatus = 'n/a';
   $employer = 'n/a';
-  $section = 'n/a';
+  $sectiondepartment = 'n/a';
   $position = 'n/a';
   $dateHired = '01/01/1999';
 }
@@ -31,14 +31,15 @@ $result = mysqli_query($con, $sql1);
 while ($userRow = mysqli_fetch_assoc($result)) {
   $name = $userRow['Name'];
   $age = $userRow['age'];
-  0;
   $sex = $userRow['sex'];
   $address = $userRow['address'];
   $civilStatus = $userRow['civilStatus'];
   $employer = $userRow['employer'];
   $section = $userRow['section'];
+  $department = $userRow['department'];
   $position = $userRow['position'];
   $dateHired = $userRow['dateHired'];
+  $sectiondepartment = $section."/".$department;
 }
 
 
@@ -69,18 +70,18 @@ while ($userRow = mysqli_fetch_assoc($result)) {
     <div class="">
       <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> NAME: </span><span style="font-family: sans-serif" class="tracking-wide uppercase self-center text-md font-bold    text-[#000000]"><?php echo $name; ?></span></p>
       <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> ADDRESS: </span><span style="font-family: sans-serif" class="tracking-wide uppercase self-center text-md font-bold    text-[#000000]"><?php echo $address; ?></span></p>
-      <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> SEC/dept: </span><span style="font-family: sans-serif" class="tracking-wide uppercase self-center text-md font-bold    text-[#000000]"><?php echo $section; ?></span></p>
+      <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> SEC/DEPT: </span><span style="font-family: sans-serif" class="tracking-wide uppercase self-center text-md font-bold    text-[#000000]"><?php echo $sectiondepartment; ?></span></p>
       <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> POSITION: </span><span style="font-family: sans-serif" class="tracking-wide uppercase self-center text-md font-bold    text-[#000000]"><?php echo $position; ?></span></p>
     </div>
     <div class="">
       <div class="grid grid-cols-2  w-full">
         <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> AGE: </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"> <?php echo $age; ?> </span></p>
-        <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> sex: </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"> <?php echo $sex; ?></span></p>
+        <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> GENDER: </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"> <?php echo $sex; ?></span></p>
 
       </div>
-      <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> civil: </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"><?php echo $civilStatus; ?></span></p>
-      <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> employer: </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"> <?php echo $employer; ?></span></p>
-      <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> date: </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"> <?php $date_timestamp = strtotime($dateHired);
+      <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> CIVIL STATUS: </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"><?php echo $civilStatus; ?></span></p>
+      <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> EMPLOYER: </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"> <?php echo $employer; ?></span></p>
+      <p class=" 2xl:my-2"><span class="uppercase self-center text-md font-semibold  text-[#323232]"> DATE: </span><span style="font-family: sans-serif" class="tracking-wide uppercase  self-center text-md font-bold    text-[#000000]"> <?php $date_timestamp = strtotime($dateHired);
                                                                                                                                                                                                                                             $formatted_date = date('F d, Y', $date_timestamp);
 
                                                                                                                                                                                                                                             echo $formatted_date; ?></span></p>

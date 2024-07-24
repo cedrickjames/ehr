@@ -95,10 +95,6 @@ if (isset($_GET['cnsltn'])) {
   $cnsltn = "not found";
 }
 
-
-
-
-
 // $ftwMeds = $_SESSION['ftwMeds'];
 if (isset($_SESSION['ftwMeds'])) {
   $ftwMeds = $_SESSION['ftwMeds'];
@@ -169,7 +165,6 @@ if (isset($_POST['addConsultation'])) {
     echo "<script> location.href='index.php'; </script>";
   }
 }
-
 
 ?>
 
@@ -636,7 +631,18 @@ if (isset($_POST['addConsultation'])) {
 
       </div>
       <div class="col-span-4 justify-center flex">
-        <button type="submit" name="addConsultation" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[10px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Proceed</button>
+      <?php
+        if (!isset($_GET['cnsltn'])) { ?>
+            <button type="submit" name="addConsultation" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[10px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Proceed</button>
+        <?php
+        } else {
+        ?>
+          <!-- <button type="submit" name="updateConsultation" class="w-64 text-white bg-gradient-to-r from-[#9b0066]  to-[#ca9ac1] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300  shadow-lg shadow-pink-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Update Record</button> -->
+        <?php
+        }
+        ?>
+     
+     
       </div>
 
     </div>

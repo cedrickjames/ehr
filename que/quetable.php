@@ -238,6 +238,9 @@ Done
       <li>
         <a href="../nurses/medicalRecord.php?rf=<?php echo $row['rfidNumber'] ;?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Record</a>
       </li>
+      <li>
+        <a href="../nurses/vaccination.php?rf=<?php echo $row['rfidNumber'] ;?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Vaccination</a>
+      </li>
     </ul>
 
 </div>

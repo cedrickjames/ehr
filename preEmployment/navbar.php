@@ -387,6 +387,12 @@ if (isset($_GET['rf'])) {
         </a>
       </li>
       <li>
+        <a href="../nurses/vaccination.php" id="vaccinationSide" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+
+          <span class="flex-1 ml-3 font-semibold whitespace-nowrap">Vaccination</span>
+        </a>
+      </li>
+      <li>
         <a href="documents.php" id="sidedocs" class="flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
           <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" zoomAndPan="magnify" viewBox="0 0 750 749.999995" height="1000" preserveAspectRatio="xMidYMid meet" version="1.0">
             <defs>
