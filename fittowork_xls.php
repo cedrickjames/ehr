@@ -3,7 +3,7 @@ $month = $_GET['month'];
 $year = $_GET['year'];
 
 header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
-header("Content-Disposition: attachment; filename=Summary Report for the Month of " . $month . ".xls");  //File name extension was wrong
+header("Content-Disposition: attachment; filename=Fit to work Report for the Month of " . $month . ".xls");  //File name extension was wrong
 header("Expires: 0");
 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Cache-Control: private", false);
@@ -14,7 +14,8 @@ include("includes/connect.php");
 $con->next_result();
 
 $sql = mysqli_query($con, "SELECT f.*, e.Name, e.section, e.department, e.building  AS bldg, e.employer, e.sex FROM `fittowork`f 
-LEFT JOIN `employeespersonalinfo` e ON e.rfidNumber = f.rfid ORDER BY `id` ASC");
+LEFT JOIN `employeespersonalinfo` e ON e.rfidNumber = f.rfid WHERE MONTH(f.date) = '$monthNumber'
+    AND YEAR(f.date) = '$year' ORDER BY `id` ASC");
 
 
 ?>
