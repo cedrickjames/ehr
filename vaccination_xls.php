@@ -1,23 +1,65 @@
 <?php
+$month = $_GET['month'];
+$year = $_GET['year'];
+$vax = $_GET['vax'];
 
-if (isset($_GET['rf'])) {
-    $rfid = $_GET['rf'];
-} else {
-    $rfid = "not found";
+if($vax == "All"){
+$type = "";
+}else{
+    $type = $_GET['vax'];
+}
+header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
+header("Content-Disposition: attachment; filename=".$type." Vaccination Record for the Month of " . $month . ".xls");  //File name extension was wrong
+header("Expires: 0");
+header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+header("Cache-Control: private", false);
+$monthNumber = date('m', strtotime($month));
+
+include("includes/connect.php");
+
+$con->next_result();
+if($vax == "All"){
+    $sql = "SELECT v.*, e.Name FROM `vaccination` v LEFT JOIN `employeespersonalinfo` e ON e.rfidNumber = v.rfid WHERE (MONTH(v.firstDose) = '$monthNumber'
+    AND YEAR(v.firstDose) = '$year') OR (MONTH(v.secondDose) = '$monthNumber'
+    AND YEAR(v.secondDose) = '$year') OR (MONTH(v.thirdDose) = '$monthNumber'
+    AND YEAR(v.thirdDose) = '$year') ORDER BY `id` ASC";
+}
+else{
+    $sql = "SELECT v.*, e.Name FROM `vaccination` v LEFT JOIN `employeespersonalinfo` e ON e.rfidNumber = v.rfid WHERE v.vaccineType = '$vax' AND (MONTH(v.firstDose) = '$monthNumber'
+    AND YEAR(v.firstDose) = '$year') OR (MONTH(v.secondDose) = '$monthNumber'
+    AND YEAR(v.secondDose) = '$year') OR (MONTH(v.thirdDose) = '$monthNumber'
+    AND YEAR(v.thirdDose) = '$year') ORDER BY `id` ASC";
 }
 
 ?>
-<div class="text-[9px] 2xl:text-lg mb-5">
-    <p class="mb-2"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Vaccination Record</span></p>
 
-    <div id="" class="">
-        <div class=" p-4 rounded-lg  bg-gray-50 " id="headApproval" role="tabpanel" aria-labelledby="profile-tab">
-            <section class="mt-2 2xl:mt-10">
-                <table id="vaccinationRecord" class="display text-[9px] 2xl:text-sm" style="width:100%">
-                    <thead>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body>
+    <center>
+        <b>
+            <font color="blue">GLORY (PHILIPPINES), INC.</font>
+        </b>
+        <br>
+        <b>Electronic Medical Record</b>
+        <br>
+        <h3> <b> <?php echo $type ?> Vaccination Record for the Month of <?php echo $month ?></b></h3>
+
+        <br>
+    </center>
+    <br>
+
+    <div id="table-scroll">
+        <table width="100%" border="1" align="left">
+
+        <thead>
                         <tr>
                             <th>No.</th>
-                            <th>Action</th>
+                            <th>Employee</th>
                             <th>Type of Vaccine</th>
                             <th>Brand</th>
                             <th>1st Dose</th>
@@ -32,7 +74,6 @@ if (isset($_GET['rf'])) {
                     <tbody>
                         <?php
                          $vcnNo = 1;
-                        $sql = "SELECT * FROM `vaccination` WHERE `rfid` = '$rfid' ORDER BY `id` ASC";
                         $result = mysqli_query($con, $sql);
                         while ($row = mysqli_fetch_assoc($result)) {
 
@@ -51,9 +92,7 @@ if (isset($_GET['rf'])) {
                         ?>
                             <tr>
                             <td> <?php echo $vcnNo; ?> </td>
-                                <td>
-                                    <button type="button" onclick="showData(<?php echo $row['id']; ?>)" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Show</button>
-                                </td>
+                                <td><?php echo $row['Name'] ?></td>
                                 <td><?php echo $row['vaccineType'] ?></td>
                                 <td><?php echo $row['vaccineBrand'] ?></td>
                                 <td><?php echo $row['firstDose'] ?></td>
@@ -66,25 +105,8 @@ if (isset($_GET['rf'])) {
                             </tr>
                         <?php $vcnNo++;} ?>
                     </tbody>
-                </table>
-            </section>
-        </div>
+        </table>
     </div>
+</body>
 
-</div>
-<script>
-    function showData(vcnId) {
-
-        var currentUrl = window.location.href; // Get the current URL
-        var url = new URL(currentUrl);
-        var rfParam = url.searchParams.get('rf');
-        if (rfParam) {
-            // Construct the new URL by appending the consultId
-
-            window.location.href = "vaccination.php?rf=" + rfParam + '&vcn=' + vcnId; // Navigate to the new URL
-        } else {
-            console.error('The "rf" parameter is not present in the current URL.');
-        }
-
-    }
-</script>
+</html>

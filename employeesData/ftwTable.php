@@ -263,7 +263,7 @@ if (isset($_POST['updateFTW2'])) {
             <form method="POST" action="">
                 <div class="text-[9px] 2xl:text-lg  rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full w-full p-4 ">
                     <input type="text" name="ftwId" id="ftwId" class="hidden">
-                    <div class="content-center  col-span-2">
+                     <div class="col-span-4">
                         <label class="block  my-auto  font-semibold text-gray-900 ">Name: </label>
                         <input type="text" name="ftwName" id="ftwName" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
                     </div>

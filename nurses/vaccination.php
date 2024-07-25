@@ -94,19 +94,19 @@ $userID = $_SESSION['userID'];
     <?php
     if ($rfid == "not found") {
       echo "<div class='m-10'>";
-      require_once '../employeesData/ftwTable.php';
+      require_once '../employeesData/vaccinationTable.php';
       echo "</div>";
     } else {
       echo "<div class='mb-5 grid grid-cols-1 sm:grid-cols-11 gap-4 w-full'>
       <div class='overflow-y-auto h-screen relative  sm:col-span-6 '>";
 
       require_once '../employeesData/employeesPersonalData.php';
-      require_once '../employeesData/fitToWork.php';
+      require_once '../employeesData/vaccination.php';
 
       echo "</div>
       <div class='overflow-y-auto h-screen sm:col-span-5'>";
 
-      require_once '../employeesData/ftwInfo.php';
+      require_once '../employeesData/vaccinationRecord.php';
 
       echo "</div>
     </div>";
@@ -125,7 +125,7 @@ $userID = $_SESSION['userID'];
 
   <script type="text/javascript" src="index.js"></script>
   <script>
-    $("#fitToWorkSide").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
+    $("#vaccinationSide").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
     $("#sidehistory").removeClass("bg-gray-200");
     $("#sideMyRequest").removeClass("bg-gray-200");
     $("#sidepms").removeClass("bg-gray-200");
@@ -134,7 +134,7 @@ $userID = $_SESSION['userID'];
     $("#sidehistory1").removeClass("bg-gray-200");
     $("#sideMyRequest1").removeClass("bg-gray-200");
     $("#sidepms1").removeClass("bg-gray-200");
-    $(".ftwIcon").attr("fill", "#FFFFFF");
+    // $(".ftwIcon").attr("fill", "#FFFFFF");
     $(".homeIcon").attr("fill", "#4d4d4d");
 
 
