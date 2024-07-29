@@ -9,7 +9,6 @@
                         <tr>
                             <th>Date received </th>
                             <th>Date performed </th>
-                            <th>Bldg Transaction</th>
                             <th>IMC</th>
                             <th>OEH</th>
                             <th>PE</th>
@@ -35,7 +34,6 @@
                             <tr>
                                 <td><?php echo $row['dateReceived'] ?></td>
                                 <td><?php echo $row['datePerformed'] ?></td>
-                                <td><?php echo $row['building'] ?></td>
                                 <td><?php echo $row['IMC'] ?></td>
                                 <td><?php echo $row['OEH'] ?></td>
                                 <td><?php echo $row['PE'] ?></td>

@@ -47,7 +47,7 @@ if (isset($_GET['rf'])) {
                                 <td><?php echo $row['intervention'] ?></td>
                                 <td><?php echo $row['medications'] ?></td>
                                 <td><?php echo $row['followupdate'] ?></td>
-                                <td> <?php echo $row['FBS'] . ' ' . $row['cholesterol'] . ' ' . $row['triglycerides'] . ' ' . $row['HDL'] . ' ' . $row['LDL'] . ' ' . $row['BUN'] . ' ' . $row['BUA'] . ' ' . $row['SGPT'] . ' ' . $row['SGOT'] . ' ' . $row['HBA1C']; ?> </td>
+                                <td> <?php echo $row['FBS'] . ' ' . $row['cholesterol'] . ' ' . $row['triglycerides'] . ' ' . $row['HDL'] . ' ' . $row['LDL'] . ' ' . $row['BUN'] . ' ' . $row['BUA'] . ' ' . $row['SGPT'] . ' ' . $row['SGDT'] . ' ' . $row['HBA1C']; ?> </td>
                                 <td><?php echo $row['others'] ?></td>
                                 <td><?php echo $row['remarks'] ?></td>
 
