@@ -44,7 +44,7 @@ if (!isset($_SESSION['connected'])) {
 
   <script type="text/javascript" src="../node_modules/DataTables/datatables.min.js"></script>
   <script type="text/javascript" src="../node_modules/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js"></script>
-
+  <!-- <script src="../node_modules/select2/dist/js/select2.min.js"></script> -->
 
   <script type="text/javascript" src="index.js"></script>
   <script>
@@ -63,8 +63,18 @@ if (!isset($_SESSION['connected'])) {
     $(".preempIcon").attr("fill", "#FFFFFF");
     $(".homeIcon").attr("fill", "#4d4d4d");
 
+    $(".js-meds").select2({
+      tags: true
+    });
 
-
+    function addSelectedValue(value, qty) {
+      console.log(value);
+      $('#ftwMeds').append($('<option>', {
+        value: value + "(" + qty + ")",
+        text: value + "(" + qty + ")",
+        selected: true
+      }));
+    }
 
     const $targetEl = document.getElementById('sidebar');
 
@@ -76,13 +86,13 @@ if (!isset($_SESSION['connected'])) {
       edgeOffset: '',
       backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-30',
       onHide: () => {
-        console.log('drawer is hidden');
+
       },
       onShow: () => {
-        console.log('drawer is shown');
+
       },
       onToggle: () => {
-        console.log('drawer has been toggled');
+
       }
     };
 
@@ -94,8 +104,6 @@ if (!isset($_SESSION['connected'])) {
     var screenWidth = window.screen.width; // Screen width in pixels
     var screenHeight = window.screen.height; // Screen height in pixels
 
-    console.log("Screen width: " + screenWidth);
-    console.log("Screen height: " + screenHeight);
     var sidebar = 0;
 
 

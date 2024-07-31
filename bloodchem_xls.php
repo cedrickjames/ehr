@@ -12,15 +12,14 @@ $monthNumber = date('m', strtotime($month));
 
 include("includes/connect.php");
 
+
 $con->next_result();
 if ($employer == "All") {
-    $sql = "SELECT p.*, e.employer, e.Name, e.section, e.rfidNumber FROM annualphysicalexam p 
-    JOIN employeespersonalinfo e ON e.rfidNumber = p.rfidNumber WHERE MONTH(p.dateReceived) = '$monthNumber'
-    AND YEAR(p.dateReceived) = '$year' ORDER BY `id` ASC";
+    $sql = "SELECT p.*, e.employer, e.Name, e.section, e.department,e.building, e.rfidNumber , e.sex, p.building AS bldg_transaction FROM bloodchem p JOIN employeespersonalinfo e ON e.rfidNumber = p.rfid WHERE MONTH(p.date) = '$monthNumber'
+    AND YEAR(p.date) = '$year' ORDER BY `id` ASC";
 } else {
-    $sql = "SELECT p.*, e.employer, e.Name, e.section, e.rfidNumber FROM annualphysicalexam p 
-    JOIN employeespersonalinfo e ON e.rfidNumber = p.rfidNumber WHERE e.employer = '$employer' AND MONTH(p.dateReceived) = '$monthNumber'
-    AND YEAR(p.dateReceived) = '$year' ORDER BY `id` ASC";
+    $sql = "SELECT p.*, e.employer, e.Name, e.section, e.department,e.building, e.rfidNumber , e.sex, p.building AS bldg_transaction FROM bloodchem p JOIN employeespersonalinfo e ON e.rfidNumber = p.rfid WHERE e.employer = '$employer' AND MONTH(p.date) = '$monthNumber'
+    AND YEAR(p.date) = '$year' ORDER BY `id` ASC";
 }
 
 ?>
@@ -50,61 +49,75 @@ if ($employer == "All") {
 
             <thead>
                 <tr>
-                    <th>Date received </th>
-                    <th>Date performed </th>
-                    <th>Name </th>
-                    <th>Section </th>
-                    <th>IMC</th>
-                    <th>OEH</th>
-                    <th>PE</th>
-                    <th>CBC</th>
-                    <th>UA</th>
-                    <th>FA</th>
-                    <th>CXR</th>
-                    <th>VA</th>
-                    <th>DEN</th>
-                    <th>DT</th>
-                    <th>PT</th>
-                    <th>Others</th>
-                    <th>Follow up status</th>
-                    <th>Status</th>
-                    <th>Attendee</th>
-                    <th>Confirmation date</th>
-                    <th>FMC</th>
-                </tr>
+                    <th rowspan="2">Date</th>
+                    <th rowspan="2">Time</th>
+                    <th rowspan="2">Building Transaction</th>
+                    <th rowspan="2">Name</th>
+                    <th rowspan="2">Section </th>
+                    <th rowspan="2">Department</th>
+                    <th rowspan="2">Building</th>
+                    <th rowspan="2">Employer</th>
+                    <th rowspan="2">Gender</th>
+                    <th rowspan="2">Type</th>
+                    <th rowspan="2">Diagnosis</th>
+                    <th rowspan="2">Intervention</th>
+                    <th rowspan="2">Medicine</th>
+                    <th rowspan="2">Follow-up Date</th>
+                    <th rowspan="2">Remarks</th>
+                    <th colspan="11">Laboratory</th>
 
+                </tr>
+                <tr>
+                    <th>FBS</th>
+                    <th>Cholesterol</th>
+                    <th>Triglycerides</th>
+                    <th>HDl</th>
+                    <th>LDL</th>
+                    <th>BUN</th>
+                    <th>BUA</th>
+                    <th>SGPT</th>
+                    <th>SGDT</th>
+                    <th>HBA1C</th>
+                    <th>Others</th>
+                </tr>
                 <?php
 
                 ?>
 
             </thead>
             <tbody>
+
                 <?php
                 $result = mysqli_query($con, $sql);
                 while ($row = mysqli_fetch_array($result)) {
                     echo "<tr>    
                               
-                            <td>" . $row['dateReceived'] . "</td>
-                            <td>" . $row['datePerformed'] . "</td>
-                            <td>" . $row['Name'] . "</td>
-                             <td>" . $row['section'] . "</td>
-                              <td>" . $row['IMC'] . "</td>
-                               <td>" . $row['OEH'] . "</td>
-                                <td>" . $row['PE'] . "</td>
-                                 <td>" . $row['CBC'] . "</td>
-                                  <td>" . $row['U_A'] . "</td>
-                                   <td>" . $row['FA'] . "</td>
-                                    <td>" . $row['CXR'] . "</td>
-                                     <td>" . $row['VA'] . "</td>
-                                      <td>" . $row['DEN'] . "</td>
-                                       <td>" . $row['DT'] . "</td>
-                                        <td>" . $row['PT'] . "</td>
-                                         <td>" . $row['otherTest'] . "</td>
-                                          <td>" . $row['followUpStatus'] . "</td>
-                                           <td>" . $row['status'] . "</td>
-                                            <td>" . $row['attendee'] . "</td>
-                                             <td>" . $row['confirmationDate'] . "</td>
-                                              <td>" . $row['FMC'] . "</td>
+                            <td>" . $row['date'] . "</td>
+                            <td>" . $row['time'] . "</td>
+                            <td>" . $row['bldg_transaction'] . "</td>
+                             <td>" . $row['Name'] . "</td>
+                              <td>" . $row['section'] . "</td>
+                               <td>" . $row['department'] . "</td>
+                                <td>" . $row['building'] . "</td>
+                                 <td>" . $row['employer'] . "</td>
+                                  <td>" . $row['sex'] . "</td>
+                                   <td>" . $row['type'] . "</td>
+                                    <td>" . $row['diagnosis'] . "</td>
+                                     <td>" . $row['intervention'] . "</td>
+                                      <td>" . $row['medications'] . "</td>
+                                       <td>" . $row['followupdate'] . "</td>
+                                        <td>" . $row['remarks'] . "</td>
+                                         <td>" . $row['FBS'] . "</td>
+                                          <td>" . $row['cholesterol'] . "</td>
+                                           <td>" . $row['triglycerides'] . "</td>
+                                            <td>" . $row['HDL'] . "</td>
+                                             <td>" . $row['LDL'] . "</td>
+                                              <td>" . $row['BUN'] . "</td>
+                                              <td>" . $row['BUA'] . "</td>
+                                              <td>" . $row['SGPT'] . "</td>
+                                              <td>" . $row['SGDT'] . "</td>
+                                              <td>" . $row['HBA1C'] . "</td>
+                                              <td>" . $row['others'] . "</td>
                                     </tr>";
                 }
 

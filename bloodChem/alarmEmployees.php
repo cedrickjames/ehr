@@ -13,7 +13,7 @@ if (isset($_POST['excelReport'])) {
     $_SESSION['employer'] = $_POST['employer'];
 ?>
     <script type="text/javascript">
-        window.open('../annualPe_xls.php?month=<?php echo $_SESSION['month']; ?>&year=<?php echo $_SESSION['year']; ?>&employer=<?php echo $_SESSION['employer']; ?>', '_blank');
+        window.open('../bloodchem_xls.php?month=<?php echo $_SESSION['month']; ?>&year=<?php echo $_SESSION['year']; ?>&employer=<?php echo $_SESSION['employer']; ?>', '_blank');
         location.href = 'alarm.php';
     </script>
 <?php
@@ -646,7 +646,7 @@ if (isset($_POST['addAnnualPeImport'])) {
                 <span class="sr-only">Close modal</span>
             </button>
             <div class="px-6 py-6 lg:px-8">
-                <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Export Annual P.E.</h3>
+                <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Export HLP</h3>
                 <form class="space-y-6" action="" method="POST">
                     <div>
                         <label for="employer" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employer</label>

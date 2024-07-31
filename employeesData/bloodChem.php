@@ -24,7 +24,6 @@ if (isset($_GET['rf'])) {
                             <th>Medications</th>
                             <th>Follow up Date</th>
                             <th>Laboratory</th>
-                            <th>Others</th>
                             <th>Remarks</th>
 
 
@@ -47,8 +46,42 @@ if (isset($_GET['rf'])) {
                                 <td><?php echo $row['intervention'] ?></td>
                                 <td><?php echo $row['medications'] ?></td>
                                 <td><?php echo $row['followupdate'] ?></td>
-                                <td> <?php echo $row['FBS'] . ' ' . $row['cholesterol'] . ' ' . $row['triglycerides'] . ' ' . $row['HDL'] . ' ' . $row['LDL'] . ' ' . $row['BUN'] . ' ' . $row['BUA'] . ' ' . $row['SGPT'] . ' ' . $row['SGDT'] . ' ' . $row['HBA1C']; ?> </td>
-                                <td><?php echo $row['others'] ?></td>
+                                <td> <?php
+
+                                        if ($row['FBS'] != "") {
+                                            echo "FBS: " . $row['FBS'] . " ";
+                                        }
+                                        if ($row['cholesterol'] != "") {
+                                            echo "cholesterol: " . $row['cholesterol'] . " ";
+                                        }
+                                        if ($row['triglycerides'] != "") {
+                                            echo "triglycerides: " . $row['triglycerides'] . " ";
+                                        }
+                                        if ($row['HDL'] != "") {
+                                            echo "HDL: " . $row['HDL'] . " ";
+                                        }
+                                        if ($row['LDL'] != "") {
+                                            echo "LDL: " . $row['LDL'] . " ";
+                                        }
+                                        if ($row['BUN'] != "") {
+                                            echo "BUN: " . $row['BUN'] . " ";
+                                        }
+                                        if ($row['BUA'] != "") {
+                                            echo "BUA: " . $row['BUA'] . " ";
+                                        }
+                                        if ($row['SGPT'] != "") {
+                                            echo "SGPT: " . $row['SGPT'] . " ";
+                                        }
+                                        if ($row['SGDT'] != "") {
+                                            echo "SGDT: " . $row['SGDT'] . " ";
+                                        }
+                                        if ($row['HBA1C'] != "") {
+                                            echo "HBA1C: " . $row['HBA1C'] . " ";
+                                        }
+                                        if ($row['others'] != "") {
+                                            echo "others: " . $row['others'] . " ";
+                                        }
+                                        ?> </td>
                                 <td><?php echo $row['remarks'] ?></td>
 
 

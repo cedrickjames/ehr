@@ -13,7 +13,7 @@ if (isset($_POST['excelReport'])) {
     $_SESSION['employer'] = $_POST['employer'];
 ?>
     <script type="text/javascript">
-        window.open('../annualPe_xls.php?month=<?php echo $_SESSION['month']; ?>&year=<?php echo $_SESSION['year']; ?>&employer=<?php echo $_SESSION['employer']; ?>', '_blank');
+        window.open('../bloodchem_xls.php?month=<?php echo $_SESSION['month']; ?>&year=<?php echo $_SESSION['year']; ?>&employer=<?php echo $_SESSION['employer']; ?>', '_blank');
         location.href = 'powerlane.php';
     </script>
 <?php
@@ -215,7 +215,7 @@ if (isset($_POST['addAnnualPeImport'])) {
 ?>
 <div class="text-[9px] 2xl:text-lg mb-5">
     <div class="flex justify-between">
-        <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Annual P.E. Records - Powerlane Employees</span></p>
+        <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">HLP Records - Powerlane Employees</span></p>
         <div class="flex items-center order-2">
             <button type="button" data-modal-target="exportAnnualPe" data-modal-toggle="exportAnnualPe" class="lg:block text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Export</button>
 
@@ -223,7 +223,7 @@ if (isset($_POST['addAnnualPeImport'])) {
             <div id="options" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                 <ul class="py-2  text-gray-700 dark:text-gray-200" aria-labelledby="options">
                     <li>
-                        <a type="button" data-modal-target="addAnnualPe" data-modal-toggle="addAnnualPe" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Add Annual P.E.</a>
+                        <a type="button" data-modal-target="addAnnualPe" data-modal-toggle="addAnnualPe" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Add HLP</a>
                     </li>
                     <li>
                         <a type="button" data-modal-target="importAnnualPe" data-modal-toggle="importAnnualPe" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Import Data</a>
@@ -248,41 +248,33 @@ if (isset($_POST['addAnnualPeImport'])) {
                             <tr>
                                 <th>No.</th>
                                 <th>Action</th>
-                                <th>Date received </th>
-                                <th>Date performed </th>
+                                <th>Date </th>
+                                <th>Time </th>
+                                <th>Building Transaction </th>
                                 <th>Name </th>
                                 <th>Section </th>
-                                <th>IMC</th>
-                                <th>OEH</th>
-                                <th>PE</th>
-                                <th>CBC</th>
-                                <th>UA</th>
-                                <th>FA</th>
-                                <th>CXR</th>
-                                <th>VA</th>
-                                <th>DEN</th>
-                                <th>DT</th>
-                                <th>PT</th>
-                                <th>Others</th>
-                                <th>Follow up Status</th>
-                                <th>Status</th>
-                                <th>FMC</th>
+                                <th>Type</th>
+                                <th>Diagnosis</th>
+                                <th>Intervention</th>
+                                <th>Medicine</th>
+                                <th>Follow-up Date</th>
+                                <th>Laboratory</th>
+                                <th>Remarks</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            $ApeNo = 1;
-                            $sql = "SELECT p.*, e.employer, e.Name, e.section, e.rfidNumber FROM annualphysicalexam p 
-                                    JOIN employeespersonalinfo e ON e.rfidNumber = p.rfidNumber WHERE e.employer = 'Powerlane' ORDER BY `id` ASC";
+                            $HlpNo = 1;
+                            $sql = "SELECT p.*, e.employer, e.Name, e.section, e.rfidNumber FROM bloodchem p 
+                                    JOIN employeespersonalinfo e ON e.rfidNumber = p.rfid WHERE e.employer = 'Powerlane' ORDER BY `id` ASC";
                             $result = mysqli_query($con, $sql);
                             while ($row = mysqli_fetch_assoc($result)) { ?>
                                 <tr>
-                                    <td><?php echo $ApeNo; ?></td>
-                                    <!-- <td> <button type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['rfidNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date_received="<?php echo $row['dateReceived']; ?>" data-date_performed="<?php echo $row['datePerformed']; ?>" data-imc="<?php echo $row['IMC']; ?>" data-oeh="<?php echo $row['OEH']; ?>" data-pe="<?php echo $row['PE']; ?>" data-cbc="<?php echo $row['CBC']; ?>" data-ua="<?php echo $row['U_A']; ?>" data-fa="<?php echo $row['FA']; ?>" data-cxr="<?php echo $row['CXR']; ?>" data-va="<?php echo $row['VA']; ?>" data-den="<?php echo $row['DEN']; ?>" data-dt="<?php echo $row['DT']; ?>" data-pt="<?php echo $row['PT']; ?>" data-others="<?php echo $row['otherTest']; ?>" data-followupstatus="<?php echo $row['followUpStatus']; ?>" data-status="<?php echo $row['status']; ?>" data-attendee="<?php echo $row['attendee']; ?>" data-confirmationdate="<?php echo $row['confirmationDate']; ?>" data-fmc="<?php echo $row['FMC']; ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button></td> -->
+                                    <td><?php echo $HlpNo; ?></td>
+
                                     <td>
                                         <div class="content-center flex flex-wrap justify-center gap-2">
-                                            <input type="text" class="hidden" name="rfid<?php echo $ApeNo; ?>" value="<?php echo $row['rfidNumber']; ?>">
-                                            <button id="dropdownMenuIconButton<?php echo $ApeNo; ?>" data-dropdown-toggle="dropdownDots<?php echo $ApeNo; ?>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900  rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 bg-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
+                                            <button id="dropdownMenuIconButton<?php echo $HlpNo; ?>" data-dropdown-toggle="dropdownDots<?php echo $HlpNo; ?>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900  rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 bg-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
                                                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
                                                     <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
                                                 </svg>
@@ -291,37 +283,64 @@ if (isset($_POST['addAnnualPeImport'])) {
 
                                         </div>
                                         <!-- Dropdown menu -->
-                                        <div id="dropdownDots<?php echo $ApeNo; ?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                                            <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $ApeNo; ?>">
+                                        <div id="dropdownDots<?php echo $HlpNo; ?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                                            <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $HlpNo; ?>">
                                                 <li>
-                                                    <a type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['rfidNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date_received="<?php echo $row['dateReceived']; ?>" data-date_performed="<?php echo $row['datePerformed']; ?>" data-imc="<?php echo $row['IMC']; ?>" data-oeh="<?php echo $row['OEH']; ?>" data-pe="<?php echo $row['PE']; ?>" data-cbc="<?php echo $row['CBC']; ?>" data-ua="<?php echo $row['U_A']; ?>" data-fa="<?php echo $row['FA']; ?>" data-cxr="<?php echo $row['CXR']; ?>" data-va="<?php echo $row['VA']; ?>" data-den="<?php echo $row['DEN']; ?>" data-dt="<?php echo $row['DT']; ?>" data-pt="<?php echo $row['PT']; ?>" data-others="<?php echo $row['otherTest']; ?>" data-followupstatus="<?php echo $row['followUpStatus']; ?>" data-status="<?php echo $row['status']; ?>" data-attendee="<?php echo $row['attendee']; ?>" data-confirmationdate="<?php echo $row['confirmationDate']; ?>" data-fmc="<?php echo $row['FMC']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit Annual P.E. Record</a>
+                                                    <a type="button" onclick="openEditModal(this)" data-rfid="<?php echo $row['rfidNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date="<?php echo $row['date']; ?>" data-time="<?php echo $row['time']; ?>" data-building="<?php echo $row['building']; ?>" data-type="<?php echo $row['type']; ?>" data-diagnosis="<?php echo $row['diagnosis']; ?>" data-intervention="<?php echo $row['intervention']; ?>" data-medications="<?php echo $row['medications']; ?>" data-followupdate="<?php echo $row['followupdate']; ?>" data-FBS="<?php echo $row['FBS']; ?>" data-cholesterol="<?php echo $row['cholesterol']; ?>" data-triglycerides="<?php echo $row['triglycerides']; ?>" data-HDL="<?php echo $row['HDL']; ?>" data-LDL="<?php echo $row['LDL']; ?>" data-BUN="<?php echo $row['BUN']; ?>" data-BUA="<?php echo $row['BUA']; ?>" data-SGPT="<?php echo $row['SGPT']; ?>" data-SGDT="<?php echo $row['SGDT']; ?>" data-HBA1C="<?php echo $row['HBA1C']; ?>" data-others="<?php echo $row['others']; ?>" data-remarks="<?php echo $row['remarks']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit HLP Record</a>
                                                 </li>
 
                                             </ul>
 
                                         </div>
                                     </td>
-                                    <td><?php echo $row['dateReceived'] ?></td>
-                                    <td><?php echo $row['datePerformed'] ?></td>
+                                    <td><?php echo $row['date'] ?></td>
+                                    <td><?php echo $row['time'] ?></td>
+                                    <td><?php echo $row['building'] ?></td>
                                     <td><?php echo $row['Name'] ?></td>
                                     <td><?php echo $row['section'] ?></td>
-                                    <td><?php echo $row['IMC'] ?></td>
-                                    <td><?php echo $row['OEH'] ?></td>
-                                    <td><?php echo $row['PE'] ?></td>
-                                    <td><?php echo $row['CBC'] ?></td>
-                                    <td><?php echo $row['U_A'] ?></td>
-                                    <td><?php echo $row['FA'] ?></td>
-                                    <td><?php echo $row['CXR'] ?></td>
-                                    <td><?php echo $row['VA'] ?></td>
-                                    <td><?php echo $row['DEN'] ?></td>
-                                    <td><?php echo $row['DT'] ?></td>
-                                    <td><?php echo $row['PT'] ?></td>
-                                    <td><?php echo $row['otherTest'] ?></td>
-                                    <td><?php echo $row['followUpStatus'] ?></td>
-                                    <td><?php echo $row['status'] ?></td>
-                                    <td><?php echo $row['FMC'] ?></td>
+                                    <td><?php echo $row['type'] ?></td>
+                                    <td><?php echo $row['diagnosis'] ?></td>
+                                    <td><?php echo $row['intervention'] ?></td>
+                                    <td><?php echo $row['medications'] ?></td>
+                                    <td><?php echo $row['followupdate'] ?></td>
+                                    <td><?php if ($row['FBS'] != "") {
+                                            echo "FBS: " . $row['FBS'] . " ";
+                                        }
+                                        if ($row['cholesterol'] != "") {
+                                            echo "cholesterol: " . $row['cholesterol'] . " ";
+                                        }
+                                        if ($row['triglycerides'] != "") {
+                                            echo "triglycerides: " . $row['triglycerides'] . " ";
+                                        }
+                                        if ($row['HDL'] != "") {
+                                            echo "HDL: " . $row['HDL'] . " ";
+                                        }
+                                        if ($row['LDL'] != "") {
+                                            echo "LDL: " . $row['LDL'] . " ";
+                                        }
+                                        if ($row['BUN'] != "") {
+                                            echo "BUN: " . $row['BUN'] . " ";
+                                        }
+                                        if ($row['BUA'] != "") {
+                                            echo "BUA: " . $row['BUA'] . " ";
+                                        }
+                                        if ($row['SGPT'] != "") {
+                                            echo "SGPT: " . $row['SGPT'] . " ";
+                                        }
+                                        if ($row['SGDT'] != "") {
+                                            echo "SGDT: " . $row['SGDT'] . " ";
+                                        }
+                                        if ($row['HBA1C'] != "") {
+                                            echo "HBA1C: " . $row['HBA1C'] . " ";
+                                        }
+                                        if ($row['others'] != "") {
+                                            echo "others: " . $row['others'] . " ";
+                                        }
+                                        ?></td>
+                                    <td><?php echo $row['remarks'] ?></td>
+
                                 </tr>
-                            <?php $ApeNo++;
+                            <?php $HlpNo++;
                             } ?>
                         </tbody>
                     </table>
@@ -646,7 +665,7 @@ if (isset($_POST['addAnnualPeImport'])) {
                 <span class="sr-only">Close modal</span>
             </button>
             <div class="px-6 py-6 lg:px-8">
-                <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Export Annual P.E.</h3>
+                <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Export HLP</h3>
                 <form class="space-y-6" action="" method="POST">
                     <div>
                         <label for="employer" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employer</label>
