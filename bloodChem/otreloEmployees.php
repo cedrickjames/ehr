@@ -246,39 +246,32 @@ if (isset($_POST['addAnnualPeImport'])) {
                     <table id="queTable" class="display text-[9px] 2xl:text-sm" style="width:100%">
                         <thead>
                             <tr>
-                                <th>No.</th>
+                            <th>No.</th>
                                 <th>Action</th>
-                                <th>Date received </th>
-                                <th>Date performed </th>
+                                <th>Date </th>
+                                <th>Time </th>
+                                <th>Building Transaction </th>
                                 <th>Name </th>
                                 <th>Section </th>
-                                <th>IMC</th>
-                                <th>OEH</th>
-                                <th>PE</th>
-                                <th>CBC</th>
-                                <th>UA</th>
-                                <th>FA</th>
-                                <th>CXR</th>
-                                <th>VA</th>
-                                <th>DEN</th>
-                                <th>DT</th>
-                                <th>PT</th>
-                                <th>Others</th>
-                                <th>Follow up Status</th>
-                                <th>Status</th>
-                                <th>FMC</th>
+                                <th>Type</th>
+                                <th>Diagnosis</th>
+                                <th>Intervention</th>
+                                <th>Medicine</th>
+                                <th>Follow-up Date</th>
+                                <th>Laboratory</th>
+                                <th>Remarks</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             $ApeNo = 1;
-                            $sql = "SELECT p.*, e.employer, e.Name, e.section, e.rfidNumber FROM annualphysicalexam p 
-                                    JOIN employeespersonalinfo e ON e.rfidNumber = p.rfidNumber WHERE e.employer = 'Otrelo' ORDER BY `id` ASC";
+                            $sql = "SELECT p.*, e.employer, e.Name, e.section, e.rfidNumber FROM bloodchem p 
+                                    JOIN employeespersonalinfo e ON e.rfidNumber = p.rfid WHERE e.employer = 'Otrelo' ORDER BY `id` ASC";
                             $result = mysqli_query($con, $sql);
                             while ($row = mysqli_fetch_assoc($result)) { ?>
                                 <tr>
                                     <td><?php echo $ApeNo; ?></td>
-                                    <!-- <td> <button type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['rfidNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date_received="<?php echo $row['dateReceived']; ?>" data-date_performed="<?php echo $row['datePerformed']; ?>" data-imc="<?php echo $row['IMC']; ?>" data-oeh="<?php echo $row['OEH']; ?>" data-pe="<?php echo $row['PE']; ?>" data-cbc="<?php echo $row['CBC']; ?>" data-ua="<?php echo $row['U_A']; ?>" data-fa="<?php echo $row['FA']; ?>" data-cxr="<?php echo $row['CXR']; ?>" data-va="<?php echo $row['VA']; ?>" data-den="<?php echo $row['DEN']; ?>" data-dt="<?php echo $row['DT']; ?>" data-pt="<?php echo $row['PT']; ?>" data-others="<?php echo $row['otherTest']; ?>" data-followupstatus="<?php echo $row['followUpStatus']; ?>" data-status="<?php echo $row['status']; ?>" data-attendee="<?php echo $row['attendee']; ?>" data-confirmationdate="<?php echo $row['confirmationDate']; ?>" data-fmc="<?php echo $row['FMC']; ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button></td> -->
+                                
                                     <td>
                                         <div class="content-center flex flex-wrap justify-center gap-2">
                                             <input type="text" class="hidden" name="rfid<?php echo $ApeNo; ?>" value="<?php echo $row['rfidNumber']; ?>">
@@ -294,32 +287,62 @@ if (isset($_POST['addAnnualPeImport'])) {
                                         <div id="dropdownDots<?php echo $ApeNo; ?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                                             <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $ApeNo; ?>">
                                                 <li>
-                                                    <a type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['rfidNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date_received="<?php echo $row['dateReceived']; ?>" data-date_performed="<?php echo $row['datePerformed']; ?>" data-imc="<?php echo $row['IMC']; ?>" data-oeh="<?php echo $row['OEH']; ?>" data-pe="<?php echo $row['PE']; ?>" data-cbc="<?php echo $row['CBC']; ?>" data-ua="<?php echo $row['U_A']; ?>" data-fa="<?php echo $row['FA']; ?>" data-cxr="<?php echo $row['CXR']; ?>" data-va="<?php echo $row['VA']; ?>" data-den="<?php echo $row['DEN']; ?>" data-dt="<?php echo $row['DT']; ?>" data-pt="<?php echo $row['PT']; ?>" data-others="<?php echo $row['otherTest']; ?>" data-followupstatus="<?php echo $row['followUpStatus']; ?>" data-status="<?php echo $row['status']; ?>" data-attendee="<?php echo $row['attendee']; ?>" data-confirmationdate="<?php echo $row['confirmationDate']; ?>" data-fmc="<?php echo $row['FMC']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit Annual P.E. Record</a>
+                                                    <a type="button" onclick="openEditEmployee(this)" 
+                                                     data-rfid="<?php echo $row['rfidNumber']; ?>" 
+                                                    data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date="<?php echo $row['date']; ?>" data-time="<?php echo $row['time']; ?>" data-building="<?php echo $row['building']; ?>" data-type="<?php echo $row['type']; ?>" data-diagnosis="<?php echo $row['diagnosis']; ?>" data-intervention="<?php echo $row['intervention']; ?>" data-medications="<?php echo $row['medications']; ?>" data-followupdate="<?php echo $row['followupdate']; ?>" data-FBS="<?php echo $row['FBS']; ?>" data-cholesterol="<?php echo $row['cholesterol']; ?>" data-triglycerides="<?php echo $row['triglycerides']; ?>" data-HDL="<?php echo $row['HDL']; ?>" data-LDL="<?php echo $row['LDL']; ?>" data-BUN="<?php echo $row['BUN']; ?>" data-BUA="<?php echo $row['BUA']; ?>" data-SGPT="<?php echo $row['SGPT']; ?>" data-SGDT="<?php echo $row['SGDT']; ?>" data-HBA1C="<?php echo $row['HBA1C']; ?>" data-others="<?php echo $row['others']; ?>" data-remarks="<?php echo $row['remarks']; ?>"
+                                                           class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit Annual P.E. Record</a>
                                                 </li>
 
                                             </ul>
 
                                         </div>
                                     </td>
-                                    <td><?php echo $row['dateReceived'] ?></td>
-                                    <td><?php echo $row['datePerformed'] ?></td>
+                                    <td><?php echo $row['date'] ?></td>
+                                    <td><?php echo $row['time'] ?></td>
+                                    <td><?php echo $row['building'] ?></td>
                                     <td><?php echo $row['Name'] ?></td>
                                     <td><?php echo $row['section'] ?></td>
-                                    <td><?php echo $row['IMC'] ?></td>
-                                    <td><?php echo $row['OEH'] ?></td>
-                                    <td><?php echo $row['PE'] ?></td>
-                                    <td><?php echo $row['CBC'] ?></td>
-                                    <td><?php echo $row['U_A'] ?></td>
-                                    <td><?php echo $row['FA'] ?></td>
-                                    <td><?php echo $row['CXR'] ?></td>
-                                    <td><?php echo $row['VA'] ?></td>
-                                    <td><?php echo $row['DEN'] ?></td>
-                                    <td><?php echo $row['DT'] ?></td>
-                                    <td><?php echo $row['PT'] ?></td>
-                                    <td><?php echo $row['otherTest'] ?></td>
-                                    <td><?php echo $row['followUpStatus'] ?></td>
-                                    <td><?php echo $row['status'] ?></td>
-                                    <td><?php echo $row['FMC'] ?></td>
+                                    <td><?php echo $row['type'] ?></td>
+                                    <td><?php echo $row['diagnosis'] ?></td>
+                                    <td><?php echo $row['intervention'] ?></td>
+                                    <td><?php echo $row['medications'] ?></td>
+                                    <td><?php echo $row['followupdate'] ?></td>
+                                    <td><?php if ($row['FBS'] != "") {
+                                            echo "FBS: " . $row['FBS'] . " ";
+                                        }
+                                        if ($row['cholesterol'] != "") {
+                                            echo "cholesterol: " . $row['cholesterol'] . " ";
+                                        }
+                                        if ($row['triglycerides'] != "") {
+                                            echo "triglycerides: " . $row['triglycerides'] . " ";
+                                        }
+                                        if ($row['HDL'] != "") {
+                                            echo "HDL: " . $row['HDL'] . " ";
+                                        }
+                                        if ($row['LDL'] != "") {
+                                            echo "LDL: " . $row['LDL'] . " ";
+                                        }
+                                        if ($row['BUN'] != "") {
+                                            echo "BUN: " . $row['BUN'] . " ";
+                                        }
+                                        if ($row['BUA'] != "") {
+                                            echo "BUA: " . $row['BUA'] . " ";
+                                        }
+                                        if ($row['SGPT'] != "") {
+                                            echo "SGPT: " . $row['SGPT'] . " ";
+                                        }
+                                        if ($row['SGDT'] != "") {
+                                            echo "SGDT: " . $row['SGDT'] . " ";
+                                        }
+                                        if ($row['HBA1C'] != "") {
+                                            echo "HBA1C: " . $row['HBA1C'] . " ";
+                                        }
+                                        if ($row['others'] != "") {
+                                            echo "others: " . $row['others'] . " ";
+                                        }
+                                        ?></td>
+                                    <td><?php echo $row['remarks'] ?></td>
+
                                 </tr>
                             <?php $ApeNo++;
                             } ?>
@@ -353,110 +376,195 @@ if (isset($_POST['addAnnualPeImport'])) {
             <form method="POST">
                 <div class="text-[9px] 2xl:text-lg  rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full w-full p-4 ">
                     <div class="col-span-4 gap-4">
-                        <label for="name" class="block mb-1  text-gray-900 dark:text-white">Name</label>
-                        <select id="name" name="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        <label for="hlpname" class="block mb-1  text-gray-900 dark:text-white">Name</label>
+                        <select id="hlpname" name="hlpname" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                             <option selected disabled>Search Name</option>
                             <?php
-                            $sql1 = "SELECT * FROM employeespersonalinfo e WHERE e.employer = 'Otrelo' AND e.rfidNumber NOT IN (SELECT p.rfidNumber FROM annualphysicalexam p);";
+                            $sql1 = "SELECT * FROM employeespersonalinfo e WHERE e.employer = 'Otrelo' AND e.rfidNumber NOT IN (SELECT p.rfid FROM bloodchem p);";
                             $result = mysqli_query($con, $sql1);
                             while ($list = mysqli_fetch_assoc($result)) {
                                 $rfid = $list["rfidNumber"];
                                 $name = $list["Name"];
                                 $section = $list["section"]; ?>
-                                <option value="<?php echo  $name; ?>" data-rfid="<?php echo  $rfid; ?>" data-section="<?php echo  $section; ?>"> <?php echo  $name; ?> </option> <?php
+                                <option value="<?php echo  $name; ?>" data-hlprfid="<?php echo  $rfid; ?>" data-hlpsection="<?php echo  $section; ?>"> <?php echo  $name; ?> </option> <?php
                                                                                                                                                                                 } ?>
                         </select>
                     </div>
                     <div class="content-center  col-span-2">
-                        <label for="rfid" class="block mb-1  text-gray-900 dark:text-white">RFID</label>
-                        <input type="text" name="rfid" id="rfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " required="">
+                        <label for="hlprfid" class="block mb-1  text-gray-900 dark:text-white">RFID</label>
+                        <input type="text" name="hlprfid" id="hlprfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " required="">
                     </div>
                     <div class="content-center  col-span-2">
-                        <label for="section" class="block mb-1  text-gray-900 dark:text-white">Section</label>
-                        <input type="text" name="section" id="section" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " required="">
+                        <label for="hlpsection" class="block mb-1  text-gray-900 dark:text-white">Section</label>
+                        <input type="text" name="hlpsection" id="hlpsection" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " required="">
                     </div>
                     <div class="content-center  col-span-2">
-                        <label for="date_received" class="block mb-1  text-gray-900 dark:text-white">Date Received</label>
-                        <input type="date" name="date_received" id="date_received" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" required="">
+                        <label for="hlpdate" class="block mb-1  text-gray-900 dark:text-white">Date</label>
+                        <input type="date" name="hlpdate" id="hlpdate" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" required="">
                     </div>
                     <div class="content-center  col-span-2">
-                        <label for="date_performed" class="block mb-1  text-gray-900 dark:text-white">Date Performed</label>
-                        <input type="date" name="date_performed" id="date_performed" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
+                        <label for="hlptime" class="block mb-1  text-gray-900 dark:text-white">Time</label>
+                        <input type="text" name="hlptime" id="hlptime" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
                     </div>
                     <div class="content-center  col-span-2">
-                        <label for="imc" class="block mb-1  text-gray-900 dark:text-white">IMC</label>
-                        <input type="text" name="imc" id="imc" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="oeh" class="block mb-1  text-gray-900 dark:text-white">OEH</label>
-                        <input type="text" name="oeh" id="oeh" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="pe" class="block mb-1  text-gray-900 dark:text-white">PE</label>
-                        <input type="text" name="pe" id="pe" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="cbc" class="block mb-1  text-gray-900 dark:text-white">CBC</label>
-                        <input type="text" name="cbc" id="cbc" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="ua" class="block mb-1  text-gray-900 dark:text-white">U/A</label>
-                        <input type="text" name="ua" id="ua" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="fa" class="block mb-1  text-gray-900 dark:text-white">FA</label>
-                        <input type="text" name="fa" id="fa" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="cxr" class="block mb-1  text-gray-900 dark:text-white">CXR</label>
-                        <input type="text" name="cxr" id="cxr" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="va" class="block mb-1  text-gray-900 dark:text-white">VA</label>
-                        <input type="text" name="va" id="va" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="den" class="block mb-1  text-gray-900 dark:text-white">DEN</label>
-                        <input type="text" name="den" id="den" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="dt" class="block mb-1  text-gray-900 dark:text-white">DT</label>
-                        <input type="text" name="dt" id="dt" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="pt" class="block mb-1  text-gray-900 dark:text-white">PT</label>
-                        <input type="text" name="pt" id="pt" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="others" class="block mb-1  text-gray-900 dark:text-white">Others</label>
-                        <input type="text" name="others" id="others" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" required="">
-                    </div>
-                    <div class="col-span-2">
-                        <label for="followupstatus" class="block mb-1  text-gray-900 dark:text-white">Follow up status</label>
-                        <input type="text" name="followupstatus" id="followupstatus" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" required="">
-                    </div>
-                    <div class="col-span-2">
-                        <label for="status" class="block mb-1  text-gray-900 dark:text-white">Status</label>
-                        <select name="status" id="status" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" required="">
-                            <option disabled selected>Select status</option>
-                            <option value="pending">Pending</option>
-                            <option value="complied">Complied</option>
+                        <label for="hlptype" class="block mb-1  text-gray-900 dark:text-white">Type</label>
+                        <select name="hlptype" id="hlptype"  class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        <option selected value="">Select Type</option>
+                            <option value="Initial">Initial</option>
+                            <option value="Follow up">Follow up</option>
                         </select>
 
                     </div>
                     <div class="content-center  col-span-2">
-                        <label for="attendee" class="block mb-1  text-gray-900 dark:text-white">Attendee</label>
-                        <input type="text" name="attendee" id="attendee" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="Nurse/Doctor" required="">
+                        <label for="hlpbuilding_transaction" class="block mb-1 text-gray-900 dark:text-white">Building</label>
+                        <select name="hlpbuilding_transaction" id="hlpbuilding_transaction"  class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        <option selected value="">Select Building</option>
+                            <option value="Gpi 1">GPI 1</option>
+                            <option value="Gpi 4">GPI 4</option>
+                            <option value="Gpi 5">GPI 5</option>
+                        </select>
+
                     </div>
                     <div class="content-center  col-span-2">
-                        <label for="confirmationdate" class="block mb-1  text-gray-900 dark:text-white">Confirmation Date</label>
-                        <input type="date" name="confirmationdate" id="confirmationdate" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" required="">
-                    </div>
-                    <div class="col-span-4 gap-4">
-                        <label for="fmc" class="block mb-1  text-gray-900 dark:text-white">FMC</label>
-                        <input type="text" name="fmc" id="fmc" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" required="">
-                    </div>
+                        <label for="editdiagnosis" class="block  my-auto   text-gray-900 ">Diagnosis: </label>
+                        <select id="editdiagnosis" name="editdiagnosis" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        <option selected>Select Diagnosis</option>
+                            <?php
+                            $sql1 = "Select * FROM `diagnosis`";
+                            $result = mysqli_query($con, $sql1);
+                            while ($list = mysqli_fetch_assoc($result)) {
+                                $diagnosis = $list["diagnosisName"];
+                            ?>
+                                <option><?php echo $diagnosis; ?></option>
+                            <?php
 
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="content-center  col-span-2">
+                        <label for="editintervention" class="block  my-auto  text-gray-900 ">Intervention</label>
+
+                        <select id="editintervention" name="editintervention" value="" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        <option selected value="">Select Intervention</option>
+                            <option  value="Medication Only">Medication only</option>
+                            <option value="Medical Consultation">Medical Consultation</option>
+                            <option value="Medication and Medical Consultation">Medication and Medical Consultation</option>
+                            <option value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
+                            <option value="Clinic Rest Only">Clinic Rest Only</option>
+
+
+
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-4 col-span-4" id="medicineDivs">
+                        <div class="col-span-4">
+
+                            <label for="hlpftwMeds" class="block  my-auto  text-gray-900 ">Medicine (Add medicine below): </label>
+                            <select name="hlpftwMeds[]" id="hlpftwMeds" multiple="multiple"  class="p-2 js-meds border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+
+                           
+                            </select>
+
+                        </div>
+                        <div id="medicineDiv" class="grid grid-cols-4 gap-1 col-span-4 mt-2">
+                            <div id="medicineDiv1" class="grid grid-cols-4 gap-1 col-span-4">
+                                <div id="medsdiv" class="col-span-2">
+                                    <label for="nameOfMedicine" class="block  my-auto text-gray-900 ">What's your medicine? </label>
+
+                                    <input type="text" id="nameOfMedicine"  class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+
+                                </div>
+
+                                <div id="medsqtydiv" class=" col-span-2">
+                                    <div class="w-full">
+                                        <label class="block  my-auto  text-gray-900 ">Choose quantity:</label>
+                                        <div class="flex relative ">
+                                            <div class="relative flex items-center max-w-[8rem]">
+                                                <button type="button" id="decrement-button" data-input-counter-decrement="quantityMeds" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                                    <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
+                                                    </svg>
+                                                </button>
+                                                <input type="text" name="cnsltnMedsQuantity" id="quantityMeds" data-input-counter data-input-counter-min="1" data-input-counter-max="50" aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" value="1" />
+                                                <button type="button" id="increment-button" data-input-counter-increment="quantityMeds" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                                    <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+                                                    </svg>
+                                                </button>
+
+                                            </div>
+
+                                            <button type="button" id="addmedsbtn" onclick="addSelectedValue(document.getElementById('nameOfMedicine').value, document.getElementById('quantityMeds').value)" class="ml-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  p-2 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Add to list
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="content-center  col-span-2">
+                        <label for="hlpfollowupdate" class="block mb-1  text-gray-900 dark:text-white">Follow-up Date</label>
+                        <input type="date" name="hlpfollowupdate" id="hlpfollowupdate"class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="">
+                    </div>
+                    <div class="content-center  col-span-2">
+                        <label for="hlpremarks" class="block mb-1  text-gray-900 dark:text-white">Remarks</label>
+                        <input type="text" name="hlpremarks" id="hlpremarks" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" ">
+                    </div>
+                     <div class="col-span-4">
+                        <h3 class="block my-auto w-full  text-gray-900 ">Laboratory: </h3>
+                    </div>
+                     <div class="ml-4 grid grid-cols-4  col-span-4 gap-1"> 
+                        <div class="col-span-2">
+                            <label for="hlpfbs" class="block my-auto   text-gray-900 ">FBS: </label>
+                            <input type="text" value="" name="hlpfbs" id="hlpfbs"class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="hlpcholesterol" class="block my-auto   text-gray-900 ">Cholesterol: </label>
+                            <input type="text" name="hlpcholesterol" id="hlpcholesterol" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        </div>
+
+                         <div class="col-span-2">
+                            <label for="hlptriglycerides" class="block my-auto   text-gray-900 ">Triglycerides: </label>
+                            <input type="text" name="hlptriglycerides" id="hlptriglycerides" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="hlphdl" class="block my-auto   text-gray-900 ">HDL: </label>
+                            <input type="text" name="hlphdl" id="hlphdl" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="hlpldl" class="block my-auto   text-gray-900 ">LDL: </label>
+                            <input type="text" name="hlpldl" id="hlpldl" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="hlpbun" class="block my-auto   text-gray-900 ">BUN: </label>
+                            <input type="text" name="hlpbun" id="hlpbun" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="hlpbua" class="block my-auto   text-gray-900 ">BUA: </label>
+                            <input type="text" name="hlpbua" id="hlpbua" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="hlpsgpt" class="block my-auto  text-gray-900 ">SGPT: </label>
+                            <input type="text" name="hlpsgpt" id="hlpsgpt" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        </div>
+                    <div class="col-span-2">
+                            <label for="hlpsgdt" class="block my-auto   text-gray-900 ">SGDT: </label>
+                            <input type="text" name="hlpsgdt" id="hlpsgdt" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="hlphbaic" class="block my-auto   text-gray-900 ">HBAIC: </label>
+                            <input type="text" name="hlphbaic" id="hlphbaic" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        </div>
+                     <div class="col-span-2">
+                            <label for="hlpothers" class="block my-auto  text-gray-900 ">Others: </label>
+                            <input type="text" name="hlpothers" id="hlpothers" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        </div> 
+                        </div>
                     <div class="col-span-4 justify-center flex gap-2">
                         <button type="submit" name="addAnnualPe" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -531,106 +639,189 @@ if (isset($_POST['addAnnualPeImport'])) {
             <!-- Modal body -->
             <form method="POST">
                 <div class="text-[9px] 2xl:text-lg  rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full w-full p-4 ">
+                <input type="text" name="editid" id="editid" class="hidden" required="">
                     <div class="col-span-4 gap-4">
-                        <label for="editName" class="block mb-1  text-gray-900 dark:text-white">Name</label>
-                        <input id="editName" name="editName" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
+                        <label for="editname" class="block mb-1 font-semibold  text-gray-900 dark:text-white">Name</label>
+                        <input type="text" name="editname" id="editname" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
                     </div>
                     <div class="content-center  col-span-2">
-                        <label for="editRfid" class="block mb-1  text-gray-900 dark:text-white">RFID</label>
-                        <input type="text" name="editRfid" id="editRfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
+                        <label for="editrfid" class="block mb-1 font-semibold  text-gray-900 dark:text-white">RFID</label>
+                        <input type="text" name="editrfid" id="editrfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
                     </div>
                     <div class="content-center  col-span-2">
-                        <label for="editSection" class="block mb-1  text-gray-900 dark:text-white">Section</label>
-                        <input type="text" name="editSection" id="editSection" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
+                        <label for="editsection" class="block mb-1 font-semibold  text-gray-900 dark:text-white">Section</label>
+                        <input type="text" name="editsection" id="editsection" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
                     </div>
                     <div class="content-center  col-span-2">
-                        <label for="editDate_received" class="block mb-1  text-gray-900 dark:text-white">Date Received</label>
-                        <input type="date" name="editDate_received" id="editDate_received" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
+                        <label for="editdate" class="block mb-1 font-semibold text-gray-900 dark:text-white">Date</label>
+                        <input type="date" name="editdate" id="editdate" value="<?php echo date('Y-m-d'); ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
                     </div>
                     <div class="content-center  col-span-2">
-                        <label for="editDate_performed" class="block mb-1  text-gray-900 dark:text-white">Date Performed</label>
-                        <input type="date" name="editDate_performed" id="editDate_performed" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
+                        <label for="edittime" class="block mb-1 font-semibold text-gray-900 dark:text-white">Time</label>
+                        <input type="text" name="edittime" id="edittime" value="<?php echo date('h:i A'); ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
                     </div>
                     <div class="content-center  col-span-2">
-                        <label for="editImc" class="block mb-1  text-gray-900 dark:text-white">IMC</label>
-                        <input type="text" name="editImc" id="editImc" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editOeh" class="block mb-1  text-gray-900 dark:text-white">OEH</label>
-                        <input type="text" name="editOeh" id="editOeh" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editPe" class="block mb-1  text-gray-900 dark:text-white">PE</label>
-                        <input type="text" name="editPe" id="editPe" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editCbc" class="block mb-1  text-gray-900 dark:text-white">CBC</label>
-                        <input type="text" name="editCbc" id="editCbc" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editUa" class="block mb-1  text-gray-900 dark:text-white">U/A</label>
-                        <input type="text" name="editUa" id="editUa" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editFa" class="block mb-1  text-gray-900 dark:text-white">FA</label>
-                        <input type="text" name="editFa" id="editFa" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editCxr" class="block mb-1  text-gray-900 dark:text-white">CXR</label>
-                        <input type="text" name="editCxr" id="editCxr" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editVa" class="block mb-1  text-gray-900 dark:text-white">VA</label>
-                        <input type="text" name="editVa" id="editVa" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editDen" class="block mb-1  text-gray-900 dark:text-white">DEN</label>
-                        <input type="text" name="editDen" id="editDen" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editDt" class="block mb-1  text-gray-900 dark:text-white">DT</label>
-                        <input type="text" name="editDt" id="editDt" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editPt" class="block mb-1  text-gray-900 dark:text-white">PT</label>
-                        <input type="text" name="editPt" id="editPt" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editOthers" class="block mb-1  text-gray-900 dark:text-white">Others</label>
-                        <input type="text" name="editOthers" id="editOthers" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
-                    </div>
-                    <div class="col-span-2">
-                        <label for="editFollowupstatus" class="block mb-1  text-gray-900 dark:text-white">Follow up status</label>
-                        <input type="text" name="editFollowupstatus" id="editFollowupstatus" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
-                    </div>
-                    <div class="col-span-2">
-                        <label for="editStatus" class="block mb-1  text-gray-900 dark:text-white">Status</label>
-                        <select name="editStatus" id="editStatus" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
-                            <option disabled selected>Select status</option>
-                            <option value="pending">Pending</option>
-                            <option value="complied">Complied</option>
+                        <label for="edittype" class="block mb-1 font-semibold text-gray-900 dark:text-white">Type</label>
+                        <select name="edittype" id="edittype" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                            <option value="Initial">Initial</option>
+                            <option value="Follow up">Follow up</option>
                         </select>
 
                     </div>
                     <div class="content-center  col-span-2">
-                        <label for="editAttendee" class="block mb-1  text-gray-900 dark:text-white">Attendee</label>
-                        <input type="text" name="editAttendee" id="editAttendee" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="Nurse/Doctor">
-                    </div>
+                        <label for="editbuilding_transaction" class="block mb-1 font-semibold text-gray-900 dark:text-white">Building</label>
+                        <select name="editbuilding_transaction" id="editbuilding_transaction" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                            <option value="Gpi 1">GPI 1</option>
+                            <option value="Gpi 4">GPI 4</option>
+                            <option value="Gpi 5">GPI 5</option>
+                        </select>
 
+                    </div>
                     <div class="content-center  col-span-2">
-                        <label for="editConfirmationdate" class="block mb-1  text-gray-900 dark:text-white">Confirmation Date</label>
-                        <input type="date" name="editConfirmationdate" id="editConfirmationdate" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
-                    </div>
-                    <div class="col-span-4 gap-4">
-                        <label for="editFmc" class="block mb-1  text-gray-900 dark:text-white">FMC</label>
-                        <input type="text" name="editFmc" id="editFmc" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
-                    </div>
+                        <label for="editdiagnosis" class="block  my-auto  font-semibold text-gray-900 ">Diagnosis: </label>
+                        <select id="editdiagnosis" name="editdiagnosis" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
 
-                    <div class="col-span-4 justify-center flex gap-2">
-                        <button type="submit" name="editAnnualPe" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Update Record</button>
+                            <?php
+                            $sql1 = "Select * FROM `diagnosis`";
+                            $result = mysqli_query($con, $sql1);
+                            while ($list = mysqli_fetch_assoc($result)) {
+                                $diagnosis = $list["diagnosisName"];
+                            ?>
+                                <option><?php echo $diagnosis; ?></option>
+                            <?php
+
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="content-center  col-span-2">
+                        <label for="editintervention" class="block  my-auto  font-semibold text-gray-900 ">Intervention</label>
+
+                        <select id="editintervention" name="editintervention" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                            <option selected value="Medication Only">Medication only</option>
+                            <option value="Medical Consultation">Medical Consultation</option>
+                            <option value="Medication and Medical Consultation">Medication and Medical Consultation</option>
+                            <option value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
+                            <option value="Clinic Rest Only">Clinic Rest Only</option>
+
+
+
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-4 col-span-4" id="medicineDivs">
+                        <div class="col-span-4">
+
+                            <label for="editftwMeds" class="block  my-auto font-semibold text-gray-900 ">Medicine (Add medicine below): </label>
+                            <select name="editftwMeds[]" id="editftwMeds" multiple="multiple" class="form-control js-meds w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+
+                           
+                            </select>
+
+                        </div>
+                        <div id="medicineDiv" class="grid grid-cols-4 gap-1 col-span-4 mt-2">
+                            <div id="medicineDiv1" class="grid grid-cols-4 gap-1 col-span-4">
+                                <div id="medsdiv" class="col-span-2">
+                                    <label for="nameOfMedicine1" class="block  my-auto font-semibold text-gray-900 ">What's your medicine? </label>
+
+                                    <input type="text" id="nameOfMedicine1" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+
+                                </div>
+
+                                <div id="medsqtydiv" class=" col-span-2">
+                                    <div class="w-full">
+                                        <label class="block  my-auto font-semibold text-gray-900 ">Choose quantity:</label>
+                                        <div class="flex relative ">
+                                            <div class="relative flex items-center max-w-[8rem]">
+                                                <button type="button" id="decrement-button" data-input-counter-decrement="quantityMeds1" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                                    <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
+                                                    </svg>
+                                                </button>
+                                                <input type="text" name="cnsltnMedsQuantity" id="quantityMeds1" data-input-counter data-input-counter-min="1" data-input-counter-max="50" aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" value="1" />
+                                                <button type="button" id="increment-button" data-input-counter-increment="quantityMeds1" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                                    <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+                                                    </svg>
+                                                </button>
+
+                                            </div>
+
+                                            <button type="button" id="addmedsbtn" onclick="addSelectedValue1(document.getElementById('nameOfMedicine1').value, document.getElementById('quantityMeds1').value)" class="ml-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  p-2 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Add to list
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
 
                     </div>
-                </div>
+                    <div class="content-center  col-span-2">
+                        <label for="editfollowupdate" class="block mb-1 font-semibold text-gray-900 dark:text-white">Follow-up Date</label>
+                        <input type="date" name="editfollowupdate" id="editfollowupdate" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
+                    </div>
+                    <div class="content-center  col-span-2">
+                        <label for="editremarks" class="block mb-1 font-semibold text-gray-900 dark:text-white">Remarks</label>
+                        <input type="text" name="editremarks" id="editremarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
+                    </div>
+                    <div class="col-span-4">
+                        <h3 class=" my-auto w-full font-semibold text-gray-900 ">Laboratory: </h3>
+                    </div>
+                    <div class="ml-4 grid grid-cols-4  col-span-4 gap-1">
+                        <div class="col-span-2">
+                            <label for="editfbs" class="block my-auto  font-semibold text-gray-900 ">FBS: </label>
+                            <input type="text" value="" name="editfbs" id="editfbs" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="editcholesterol" class="block my-auto  font-semibold text-gray-900 ">Cholesterol: </label>
+                            <input type="text" name="editcholesterol" id="editcholesterol" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="edittriglycerides" class="block my-auto  font-semibold text-gray-900 ">Triglycerides: </label>
+                            <input type="text" name="edittriglycerides" id="edittriglycerides" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="edithdl" class="block my-auto  font-semibold text-gray-900 ">HDL: </label>
+                            <input type="text" name="edithdl" id="edithdl" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="editldl" class="block my-auto  font-semibold text-gray-900 ">LDL: </label>
+                            <input type="text" name="editldl" id="editldl" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="editbun" class="block my-auto  font-semibold text-gray-900 ">BUN: </label>
+                            <input type="text" name="editbun" id="editbun" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="editbua" class="block my-auto  font-semibold text-gray-900 ">BUA: </label>
+                            <input type="text" name="editbua" id="editbua" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="editsgpt" class="block my-auto  font-semibold text-gray-900 ">SGPT: </label>
+                            <input type="text" name="editsgpt" id="editsgpt" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="editsgdt" class="block my-auto  font-semibold text-gray-900 ">SGDT: </label>
+                            <input type="text" name="editsgdt" id="editsgdt" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="edithbaic" class="block my-auto  font-semibold text-gray-900 ">HBAIC: </label>
+                            <input type="text" name="edithbaic" id="edithbaic" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="editothers" class="block my-auto  font-semibold text-gray-900 ">Others: </label>
+                            <input type="text" name="editothers" id="editothers" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                        <div class="col-span-4 justify-center flex gap-2">
+                            <button type="submit" name="editAnnualPe" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                              
+                                Update Record
+                            </button>
+                        </div>
+                    </div>
             </form>
         </div>
     </div>
@@ -693,16 +884,15 @@ if (isset($_POST['addAnnualPeImport'])) {
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('#name').change(function() {
-            var selectedRfid = $(this).find('option:selected').data('rfid');
-            $('#rfid').val(selectedRfid);
-            var selectedSection = $(this).find('option:selected').data('section');
-            $('#section').val(selectedSection);
+        $('#hlpname').change(function() {
+            var selectedRfid = $(this).find('option:selected').data('hlprfid');
+            $('#hlprfid').val(selectedRfid);
+            var selectedSection = $(this).find('option:selected').data('hlpsection');
+            $('#hlpsection').val(selectedSection);
             console.log(selectedRfid);
             console.log(selectedSection);
         });
     });
-
 
     const editEmployee = document.getElementById('editAnnualPe');
 
@@ -726,29 +916,45 @@ if (isset($_POST['addAnnualPeImport'])) {
 
     function openEditEmployee(element) {
         modalEdit.toggle();
-        document.getElementById("editRfid").value = element.getAttribute("data-rfid");
-        document.getElementById("editName").value = element.getAttribute("data-name");
-        document.getElementById("editSection").value = element.getAttribute("data-section");
-        document.getElementById("editDate_received").value = element.getAttribute("data-date_received");
-        document.getElementById("editDate_performed").value = element.getAttribute("data-date_performed");
-        document.getElementById("editImc").value = element.getAttribute("data-imc");
-        document.getElementById("editOeh").value = element.getAttribute("data-oeh");
-        document.getElementById("editPe").value = element.getAttribute("data-pe");
-        document.getElementById("editCbc").value = element.getAttribute("data-cbc");
-        document.getElementById("editUa").value = element.getAttribute("data-ua");
-        document.getElementById("editPe").value = element.getAttribute("data-pe");
-        document.getElementById("editFa").value = element.getAttribute("data-fa");
-        document.getElementById("editCxr").value = element.getAttribute("data-cxr");
-        document.getElementById("editVa").value = element.getAttribute("data-va");
-        document.getElementById("editDen").value = element.getAttribute("data-den");
-        document.getElementById("editDt").value = element.getAttribute("data-dt");
-        document.getElementById("editPt").value = element.getAttribute("data-pt");
-        document.getElementById("editOthers").value = element.getAttribute("data-others");
-        document.getElementById("editFollowupstatus").value = element.getAttribute("data-followupstatus");
-        document.getElementById("editStatus").value = element.getAttribute("data-status");
-        document.getElementById("editAttendee").value = element.getAttribute("data-attendee");
-        document.getElementById("editConfirmationdate").value = element.getAttribute("data-confirmationdate");
-        document.getElementById("editFmc").value = element.getAttribute("data-fmc");
+        str = element.getAttribute("data-medications");
+        medicine = str.split(',');
+        $('#editftwMeds').empty();
+        if (medicine != "") {
+            function addSelectedValue(value) {
+                $('#editftwMeds').append($('<option>', {
+                    value: value,
+                    text: value,
+                    selected: true
+                }));
+            }
+            medicine.forEach(function(value) {
+                addSelectedValue(value);
+            });
+        }
+        document.getElementById("editid").value = element.getAttribute("data-id");
+        document.getElementById("editrfid").value = element.getAttribute("data-rfid");
+        document.getElementById("editname").value = element.getAttribute("data-name");
+        document.getElementById("editsection").value = element.getAttribute("data-section");
+        document.getElementById("editdate").value = element.getAttribute("data-date");
+        document.getElementById("edittime").value = element.getAttribute("data-time");
+        document.getElementById("editbuilding_transaction").value = element.getAttribute("data-building");
+        document.getElementById("edittype").value = element.getAttribute("data-type");
+        document.getElementById("editdiagnosis").value = element.getAttribute("data-diagnosis");
+        document.getElementById("editintervention").value = element.getAttribute("data-intervention");
+        // document.getElementById("editftwMeds").value = element.getAttribute("data-medications");
+        document.getElementById("editfollowupdate").value = element.getAttribute("data-followupdate");
+        document.getElementById("editfbs").value = element.getAttribute("data-FBS");
+        document.getElementById("editcholesterol").value = element.getAttribute("data-cholesterol");
+        document.getElementById("edittriglycerides").value = element.getAttribute("data-triglycerides");
+        document.getElementById("edithdl").value = element.getAttribute("data-HDL");
+        document.getElementById("editldl").value = element.getAttribute("data-LDL");
+        document.getElementById("editbun").value = element.getAttribute("data-BUN");
+        document.getElementById("editbua").value = element.getAttribute("data-BUA");
+        document.getElementById("editsgpt").value = element.getAttribute("data-SGPT");
+        document.getElementById("editsgdt").value = element.getAttribute("data-SGDT");
+        document.getElementById("edithbaic").value = element.getAttribute("data-HBA1C");
+        document.getElementById("editothers").value = element.getAttribute("data-others");
+        document.getElementById("editremarks").value = element.getAttribute("data-remarks");
     }
 
     document.getElementById("employer").addEventListener("keydown", function(event) {
