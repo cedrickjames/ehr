@@ -396,28 +396,28 @@ if (isset($_POST['submitNewPassword'])) {
         </a>
         <ul id="companies" class="hidden  py-2 space-y-2">
           <li>
-            <a id="gpiside" href="index.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
+            <a id="gpiside" href="../preEmployment/index.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
           </li>
           <li>
-            <a id="maximside" href="maxim.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
+            <a id="maximside" href="../preEmployment/maxim.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
           </li>
           <li>
-            <a id="nippiside" href="nippi.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
+            <a id="nippiside" href="../preEmployment/nippi.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
           </li>
           <li>
-            <a id="powerlaneside" href="powerlane.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+            <a id="powerlaneside" href="../preEmployment/powerlane.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
           </li>
           <li>
-            <a id="otreloside" href="otrelo.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
+            <a id="otreloside" href="../preEmployment/otrelo.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
-            <a id="mangreatside" href="mangreat.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
+            <a id="mangreatside" href="../preEmployment/mangreat.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
           </li>
           <li>
-            <a id="alarmside" href="alarm.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+            <a id="alarmside" href="../preEmployment/alarm.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
           </li>
           <li>
-            <a id="canteenside" href="canteen.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
+            <a id="canteenside" href="../preEmployment/canteen.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
           </li>
         </ul>
       </li>

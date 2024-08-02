@@ -19,32 +19,38 @@ if (isset($_POST['excelReport'])) {
 <?php
 }
 
-if (isset($_POST['addAnnualPe'])) {
-    $date_received = $_POST['date_received'];
-    $date_performed = $_POST['date_performed'];
-    $name = $_POST['name'];
-    $rfid = $_POST['rfid'];
-    $section = $_POST['section'];
-    $imc = $_POST['imc'];
-    $oeh = $_POST['oeh'];
-    $pe = $_POST['pe'];
-    $cbc = $_POST['cbc'];
-    $ua = $_POST['ua'];
-    $fa = $_POST['fa'];
-    $cxr = $_POST['cxr'];
-    $va = $_POST['va'];
-    $den = $_POST['den'];
-    $dt = $_POST['dt'];
-    $pt = $_POST['pt'];
-    $others = $_POST['others'];
-    $followupstatus = $_POST['followupstatus'];
-    $status = $_POST['status'];
-    $attendee = $_POST['attendee'];
-    $confirmationdate = $_POST['confirmationdate'];
-    $fmc = $_POST['fmc'];
+if (isset($_POST['addBloodChem'])) {
+    $rfid = $_POST['hlprfid'];
+    $date = $_POST['hlpdate'];
+    $time = $_POST['hlptime'];
+    $building = $_POST['hlpbuilding_transaction'];
+    $type = $_POST['hlptype'];
+    $diagnosis = $_POST['hlpdiagnosis'];
+    $intervention = $_POST['hlpintervention'];
+    $followupdate = $_POST['hlpfollowupdate'];
+    $fbs = $_POST['hlpfbs'];
+    $cholesterol = $_POST['hlpcholesterol'];
+    $triglycerides = $_POST['hlptriglycerides'];
+    $hdl = $_POST['hlphdl'];
+    $ldl = $_POST['hlpldl'];
+    $bun = $_POST['hlpbun'];
+    $bua = $_POST['hlpbua'];
+    $sgpt = $_POST['hlpsgpt'];
+    $sgdt = $_POST['hlpsgdt'];
+    $hbaic = $_POST['hlphbaic'];
+    $others = $_POST['hlpothers'];
+    $remarks = $_POST['hlpremarks'];
 
-    $addAnnualPe = "INSERT INTO `annualphysicalexam`(`dateReceived`, `datePerformed`, `rfidNumber`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`, `confirmationDate`, `FMC`) VALUES ('$date_received','$date_performed','$rfid','$name','$section','$imc','$oeh','$pe','$cbc','$ua','$fa','$cxr','$va', '$den', '$dt', '$pt', '$others', '$followupstatus', '$status', '$attendee', '$confirmationdate', '$fmc')";
-    $resultInfo = mysqli_query($con, $addAnnualPe);
+    $Meds = $_POST['hlpftwMeds'];
+
+
+    if ($Meds != "") {
+
+        $Meds = implode(', ', $Meds);
+    }
+
+    $addBloodChem = "INSERT INTO `bloodchem`(`rfid`, `date`, `time` ,`building`, `type`, `diagnosis`, `intervention`, `medications`, `followupdate`, `FBS`, `cholesterol`, `triglycerides`, `HDL`, `LDL`, `BUN`, `BUA`, `SGPT`, `SGDT`, `HBA1C`, `others` ,`remarks`) VALUES ('$rfid','$date','$time','$building','$type','$diagnosis','$intervention','$Meds','$followupdate','$fbs','$cholesterol','$triglycerides', '$hdl', '$ldl', '$bun', '$bua', '$sgpt', '$sgdt', '$hbaic', '$others', '$remarks')";
+    $resultInfo = mysqli_query($con, $addBloodChem);
 
     if ($resultInfo) {
         echo "<script>alert('Added Successfuly!') </script>";
@@ -52,32 +58,41 @@ if (isset($_POST['addAnnualPe'])) {
     }
 }
 
-if (isset($_POST['editAnnualPe'])) {
-    $date_received = $_POST['editDate_received'];
-    $date_performed = $_POST['editDate_performed'];
-    $name = $_POST['editName'];
-    $rfid = $_POST['editRfid'];
-    $section = $_POST['editSection'];
-    $imc = $_POST['editImc'];
-    $oeh = $_POST['editOeh'];
-    $pe = $_POST['editPe'];
-    $cbc = $_POST['editCbc'];
-    $fa = $_POST['editFa'];
-    $ua = $_POST['editUa'];
-    $cxr = $_POST['editCxr'];
-    $va = $_POST['editVa'];
-    $den = $_POST['editDen'];
-    $dt = $_POST['editDt'];
-    $pt = $_POST['editPt'];
-    $others = $_POST['editOthers'];
-    $followupstatus = $_POST['editFollowupstatus'];
-    $status = $_POST['editStatus'];
-    $attendee = $_POST['editAttendee'];
-    $confirmationdate = $_POST['editConfirmationdate'];
-    $fmc = $_POST['editFmc'];
+if (isset($_POST['editBloodChem'])) {
+    $id = $_POST['editid'];
+    $rfid = $_POST['editrfid'];
+    $name = $_POST['editname'];
+    $section = $_POST['editsection'];
+    $date = $_POST['editdate'];
+    $time = $_POST['edittime'];
+    $building = $_POST['editbuilding_transaction'];
+    $type = $_POST['edittype'];
+    $diagnosis = $_POST['editdiagnosis'];
+    $intervention = $_POST['editintervention'];
+    $followupdate = $_POST['editfollowupdate'];
+    $fbs = $_POST['editfbs'];
+    $cholesterol = $_POST['editcholesterol'];
+    $triglycerides = $_POST['edittriglycerides'];
+    $hdl = $_POST['edithdl'];
+    $ldl = $_POST['editldl'];
+    $bun = $_POST['editbun'];
+    $bua = $_POST['editbua'];
+    $sgpt = $_POST['editsgpt'];
+    $sgdt = $_POST['editsgdt'];
+    $hbaic = $_POST['edithbaic'];
+    $others = $_POST['editothers'];
+    $remarks = $_POST['editremarks'];
 
-    $editAnnualPe = "UPDATE `annualphysicalexam`SET `dateReceived`='$date_received' , `datePerformed` = '$date_performed', `name`= '$name', `section`= '$section', `IMC`= '$imc', `OEH`= '$oeh', `PE`= '$pe', `CBC`= '$cbc', `U_A`= '$ua', `FA`= '$fa', `CXR`= '$cxr', `VA`= '$va', `DEN`= '$den', `DT`= '$dt', `PT`= '$pt', `otherTest`= '$others', `followUpStatus`= '$followupstatus', `status`= '$status', `attendee` = '$attendee',`confirmationDate`= '$confirmationdate', `FMC`= '$fmc' WHERE `rfidNumber`='$rfid'";
-    $resultInfo = mysqli_query($con, $editAnnualPe);
+    $Meds = $_POST['editftwMeds'];
+
+
+    if ($Meds != "") {
+
+        $Meds = implode(', ', $Meds);
+    }
+
+    $editBloodChem = "UPDATE `bloodchem` SET `date`='$date' , `time` = '$time', `building`= '$building', `type`= '$type', `diagnosis`= '$diagnosis', `intervention`= '$intervention', `medications`= '$Meds', `followupdate`= '$followupdate', `FBS`= '$fbs', `cholesterol`= '$cholesterol', `triglycerides`= '$triglycerides', `HDL`= '$hdl', `LDL`= '$ldl', `BUN`= '$bun', `BUA`= '$bua', `SGPT`= '$sgpt', `SGDT`= '$sgdt', `HBA1C`= '$hbaic', `others` = '$others',`remarks`= '$remarks' WHERE `id`='$id'";
+    $resultInfo = mysqli_query($con, $editBloodChem);
 
     if ($resultInfo) {
         echo "<script>alert('Updated Successfuly!') </script>";
@@ -119,26 +134,27 @@ function saveToDatabase($con, $data, $count)
 
     foreach ($data as $row) {
         if ($count > 0) {
-            $dateReceived = $row['0'];
-            $datePerformed = $row['1'];
-            $rfidNumber = $row['2'];
-            $IMC = $row['3'];
-            $OEH = $row['4'];
-            $PE = $row['5'];
-            $CBC = $row['6'];
-            $U_A = $row['7'];
-            $FA = $row['8'];
-            $CXR = $row['9'];
-            $VA = $row['10'];
-            $DEN = $row['11'];
-            $DT = $row['12'];
-            $PT = $row['13'];
-            $otherTest = $row['14'];
-            $followUpStatus = $row['15'];
-            $status = $row['16'];
-            $attendee = $row['17'];
-            $confirmationDate = $row['18'];
-            $FMC = $row['19'];
+            $date = $row['0'];
+            $time = $row['1'];
+            $building = $row['2'];
+            $rfidNumber = $row['3'];
+            $type = $row['4'];
+            $diagnosis = $row['5'];
+            $intervention = $row['6'];
+            $Meds = $row['7'];
+            $followupdate = $row['8'];
+            $fbs = $row['9'];
+            $cholesterol = $row['10'];
+            $triglycerides = $row['11'];
+            $hdl = $row['12'];
+            $ldl = $row['13'];
+            $bun = $row['14'];
+            $bua = $row['15'];
+            $sgpt = $row['16'];
+            $sgdt = $row['17'];
+            $hbaic = $row['18'];
+            $others = $row['19'];
+            $remarks = $row['20'];
 
             // Check if RFID number exists in db_table
             if (!isRfidNumberExists($con, $rfidNumber)) {
@@ -153,14 +169,14 @@ function saveToDatabase($con, $data, $count)
                 $name = $userRow['Name'];
                 $section = $userRow['section'];
 
-                $result1 = mysqli_query($con, "SELECT * FROM `annualphysicalexam` WHERE `rfidNumber` = '$rfidNumber'");
+                $result1 = mysqli_query($con, "SELECT * FROM `bloodchem` WHERE `rfid` = '$rfidNumber'");
                 $numrows = mysqli_num_rows($result1);
                 if ($numrows > 0) {
-                    $addAnnualPe = "UPDATE `annualphysicalexam` SET `dateReceived` = '$dateReceived', `datePerformed` = '$datePerformed', `name`='$name', `section`='$section', `IMC` = '$IMC', `OEH`='$OEH', `PE` = '$PE', `CBC` ='$CBC', `U_A` = '$U_A', `FA`='$FA', `CXR` ='$CXR', `VA`='$VA', `DEN`='$DEN', `DT`='$DT', `PT` = '$PT', `otherTest` = '$otherTest', `followUpStatus` = '$followUpStatus', `status`='$status', `attendee`='$attendee', `confirmationDate`='$confirmationDate', `FMC`='$FMC' WHERE `rfidNumber` = '$rfidNumber'";
-                    $resultInfo = mysqli_query($con, $addAnnualPe);
+                    $addHlp = "UPDATE `bloodchem` SET `date`='$date' , `time` = '$time', `building`= '$building', `type`= '$type', `diagnosis`= '$diagnosis', `intervention`= '$intervention', `medications`= '$Meds', `followupdate`= '$followupdate', `FBS`= '$fbs', `cholesterol`= '$cholesterol', `triglycerides`= '$triglycerides', `HDL`= '$hdl', `LDL`= '$ldl', `BUN`= '$bun', `BUA`= '$bua', `SGPT`= '$sgpt', `SGDT`= '$sgdt', `HBA1C`= '$hbaic', `others` = '$others',`remarks`= '$remarks' WHERE `rfid`='$rfidNumber'";
+                    $resultInfo = mysqli_query($con, $addHlp);
                 } else {
-                    $addAnnualPe = "INSERT INTO `annualphysicalexam`(`dateReceived`, `datePerformed`, `rfidNumber`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`,`confirmationDate`, `FMC`) VALUES ('$dateReceived','$datePerformed','$rfidNumber','$name','$section','$IMC','$OEH','$PE','$CBC','$U_A','$FA','$CXR', '$VA', '$DEN', '$DT', '$PT', ' $otherTest', ' $followUpStatus', '$status', '$attendee','$confirmationDate', '$FMC')";
-                    $resultInfo = mysqli_query($con, $addAnnualPe);
+                    $addHlp = "INSERT INTO `bloodchem`(`rfid`, `date`, `time` ,`building`, `type`, `diagnosis`, `intervention`, `medications`, `followupdate`, `FBS`, `cholesterol`, `triglycerides`, `HDL`, `LDL`, `BUN`, `BUA`, `SGPT`, `SGDT`, `HBA1C`, `others` ,`remarks`) VALUES ('$rfidNumber','$date','$time','$building','$type','$diagnosis','$intervention','$Meds','$followupdate','$fbs','$cholesterol','$triglycerides', '$hdl', '$ldl', '$bun', '$bua', '$sgpt', '$sgdt', '$hbaic', '$others', '$remarks')";
+                    $resultInfo = mysqli_query($con, $addHlp);
                 }
             }
 
@@ -177,7 +193,7 @@ function saveToDatabase($con, $data, $count)
 }
 
 // Main script to import Excel and process data
-if (isset($_POST['addAnnualPeImport'])) {
+if (isset($_POST['addBloodChemImport'])) {
     $fileName = $_FILES['import_file']['name'];
     $file_ext = pathinfo($fileName, PATHINFO_EXTENSION);
     $allowed_ext = ['xls', 'csv', 'xlsx'];
@@ -197,6 +213,7 @@ if (isset($_POST['addAnnualPeImport'])) {
             // Output success or error messages
             if (empty($errorLogs)) {
                 echo "<script>alert('Data imported and saved successfully.!') </script>";
+                echo "<script> location.href='otrelo.php'; </script>";
             } else {
                 echo "Errors occurred during import:<br>";
                 foreach ($errorLogs as $error) {
@@ -215,18 +232,21 @@ if (isset($_POST['addAnnualPeImport'])) {
 ?>
 <div class="text-[9px] 2xl:text-lg mb-5">
     <div class="flex justify-between">
-        <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Annual P.E. Records - Otrelo Employees</span></p>
+        <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">HLP Records - Otrelo Employees</span></p>
         <div class="flex items-center order-2">
-            <button type="button" data-modal-target="exportAnnualPe" data-modal-toggle="exportAnnualPe" class="lg:block text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Export</button>
+            <button type="button" onclick="openExportModal()" class="lg:block text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Export</button>
 
             <button type="button" data-dropdown-toggle="options" class="lg:block text-white bg-gradient-to-r from-[#00669B] to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 ">Add</button>
             <div id="options" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                 <ul class="py-2  text-gray-700 dark:text-gray-200" aria-labelledby="options">
+                    <!-- <li>
+                        <a type="button" onclick="openExportModal()" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Export</a>
+                    </li> -->
                     <li>
-                        <a type="button" data-modal-target="addAnnualPe" data-modal-toggle="addAnnualPe" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Add Annual P.E.</a>
+                        <a type="button" onclick="openAddModal()" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Add HLP</a>
                     </li>
                     <li>
-                        <a type="button" data-modal-target="importAnnualPe" data-modal-toggle="importAnnualPe" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Import Data</a>
+                        <a type="button" onclick="openImportModal()" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Import Data</a>
                     </li>
                     <li>
                         <a type="button" onclick="exportTemplate()" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Export Template</a>
@@ -246,7 +266,7 @@ if (isset($_POST['addAnnualPeImport'])) {
                     <table id="queTable" class="display text-[9px] 2xl:text-sm" style="width:100%">
                         <thead>
                             <tr>
-                            <th>No.</th>
+                                <th>No.</th>
                                 <th>Action</th>
                                 <th>Date </th>
                                 <th>Time </th>
@@ -271,7 +291,7 @@ if (isset($_POST['addAnnualPeImport'])) {
                             while ($row = mysqli_fetch_assoc($result)) { ?>
                                 <tr>
                                     <td><?php echo $ApeNo; ?></td>
-                                
+
                                     <td>
                                         <div class="content-center flex flex-wrap justify-center gap-2">
                                             <input type="text" class="hidden" name="rfid<?php echo $ApeNo; ?>" value="<?php echo $row['rfidNumber']; ?>">
@@ -287,10 +307,7 @@ if (isset($_POST['addAnnualPeImport'])) {
                                         <div id="dropdownDots<?php echo $ApeNo; ?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                                             <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $ApeNo; ?>">
                                                 <li>
-                                                    <a type="button" onclick="openEditEmployee(this)" 
-                                                     data-rfid="<?php echo $row['rfidNumber']; ?>" 
-                                                    data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date="<?php echo $row['date']; ?>" data-time="<?php echo $row['time']; ?>" data-building="<?php echo $row['building']; ?>" data-type="<?php echo $row['type']; ?>" data-diagnosis="<?php echo $row['diagnosis']; ?>" data-intervention="<?php echo $row['intervention']; ?>" data-medications="<?php echo $row['medications']; ?>" data-followupdate="<?php echo $row['followupdate']; ?>" data-FBS="<?php echo $row['FBS']; ?>" data-cholesterol="<?php echo $row['cholesterol']; ?>" data-triglycerides="<?php echo $row['triglycerides']; ?>" data-HDL="<?php echo $row['HDL']; ?>" data-LDL="<?php echo $row['LDL']; ?>" data-BUN="<?php echo $row['BUN']; ?>" data-BUA="<?php echo $row['BUA']; ?>" data-SGPT="<?php echo $row['SGPT']; ?>" data-SGDT="<?php echo $row['SGDT']; ?>" data-HBA1C="<?php echo $row['HBA1C']; ?>" data-others="<?php echo $row['others']; ?>" data-remarks="<?php echo $row['remarks']; ?>"
-                                                           class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit Annual P.E. Record</a>
+                                                    <a type="button" onclick="openEditEmployee(this)" data-id="<?php echo $row['id'] ?>" data-rfid="<?php echo $row['rfidNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date="<?php echo $row['date']; ?>" data-time="<?php echo $row['time']; ?>" data-building="<?php echo $row['building']; ?>" data-type="<?php echo $row['type']; ?>" data-diagnosis="<?php echo $row['diagnosis']; ?>" data-intervention="<?php echo $row['intervention']; ?>" data-medications="<?php echo $row['medications']; ?>" data-followupdate="<?php echo $row['followupdate']; ?>" data-FBS="<?php echo $row['FBS']; ?>" data-cholesterol="<?php echo $row['cholesterol']; ?>" data-triglycerides="<?php echo $row['triglycerides']; ?>" data-HDL="<?php echo $row['HDL']; ?>" data-LDL="<?php echo $row['LDL']; ?>" data-BUN="<?php echo $row['BUN']; ?>" data-BUA="<?php echo $row['BUA']; ?>" data-SGPT="<?php echo $row['SGPT']; ?>" data-SGDT="<?php echo $row['SGDT']; ?>" data-HBA1C="<?php echo $row['HBA1C']; ?>" data-others="<?php echo $row['others']; ?>" data-remarks="<?php echo $row['remarks']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit HLP Record</a>
                                                 </li>
 
                                             </ul>
@@ -356,16 +373,16 @@ if (isset($_POST['addAnnualPeImport'])) {
 </div>
 
 
-<div id="addAnnualPe" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+<div id="addBloodChem" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 class=" font-semibold text-gray-900 dark:text-white">
-                    Add Annual P.E. Record
+                    Add HLP Record
                 </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="addAnnualPe">
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="addBloodChem">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                     </svg>
@@ -387,7 +404,7 @@ if (isset($_POST['addAnnualPeImport'])) {
                                 $name = $list["Name"];
                                 $section = $list["section"]; ?>
                                 <option value="<?php echo  $name; ?>" data-hlprfid="<?php echo  $rfid; ?>" data-hlpsection="<?php echo  $section; ?>"> <?php echo  $name; ?> </option> <?php
-                                                                                                                                                                                } ?>
+                                                                                                                                                                                    } ?>
                         </select>
                     </div>
                     <div class="content-center  col-span-2">
@@ -400,16 +417,16 @@ if (isset($_POST['addAnnualPeImport'])) {
                     </div>
                     <div class="content-center  col-span-2">
                         <label for="hlpdate" class="block mb-1  text-gray-900 dark:text-white">Date</label>
-                        <input type="date" name="hlpdate" id="hlpdate" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" required="">
+                        <input type="date" name="hlpdate" id="hlpdate" value="<?php echo date('Y-m-d'); ?>" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" required="">
                     </div>
                     <div class="content-center  col-span-2">
                         <label for="hlptime" class="block mb-1  text-gray-900 dark:text-white">Time</label>
-                        <input type="text" name="hlptime" id="hlptime" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
+                        <input type="text" name="hlptime" id="hlptime" value="<?php echo date('h:i A'); ?>" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
                     </div>
                     <div class="content-center  col-span-2">
                         <label for="hlptype" class="block mb-1  text-gray-900 dark:text-white">Type</label>
-                        <select name="hlptype" id="hlptype"  class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
-                        <option selected value="">Select Type</option>
+                        <select name="hlptype" id="hlptype" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                            <option selected value="">Select Type</option>
                             <option value="Initial">Initial</option>
                             <option value="Follow up">Follow up</option>
                         </select>
@@ -417,8 +434,8 @@ if (isset($_POST['addAnnualPeImport'])) {
                     </div>
                     <div class="content-center  col-span-2">
                         <label for="hlpbuilding_transaction" class="block mb-1 text-gray-900 dark:text-white">Building</label>
-                        <select name="hlpbuilding_transaction" id="hlpbuilding_transaction"  class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
-                        <option selected value="">Select Building</option>
+                        <select name="hlpbuilding_transaction" id="hlpbuilding_transaction" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                            <option selected value="">Select Building</option>
                             <option value="Gpi 1">GPI 1</option>
                             <option value="Gpi 4">GPI 4</option>
                             <option value="Gpi 5">GPI 5</option>
@@ -428,7 +445,7 @@ if (isset($_POST['addAnnualPeImport'])) {
                     <div class="content-center  col-span-2">
                         <label for="editdiagnosis" class="block  my-auto   text-gray-900 ">Diagnosis: </label>
                         <select id="editdiagnosis" name="editdiagnosis" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
-                        <option selected>Select Diagnosis</option>
+                            <option selected>Select Diagnosis</option>
                             <?php
                             $sql1 = "Select * FROM `diagnosis`";
                             $result = mysqli_query($con, $sql1);
@@ -446,8 +463,8 @@ if (isset($_POST['addAnnualPeImport'])) {
                         <label for="editintervention" class="block  my-auto  text-gray-900 ">Intervention</label>
 
                         <select id="editintervention" name="editintervention" value="" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
-                        <option selected value="">Select Intervention</option>
-                            <option  value="Medication Only">Medication only</option>
+                            <option selected value="">Select Intervention</option>
+                            <option value="Medication Only">Medication only</option>
                             <option value="Medical Consultation">Medical Consultation</option>
                             <option value="Medication and Medical Consultation">Medication and Medical Consultation</option>
                             <option value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
@@ -461,9 +478,9 @@ if (isset($_POST['addAnnualPeImport'])) {
                         <div class="col-span-4">
 
                             <label for="hlpftwMeds" class="block  my-auto  text-gray-900 ">Medicine (Add medicine below): </label>
-                            <select name="hlpftwMeds[]" id="hlpftwMeds" multiple="multiple"  class="p-2 js-meds border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                            <select name="hlpftwMeds[]" id="hlpftwMeds" multiple="multiple" class="p-2 js-meds border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
 
-                           
+
                             </select>
 
                         </div>
@@ -472,7 +489,7 @@ if (isset($_POST['addAnnualPeImport'])) {
                                 <div id="medsdiv" class="col-span-2">
                                     <label for="nameOfMedicine" class="block  my-auto text-gray-900 ">What's your medicine? </label>
 
-                                    <input type="text" id="nameOfMedicine"  class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                                    <input type="text" id="nameOfMedicine" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
 
                                 </div>
 
@@ -507,19 +524,19 @@ if (isset($_POST['addAnnualPeImport'])) {
                     </div>
                     <div class="content-center  col-span-2">
                         <label for="hlpfollowupdate" class="block mb-1  text-gray-900 dark:text-white">Follow-up Date</label>
-                        <input type="date" name="hlpfollowupdate" id="hlpfollowupdate"class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="">
+                        <input type="date" name="hlpfollowupdate" id="hlpfollowupdate" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="">
                     </div>
                     <div class="content-center  col-span-2">
                         <label for="hlpremarks" class="block mb-1  text-gray-900 dark:text-white">Remarks</label>
                         <input type="text" name="hlpremarks" id="hlpremarks" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" ">
                     </div>
-                     <div class="col-span-4">
+                    <div class="col-span-4">
                         <h3 class="block my-auto w-full  text-gray-900 ">Laboratory: </h3>
                     </div>
-                     <div class="ml-4 grid grid-cols-4  col-span-4 gap-1"> 
+                    <div class="ml-4 grid grid-cols-4  col-span-4 gap-1">
                         <div class="col-span-2">
                             <label for="hlpfbs" class="block my-auto   text-gray-900 ">FBS: </label>
-                            <input type="text" value="" name="hlpfbs" id="hlpfbs"class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                            <input type="text" value="" name="hlpfbs" id="hlpfbs" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
 
                         <div class="col-span-2">
@@ -527,7 +544,7 @@ if (isset($_POST['addAnnualPeImport'])) {
                             <input type="text" name="hlpcholesterol" id="hlpcholesterol" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
 
-                         <div class="col-span-2">
+                        <div class="col-span-2">
                             <label for="hlptriglycerides" class="block my-auto   text-gray-900 ">Triglycerides: </label>
                             <input type="text" name="hlptriglycerides" id="hlptriglycerides" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
@@ -552,7 +569,7 @@ if (isset($_POST['addAnnualPeImport'])) {
                             <label for="hlpsgpt" class="block my-auto  text-gray-900 ">SGPT: </label>
                             <input type="text" name="hlpsgpt" id="hlpsgpt" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
-                    <div class="col-span-2">
+                        <div class="col-span-2">
                             <label for="hlpsgdt" class="block my-auto   text-gray-900 ">SGDT: </label>
                             <input type="text" name="hlpsgdt" id="hlpsgdt" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
@@ -560,17 +577,17 @@ if (isset($_POST['addAnnualPeImport'])) {
                             <label for="hlphbaic" class="block my-auto   text-gray-900 ">HBAIC: </label>
                             <input type="text" name="hlphbaic" id="hlphbaic" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
-                     <div class="col-span-2">
+                        <div class="col-span-2">
                             <label for="hlpothers" class="block my-auto  text-gray-900 ">Others: </label>
                             <input type="text" name="hlpothers" id="hlpothers" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
-                        </div> 
                         </div>
+                    </div>
                     <div class="col-span-4 justify-center flex gap-2">
-                        <button type="submit" name="addAnnualPe" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <button type="submit" name="addBloodChem" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
                             </svg>
-                            Add Annual P.E.
+                            Add HLP
                         </button>
                     </div>
                 </div>
@@ -580,16 +597,16 @@ if (isset($_POST['addAnnualPeImport'])) {
 </div>
 
 
-<div id="importAnnualPe" tabindex="-1" aria-hidden="true" class=" hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+<div id="importBloodChem" tabindex="-1" aria-hidden="true" class=" hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative w-full max-w-md max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-2 border-b rounded-t dark:border-gray-600">
                 <h3 class=" font-semibold text-gray-900 dark:text-white">
-                    Import Annual P.E. Record
+                    Import HLP Record
                 </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="importAnnualPe">
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="importBloodChem">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                     </svg>
@@ -608,7 +625,7 @@ if (isset($_POST['addAnnualPeImport'])) {
 
 
                 </div>
-                <button type="submit" name="addAnnualPeImport" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <button type="submit" name="addBloodChemImport" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
                     </svg>
@@ -618,18 +635,79 @@ if (isset($_POST['addAnnualPeImport'])) {
         </div>
     </div>
 </div>
+<div id="export" tabindex="-1" aria-hidden="true" class=" hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative w-full max-w-md max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class=" font-semibold text-gray-900 dark:text-white">
+                    Export HLP Record
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="export">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form method="POST" class="px-4 md:px-5 py-2 text-[8pt]" enctype="multipart/form-data">
+                <div class="grid gap-2 mb-4 grid-cols-2">
+                    <div class="col-span-2">
+                        <label for="employer" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employer</label>
+
+                        <select id="employer" name="employer" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                            <option selected value="Otrelo">Otrelo</option>
+
+                        </select>
+                        <label for="month" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Month</label>
+
+                        <select id="month" name="month" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                            <?php
+                            $date = new DateTime('01-01-2023');
+                            $dateNow = new DateTime();
+                            $monthNow = $dateNow->format('F');
+
+                            for ($i = 1; $i <= 12; $i++) {
+                                $month = $date->format('F');
+                            ?> <option <?php if ($monthNow == $month) {
+                                            echo "selected";
+                                        } ?> value="<?php echo $month; ?>"><?php echo $month; ?></option> <?php
+                                                                                                            $date->modify('next month');
+                                                                                                        }
+                                                                                                            ?>
+                        </select>
+                        <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Year</label>
+                        <input type="number" value="<?php $dateNow2 = new DateTime();
+                                                    $year = $dateNow2->format('Y');
+                                                    echo $year; ?>" name="year" id="year" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+                    </div>
 
 
-<div id="editAnnualPe" tabindex="-1" aria-hidden="true" class="bg-[#615eae59] hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                </div>
+
+                <button type="submit" name="excelReport" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Generate Excel
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div id="editBloodChem" tabindex="-1" aria-hidden="true" class="bg-[#615eae59] hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    Edit Annual P.E. Record
+                    Edit HLP Record
                 </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="editAnnualPe">
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="editBloodChem">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                     </svg>
@@ -639,7 +717,7 @@ if (isset($_POST['addAnnualPeImport'])) {
             <!-- Modal body -->
             <form method="POST">
                 <div class="text-[9px] 2xl:text-lg  rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full w-full p-4 ">
-                <input type="text" name="editid" id="editid" class="hidden" required="">
+                    <input type="text" name="editid" id="editid" class="hidden">
                     <div class="col-span-4 gap-4">
                         <label for="editname" class="block mb-1 font-semibold  text-gray-900 dark:text-white">Name</label>
                         <input type="text" name="editname" id="editname" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
@@ -714,7 +792,7 @@ if (isset($_POST['addAnnualPeImport'])) {
                             <label for="editftwMeds" class="block  my-auto font-semibold text-gray-900 ">Medicine (Add medicine below): </label>
                             <select name="editftwMeds[]" id="editftwMeds" multiple="multiple" class="form-control js-meds w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
-                           
+
                             </select>
 
                         </div>
@@ -816,8 +894,8 @@ if (isset($_POST['addAnnualPeImport'])) {
                             <input type="text" name="editothers" id="editothers" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                         </div>
                         <div class="col-span-4 justify-center flex gap-2">
-                            <button type="submit" name="editAnnualPe" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                              
+                            <button type="submit" name="editBloodChem" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+
                                 Update Record
                             </button>
                         </div>
@@ -826,11 +904,11 @@ if (isset($_POST['addAnnualPeImport'])) {
         </div>
     </div>
 </div>
-<div id="exportAnnualPe" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+<div id="exportBloodChem" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative w-full max-w-md max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <button type="button" data-modal-toggle="exportAnnualPe" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white">
+            <button type="button" data-modal-toggle="exportBloodChem" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white">
                 <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                 </svg>
@@ -871,7 +949,7 @@ if (isset($_POST['addAnnualPeImport'])) {
                                                     echo $year; ?>" name="year" id="year" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
                     </div>
 
-                    <button type="submit" name="excelReport" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <button type="submit" name="" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Generate Excel
                     </button>
 
@@ -881,6 +959,7 @@ if (isset($_POST['addAnnualPeImport'])) {
         </div>
     </div>
 </div>
+
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
@@ -894,7 +973,7 @@ if (isset($_POST['addAnnualPeImport'])) {
         });
     });
 
-    const editEmployee = document.getElementById('editAnnualPe');
+    const editEmployee = document.getElementById('editBloodChem');
 
     // options with default values
     const editemployees = {
@@ -961,30 +1040,106 @@ if (isset($_POST['addAnnualPeImport'])) {
         event.preventDefault(); // Prevent typing into the input field
     });
 
+    const importBloodChem = document.getElementById('importBloodChem');
+
+    // options with default values
+    const importBloodChems = {
+
+        backdropClasses: 'bg-gray-900/50 dark:bg-gray-900/80 relative inset-0 z-40',
+        closable: true,
+        onHide: () => {
+            console.log('modal is hidden');
+        },
+        onShow: () => {
+            console.log('modal is shown');
+        },
+        onToggle: () => {
+            console.log('modal has been toggled');
+        },
+    };
+
+    const modalImport = new Modal(importBloodChem, importBloodChems);
+
+    function openImportModal(element) {
+        modalImport.toggle();
+
+    };
+    const exportBloodChem = document.getElementById('export');
+
+    // options with default values
+    const exportBloodChems = {
+
+        backdropClasses: 'bg-gray-900/50 dark:bg-gray-900/80 relative inset-0 z-40',
+        closable: true,
+        onHide: () => {
+            console.log('modal is hidden');
+        },
+        onShow: () => {
+            console.log('modal is shown');
+        },
+        onToggle: () => {
+            console.log('modal has been toggled');
+        },
+    };
+
+    const modalExport = new Modal(exportBloodChem, exportBloodChems);
+
+    function openExportModal(element) {
+        modalExport.toggle();
+
+    };
+
+
+    const addBloodChem = document.getElementById('addBloodChem');
+
+    // options with default values
+    const addBloodChems = {
+
+        backdropClasses: 'bg-gray-900/50 dark:bg-gray-900/80 relative inset-0 z-40',
+        closable: true,
+        onHide: () => {
+            console.log('modal is hidden');
+        },
+        onShow: () => {
+            console.log('modal is shown');
+        },
+        onToggle: () => {
+            console.log('modal has been toggled');
+        },
+    };
+
+    const modalAdd = new Modal(addBloodChem, addBloodChems);
+
+    function openAddModal(element) {
+        modalAdd.toggle();
+
+    };
+
     function exportTemplate() {
 
         var rows = [];
 
-        column1 = 'Date Received';
-        column2 = 'Date Performed';
-        column3 = 'RFID Number';
-        column4 = 'IMC';
-        column5 = 'OEH';
-        column6 = 'PE';
-        column7 = 'CBC';
-        column8 = 'U/A';
-        column9 = 'FA';
-        column10 = 'CXR';
-        column11 = 'VA';
-        column12 = 'DEN';
-        column13 = 'DT';
-        column14 = 'PT';
-        column15 = 'Other Test';
-        column16 = 'Follow Up Status';
-        column17 = 'Status';
-        column18 = 'Attendee';
-        column19 = 'Confirmation Date';
-        column20 = 'FMC';
+        column1 = 'Date';
+        column2 = 'Time';
+        column3 = 'Building Transaction';
+        column4 = 'RFID';
+        column5 = 'Type';
+        column6 = 'Diagnosis';
+        column7 = 'Intervention';
+        column8 = 'Medications';
+        column9 = 'Follow Up Date';
+        column10 = 'FBS';
+        column11 = 'Cholesterol';
+        column12 = 'Triglycerides';
+        column13 = 'HDL';
+        column14 = 'LDL';
+        column15 = 'BUN';
+        column16 = 'BUA';
+        column17 = 'SGPT';
+        column18 = 'SGDT';
+        column19 = 'HBA1C';
+        column20 = 'Others';
+        column21 = 'Remarks';
 
         rows.push(
             [
@@ -1008,14 +1163,15 @@ if (isset($_POST['addAnnualPeImport'])) {
                 column18,
                 column19,
                 column20,
+                column21,
             ]
         );
 
         for (var i = 0, row; i < 1; i++) {
             column1 = '';
             column2 = '';
-            column3 = "Change format to 'Text'";
-            column4 = '';
+            column3 = '';
+            column4 = "Change format to 'Text'";
             column5 = '';
             column6 = '';
             column7 = '';
@@ -1032,6 +1188,7 @@ if (isset($_POST['addAnnualPeImport'])) {
             column18 = '';
             column19 = '';
             column20 = '';
+            column21 = '';
             rows.push(
                 [
                     column1,
@@ -1054,6 +1211,7 @@ if (isset($_POST['addAnnualPeImport'])) {
                     column18,
                     column19,
                     column20,
+                    column21,
                 ]
             );
 
@@ -1070,7 +1228,7 @@ if (isset($_POST['addAnnualPeImport'])) {
         var encodedUri = encodeURI(csvContent);
         var link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "Otrelo Annual P.E. Template.csv");
+        link.setAttribute("download", "Otrelo HLP Template.csv");
         document.body.appendChild(link);
         /* download the data file named "Stock_Price_Report.csv" */
         link.click();

@@ -23,6 +23,7 @@ if (!isset($_SESSION['connected'])) {
   <link rel="stylesheet" href="../node_modules/DataTables/datatables.min.css">
   <link href="../node_modules/select2/dist/css/select2.min.css" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="../node_modules/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css" />
+  <link rel="stylesheet" type="text/css" href="../styles.css" />
 
 </head>
 
@@ -78,6 +79,7 @@ if (!isset($_SESSION['connected'])) {
         selected: true
       }));
     }
+
     function addSelectedValue1(value, qty) {
       console.log(value);
       $('#editftwMeds').append($('<option>', {

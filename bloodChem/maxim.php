@@ -21,8 +21,9 @@ if (!isset($_SESSION['connected'])) {
 
   <link rel="stylesheet" href="../fontawesome-free-6.2.0-web/css/all.min.css">
   <link rel="stylesheet" href="../node_modules/DataTables/datatables.min.css">
-
+  <link href="../node_modules/select2/dist/css/select2.min.css" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="../node_modules/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css" />
+  <link rel="stylesheet" type="text/css" href="../styles.css" />
 
 </head>
 
@@ -44,8 +45,8 @@ if (!isset($_SESSION['connected'])) {
 
   <script type="text/javascript" src="../node_modules/DataTables/datatables.min.js"></script>
   <script type="text/javascript" src="../node_modules/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js"></script>
-  <!-- <script src="../node_modules/select2/dist/js/select2.min.js"></script> -->
 
+  <script src="../node_modules/select2/dist/js/select2.min.js"></script>
   <script type="text/javascript" src="index.js"></script>
   <script>
     $("#bloodchemSide").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
@@ -66,15 +67,28 @@ if (!isset($_SESSION['connected'])) {
     $(".js-meds").select2({
       tags: true
     });
+    $(".js-meds1").select2({
+      tags: true
+    });
 
     function addSelectedValue(value, qty) {
       console.log(value);
-      $('#ftwMeds').append($('<option>', {
+      $('#hlpftwMeds').append($('<option>', {
         value: value + "(" + qty + ")",
         text: value + "(" + qty + ")",
         selected: true
       }));
     }
+
+    function addSelectedValue1(value, qty) {
+      console.log(value);
+      $('#editftwMeds').append($('<option>', {
+        value: value + "(" + qty + ")",
+        text: value + "(" + qty + ")",
+        selected: true
+      }));
+    }
+
 
     const $targetEl = document.getElementById('sidebar');
 
@@ -86,13 +100,13 @@ if (!isset($_SESSION['connected'])) {
       edgeOffset: '',
       backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-30',
       onHide: () => {
-
+        console.log('drawer is hidden');
       },
       onShow: () => {
-
+        console.log('drawer is shown');
       },
       onToggle: () => {
-
+        console.log('drawer has been toggled');
       }
     };
 
@@ -104,6 +118,8 @@ if (!isset($_SESSION['connected'])) {
     var screenWidth = window.screen.width; // Screen width in pixels
     var screenHeight = window.screen.height; // Screen height in pixels
 
+    console.log("Screen width: " + screenWidth);
+    console.log("Screen height: " + screenHeight);
     var sidebar = 0;
 
 
