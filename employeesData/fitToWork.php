@@ -21,7 +21,7 @@ $resultInfo = mysqli_query($con, $sqluserinfo);
 while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $department = $userRow['department'];
   $name = $userRow['Name'];
-  $section = $userRow['section'];
+  $secDept = $userRow['secDept'];
   $nurse_email = $userRow['email'];
 }
 
@@ -35,7 +35,8 @@ $ftwTime = date('h:i A');
 if (isset($_GET['ftw'])) {
   $ftw = $_GET['ftw'];
 
-  $sqlcnslt = "SELECT * FROM `fittowork` WHERE `rfid` = '$rfid' and `id` = '$ftw' ORDER BY `id` ASC;";
+  $sqlcnslt = "SELECT * FROM `fittowork` WHERE `rfid` = '$rfid' and `id` = '$ftw' ORDER BY `id` ASC; 
+";
   $resultcnslt = mysqli_query($con, $sqlcnslt);
   while ($row = mysqli_fetch_assoc($resultcnslt)) {
 
@@ -63,9 +64,9 @@ if (isset($_GET['ftw'])) {
     $ftwPr = $row['pr'];
     $ftwRr = $row['rr'];
     $ftwRemarks = $row['remarks'];
-    $ftwOthersRemarks = $row['otherRemarks'];
+    $ftwOthersRemarks = $row['othersRemarks'];
     $ftwCompleted = $row['statusComplete'];
-    $ftwWithPendingLab = $row['withPendingLab'];
+    $ftwWithPendingLab = $row['withPedingLab'];
 
     $ftwMeds = $row['medicine'];
     // $immediateEmail = $row['date'];
@@ -145,7 +146,7 @@ if (isset($_POST['addFTW'])) {
   }
 
   // echo $smoking;
-  $sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`) VALUES ('head','$department','$rfid','$ftwDate','$ftwTime','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab')";
+  $sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `othersRemarks`, `statusComplete`, `withPedingLab`) VALUES ('head','$department','$rfid','$ftwDate','$ftwTime','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab')";
   $results = mysqli_query($con, $sql);
 
   if ($results) {
@@ -157,7 +158,7 @@ if (isset($_POST['addFTW'])) {
     }
 
     $subject = 'Fit to Work';
-    $message = 'Hi ' . $immediateHead . ',<br> <br> Mr./Ms. ' . $name . ' is now fit to work. <br><br> Details <br>Name: ' . $name . '<br>Sect/Dept: ' . $section . ' <br>Reason of Absence: ' . $ftwAbsenceReason . '<br>Date of Absence: ' . $ftwSLDateFrom . ' - ' . $ftwSLDateTo . '<br>No. of Day/s: ' . $ftwDays . ' <br>Remarks: ' . $ftwRemarks . '<br>Others: ' . $ftwOthersRemarks . '<br><br><br><br> This is a generated email. Please do not reply. <br><br> Electronic Health System';
+    $message = 'Hi ' . $immediateHead . ',<br> <br> Mr./Ms. ' . $name . ' is now fit to work. <br><br> Details <br>Name: ' . $name . '<br>Sect/Dept: ' . $secDept . ' <br>Reason of Absence: ' . $ftwAbsenceReason . '<br>Date of Absence: ' . $ftwSLDateFrom . ' - ' . $ftwSLDateTo . '<br>No. of Day/s: ' . $ftwDays . ' <br>Remarks: ' . $ftwRemarks . '<br>Others: ' . $ftwOthersRemarks . '<br><br><br><br> This is a generated email. Please do not reply. <br><br> Electronic Health System';
 
 
     require '../vendor/autoload.php';
@@ -246,7 +247,7 @@ if (isset($_POST['updateFTW'])) {
     $ftwMeds = implode(', ', $ftwMeds);
   }
 
-  $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab' WHERE `id`= '$ftw';";
+  $sql = "UPDATE `fittowork` SET `department`='$department',`rfid`='$rfid',`date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`othersRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPedingLab`='$ftwWithPendingLab' WHERE `id`= '$ftw'";
   $results = mysqli_query($con, $sql);
   if ($results) {
     echo "<script>alert('Record updated succesfully!')</script>";
@@ -295,9 +296,9 @@ if (isset($_POST['updateFTW'])) {
           <option <?php if ($ftwCategories == "counted") {
                     echo "selected";
                   } ?> value="counted">Counted</option>
-          <option <?php if ($ftwCategories == "not counted") {
+          <option <?php if ($ftwCategories == "notCounted") {
                     echo "selected";
-                  } ?> value="not counted">Not Counted</option>
+                  } ?> value="notCounted">Not Counted</option>
 
         </select>
 
@@ -340,9 +341,9 @@ if (isset($_POST['updateFTW'])) {
 
         <label class="block my-auto  font-semibold text-gray-900 ">Medical Category:</label>
         <select id="categoriesSelect" name="ftwMedCategory" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option <?php if ($ftwMedCategory == "Common") {
+          <option <?php if ($ftwMedCategory == "common") {
                     echo "selected";
-                  } ?> value="Common">Common</option>
+                  } ?> value="common">Common</option>
           <option <?php if ($ftwMedCategory == "Long Term") {
                     echo "selected";
                   } ?> value="Long Term">Long Term</option>
@@ -376,7 +377,7 @@ if (isset($_POST['updateFTW'])) {
 
 
         <label class=" block my-auto font-semibold text-gray-900 ">Days</label>
-        <input type="number" value="<?php echo $ftwDays ?>" name="ftwDays" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        <input type="number" name="ftwDays" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
       </div>
 
@@ -387,7 +388,7 @@ if (isset($_POST['updateFTW'])) {
       <div class=" gap-4 col-span-2">
         <label class="block  my-auto  font-semibold text-gray-900 ">Diagnosis: </label>
         <!-- <input type="text"  name="ftwDiagnosis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
-        <select id="ftwDiagnosiOption" name="ftwDiagnosis" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+        <select id="ftwDiagnosiOption" name="ftwDiagnosis" class="js-diagnosis bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option selected disabled>Select Diagnosis</option>
           <option value="addDiagnosisButton">Add Diagnosis</option>
           <?php
@@ -420,7 +421,7 @@ if (isset($_POST['updateFTW'])) {
                 <label class="block text-xl font-semibold text-gray-900 dark:text-white">
                   Add Diagnosis
                 </label>
-                <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="addDiagnosis">
+                <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="addDiagnosis">
                   <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                   </svg>
@@ -431,9 +432,13 @@ if (isset($_POST['updateFTW'])) {
               <div class="p-4 md:p-5">
                 <form class="space-y-4" action="#">
                   <div>
-                    <input type="text" name="diagnosis" id="diagnosis" class="mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" />
+
+                    <input type="text" name="diagnosis" id="diagnosis" class="mb-4 bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" />
                   </div>
-                  <button type="button" onclick="addDiagnosis()" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add</button>
+
+
+                  <button type="button" onclick="addDiagnosis()" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add</button>
+
                 </form>
               </div>
             </div>
@@ -468,7 +473,9 @@ if (isset($_POST['updateFTW'])) {
 
             ?>
 
+            <?php
 
+            ?>
           </select>
           <!-- <input type="text"  name="cnsltnMeds"  disabled value="<?php echo $ftwAbsenceReason ?>" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
         </div>
@@ -584,9 +591,9 @@ if (isset($_POST['updateFTW'])) {
       <div class="col-span-4 ">
         <label class="block  my-auto  font-semibold text-gray-900 ">Remarks: </label>
         <select id="remarksSelect" name="ftwRemarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option <?php if ($ftwRemarks == "Fit to Work") {
+          <option <?php if ($ftwRemarks == "Fit To Work") {
                     echo "selected";
-                  } ?> value="Fit to Work">Fit To Work</option>
+                  } ?> value="Fit To Work">Fit To Work</option>
           <option <?php if ($ftwRemarks == "Late FTW") {
                     echo "selected";
                   } ?> value="Late FTW">Late FTW</option>
@@ -665,7 +672,7 @@ if (isset($_POST['updateFTW'])) {
 
       <div class="col-span-4 justify-center flex gap-2">
         <?php
-        if (!isset($_GET['ftw'])) { ?>
+        if ($ftw == "" || $ftw == NULL) { ?>
           <button type="submit" name="addFTW" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Record</button>
 
           <button type="submit" name="proceedToConsultation" class="w-64 text-white bg-gradient-to-r from-[#9b0066]  to-[#ca9ac1] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300  shadow-lg shadow-pink-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Proceed to Consultation</button>
@@ -685,5 +692,8 @@ if (isset($_POST['updateFTW'])) {
 
 
 <script>
-
+  <?php echo $_GET['ftw'] ?>
+  if (element.getAttribute("data-reco") == 1) {
+    $("#buttonPrintDiv").addClass("hidden");
+  }
 </script>

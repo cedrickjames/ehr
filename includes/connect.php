@@ -4,7 +4,7 @@ date_default_timezone_set('Asia/Manila');
 
 $servername = "localhost";
 $username = "root";
-$password = "Gpi242$$$";
+$password = "";
 $dbname = "ehr";
 // Create connection
 $con = mysqli_connect($servername, $username, $password, $dbname);
