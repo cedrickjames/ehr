@@ -11,7 +11,7 @@ if (isset($_GET['rf'])) {
     <p class="mb-2"><span class=" self-center text-md font-semibold whitespace-nowrap  text-[#193F9F]">Sick Leave (Fit to Work)</span></p>
 
     <div id="" class="">
-        <div class=" p-4 rounded-lg  bg-gray-50 " id="headApproval" role="tabpanel" aria-labelledby="profile-tab">
+        <div class=" p-4 rounded-lg  bg-gray-50 " id="" role="tabpanel" aria-labelledby="profile-tab">
             <section class="mt-2 2xl:mt-10">
                 <table id="sickLeave" class="display text-[9px] 2xl:text-sm" style="width:100%">
                     <thead>
@@ -25,11 +25,10 @@ if (isset($_GET['rf'])) {
                             <th>Confinement Type</th>
                             <th>Date of Absence</th>
                             <th>Laboratory</th>
+                            <th>Vital Signs</th>
                             <th>Remarks</th>
-
-
-                            <!-- <th>Days Late</th> -->
-                            <!-- <th>Assigned to</th> -->
+                            <th>Other Remarks</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,9 +52,52 @@ if (isset($_GET['rf'])) {
                                 <td><?php echo $row['medicalCategory'] ?></td>
                                 <td><?php echo $row['confinementType'] ?></td>
                                 <td><?php echo $date_of_absence ?></td>
-                                <td><?php echo $row[''] ?></td>
-                                <td><?php echo $row['remarks'] ?></td>
+                                <td> <?php
 
+                                        if ($row['bloodChemistry'] != "") {
+                                            echo "bloodchem: " . $row['bloodChemistry'] . " ";
+                                        }
+                                        if ($row['cbc'] != "") {
+                                            echo "cbc: " . $row['cbc'] . " ";
+                                        }
+                                        if ($row['urinalysis'] != "") {
+                                            echo "urinalysis: " . $row['urinalysis'] . " ";
+                                        }
+                                        if ($row['fecalysis'] != "") {
+                                            echo "fecalysis: " . $row['fecalysis'] . " ";
+                                        }
+                                        if ($row['xray'] != "") {
+                                            echo "xray: " . $row['xray'] . " ";
+                                        }
+                                        if ($row['others'] != "") {
+                                            echo "others: " . $row['others'] . " ";
+                                        }
+                                        ?> </td>
+                                <td> <?php
+
+                                        if ($row['bp'] != "") {
+                                            echo "bp: " . $row['bp'] . " ";
+                                        }
+                                        if ($row['temp'] != "") {
+                                            echo "temp: " . $row['temp'] . " ";
+                                        }
+                                        if ($row['02sat'] != "") {
+                                            echo "02sat: " . $row['02sat'] . " ";
+                                        }
+                                        if ($row['pr'] != "") {
+                                            echo "pr: " . $row['pr'] . " ";
+                                        }
+                                        if ($row['rr'] != "") {
+                                            echo "rr: " . $row['rr'] . " ";
+                                        }
+                                        ?> </td>
+                                <td> <?php echo $row['remarks']; ?> </td>
+                                <td> <?php echo $row['otherRemarks']; ?> </td>
+                                <td> <?php if ($row['statusComplete'] == 1 || $row['statusComplete'] == true) {
+                                            echo "Completed ";
+                                        } elseif ($row['withPendingLab'] != NULL || $row['withPendingLab'] != "") {
+                                            echo "With pending laboratory: " . $row['withPendingLab'];
+                                        } ?></td>
                             </tr>
                         <?php } ?>
                     </tbody>
