@@ -18,6 +18,7 @@ if (isset($_GET['rf'])) {
                         <tr>
                             <th>Date received </th>
                             <th>Date performed </th>
+                            <th>Bldg Transaction</th>
                             <th>IMC</th>
                             <th>OEH</th>
                             <th>PE</th>
@@ -33,6 +34,9 @@ if (isset($_GET['rf'])) {
                             <th>Follow up Status</th>
                             <th>Status</th>
                             <th>FMC</th>
+
+                            <!-- <th>Days Late</th> -->
+                            <!-- <th>Assigned to</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -43,6 +47,7 @@ if (isset($_GET['rf'])) {
                             <tr>
                                 <td><?php echo $row['dateReceived'] ?></td>
                                 <td><?php echo $row['datePerformed'] ?></td>
+                                <td><?php echo $row[''] ?></td>
                                 <td><?php echo $row['IMC'] ?></td>
                                 <td><?php echo $row['OEH'] ?></td>
                                 <td><?php echo $row['PE'] ?></td>

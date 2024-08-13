@@ -16,9 +16,5 @@ include ("../includes/connect.php");
     $sqlUpdate = "INSERT INTO `diagnosis`(`diagnosisName`) VALUES ('$addedDiagnosis')";
     $resultsUpdate = mysqli_query($con,$sqlUpdate);
 
-    if ($resultsUpdate) {
-        echo "<script>alert('Added succesfully!')</script>";
-    } else {
-        echo "<script>alert('There's a problem saving to database.')</script>";
-    }
+
 ?>
