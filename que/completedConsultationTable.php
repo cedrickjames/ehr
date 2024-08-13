@@ -68,9 +68,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     LEFT JOIN
                         users
                     ON
-                        consultation.nurseAssisting = users.idNumber WHERE consultation.status = 'nurse2' and consultation.withPendingLab != '1'  ORDER BY
+                        consultation.nurseAssisting = users.idNumber WHERE consultation.statusComplete = '1' ORDER BY
     consultation.id ASC; 
-                    ; 
                     ";
               $result = mysqli_query($con, $sql);
               while ($row = mysqli_fetch_assoc($result)) {
@@ -83,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <td>
                     <div class="content-center flex flex-wrap justify-center gap-2">
                       <input type="text" class="hidden" name="rfid<?php echo $queNo; ?>" value="<?php echo $row['rfidNumber']; ?>">
-                      <a type="button" href="../nurses/fromDoctorsConsultation.php?rf=<?php echo $row['rfidNumber']; ?>&dcnsltn=<?php echo $row['id']; ?>" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 rounded-full px-3 py-2  text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">View</a>
+                      <a type="button" href="../nurses/completedConsultation.php?rf=<?php echo $row['rfidNumber']; ?>&dcnsltn=<?php echo $row['id']; ?>" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 rounded-full px-3 py-2  text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">View</a>
                       <?php
 
 
