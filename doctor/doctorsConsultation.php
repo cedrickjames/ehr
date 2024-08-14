@@ -33,7 +33,7 @@ date_default_timezone_set('Asia/Manila');
       </div>
       <div class="overflow-y-auto h-screen sm:col-span-5">
         <?php require_once '../employeesData/employeesPastMedicalHistory.php'; ?>
-        <?php require_once '../employeesData/consultationTable.php'; ?>
+        <?php require_once '../employeesData/clinicVisits.php'; ?>
         <?php require_once '../employeesData/sickLeave.php'; ?>
         <?php require_once '../employeesData/bloodChem.php'; ?>
         <?php require_once '../employeesData/vacHistory.php'; ?>

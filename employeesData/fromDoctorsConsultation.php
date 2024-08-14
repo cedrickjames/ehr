@@ -15,18 +15,18 @@ if (isset($_GET['rf'])) {
   $rfid = "not found";
 }
 
-
-
-$sqluserinfo = "SELECT employeespersonalinfo.rfidNumber, employeespersonalinfo.*
+$sqluserinfo = "SELECT employeespersonalinfo.rfidNumber, employeespersonalinfo.*, queing.*, users.email
 FROM queing
-INNER JOIN employeespersonalinfo ON employeespersonalinfo.rfidNumber = queing.rfidNumber where employeespersonalinfo.rfidNumber = '$rfid';";
+INNER JOIN employeespersonalinfo ON employeespersonalinfo.rfidNumber = queing.rfidNumber 
+INNER JOIN users ON users.idNumber = queing.nurseAssisting
+where employeespersonalinfo.rfidNumber = '$rfid' AND queing.status = 'processing';";
 $resultInfo = mysqli_query($con, $sqluserinfo);
 while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $department = $userRow['department'];
   $name = $userRow['Name'];
+  $section = $userRow['section'];
+  $nurse_email = $userRow['email'];
 }
-
-
 
 $sqluserinfo = "SELECT consultation.*, employeespersonalinfo.Name, medicalcertificate.id as medcertID, medicalcertificate.rfid as medcertRfid, medicalcertificate.consultationId, medicalcertificate.date as medcertDate, medicalcertificate.treatedOn, medicalcertificate.dueTo, medicalcertificate.diagnosis as medcertDiag, medicalcertificate.remarks as medcertRemarks
 FROM consultation
@@ -85,8 +85,18 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
     $otherRemarks = $_POST['otherRemarks'];
     $medLab = $_POST['medLab'];
     $medDis = $_POST['medDis'];
-    $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
-    $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
+    $cnsltnCompleted = $_POST['cnsltnCompleted'];
+    // $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
+    if ($cnsltnCompleted == 'Completed') {
+      $cnsltnCompleted = '1';
+      $cnsltnWithPendingLab = '0';
+    } elseif ($cnsltnCompleted == 'With Pending Lab') {
+      $cnsltnCompleted = '0';
+      $cnsltnWithPendingLab = '1';
+    } else {
+      $cnsltnCompleted = '0';
+      $cnsltnWithPendingLab = '0';
+    }
 
     $sql = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `otherRemarks` = '$otherRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
     $results = mysqli_query($con, $sql);
@@ -141,16 +151,6 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
 
     if ($results) {
-
-
-      // $sql1 = "Select * FROM `user` WHERE `username` = '$assigned'";
-      // $result = mysqli_query($con, $sql1);
-      // while($list=mysqli_fetch_assoc($result))
-      // {
-      // $personnelEmail=$list["email"];
-      // $perseonnelName=$list["name"];
-
-      // }
       $sql2 = "Select * FROM `sender`";
       $result2 = mysqli_query($con, $sql2);
       while ($list = mysqli_fetch_assoc($result2)) {
@@ -191,15 +191,15 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
         //Recipients
         $mail->setFrom('healthbenefits@glorylocal.com.ph', 'Health Benefits');
         $mail->addAddress($immediateEmail);
+        $mail->AddCC($nurse_email);
         $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body    = $message;
-        $mail->addCC('mis.dev@glory.com.ph');
         $mail->send();
 
         $_SESSION['message'] = 'Message has been sent';
         echo "<script>alert('Email Sent') </script>";
-        echo "<script> location.href='index.php'; </script>";
+        echo "<script> location.href='fromDoctor.php'; </script>";
 
 
         // header("location: form.php");
@@ -212,11 +212,32 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
     $otherRemarks = $_POST['otherRemarks'];
     $medLab = $_POST['medLab'];
     $medDis = $_POST['medDis'];
-    $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
-    $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
-
-    $sql = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `otherRemarks` = '$otherRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
-    $results = mysqli_query($con, $sql);
+    $cnsltnCompleted = $_POST['cnsltnCompleted'];
+    // $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
+    if ($cnsltnCompleted == 'Completed') {
+      $cnsltnCompleted = '1';
+      $cnsltnWithPendingLab = '0';
+      $status = 'done';
+    } elseif ($cnsltnCompleted == 'With Pending Lab') {
+      $cnsltnCompleted = '0';
+      $cnsltnWithPendingLab = '1';
+      $status = "nurse2";
+    } else {
+      $cnsltnCompleted = '0';
+      $cnsltnWithPendingLab = '0';
+      $status = "nurse2";
+    }
+    if (isset($_POST['cnsltnCompleted'])) {
+      $sql = "UPDATE `consultation` SET `status` = '$status', `remarks`='$remarksSelect2', `otherRemarks` = '$otherRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
+      $results = mysqli_query($con, $sql);
+      if ($results) {
+        echo "<script>alert('Record Updated!') </script>";
+        echo "<script> location.href='fromDoctor.php'; </script>";
+      }
+    } else {
+      echo "<script>alert('Please select status') </script>";
+      echo "<script> location.href='fromDoctor.php'; </script>";
+    }
   }
 }
 
@@ -531,16 +552,16 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
         <h3 class="my-auto  font-semibold text-gray-900 ">Immediate Head: </h3>
         <select id="immediateHead" name="immediateHead" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option selected disabled value="">Please select</option>
+          <!-- <option selected disabled value="">Please select</option> -->
           <?php
-          $sql1 = "Select * FROM `emaillist` WHERE `department` = '$department'";
+          $sql1 = "Select * FROM `employeespersonalinfo` WHERE `department` = '$department' AND `level` = 'head'";
           $result = mysqli_query($con, $sql1);
           while ($list = mysqli_fetch_assoc($result)) {
-            $immediateName = $list["name"];
+            $immediateName = $list["Name"];
             $email = $list["email"];
 
             echo "<option value='$immediateName' data-email='$email' >$immediateName</option>";
-          }
+
           ?>
 
         </select>
@@ -549,9 +570,18 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
       <div id="ftwdiv8" class="hidden flex gap-4  col-span-2">
 
         <h3 class="my-auto  font-semibold text-gray-900 "> Email: </h3>
-        <input type="text" id="immediateEmail" name="immediateEmail" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      <?php echo "
+        <input type='text' id='immediateEmail' name='immediateEmail' value='$email' class='  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 '>";
+          }
+      ?>
 
       </div>
+      <!-- <div id="ftwdiv8" class="hidden flex gap-4  col-span-2">
+
+        <h3 class="my-auto  font-semibold text-gray-900 "> Email: </h3>
+        <input type="text" id="immediateEmail" name="immediateEmail" value="" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+
+      </div> -->
 
       <div id="ftwdiv9" class="hidden flex gap-4  col-span-4">
         <hr style="width:100%; height: 2px;  margin-bottom: 0px;     background-color: #969696;">
@@ -584,26 +614,28 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
       </div>
       <div class=" col-span-4 flex gap-4">
 
-        <h3 class="my-auto mb-4 font-semibold text-gray-900 ">Status</h3>
-        <ul class="col-span-2 items-center w-full text-[10px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  " require>
+        <h3 class="my-auto mb-4 font-semibold text-gray-900 ">Status:</h3>
+        <ul class="col-span-2 items-center w-full text-[10px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  ">
           <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
             <div class="gap-2 flex items-center ps-3">
-              <input id="vue-checkbox-list" checked type="radio" name="cnsltnCompleted" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+              <input id="vue-checkbox-list" type="radio" name="cnsltnCompleted" value="Completed" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
               <label for="vue-checkbox-list" class="w-full py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">Completed</label>
+              <input id="vue-checkbox-list" type="radio" name="cnsltnCompleted" value="With Pending Lab" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+              <label for="vue-checkbox-list" class="w-full py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">With Pending Lab</label>
             </div>
           </li>
 
-          <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+          <!-- <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
             <div class="gap-2 flex items-center ps-3">
-              <input id="vue-checkbox-list" type="radio" value="" name="cnsltnCompleted" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+              <input id="vue-checkbox-list" type="radio" value="1" name="cnsltnWithPendingLab" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
               <label for="vue-checkbox-list" class=" py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">With Pending Lab</label>
               <div class="relative z-0 group">
-                <input type="text" name="cnsltnWithPendingLab" id="floating_email" class="block py-2.5 px-0  text-[10px] 2xl:text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+                <input type="text" name="cnsltnWithPendingLab" value="" id="floating_email" class="block py-2.5 px-0  text-[10px] 2xl:text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                 <label for="floating_email" class="peer-focus:font-medium absolute text-[10px] 2xl:text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"></label>
               </div>
             </div>
 
-          </li>
+          </li> -->
 
         </ul>
 
