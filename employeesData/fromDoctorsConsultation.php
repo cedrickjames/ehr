@@ -65,6 +65,11 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
 
   $statusComplete = $userRow['statusComplete'];
   $withPendingLab = $userRow['withPendingLab'];
+
+  $medlab = $userRow['medicalLab'];
+
+
+
   $Name = $userRow['Name'];
   $consultationId = $userRow['consultationId'];
 
@@ -460,8 +465,9 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
         </div>
       </div>
-      <div class="col-span-4 flex gap-4">
-        <h3 class=" my-auto  font-semibold text-gray-900 ">Remarks: </h3>
+      <div class="col-span-4 ">
+      <h3 class=" my-auto  font-semibold text-gray-900 ">Remarks: </h3>
+        <div class="col-span-4  flex">
         <select id="remarksSelect2" name="remarksSelect3" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option <?php if ($remarks == "Fit To Work") {
                     echo "selected";
@@ -482,8 +488,11 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
                     echo "selected";
                   } ?> value="Others">Others</option>
         </select>
-        <input type="text" name="medLab" placeholder="Medical Laboratory" id="medLab" class="hidden  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        <input type="text" name="medLab" value="<?php echo $medlab; ?>" placeholder="Medical Laboratory" id="medLab" class="hidden  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
         <input type="text" name="medDis" placeholder="Medication Dispense" id="medDis" class="hidden  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+
+        </div>
+        
 
       </div>
 
@@ -591,15 +600,15 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
 
 
-      <div class="col-span-4 flex gap-4">
+      <div class="col-span-4  gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Nurse Notes: </h3>
         <input type="text" value="<?php echo $otherRemarks; ?>" name="otherRemarks" id="" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       </div>
-      <div class="col-span-4 flex gap-4">
+      <div class="col-span-4  gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Final Dx: </h3>
         <input type="text" name="finalDx" value="<?php echo $finalDx; ?>" id="" class="  bg-gray-50 border border-gray-300 text-gray-900 w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       </div>
-      <div class="col-span-4 flex gap-4">
+      <div class="col-span-4  gap-4">
 
 
         <?php
@@ -612,7 +621,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
         } ?>
 
       </div>
-      <div class=" col-span-4 flex gap-4">
+      <div class=" col-span-4  gap-4">
 
         <h3 class="my-auto mb-4 font-semibold text-gray-900 ">Status:</h3>
         <ul class="col-span-2 items-center w-full text-[10px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  ">
@@ -642,8 +651,8 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
       </div>
 
-      <div class="col-span-4 gap-4 justify-center flex h-14">
-        <button type="submit" name="submitFromDoctorsConsultation" class="text-center inline-flex items-center text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[9px] 2xl:text-xl px-5 py-1 text-center me-2 mb-2">
+      <div class="col-span-4 gap-4 justify-center flex w-full h-14">
+        <button type="submit" name="submitFromDoctorsConsultation" class=" mt-2 justify-center w-full text-center inline-flex items-center text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[9px] 2xl:text-xl px-5 py-1 text-center me-2 mb-2">
           <?php require_once '../src/navBarIcons/proceed.svg' ?>
 
           Proceed</button>

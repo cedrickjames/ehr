@@ -36,6 +36,9 @@ include ("../includes/connect.php");
     $sql = "INSERT INTO `medicalcertificate`(`rfid`, `consultationId`, `date`, `treatedOn`, `dueTo`, `diagnosis`, `remarks`) VALUES ('$rfid','$dcnsltn','$medcertdate','$treatedOn','$dueTo','$diagnosis','$remarksMed')";
     $results = mysqli_query($con,$sql);
 
+    $sql1 = "UPDATE `consultation` SET `havemedCert`='1' WHERE `id` = '$dcnsltn'";
+    $results1 = mysqli_query($con,$sql1);
+    
     
 
 ?>

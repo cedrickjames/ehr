@@ -59,12 +59,14 @@ if (isset($_POST['submitDoctorsConsultation'])) {
 
   $finalDx = $_POST['finalDx'];
   $remarksSelect = $_POST['remarksSelect'];
+  $medlab = $_POST['medLab'];
+
 
   // if ($remarksSelect == "Others") {
   //   $sql = "UPDATE `consultation` SET `status` = 'nurse2', `remarks` = '$remarksSelect', `finalDx`='$finalDx' WHERE `id` = '$dcnsltn'";
   //   $results = mysqli_query($con, $sql);
   // }
-  $sql = "UPDATE `consultation` SET `status` = 'nurse2', `remarks` = '$remarksSelect', `finalDx`='$finalDx' WHERE `id` = '$dcnsltn'";
+  $sql = "UPDATE `consultation` SET `status` = 'nurse2', `remarks` = '$remarksSelect', `finalDx`='$finalDx', `medicalLab` = '$medlab' WHERE `id` = '$dcnsltn'";
   $results = mysqli_query($con, $sql);
   if ($results) {
     echo "<script>alert('Record Updated Successfuly!') </script>";
@@ -311,7 +313,7 @@ if (isset($_POST['submitDoctorsConsultation'])) {
         </div>
 
       </div>
-      <div class="col-span-4  gap-4">
+      <div class="col-span-4 flex gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Remarks: </h3>
         <select id="remarksSelect" name="remarksSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option <?php if ($remarks == "Fit To Work") {
@@ -326,11 +328,17 @@ if (isset($_POST['submitDoctorsConsultation'])) {
           <option <?php if ($remarks == "Others") {
                     echo "selected";
                   } ?> value="Others">Others</option>
-          <option value="For Laboratory">For Laboratory</option>
-          <option value="Medication Dispense">Medication Dispense</option>
+          <option <?php if ($remarks == "For Medical Laboratory") {
+                    echo "selected";
+                  } ?> value="For Medical Laboratory">For Medical Laboratory</option>
+          <option <?php if ($remarks == "Medication Dispense") {
+                    echo "selected";
+                  } ?> value="Medication Dispense">Medication Dispense</option>
 
 
         </select>
+
+        <input type="text" name="medLab" placeholder="Medical Laboratory" id="medLab" class=" hidden bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       </div>
       <div id="othersInput" class="col-span-4 hidden  gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Others: </h3>
@@ -338,7 +346,7 @@ if (isset($_POST['submitDoctorsConsultation'])) {
       </div>
 
       <div id="forLab" class="col-span-4 hidden  gap-4">
-        <h3 class=" my-auto  font-semibold text-gray-900 ">For Laboratory: </h3>
+        <h3 class=" my-auto  font-semibold text-gray-900 ">For Medical Laboratory: </h3>
         <input type="text" name="forLab" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       </div>
 

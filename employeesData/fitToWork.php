@@ -25,6 +25,15 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $nurse_email = $userRow['email'];
 }
 
+$sqluserhr = "SELECT * FROM `users` WHERE `type` = 'hr'  LIMIT 1";
+
+$resultInfohr = mysqli_query($con, $sqluserhr);
+while ($userRow = mysqli_fetch_assoc($resultInfohr)) {
+  $hremail = $userRow['email'];
+  $hrname = $userRow['name'];
+ 
+} 
+
 
 $currentDate = date('Y-m-d');
 
@@ -157,7 +166,7 @@ if (isset($_POST['addFTW'])) {
     }
 
     $subject = 'Fit to Work';
-    $message = 'Hi ' . $immediateHead . ',<br> <br> Mr./Ms. ' . $name . ' is now fit to work. <br><br> Details <br>Name: ' . $name . '<br>Sect/Dept: ' . $section . ' <br>Reason of Absence: ' . $ftwAbsenceReason . '<br>Date of Absence: ' . $ftwSLDateFrom . ' - ' . $ftwSLDateTo . '<br>No. of Day/s: ' . $ftwDays . ' <br>Remarks: ' . $ftwRemarks . '<br>Others: ' . $ftwOthersRemarks . '<br><br><br><br> This is a generated email. Please do not reply. <br><br> Electronic Health System';
+    $message = 'Hi ' . $immediateHead . ' and HR,<br> <br> Mr./Ms. ' . $name . ' is now fit to work. <br><br> Details <br>Name: ' . $name . '<br>Sect/Dept: ' . $section . ' <br>Reason of Absence: ' . $ftwAbsenceReason . '<br>Date of Absence: ' . $ftwSLDateFrom . ' - ' . $ftwSLDateTo . '<br>No. of Day/s: ' . $ftwDays . ' <br>Remarks: ' . $ftwRemarks . '<br>Others: ' . $ftwOthersRemarks . '<br><br><br><br> This is a generated email. Please do not reply. <br><br> Electronic Health System';
 
 
     require '../vendor/autoload.php';
@@ -188,8 +197,7 @@ if (isset($_POST['addFTW'])) {
       $mail->setFrom('healthbenefits@glorylocal.com.ph', 'Health Benefits');
       $mail->addAddress($immediateEmail);
       $mail->AddCC($nurse_email);
-      // $mail->addAddress('o.bugarin@glory.com.ph');
-      // $mail->AddCC('k.marero@glorylocal.com.ph');
+      $mail->AddCC($hremail);
       $mail->isHTML(true);
       $mail->Subject = $subject;
       $mail->Body    = $message;

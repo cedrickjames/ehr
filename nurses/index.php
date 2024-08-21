@@ -26,15 +26,15 @@ $userID = $_SESSION['userID'];
 <link rel="stylesheet" type="text/css" href="../node_modules/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css"/>
 
 </head>
-<body  class="bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
+<body  class="h-screen bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
 <?php require_once '../navbar.php';?>
 
-<div style= " background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));"class=" m-auto ml-52 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
-  <div class="m-10 ">
+<div style= " background: linear-gradient(-45deg, #05458cba, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));"class="h-full m-auto ml-56 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
+  <div class="m-4 ">
 
   <?php require_once '../que/quetable.php';?>
       
-
+ 
     
   </div>
 

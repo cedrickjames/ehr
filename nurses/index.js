@@ -9,6 +9,28 @@ $(document).ready(function () {
       
       
     }   );
+    
+    $('#ftwMainTable').DataTable(  {
+      "columnDefs": [
+        { "width": "1%", "targets": 0, },
+        {"className": "dt-center", "targets": "_all"}
+      ],
+        responsive: true,
+         scrollCollapse: true,
+    scrollY: '50vh'
+        
+      }   );
+    $('#medicalRecordTable').DataTable(  {
+      "columnDefs": [
+        { "width": "1%", "targets": 0, },
+        {"className": "dt-center", "targets": "_all"}
+      ],
+        responsive: true,
+         scrollCollapse: true,
+    scrollY: '50vh'
+        
+      }   );
+
       
     $('#sickLeave').DataTable(  {
         "columnDefs": [

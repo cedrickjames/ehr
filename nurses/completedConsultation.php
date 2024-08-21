@@ -26,7 +26,7 @@ $userID = $_SESSION['userID'];
   <link rel="stylesheet" href="../fontawesome-free-6.2.0-web/css/all.min.css">
   <link rel="stylesheet" href="../node_modules/DataTables/datatables.min.css">
   <script src="../node_modules/flowbite/dist/datepicker.js"></script>
-
+  <link href="../node_modules/select2/dist/css/select2.min.css" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="../node_modules/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css" />
 
 </head>
@@ -38,7 +38,7 @@ $userID = $_SESSION['userID'];
     <div class="mb-5 grid grid-cols-1 sm:grid-cols-11 gap-4 w-full ">
       <div class="overflow-y-auto h-screen relative  sm:col-span-6 ">
         <?php require_once '../employeesData/employeesPersonalData.php'; ?>
-        <?php require_once '../employeesData/pendingConsultation.php'; ?>
+        <?php require_once '../employeesData/completedConsultation.php'; ?>
       </div>
       <div class="overflow-y-auto h-screen sm:col-span-5">
         <?php require_once '../employeesData/employeesPastMedicalHistory.php'; ?>
@@ -61,9 +61,21 @@ $userID = $_SESSION['userID'];
   <script type="text/javascript" src="../node_modules/DataTables/datatables.min.js"></script>
   <script type="text/javascript" src="../node_modules/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js"></script>
 
-
+  <script src="../node_modules/select2/dist/js/select2.min.js"></script>
   <script type="text/javascript" src="index.js"></script>
   <script>
+
+    
+$(".js-diagnosis").select2({
+  tags: true
+});
+
+$(".js-meds").select2({
+  tags: true
+});
+
+
+
     $("#completedConsultationSide").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
     $("#sidehistory").removeClass("bg-gray-200");
     $("#sideMyRequest").removeClass("bg-gray-200");
@@ -99,6 +111,43 @@ $userID = $_SESSION['userID'];
         }
       });
     });
+
+
+    $("#interventionSelect").change(function() {
+
+if ($(this).val() === "Clinic Rest Only" || $(this).val() === "Medication, Clinic Rest and Medical Consultation") {
+
+  if($(this).val() === "Clinic Rest Only"){
+    $("#clinicRestLabel").removeClass("hidden");
+  $("#clinicRestTime").removeClass("hidden");
+
+  $("#medsqtydiv").addClass("hidden");
+  $("#medsdiv").addClass("hidden");
+
+
+
+  
+
+  }else{
+    $("#clinicRestLabel").removeClass("hidden");
+  $("#clinicRestTime").removeClass("hidden");
+  $("#medsqtydiv").removeClass("hidden");
+  $("#medsdiv").removeClass("hidden");
+  }
+
+    // Remove the "hidden" class from the input with id "medLab"
+
+
+}
+else{
+  $("#clinicRestLabel").addClass("hidden");
+  $("#clinicRestTime").addClass("hidden");
+  $("#medsqtydiv").removeClass("hidden");
+  $("#medsdiv").removeClass("hidden");
+} 
+});
+
+
   </script>
 </body>
 

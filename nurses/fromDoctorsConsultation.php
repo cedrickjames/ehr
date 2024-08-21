@@ -79,6 +79,22 @@ $(".medcertIcon").attr("fill", "#FFFFFF");
 $(".proceedIcon").attr("fill", "#FFFFFF"); 
 
 $(document).ready(function() {
+  if ($("#remarksSelect2").val() === "For Medical Laboratory") {
+            // Remove the "hidden" class from the input with id "medLab"
+            $("#medLab").removeClass("hidden");
+            $("#medDis").addClass("hidden");
+
+        } else if($("#remarksSelect2").val() === "For Medication Dispense") {
+            // If the option is not the desired one, you can add the "hidden" class
+            $("#medDis").removeClass("hidden");
+            $("#medLab").addClass("hidden");
+
+        }
+        else{
+          $("#medLab").addClass("hidden");
+            $("#medDis").addClass("hidden");
+
+        }
     // Attach change event handler to remarksSelect
     $("#remarksSelect2").change(function() {
         // Check if the selected option is the one you want

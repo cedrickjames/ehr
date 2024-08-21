@@ -82,7 +82,31 @@ date_default_timezone_set('Asia/Manila');
 
 
     $(document).ready(function() {
+      if ($("#remarksSelect").val() === "For Medical Laboratory") {
+            // Remove the "hidden" class from the input with id "medLab"
+            $("#medLab").removeClass("hidden");
 
+        } 
+        else{
+          $("#medLab").addClass("hidden");
+            
+
+        }
+    // Attach change event handler to remarksSelect
+    $("#remarksSelect").change(function() {
+        // Check if the selected option is the one you want
+        if ($(this).val() === "For Medical Laboratory") {
+            // Remove the "hidden" class from the input with id "medLab"
+            $("#medLab").removeClass("hidden");
+            
+
+        } 
+        else{
+          $("#medLab").addClass("hidden");
+           
+
+        }
+    });
       var selectedValue = $("#intervention").val();
       console.log(selectedValue)
       if (selectedValue == "Clinic Rest Only" || selectedValue == "Medication, Clinic Rest and Medical Consultation") {

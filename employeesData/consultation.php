@@ -153,16 +153,88 @@ if (isset($_POST['addConsultation'])) {
   $cnsltnRr = $_POST['cnsltnRr'];
   $cnsltnRemarks = $_POST['cnsltnRemarks'];
   $cnsltnOthersRemarks = $_POST['cnsltnOthersRemarks'];
-  // $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
-  // $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
+  $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
+  $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
 
+  if($cnsltnCompleted == 1){
+$status = 'done';
+  }
+  else{
+$status = 'doc';
+
+  }
   // echo $smoking;
-  $sql = "INSERT INTO `consultation`(`rfid`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`medsQty`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `otherRemarks`,`ftwApproval`, `ftwDepartment`, `ftwCategories`, `ftwConfinement`,`ftwDateOfSickLeaveFrom`, `ftwDateOfSickLeaveTo`,`ftwDays`, `ftwReasonOfAbsence`, `ftwRemarks`) VALUES ('$rfid','doc','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds','$cnsltnMedsQuantity', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnRemarks', '$cnsltnOthersRemarks', 'head', '$department','$ftwCtnCategories','$ftwCtnConfinement','$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason','$ftwCtnRemarks')";
+  $sql = "INSERT INTO `consultation`(`rfid`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`medsQty`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `otherRemarks`,`statusComplete`,`withPendingLab`,`ftwApproval`, `ftwDepartment`, `ftwCategories`, `ftwConfinement`,`ftwDateOfSickLeaveFrom`, `ftwDateOfSickLeaveTo`,`ftwDays`, `ftwReasonOfAbsence`, `ftwRemarks`) VALUES ('$rfid','$status','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds','$cnsltnMedsQuantity', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnRemarks', '$cnsltnOthersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab', 'head', '$department','$ftwCtnCategories','$ftwCtnConfinement','$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason','$ftwCtnRemarks')";
   $results = mysqli_query($con, $sql);
 
   if ($results) {
     echo "<script>alert('Successfull') </script>";
-    echo "<script> location.href='index.php'; </script>";
+    // echo "<script> location.href='index.php'; </script>";
+  }
+}
+if (isset($_POST['updateConsultation'])) {
+
+  $cnsltnDate = $_POST['cnsltnDate'];
+  $cnsltnTime = $_POST['cnsltnTime'];
+  $cnsltnType = $_POST['cnsltnType'];
+
+  $ftwCtnCategories = $_POST['ftwCtnCategories'];
+  $ftwCtnConfinement = $_POST['ftwCtnConfinement'];
+  $ftwCtnSLDateFrom = $_POST['ftwCtnSLDateFrom'];
+  $ftwCtnSLDateTo = $_POST['ftwCtnSLDateTo'];
+  $ftwCtnDays = $_POST['ftwCtnDays'];
+  $ftwCtnAbsenceReason = $_POST['ftwCtnAbsenceReason'];
+  $ftwCtnRemarks = $_POST['ftwCtnRemarks'];
+
+
+
+  $cnsltnCategories = $_POST['cnsltnCategories'];
+  $cnsltnBuilding = $_POST['cnsltnBuilding'];
+  $cnsltnChiefComplaint = $_POST['cnsltnChiefComplaint'];
+  $cnsltnDiagnosis = $_POST['cnsltnDiagnosis'];
+  $cnsltnIntervention = $_POST['cnsltnIntervention'];
+  $cnsltnClinicRestFrom = $_POST['cnsltnClinicRestFrom'];
+  $cnsltnClinicRestTo = $_POST['cnsltnClinicRestTo'];
+  $cnsltnMeds = $_POST['cnsltnMeds'];
+
+
+  if ($cnsltnMeds != "") {
+
+    $cnsltnMeds = implode(', ', $cnsltnMeds);
+  }
+
+  $cnsltnMedsQuantity = $_POST['cnsltnMedsQuantity'];
+
+  $cnsltnBloodChem = $_POST['cnsltnBloodChem'];
+  $cnsltnCbc = $_POST['cnsltnCbc'];
+  $cnsltnUrinalysis = $_POST['cnsltnUrinalysis'];
+  $cnsltnFecalysis = $_POST['cnsltnFecalysis'];
+  $cnsltnXray = $_POST['cnsltnXray'];
+  $cnsltnOthersLab = $_POST['cnsltnOthersLab'];
+  $cnsltnBp = $_POST['cnsltnBp'];
+  $cnsltnTemp = $_POST['cnsltnTemp'];
+  $cnsltn02Sat = $_POST['cnsltn02Sat'];
+  $cnsltnPr = $_POST['cnsltnPr'];
+  $cnsltnRr = $_POST['cnsltnRr'];
+  $cnsltnRemarks = $_POST['cnsltnRemarks'];
+  $cnsltnOthersRemarks = $_POST['cnsltnOthersRemarks'];
+  $cnstltnmedLab = $_POST['medLab'];
+  $cnstltnmedDis= $_POST['medDis'];
+
+  
+  $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
+  $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
+
+  
+  // echo $smoking;
+  $sql = "UPDATE `consultation` SET `type`='$cnsltnType',`categories`='$cnsltnCategories',`building`='$cnsltnBuilding',`chiefComplaint`='$cnsltnChiefComplaint',`diagnosis`='$cnsltnDiagnosis',`intervention`='$cnsltnIntervention',`clinicRestFrom`='$cnsltnClinicRestFrom',`clinicRestTo`='$cnsltnClinicRestTo',`meds`='$cnsltnMeds',`medsQty`='$cnsltnMedsQuantity',`bloodChemistry`='$cnsltnBloodChem',`cbc`='$cnsltnCbc',`urinalysis`='$cnsltnUrinalysis',`fecalysis`='$cnsltnFecalysis',`xray`='$cnsltnXray',`others`='$cnsltnOthersLab',`bp`='$cnsltnBp',`temp`='$cnsltnTemp',`02sat`='$cnsltn02Sat',`pr`='$cnsltnPr',`rr`='$cnsltnRr',`remarks`='$cnsltnRemarks',`medicalLab`='$cnstltnmedLab',`medicationDispense`='$cnstltnmedDis',`otherRemarks`='$cnsltnOthersRemarks',`statusComplete`='$cnsltnCompleted',`withPendingLab`='  $cnsltnWithPendingLab ' WHERE `id` = '$cnsltn'";
+   
+  
+   $results = mysqli_query($con, $sql);
+
+  if ($results) {
+    echo "<script>alert('Successfull') </script>";
+    // echo "<script> location.href='index.php'; </script>";
   }
 }
 
@@ -239,7 +311,7 @@ if (isset($_POST['addConsultation'])) {
       </div>
       <div class="col-span-4 hidden">
         <label class="block  my-auto  font-semibold text-gray-900 ">Remarks: </label>
-        <select id="remarksSelect" name="ftwCtnRemarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+        <select id="remarksSelect1" name="ftwCtnRemarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option <?php if ($ftwRemarks == "Fit to Work") {
                     echo "selected";
                   } ?> value="Fit to Work">Fit To Work</option>
@@ -289,7 +361,7 @@ if (isset($_POST['addConsultation'])) {
       </div>
 
 
-      <div class="col-span-3">
+      <div class="col-span-4">
         <label class="block  my-auto font-semibold text-gray-900 ">Medical Category: </label>
 
         <select id="categoriesSelect" name="cnsltnCategories" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
@@ -457,8 +529,61 @@ if (isset($_POST['addConsultation'])) {
         <div id="medicineDiv1" class="grid grid-cols-4 gap-1 col-span-4">
           <div id="medsdiv" class="col-span-2">
             <label class="block  my-auto font-semibold text-gray-900 ">What's your medicine? </label>
+            <select id="nameOfMedicine" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option selected disabled>Select Medicine</option>
+          <option value="addMedicineButton">Add Medicine</option>
+          <?php
+          $sql1 = "Select * FROM `medicine`";
+          $result = mysqli_query($con, $sql1);
+          while ($list = mysqli_fetch_assoc($result)) {
+            $medicine = $list["medicineName"];
+          ?>
+            <option  value=<?php echo $medicine; ?>><?php echo $medicine; ?></option>
+          <?php
 
-            <input type="text" id="nameOfMedicine" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+            //  echo "<option value='$diagnosis' >$diagnosis</option>";
+
+          }
+          ?>
+
+        </select>
+
+        <div id="addMedicine" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+          <div class="relative w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <!-- Modal header -->
+              <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                  Add Medicine
+                </h3>
+                <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="addMedicine">
+                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                  </svg>
+                  <span class="sr-only">Close modal</span>
+                </button>
+              </div>
+              <!-- Modal body -->
+              <div class="p-4 md:p-5">
+                <form class="space-y-4" action="#">
+                  <div>
+
+                    <input type="text" name="medicine" id="medicine" class="mb-4 bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" />
+                  </div>
+
+
+                  <button type="button" onclick="addMedicine()" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add</button>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+            <!-- <input type="text" id="nameOfMedicine" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
 
           </div>
 
@@ -573,25 +698,35 @@ if (isset($_POST['addConsultation'])) {
 
       </div>
 
-      <div class=" col-span-4 ">
-        <!-- <h3 class=" my-auto  font-semibold text-gray-900 ">Remarks: </h3> -->
-        <label class="block  my-auto font-semibold text-gray-900 ">Remarks: </label>
-        <select id="remarksSelect" name="cnsltnRemarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option <?php if ($ftwRemarks == "Fit To Work") {
+      <div class="col-span-4  ">
+        <label class="block  my-auto  font-semibold text-gray-900 ">Remarks: </label>
+        <div class="col-span-4 flex gap-2">
+        <select id="remarksSelect" name="cnsltnRemarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option <?php if ($ftwRemarks == "Fit to Work") {
                     echo "selected";
-                  } ?> value="Fit To Work">Fit To Work</option>
-          <option <?php if ($ftwRemarks == "Late FTW") {
+                  } ?> value="Fit to Work">Fit To Work</option>
+          <option <?php if ($ftwRemarks == "Late Fit to Work") {
                     echo "selected";
-                  } ?> value="Late FTW">Late FTW</option>
+                  } ?> value="Late Fit to Work">Late FTW</option>
           <option <?php if ($ftwRemarks == "No Medical Certificate") {
                     echo "selected";
-                  } ?> value="No Medical Certificate">No Medical Certificate</option>
+                  } ?> value="no Medical Certificate">No Medical Certificate</option>
           <option <?php if ($ftwRemarks == "Others") {
                     echo "selected";
                   } ?> value="Others">Others</option>
-
+<option <?php if ($ftwRemarks == "For Medical Laboratory") {
+                    echo "selected";
+                  } ?> value="For Medical Laboratory">For Medical Laboratory</option>
+          <option <?php if ($ftwRemarks == "For Medication Dispense") {
+                    echo "selected";
+                  } ?> value="For Medication Dispense">Medication Dispense</option>
 
         </select>
+        <input type="text" name="medLab" placeholder="Medical Laboratory" id="medLab" class=" hidden bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        <input type="text" name="medDis" placeholder="Medication Dispense" id="medDis" class="hidden  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+
+        </div>
+   
       </div>
       <div class="col-span-4">
         <!-- <h3 class=" my-auto  font-semibold text-gray-900 ">Others: </h3> -->
@@ -615,7 +750,7 @@ if (isset($_POST['addConsultation'])) {
 
           <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
             <div class="gap-2 flex items-center ps-3">
-              <input id="vue-checkbox-list" type="checkbox" <?php if ($ftwWithPendingLab != "") {
+              <input id="vue-checkbox-list" type="checkbox" <?php if ($_SESSION['ftwWithPendingLab'] != "") {
                                                               echo "checked";
                                                             }; ?> value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
               <label for="vue-checkbox-list" class=" py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">With Pending Lab</label>
@@ -637,7 +772,7 @@ if (isset($_POST['addConsultation'])) {
         <?php
         } else {
         ?>
-          <!-- <button type="submit" name="updateConsultation" class="w-64 text-white bg-gradient-to-r from-[#9b0066]  to-[#ca9ac1] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300  shadow-lg shadow-pink-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Update Record</button> -->
+          <button type="submit" name="updateConsultation" class="w-64 text-white bg-gradient-to-r from-[#9b0066]  to-[#ca9ac1] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300  shadow-lg shadow-pink-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Update Record</button>
         <?php
         }
         ?>

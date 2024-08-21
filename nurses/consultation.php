@@ -10,7 +10,11 @@ if(!isset($_SESSION['connected'])){
 
         $userID = $_SESSION['userID'];
 
-        
+        if (isset($_GET['rf'])) {
+          $rfid = $_GET['rf'];
+        } else {
+          $rfid = "not found";
+        }
     ?>
 
 <!doctype html>
@@ -33,23 +37,28 @@ if(!isset($_SESSION['connected'])){
 <body  class="bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
 <?php require_once '../navbar.php';?>
 <div style= " background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));"class=" m-auto ml-52 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
-  <div class="mb-5 grid grid-cols-1 sm:grid-cols-11 gap-4 w-full ">
-    <div class="overflow-y-auto h-screen relative  sm:col-span-6 ">
-    <?php require_once '../employeesData/employeesPersonalData.php';?>
-    <?php require_once '../employeesData/consultation.php';?>
-     </div>
-     <div class="overflow-y-auto h-screen sm:col-span-5">
-    <?php require_once '../employeesData/consultationTable.php';?>
+ 
+<?php
+    if ($rfid == "not found") {
+      echo "<div class='m-2'>";
+      require_once '../employeesData/consultationMainTable.php';
+      echo "</div>";
+    } else {
+      echo "<div class='mb-5 grid grid-cols-1 sm:grid-cols-11 gap-4 w-full'>
+      <div class='overflow-y-auto h-screen relative  sm:col-span-6 '>";
 
+      require_once '../employeesData/employeesPersonalData.php';
+      require_once '../employeesData/consultation.php';
 
+      echo "</div>
+      <div class='overflow-y-auto h-screen sm:col-span-5'>";
 
-    
-       
-    </div>
-      
+      require_once '../employeesData/consultationTable.php';
 
-    
-  </div>
+      echo "</div>
+    </div>";
+    } ?>
+
 
 </div>
 
@@ -122,7 +131,70 @@ const modalDiagnosis = new Modal($tagertDiagnosisModal, optionsDiagnosisModal);
 
 
 
+const $tagertMedicineModal = document.getElementById('addMedicine');
+
+const optionsMedicineModal = {
+placement: 'center-center',
+backdrop: 'static',
+backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
+closable: true,
+onHide: () => {
+console.log('modal is hidden');
+},
+onShow: () => {
+console.log('modal is shown');
+
+},
+onToggle: () => {
+console.log('modal has been toggled');
+
+}
+};
+const modalMedicine = new Modal($tagertMedicineModal, optionsMedicineModal);
+
+
+
+
+
+
     $(document).ready(function() {
+
+      if ($("#remarksSelect").val() === "For Medical Laboratory") {
+            // Remove the "hidden" class from the input with id "medLab"
+            $("#medLab").removeClass("hidden");
+            $("#medDis").addClass("hidden");
+        }  else if($("#remarksSelect").val() === "For Medication Dispense") {
+            // If the option is not the desired one, you can add the "hidden" class
+            $("#medDis").removeClass("hidden");
+            $("#medLab").addClass("hidden");
+
+        }
+        else{
+          $("#medLab").addClass("hidden");
+            
+
+        }
+
+        $("#remarksSelect").change(function() {
+          if ($(this).val() === "For Medical Laboratory") {
+            // Remove the "hidden" class from the input with id "medLab"
+            $("#medLab").removeClass("hidden");
+            $("#medDis").addClass("hidden");
+
+        } else if($(this).val() === "For Medication Dispense") {
+            // If the option is not the desired one, you can add the "hidden" class
+            $("#medDis").removeClass("hidden");
+            $("#medLab").addClass("hidden");
+
+        }
+        else{
+          $("#medLab").addClass("hidden");
+            $("#medDis").addClass("hidden");
+
+        }
+    });
+
+
       $("#interventionSelect").change(function() {
 
 if ($(this).val() === "Clinic Rest Only" || $(this).val() === "Medication, Clinic Rest and Medical Consultation") {
@@ -170,6 +242,22 @@ else{
 
       } 
   });
+
+
+  $("#nameOfMedicine").change(function() {
+
+  
+// Check if the selected option is the one you want
+if ($(this).val() === "addMedicineButton") {
+    // Remove the "hidden" class from the input with id "medLab"
+    modalMedicine.toggle();
+    // console.log("kasjhdkas");
+
+} 
+});
+
+
+
 });
 
 function addDiagnosis(){
@@ -207,9 +295,47 @@ $("#ftwDiagnosiOption").append($('<option>', {
 
 addDiagnosis.send(data);
 
-
+modalDiagnosis.toggle();
 }
 
+
+function addMedicine(){
+var medicine = document.getElementById("medicine").value;
+console.log(medicine);
+
+var addMedicine = new XMLHttpRequest();
+addMedicine.open("POST", "addMedicine.php", true);
+addMedicine.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+addMedicine.onreadystatechange = function() {
+    if (addMedicine.readyState === XMLHttpRequest.DONE) {
+        if (addMedicine.status === 200) {
+            // Update was successful
+            console.log(addMedicine);
+
+        
+        } else {
+            console.log("Error: " + addMedicine.status);
+        }
+    }
+};
+
+// Construct the data to be updated
+var data = "addedMedicine=" + encodeURIComponent(medicine);
+
+var optionValue = $("#medicine").val();
+
+$("#nameOfMedicine").append($('<option>', {
+                    value: optionValue,
+                    text: optionValue
+                }));
+// data += "&computername="+ encodeURIComponent(result);
+
+// Add any other parameters needed for the update
+
+addMedicine.send(data);
+modalMedicine.toggle();
+
+}
 
 $(document).ready(function() {
 

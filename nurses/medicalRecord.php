@@ -8,6 +8,12 @@ if (!isset($_SESSION['connected'])) {
 
 $userID = $_SESSION['userID'];
 
+if (isset($_GET['rf'])) {
+  $rfid = $_GET['rf'];
+} else {
+  $rfid = "not found";
+}
+
 ?>
 <!doctype html>
 <html>
@@ -26,31 +32,38 @@ $userID = $_SESSION['userID'];
 
 </head>
 
-<body class="bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
+<body class="h-screen bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
   <?php require_once '../navbar.php'; ?>
 
-  <div style=" background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));" class=" m-auto ml-0 md:ml-52 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
-    <div class="mb-5 grid grid-cols-1 sm:grid-cols-11 gap-4 w-full ">
-      <div class="overflow-y-auto h-screen relative px-2 2xl:px-auto col-span-11 md:col-span-6 ">
-        <?php require_once '../employeesData/employeesPersonalData.php'; ?>
-        <?php require_once '../employeesData/employeesPastMedicalHistory.php'; ?>
-      </div>
-      <div class="overflow-y-auto h-screen col-span-11 md:col-span-5">
-        <?php require_once '../employeesData/clinicVisits.php'; ?>
-        <?php require_once '../employeesData/sickLeave.php'; ?>
-        <?php require_once '../employeesData/bloodChem.php'; ?>
-        <?php require_once '../employeesData/vacHistory.php'; ?>
-        <?php require_once '../employeesData/preEmploymentMedicalResult.php'; ?>
-        <?php require_once '../employeesData/annualPhysicalExamResult.php'; ?>
+  <div style=" background: linear-gradient(-45deg, #05458cba,rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));" class="h-screen m-auto ml-0 md:ml-56 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
+     
+<?php
+    if ($rfid == "not found") {
+      echo "<div class='m-4'>";
+      require_once '../employeesData/medicalRecordTable.php';
+      echo "</div>";
+    } else {
+      echo "<div class='mb-5 grid grid-cols-1 sm:grid-cols-11 gap-4 w-full'>
+      <div class='overflow-y-auto h-screen relative  sm:col-span-6 '>";
 
+      require_once '../employeesData/employeesPersonalData.php';
+      require_once '../employeesData/employeesPastMedicalHistory.php';
 
+      echo "</div>
+      <div class='overflow-y-auto h-screen col-span-11 md:col-span-5'>";
 
+      require_once '../employeesData/clinicVisits.php';
+      require_once '../employeesData/sickLeave.php';
+       require_once '../employeesData/bloodChem.php'; 
+       require_once '../employeesData/vacHistory.php'; 
+       require_once '../employeesData/preEmploymentMedicalResult.php'; 
+       require_once '../employeesData/annualPhysicalExamResult.php'; 
+      echo "</div>
+    </div>";
+    } ?>
+  
+  
 
-      </div>
-
-
-
-    </div>
 
   </div>
 

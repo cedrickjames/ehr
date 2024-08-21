@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <div class="text-[9px] 2xl:text-lg mb-5">
-<p class="mb-2"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">On Que</span></p>
+<p class="mb-2"><span class=" self-center text-lg font-semibold whitespace-nowrap   text-[#193F9F]">On Que</span></p>
 
         <div id="" class="">
         <div class=" p-4 rounded-lg  bg-gray-50 " id="headApproval" role="tabpanel"

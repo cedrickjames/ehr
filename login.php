@@ -96,7 +96,7 @@ if (isset($_POST['login'])) {
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="homepageclinic.php" class="flex items-center space-x-3 rtl:space-x-reverse">
           <img src="src/Logo 1.png" class="h-8" alt="Clinic Logo" />
-          <span class="self-center text-2xl font-semibold whitespace-nowrap  text-[#193F9F]">GPI Clinic</span>
+          <span class="self-center text-2xl font-semibold whitespace-nowrap  text-[#193F9F]">Employees Medical Record System</span>
         </a>
         <p class="self-center text-2xl font-semibold whitespace-nowrap  text-[#193F9F]">Welcome to GPI Clinic </p>
       </div>

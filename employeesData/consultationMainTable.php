@@ -84,101 +84,70 @@ if (isset($_POST['updateFTW2'])) {
                         <tr>
                             <th>No.</th>
                             <th>Action</th>
+                            <th>Name</th>
+                            <th>Status</th>
                             <th>Date</th>
                             <th>Time</th>
+                            <th>Type</th>
                             <th>Bldg Transaction</th>
-                            <th>Name</th>
-                            <th>Reason of Absence</th>
-                            <th>Diagnosis</th>
                             <th>Medical Category</th>
-                            <th>Confinement Type</th>
-                            <th>Date of Absence From</th>
-                            <th>Date of Absence To</th>
+                            <th>Chief Complaint</th>
+                            <th>Diagnosis</th>
+                            <th>Intervention</th>
+                            <th>Clinic Rest From</th>
+                            <th>Clinic Rest To</th>
+                            <th>Meds</th>
                             <th>Laboratory</th>
-                            <th>Vital Signs</th>
+                            <th>Others</th>
                             <th>Remarks</th>
-                            <th>Other Remarks</th>
-                            <th>Status</th>
+                            <th>Pending Lab</th>
+
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $ftwNo = 1;
-                        $sql = "SELECT f.*, e.Name, f.building AS building_transaction FROM `fittowork`f LEFT JOIN `employeespersonalinfo` e ON e.rfidNumber = f.rfid ORDER BY `id` ASC;";
+                        $cnsltnNo = 1;
+                        $sql = "
+                        SELECT c.*, e.Name FROM `consultation` c LEFT JOIN `employeespersonalinfo` e ON e.rfidNumber = c.rfid where c.status = 'done' ORDER BY `id`  ASC;";
                         $result = mysqli_query($con, $sql);
                         while ($row = mysqli_fetch_assoc($result)) {
 
-
-                            if ($row['statusComplete'] == true || $row['statusComplete'] == 1) {
-                                $status = "Completed";
-                            } elseif ($row['withPendingLab'] != NULL || $row['withPendingLab'] != "") {
-                                $status = "With pending laboratory: " . $row['withPendingLab'];
-                            }
                         ?>
 
                             <tr>
-                                <td> <?php echo $ftwNo; ?> </td>
+                                <td> <?php echo $cnsltnNo; ?> </td>
                                 <td>
-                                    <button type="button" onclick="showEditModal(this)" data-id="<?php echo $row['id']; ?>" data-name="<?php echo $row['Name']; ?>" data-date="<?php echo $row['date']; ?>" data-time="<?php echo $row['time']; ?>" data-category="<?php echo $row['categories']; ?>" data-building="<?php echo $row['building_transaction']; ?>" data-reasonofabsence="<?php echo $row['reasonOfAbsence']; ?>" data-diagnosis="<?php echo $row['diagnosis']; ?>" data-medicalcategory="<?php echo $row['medicalCategory']; ?>" data-medicine="<?php echo $row['medicine']; ?>" data-confinementtype="<?php echo $row['confinementType']; ?>" data-fromdateofsickleave="<?php echo $row['fromDateOfSickLeave']; ?>" data-todateofsickleave="<?php echo $row['toDateOfSickLeave']; ?>" data-sldays="<?php echo $row['days']; ?>" data-bloodchemistry="<?php echo $row['bloodChemistry']; ?>" data-cbc="<?php echo $row['cbc']; ?>" data-urinalysis="<?php echo $row['urinalysis']; ?>" data-fecalysis="<?php echo $row['fecalysis']; ?>" data-xray="<?php echo $row['xray']; ?>" data-others="<?php echo $row['others']; ?>" data-bp="<?php echo $row['bp']; ?>" data-temp="<?php echo $row['temp']; ?>" data-02sat="<?php echo $row['02sat']; ?>" data-pr="<?php echo $row['pr']; ?>" data-rr="<?php echo $row['rr']; ?>" data-othersremarks="<?php echo $row['otherRemarks']; ?>" data-remarks="<?php echo $row['remarks']; ?>" data-statuscomplete="<?php echo $row['statusComplete']; ?>" data-withpendinglab="<?php echo $row['withPendingLab']; ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Edit</button>
+                                    <a type="button" href="../nurses/consultation.php?rf=<?php echo $row['rfid']; ?>&cnsltn=<?php echo $row['id'];?>" class="lg:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Show</a>
                                 </td>
+
+                                <td> <?php if ($row['statusComplete'] == true) {
+                                            echo "Completed";
+                                        } else {
+                                            echo "With Pending Lab";
+                                        } ?> </td>
+                                <td> <?php echo $row['Name'] ?> </td>
                                 <td> <?php echo $row['date']; ?> </td>
                                 <td> <?php echo $row['time']; ?> </td>
-                                <td> <?php echo $row['building_transaction']; ?> </td>
-                                <td> <?php echo $row['Name']; ?> </td>
-                                <td> <?php echo $row['reasonOfAbsence']; ?> </td>
+                                <td> <?php echo $row['type']; ?> </td>
+                                <td> <?php echo $row['building']; ?> </td>
+                                <td> <?php echo $row['categories']; ?> </td>
+                                <td> <?php echo $row['chiefComplaint']; ?> </td>
                                 <td> <?php echo $row['diagnosis']; ?> </td>
-                                <td> <?php echo $row['medicalCategory']; ?> </td>
-                                <td> <?php echo $row['confinementType']; ?> </td>
-                                <td> <?php echo $row['fromDateOfSickLeave']; ?> </td>
-                                <td> <?php echo $row['toDateOfSickLeave']; ?> </td>
-                                <td> <?php
-
-                                        if ($row['bloodChemistry'] != "") {
-                                            echo "bloodchem: " . $row['bloodChemistry'] . " ";
-                                        }
-                                        if ($row['cbc'] != "") {
-                                            echo "cbc: " . $row['cbc'] . " ";
-                                        }
-                                        if ($row['urinalysis'] != "") {
-                                            echo "urinalysis: " . $row['urinalysis'] . " ";
-                                        }
-                                        if ($row['fecalysis'] != "") {
-                                            echo "fecalysis: " . $row['fecalysis'] . " ";
-                                        }
-                                        if ($row['xray'] != "") {
-                                            echo "xray: " . $row['xray'] . " ";
-                                        }
-                                        if ($row['others'] != "") {
-                                            echo "others: " . $row['others'] . " ";
-                                        }
-                                        ?> </td>
-                                <td> <?php
-
-                                        if ($row['bp'] != "") {
-                                            echo "bp: " . $row['bp'] . " ";
-                                        }
-                                        if ($row['temp'] != "") {
-                                            echo "temp: " . $row['temp'] . " ";
-                                        }
-                                        if ($row['02sat'] != "") {
-                                            echo "02sat: " . $row['02sat'] . " ";
-                                        }
-                                        if ($row['pr'] != "") {
-                                            echo "pr: " . $row['pr'] . " ";
-                                        }
-                                        if ($row['rr'] != "") {
-                                            echo "rr: " . $row['rr'] . " ";
-                                        }
-                                        ?> </td>
-                                <td> <?php echo $row['remarks']; ?> </td>
+                                <td> <?php echo $row['intervention']; ?> </td>
+                                <td> <?php echo $row['clinicRestFrom']; ?> </td>
+                                <td> <?php echo $row['clinicRestTo']; ?> </td>
+                                <td> <?php echo $row['meds']; ?> </td>
+                                <td> <?php echo $row['bloodChemistry'] . ' ' . $row['cbc'] . ' ' . $row['urinalysis'] . ' ' . $row['fecalysis'] . ' ' . $row['xray'] . ' ' . $row['others'] . ' ' . $row['bp'] . ' ' . $row['temp'] . ' ' . $row['02sat'] . ' ' . $row['pr'] . ' ' . $row['rr']; ?> </td>
                                 <td> <?php echo $row['otherRemarks']; ?> </td>
-                                <td> <?php echo $status ?> </td>
+                                <td> <?php echo $row['remarks']; ?> </td>
+                                <td> <?php echo $row['withPendingLab']; ?> </td>
+
                             </tr>
 
 
                         <?php
 
-                            $ftwNo++;
+                            $cnsltnNo++;
                         }
                         ?>
                     </tbody>

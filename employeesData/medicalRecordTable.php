@@ -17,7 +17,6 @@ exit;
 
 
 if (isset($_POST['updateFTW2'])) {
-    $ftwMeds ="";
     $ftw = $_POST['ftwId'];
     $ftwDate = $_POST['ftwDate'];
     $ftwTime = $_POST['ftwTime'];
@@ -29,7 +28,7 @@ if (isset($_POST['updateFTW2'])) {
     $ftwSLDateTo = $_POST['ftwSLDateTo'];
     $ftwDays = $_POST['ftwDays'];
     $ftwAbsenceReason = $_POST['ftwAbsenceReason'];
-    $ftwDiagnosis = isset($_POST['ftwDiagnosis']) ? $_POST['ftwDiagnosis'] : "";
+    $ftwDiagnosis = $_POST['ftwDiagnosis'];
     $ftwBloodChem = $_POST['ftwBloodChem'];
     $ftwCbc = $_POST['ftwCbc'];
     $ftwUrinalysis = $_POST['ftwUrinalysis'];
@@ -43,7 +42,7 @@ if (isset($_POST['updateFTW2'])) {
     $ftwRr = $_POST['ftwRr'];
     $ftwRemarks = $_POST['ftwRemarks'];
     $ftwOthersRemarks = $_POST['ftwOthersRemarks'];
-    $ftwCompleted = isset($_POST['ftwCompleted']) ? $_POST['ftwCompleted'] : "0";
+    $ftwCompleted = $_POST['ftwCompleted'];
     $ftwWithPendingLab = $_POST['ftwWithPendingLab'];
 
     if ($ftwCompleted == "on") {
@@ -52,11 +51,11 @@ if (isset($_POST['updateFTW2'])) {
         $status = 0;
     }
 
-     $ftwMeds = isset($_POST['ftwMeds']) ? $_POST['ftwMeds'] : "";
+    $ftwMeds = $_POST['ftwMeds'];
 
-  if ($ftwMeds != "") {
-    $ftwMeds = implode(', ', $ftwMeds);
-  }
+    if ($ftwMeds != "") {
+        $ftwMeds = implode(', ', $ftwMeds);
+    }
 
     $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$status',`withPendingLab`='$ftwWithPendingLab' WHERE `id`= '$ftw';";
     $results = mysqli_query($con, $sql);
@@ -72,107 +71,49 @@ if (isset($_POST['updateFTW2'])) {
 
 <div class="text-[9px] 2xl:text-lg mb-5">
     <div class="flex justify-between">
-        <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Fit To Work</span></p>
+        <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Medical Record</span></p>
        
-        <button type="button" data-modal-target="exportFTW" data-modal-toggle="exportFTW" class="lg:block text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Export</button>
+        <!-- <button type="button" data-modal-target="exportFTW" data-modal-toggle="exportFTW" class="lg:block text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Export</button> -->
     </div>
     <div id="" class="">
         <div class=" p-4 rounded-lg  bg-gray-50 " id="" role="tabpanel" aria-labelledby="profile-tab">
             <section class="mt-2 2xl:mt-10">
-                <table id="ftwMainTable" class="display" style="width:100%">
+                <table id="medicalRecordTable" class="display h-10" style="width:100%">
                     <thead>
                         <tr>
                             <th>No.</th>
+                            <th >Name</th>
+                            <th >Personal and Social History</th>
+                            <th>Employer</th>
+                            <th>Department</th>
                             <th>Action</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Bldg Transaction</th>
-                            <th>Name</th>
-                            <th>Reason of Absence</th>
-                            <th>Diagnosis</th>
-                            <th>Medical Category</th>
-                            <th>Confinement Type</th>
-                            <th>Date of Absence From</th>
-                            <th>Date of Absence To</th>
-                            <th>Laboratory</th>
-                            <th>Vital Signs</th>
-                            <th>Remarks</th>
-                            <th>Other Remarks</th>
-                            <th>Status</th>
+
+                           
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         $ftwNo = 1;
-                        $sql = "SELECT f.*, e.Name, f.building AS building_transaction FROM `fittowork`f LEFT JOIN `employeespersonalinfo` e ON e.rfidNumber = f.rfid ORDER BY `id` ASC;";
+                        $sql = "SELECT pmh.*, e.Name, e.employer, e.department FROM `pastmedicalhistory` pmh LEFT JOIN `employeespersonalinfo` e ON e.rfidNumber = pmh.rfidNumber  where e.Name != '' ORDER BY `id` ASC";
                         $result = mysqli_query($con, $sql);
                         while ($row = mysqli_fetch_assoc($result)) {
 
 
-                            if ($row['statusComplete'] == true || $row['statusComplete'] == 1) {
-                                $status = "Completed";
-                            } elseif ($row['withPendingLab'] != NULL || $row['withPendingLab'] != "") {
-                                $status = "With pending laboratory: " . $row['withPendingLab'];
-                            }
+                    
                         ?>
 
                             <tr>
                                 <td> <?php echo $ftwNo; ?> </td>
-                                <td>
-                                    <button type="button" onclick="showEditModal(this)" data-id="<?php echo $row['id']; ?>" data-name="<?php echo $row['Name']; ?>" data-date="<?php echo $row['date']; ?>" data-time="<?php echo $row['time']; ?>" data-category="<?php echo $row['categories']; ?>" data-building="<?php echo $row['building_transaction']; ?>" data-reasonofabsence="<?php echo $row['reasonOfAbsence']; ?>" data-diagnosis="<?php echo $row['diagnosis']; ?>" data-medicalcategory="<?php echo $row['medicalCategory']; ?>" data-medicine="<?php echo $row['medicine']; ?>" data-confinementtype="<?php echo $row['confinementType']; ?>" data-fromdateofsickleave="<?php echo $row['fromDateOfSickLeave']; ?>" data-todateofsickleave="<?php echo $row['toDateOfSickLeave']; ?>" data-sldays="<?php echo $row['days']; ?>" data-bloodchemistry="<?php echo $row['bloodChemistry']; ?>" data-cbc="<?php echo $row['cbc']; ?>" data-urinalysis="<?php echo $row['urinalysis']; ?>" data-fecalysis="<?php echo $row['fecalysis']; ?>" data-xray="<?php echo $row['xray']; ?>" data-others="<?php echo $row['others']; ?>" data-bp="<?php echo $row['bp']; ?>" data-temp="<?php echo $row['temp']; ?>" data-02sat="<?php echo $row['02sat']; ?>" data-pr="<?php echo $row['pr']; ?>" data-rr="<?php echo $row['rr']; ?>" data-othersremarks="<?php echo $row['otherRemarks']; ?>" data-remarks="<?php echo $row['remarks']; ?>" data-statuscomplete="<?php echo $row['statusComplete']; ?>" data-withpendinglab="<?php echo $row['withPendingLab']; ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Edit</button>
-                                </td>
-                                <td> <?php echo $row['date']; ?> </td>
-                                <td> <?php echo $row['time']; ?> </td>
-                                <td> <?php echo $row['building_transaction']; ?> </td>
+                                
                                 <td> <?php echo $row['Name']; ?> </td>
-                                <td> <?php echo $row['reasonOfAbsence']; ?> </td>
-                                <td> <?php echo $row['diagnosis']; ?> </td>
-                                <td> <?php echo $row['medicalCategory']; ?> </td>
-                                <td> <?php echo $row['confinementType']; ?> </td>
-                                <td> <?php echo $row['fromDateOfSickLeave']; ?> </td>
-                                <td> <?php echo $row['toDateOfSickLeave']; ?> </td>
-                                <td> <?php
+                                <td> <?php echo $row['pastAndPresentMedHistory']; ?> </td>
+                                <td> <?php echo $row['employer']; ?> </td>
+                                <td> <?php echo $row['department']; ?> </td>
+                                <td>
+                                     
+                                     <a type="button" href="../nurses/medicalRecord.php?rf=<?php echo $row['rfidNumber']; ?>" class="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">View More</a></td>
 
-                                        if ($row['bloodChemistry'] != "") {
-                                            echo "bloodchem: " . $row['bloodChemistry'] . " ";
-                                        }
-                                        if ($row['cbc'] != "") {
-                                            echo "cbc: " . $row['cbc'] . " ";
-                                        }
-                                        if ($row['urinalysis'] != "") {
-                                            echo "urinalysis: " . $row['urinalysis'] . " ";
-                                        }
-                                        if ($row['fecalysis'] != "") {
-                                            echo "fecalysis: " . $row['fecalysis'] . " ";
-                                        }
-                                        if ($row['xray'] != "") {
-                                            echo "xray: " . $row['xray'] . " ";
-                                        }
-                                        if ($row['others'] != "") {
-                                            echo "others: " . $row['others'] . " ";
-                                        }
-                                        ?> </td>
-                                <td> <?php
-
-                                        if ($row['bp'] != "") {
-                                            echo "bp: " . $row['bp'] . " ";
-                                        }
-                                        if ($row['temp'] != "") {
-                                            echo "temp: " . $row['temp'] . " ";
-                                        }
-                                        if ($row['02sat'] != "") {
-                                            echo "02sat: " . $row['02sat'] . " ";
-                                        }
-                                        if ($row['pr'] != "") {
-                                            echo "pr: " . $row['pr'] . " ";
-                                        }
-                                        if ($row['rr'] != "") {
-                                            echo "rr: " . $row['rr'] . " ";
-                                        }
-                                        ?> </td>
-                                <td> <?php echo $row['remarks']; ?> </td>
-                                <td> <?php echo $row['otherRemarks']; ?> </td>
-                                <td> <?php echo $status ?> </td>
+                                
                             </tr>
 
 
@@ -199,7 +140,7 @@ if (isset($_POST['updateFTW2'])) {
                 <span class="sr-only">Close modal</span>
             </button>
             <div class="px-6 py-6 lg:px-8">
-                <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Export Fit to work</h3>
+                <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Export Medical Record</h3>
                 <form id="excelReport" class="space-y-6" action="" method="POST">
                     <div>
 
@@ -242,13 +183,13 @@ if (isset($_POST['updateFTW2'])) {
 </div>
 
 
-<div id="editFittowork" tabindex="-1" aria-hidden="true" class=" bg-[#615eae59] hidden  fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] ">
+<div id="editFittowork" tabindex="-1" aria-hidden="true" class="bg-[#615eae59] hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
         <!-- Modal content -->
-        <div class="text-[15px] 2xl:text-lg  relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-1 md:p-2 border-b rounded-t dark:border-gray-600">
-                <h3 class=" font-semibold text-gray-900 dark:text-white">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                     Edit Fit To Work Record
                 </h3>
                 <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="editFittowork">
@@ -260,7 +201,7 @@ if (isset($_POST['updateFTW2'])) {
             </div>
             <!-- Modal body -->
 
-            <form method="POST" action="" class="rounded-lg h-[500px] overflow-auto">
+            <form method="POST" action="">
                 <div class="text-[9px] 2xl:text-lg  rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full w-full p-4 ">
                     <input type="text" name="ftwId" id="ftwId" class="hidden">
                      <div class="col-span-4">
