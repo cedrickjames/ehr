@@ -6,7 +6,8 @@ $(document).ready(function () {
       {"className": "dt-center", "targets": "_all"}
     ],
       responsive: true,
-      
+             scrollCollapse: true,
+    scrollY: '50vh'
       
     }   );
     
@@ -38,7 +39,8 @@ $(document).ready(function () {
           {"className": "dt-center", "targets": "_all"}
         ],
           responsive: true,
-          
+                 scrollCollapse: true,
+    scrollY: '50vh'
         }   );
           
     $('#bloodChem').DataTable(  {
@@ -47,7 +49,8 @@ $(document).ready(function () {
           {"className": "dt-center", "targets": "_all"}
         ],
           responsive: true,
-          
+                 scrollCollapse: true,
+    scrollY: '50vh'
         }   );
 
         $('#annualPEResult').DataTable(  {
@@ -56,7 +59,8 @@ $(document).ready(function () {
               {"className": "dt-center", "targets": "_all"}
             ],
               responsive: true,
-              
+                     scrollCollapse: true,
+    scrollY: '50vh'
             }   );
 
 
@@ -66,7 +70,8 @@ $(document).ready(function () {
                   {"className": "dt-center", "targets": "_all"}
                 ],
                   responsive: true,
-                  
+                         scrollCollapse: true,
+    scrollY: '50vh'
                 }   );
 
 
@@ -76,7 +81,8 @@ $(document).ready(function () {
                       {"className": "dt-center", "targets": "_all"}
                     ],
                       responsive: true,
-                      
+                             scrollCollapse: true,
+    scrollY: '50vh'
                     }   );
 
                     $('#queTable').DataTable(  {
@@ -85,7 +91,8 @@ $(document).ready(function () {
                         {"className": "dt-center", "targets": "_all"}
                       ],
                         responsive: true,
-                        
+                               scrollCollapse: true,
+    scrollY: '50vh'
                       }   );
 
                       $('#fromDocQueTable').DataTable(  {
@@ -94,7 +101,8 @@ $(document).ready(function () {
                           {"className": "dt-center", "targets": "_all"}
                         ],
                           responsive: true,
-                          
+                                 scrollCollapse: true,
+    scrollY: '50vh'
                         }   );
                       
 });

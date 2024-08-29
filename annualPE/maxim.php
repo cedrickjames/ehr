@@ -29,8 +29,8 @@ if (!isset($_SESSION['connected'])) {
 <body class="bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
   <?php require_once 'navbar.php'; ?>
 
-  <div style=" background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));" class=" m-auto ml-52 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
-    <div class="m-10 ">
+  <div style=" background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));" class=" m-auto ml-56 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
+    <div class="m-2">
 
       <?php require_once 'maximEmployees.php'; ?>
 
@@ -49,7 +49,7 @@ if (!isset($_SESSION['connected'])) {
   <script type="text/javascript" src="index.js"></script>
   <script>
     $("#annualpeside").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
-    $("#maximside_").addClass("bg-[#82c7cc]");
+    $("#gpiside_").addClass("bg-[#82c7cc]");
 
 
     $("#sidehistory").removeClass("bg-gray-200");
@@ -60,8 +60,11 @@ if (!isset($_SESSION['connected'])) {
     $("#sidehistory1").removeClass("bg-gray-200");
     $("#sideMyRequest1").removeClass("bg-gray-200");
     $("#sidepms1").removeClass("bg-gray-200");
-    $(".preempIcon").attr("fill", "#FFFFFF");
+    $(".preempIcon").attr("fill", "#4d4d4d");
     $(".homeIcon").attr("fill", "#4d4d4d");
+    $(".empIcon").attr("fill", "#4d4d4d");
+    $(".annualpeside").attr("fill", "#FFFFFF");
+
 
 
 

@@ -285,7 +285,27 @@ if (isset($_POST['submitNewPassword'])) {
             <a href="completed.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Completed</a>
           </li>
           <li id="pendingConsultationSide">
-            <a href="pending.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Pending</a>
+            <a href="pending.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Pending ( <?php
+
+$sql = "SELECT COUNT(*) AS row_count
+                    FROM 
+                        consultation  
+                    INNER JOIN 
+                        employeespersonalinfo 
+                    ON 
+                        employeespersonalinfo.rfidNumber = consultation.rfid
+                    LEFT JOIN
+                        users
+                    ON
+                        consultation.nurseAssisting = users.idNumber WHERE consultation.withPendingLab !='' ORDER BY
+    consultation.id ASC;
+
+";
+$result = mysqli_query($con, $sql);
+while ($row = mysqli_fetch_assoc($result)) {
+  echo $row['row_count']; ?>
+
+<?php } ?>)</a>
           </li>
         </ul>
       </li>
@@ -477,7 +497,7 @@ if (isset($_POST['submitNewPassword'])) {
       </li>
       <li>
         <a href="../nurses/vaccination.php" id="vaccinationSide" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
-        <svg class="w-6 h-6 empIcon" fill="#4d4d4d" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M505.379,107.294c-9.647-9.647-91.12-91.12-100.681-100.681c-20.153-20.158-50.683,10.328-30.506,30.506l12.234,12.234 l-58.83,58.828L276.584,57.17c-20.153-20.158-50.683,10.328-30.506,30.506l23.524,23.524l-28.484,28.484l48.81,48.81 c20.153,20.153-10.326,50.69-30.506,30.506l-48.81-48.81l-17.287,17.287l48.81,48.81c20.152,20.152-10.326,50.69-30.506,30.506 l-48.81-48.81l-17.286,17.287l48.81,48.81c20.152,20.152-10.326,50.69-30.506,30.506l-48.81-48.81l-43.737,43.737 c-8.424,8.424-8.424,22.082,0,30.506l35.088,35.088L6.612,474.872c-20.152,20.152,10.326,50.69,30.506,30.506l99.763-99.763 l35.088,35.088c8.423,8.424,22.082,8.424,30.506,0L400.79,242.389l23.524,23.524c19.988,19.991,50.94-10.072,30.506-30.506 c-6.397-6.395-37.504-37.504-51.012-51.012l58.83-58.83l12.234,12.234C495.023,157.954,525.561,127.477,505.379,107.294z M373.303,153.889c-5.501-5.501-9.7-9.7-15.201-15.201L416.93,79.86l15.201,15.201L373.303,153.889z"></path> </g> </g> </g></svg>
+        <svg class="w-6 h-6 vaccination" fill="#4d4d4d" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M505.379,107.294c-9.647-9.647-91.12-91.12-100.681-100.681c-20.153-20.158-50.683,10.328-30.506,30.506l12.234,12.234 l-58.83,58.828L276.584,57.17c-20.153-20.158-50.683,10.328-30.506,30.506l23.524,23.524l-28.484,28.484l48.81,48.81 c20.153,20.153-10.326,50.69-30.506,30.506l-48.81-48.81l-17.287,17.287l48.81,48.81c20.152,20.152-10.326,50.69-30.506,30.506 l-48.81-48.81l-17.286,17.287l48.81,48.81c20.152,20.152-10.326,50.69-30.506,30.506l-48.81-48.81l-43.737,43.737 c-8.424,8.424-8.424,22.082,0,30.506l35.088,35.088L6.612,474.872c-20.152,20.152,10.326,50.69,30.506,30.506l99.763-99.763 l35.088,35.088c8.423,8.424,22.082,8.424,30.506,0L400.79,242.389l23.524,23.524c19.988,19.991,50.94-10.072,30.506-30.506 c-6.397-6.395-37.504-37.504-51.012-51.012l58.83-58.83l12.234,12.234C495.023,157.954,525.561,127.477,505.379,107.294z M373.303,153.889c-5.501-5.501-9.7-9.7-15.201-15.201L416.93,79.86l15.201,15.201L373.303,153.889z"></path> </g> </g> </g></svg>
           <span class="flex-1 ml-3 font-semibold whitespace-nowrap">Vaccination</span>
         </a>
       </li>
