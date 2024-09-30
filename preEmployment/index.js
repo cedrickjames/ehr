@@ -1,6 +1,7 @@
 $(document).ready(function () {
   
     $('#clinicVisits').DataTable(  {
+      "pageLength": 3000,
     "columnDefs": [
       { "width": "1%", "targets": 0, },
       {"className": "dt-center", "targets": "_all"}
@@ -11,6 +12,7 @@ $(document).ready(function () {
     }   );
       
     $('#sickLeave').DataTable(  {
+      "pageLength": 3000,
         "columnDefs": [
           { "width": "1%", "targets": 0, },
           {"className": "dt-center", "targets": "_all"}
@@ -20,6 +22,7 @@ $(document).ready(function () {
         }   );
           
     $('#bloodChem').DataTable(  {
+      "pageLength": 3000,
         "columnDefs": [
           { "width": "1%", "targets": 0, },
           {"className": "dt-center", "targets": "_all"}
@@ -29,6 +32,7 @@ $(document).ready(function () {
         }   );
 
         $('#annualPEResult').DataTable(  {
+          "pageLength": 3000,
             "columnDefs": [
               { "width": "1%", "targets": 0, },
               {"className": "dt-center", "targets": "_all"}
@@ -37,8 +41,8 @@ $(document).ready(function () {
               
             }   );
 
-
             $('#vaccinationRecord').DataTable(  {
+              "pageLength": 3000,
                 "columnDefs": [
                   { "width": "1%", "targets": 0, },
                   {"className": "dt-center", "targets": "_all"}
@@ -49,6 +53,7 @@ $(document).ready(function () {
 
 
                 $('#preEmpMedResult').DataTable(  {
+                  "pageLength": 3000,
                     "columnDefs": [
                       { "width": "1%", "targets": 0, },
                       {"className": "dt-center", "targets": "_all"}
@@ -58,6 +63,7 @@ $(document).ready(function () {
                     }   );
 
                     $('#queTable').DataTable(  {
+                      "pageLength": 3000,
                       "columnDefs": [
                         { "width": "1%", "targets": 0, },
                         {"className": "dt-center", "targets": "_all"}
@@ -67,6 +73,7 @@ $(document).ready(function () {
                       }   );
 
                       $('#fromDocQueTable').DataTable(  {
+                        "pageLength": 3000,
                         "columnDefs": [
                           { "width": "1%", "targets": 0, },
                           {"className": "dt-center", "targets": "_all"}

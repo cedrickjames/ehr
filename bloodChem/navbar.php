@@ -77,7 +77,7 @@ if (isset($_POST['submitNewPassword'])) {
         <i class="fa-solid fa-bars fa-lg"></i>
 
       </span>
-      <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
+      <a href="./index.php" class="flex items-center space-x-3 rtl:space-x-reverse">
         <img src="../src/Logo 1.png" class="h-8" alt="Flowbite Logo" />
         <span class="self-center  font-semibold whitespace-nowrap   text-[#193F9F]">Electronic Medical Record</span>
       </a>

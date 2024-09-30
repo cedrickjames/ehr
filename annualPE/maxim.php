@@ -26,10 +26,10 @@ if (!isset($_SESSION['connected'])) {
 
 </head>
 
-<body class="bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
-  <?php require_once 'navbar.php'; ?>
+<body class="h-screen bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
+  <?php require_once '../navbar.php'; ?>
 
-  <div style=" background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));" class=" m-auto ml-56 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
+  <div style=" background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));" class="h-full ml-auto ml-56 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
     <div class="m-2">
 
       <?php require_once 'maximEmployees.php'; ?>

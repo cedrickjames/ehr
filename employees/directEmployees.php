@@ -126,8 +126,8 @@ if (isset($_POST['addNewEmployeesImport'])) {
     <div id="" class="">
         <div class=" p-4 rounded-lg  bg-gray-50 " id="headApproval" role="tabpanel" aria-labelledby="profile-tab">
             <form action="index.php" method="post">
-                <section class="mt-2 2xl:mt-10">
-                    <table id="queTable" class="display text-[9px] 2xl:text-sm" style="width:100%">
+                <section class="mt-2 2xl:mt-10 overflow-auto relative">
+                    <table id="queTable" class="display text-[9px] 2xl:text-sm  " style="width:100%;">
                         <thead>
                             <tr>
                                 <th>No.</th>
@@ -158,7 +158,7 @@ if (isset($_POST['addNewEmployeesImport'])) {
                                             </button>
                                         </div>
                                         <!-- Dropdown menu -->
-                                        <div id="dropdownDots<?php echo $queNo; ?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                                        <div id="dropdownDots<?php echo $queNo; ?>" class="dropdownoption z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                                             <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $queNo; ?>">
                                                 <li>
                                                     <a type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['rfidNumber'] ?>" data-idnumber="<?php echo $row['idNumber'] ?>" data-name="<?php echo $row['Name'] ?>" data-email="<?php echo $row['email'] ?>" data-age="<?php echo $row['age'] ?>" data-sex="<?php echo $row['sex'] ?>" data-address="<?php echo $row['address'] ?>" data-civilstatus="<?php echo $row['civilStatus'] ?>" data-employer="<?php echo $row['employer'] ?>" data-department="<?php echo $row['department'] ?>" data-section="<?php echo $row['section'] ?>" data-position="<?php echo $row['position'] ?>" data-level="<?php echo $row['level'] ?>" data-datehired="<?php echo $row['dateHired'] ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>

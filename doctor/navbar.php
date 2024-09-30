@@ -16,15 +16,15 @@ $userID = $_SESSION['userID'];
   <div class="w-screen flex flex-wrap items-center justify-between mx-auto px-4 2xl:px-auto p-1 2xl:p-4">
     <div class="flex">
     <span id="sidebarButton" type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation" class="block lg:hidden mx-10 ">
-        <i class="fa-solid fa-bars fa-lg"></i>
+        <!-- <i class="fa-solid fa-bars fa-lg"></i> -->
 
         </span> 
         <span id="sidebarButton" type="button" onclick="shows()" class="hidden lg:block mx-4 2xl:mx-10  ">
-        <i class="fa-solid fa-bars fa-lg"></i>
+        <!-- <i class="fa-solid fa-bars fa-lg"></i> -->
 
         </span> 
-  <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
-      <img src="../src/Logo 1.png" class="h-8" alt="Flowbite Logo" />
+  <a href="./index.php" class="flex items-center space-x-3 rtl:space-x-reverse">
+      <img src="../src/Logo 1.png" href="./index.php" class="h-8" alt="EMR Logo" />
       <span class="self-center  font-semibold whitespace-nowrap   text-[#193F9F]">Electronic Medical Record</span>
   </a>
     </div>
@@ -34,7 +34,7 @@ $userID = $_SESSION['userID'];
   <button type="button" class="flex mr-3 text-sm  rounded-full sm:mr-0 focus:ring-4 focus:ring-gray-300 " id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
           <span class="sr-only">Open user menu</span>
            <div class="w-10 h-10 rounded-full  ">
-          <div class="rounded-full h-full w-full" style="background-color: #C5957F; background-size: cover; background-image: url('../src/default.png')"></div>
+          <div class="rounded-full h-full w-full" style="background-color: #C5957F; background-size: cover; background-image: url('../src/doctor.png')"></div>
   
           </div>
         </button>
@@ -66,7 +66,7 @@ $userID = $_SESSION['userID'];
   <!-- drawer component -->
   
   <!-- side bar drawer component -->
-  <div id="sidebar" class="w-52 2xl:w-80 text-xs 2xl:text-xl hidden lg:block  fixed top-16 left-0 z-40 h-screen pl-4 pr-0 overflow-y-auto transition-transform    transform-none" tabindex="-1" aria-labelledby="sidebar-label" aria-modal="true" role="dialog">
+  <div id="sidebar" class="w-52 2xl:w-80 text-xs 2xl:text-xl hidden fixed top-16 left-0 z-40 h-screen pl-4 pr-0 overflow-y-auto transition-transform    transform-none" tabindex="-1" aria-labelledby="sidebar-label" aria-modal="true" role="dialog">
 
    
       <!-- <button type="button"onclick="shows()"  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center   >

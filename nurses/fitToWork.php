@@ -90,7 +90,7 @@ $userID = $_SESSION['userID'];
 <body class="h-screen bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
   <?php require_once '../navbar.php'; ?>
 
-  <div style=" background: linear-gradient(-45deg, #05458cba, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));" class=" m-auto ml-56 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
+  <div style=" background: linear-gradient(-45deg, #05458cba, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));" class="h-full ml-auto ml-56 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
     <?php
     if ($rfid == "not found") {
       echo "<div class='m-4'>";
@@ -130,7 +130,7 @@ $userID = $_SESSION['userID'];
     $("#sideMyRequest").removeClass("bg-gray-200");
     $("#sidepms").removeClass("bg-gray-200");
 
-    $("#sidehome1").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
+    $("#fitToWorkSide1").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
     $("#sidehistory1").removeClass("bg-gray-200");
     $("#sideMyRequest1").removeClass("bg-gray-200");
     $("#sidepms1").removeClass("bg-gray-200");

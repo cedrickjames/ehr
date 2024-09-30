@@ -28,6 +28,31 @@ if($num_rowsQue ==0){
 
    
 }
+else{
+  $checkRFID = "SELECT * FROM `employeespersonalinfo` WHERE `idNumber` = '$cardNumber'";
+$resultCheck = mysqli_query($con, $checkRFID);
+
+$num_rows = mysqli_num_rows($resultCheck);
+if($num_rows >=1){
+
+    $checkQue = "SELECT * FROM `queing` WHERE `rfidNumber` = '$cardNumber' and `status` = 'processing'";
+$resultCheckQue = mysqli_query($con, $checkQue);
+$num_rowsQue = mysqli_num_rows($resultCheckQue);
+// echo "asasd", $num_rowsQue;
+if($num_rowsQue ==0){
+  while($row=mysqli_fetch_assoc($resultCheck)){
+    $cardNumber = $row['rfidNumber'];
+    $addQue = "INSERT INTO `queing`(`rfidNumber`, `status`) VALUES ('$cardNumber','waiting')";
+    $resultInfo = mysqli_query($con, $addQue);
+  }
+
+
+}
+
+   
+}
+
+}
 
 
 
@@ -98,8 +123,8 @@ if($num_rowsQue ==0){
   // echo $_SESSION['lastQue'];
         if($_SESSION['lastQue']!= ''){
           $cardNumberSession = $_SESSION['lastQue'];
-          $sqlCheckQue = "SELECT * from `employeespersonalinfo` WHERE `rfidNumber` = $cardNumberSession;";
-  
+          $sqlCheckQue = "SELECT * from `employeespersonalinfo` WHERE `rfidNumber` = '$cardNumberSession' OR `idNumber` = '$cardNumberSession';";
+  // echo $sqlCheckQue;
           $resultlast = mysqli_query($con,$sqlCheckQue);
           if($resultlast){
             $num_rows1 = mysqli_num_rows($resultlast);
