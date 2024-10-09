@@ -130,7 +130,7 @@ if (isset($_POST['submitNewPassword'])) {
   <div class="py-4 overflow-y-auto">
       <ul class="space-y-2 font-medium">
          <li >
-            <a href="../nurses/index.php" id="sidehome1" class=" gap-4 flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+            <a href="index.php" id="sidehome1" class=" gap-4 flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
             <svg aria-hidden="true" class="w-6 h-6 text-red-500 transition duration-75  group-hover:text-gray-900 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" zoomAndPan="magnify" viewBox="0 0 750 749.999995" height="1000" preserveAspectRatio="xMidYMid meet" version="1.0">
             <defs>
               <clipPath id="9d01e478d3">
@@ -144,7 +144,7 @@ if (isset($_POST['submitNewPassword'])) {
             </a>
          </li>
          <li >
-         <a href="../nurses/medicalRecord.php" id="sidemedrecord1" class=" gap-4 flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+         <a href="medicalRecord.php" id="sidemedrecord1" class=" gap-4 flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
           <!-- <svg aria-hidden="true" class="w-6 h-6 text-gray-500 transition duration-75  group-hover:text-gray-900 -white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg> -->
           <!-- <i class="fa-solid fa-ticket"></i>
                -->
@@ -177,7 +177,7 @@ if (isset($_POST['submitNewPassword'])) {
         </a>
          </li>
          <li>
-        <a href="../nurses/fitToWork.php" id="fitToWorkSide1" class=" gap-4 flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+        <a href="fitToWork.php" id="fitToWorkSide1" class=" gap-4 flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
           <svg class="w-6 h-6  " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" zoomAndPan="magnify" viewBox="0 0 750 749.999995" height="1000" preserveAspectRatio="xMidYMid meet" version="1.0">
             <defs>
               <clipPath id="804c23b4c9">
@@ -200,7 +200,7 @@ if (isset($_POST['submitNewPassword'])) {
         </a>
       </li>
       <li>
-        <a href="../nurses/consultation.php" id="consultationSide" class=" gap-4  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+        <a href="consultation.php" id="consultationSide1" class=" gap-4  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
           <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" zoomAndPan="magnify" viewBox="0 0 750 749.999995" height="1000" preserveAspectRatio="xMidYMid meet" version="1.0">
             <defs>
               <clipPath id="d75fb1a557">
@@ -246,8 +246,8 @@ if (isset($_POST['submitNewPassword'])) {
           <span class="flex-1 ml-3 font-semibold whitespace-nowrap">Clinic Visit</span>
         </a>
         <ul id="dropdown-example" class=" py-2 space-y-2">
-          <li id="fromDoctorsSide">
-            <a href="../nurses/fromDoctor.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">From Doctor ( <?php
+          <li id="fromDoctorsSide1">
+            <a href="fromDoctor.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">From Doctor ( <?php
 
                                                                                                                                         $sql = "SELECT COUNT(*) AS row_count
                         FROM (
@@ -270,11 +270,11 @@ if (isset($_POST['submitNewPassword'])) {
 
                 <?php } ?>)</a>
           </li>
-          <li id="completedConsultationSide">
-            <a href="../nurses/completed.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Completed</a>
+          <li id="completedConsultationSide1">
+            <a href="completed.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Completed</a>
           </li>
-          <li id="pendingConsultationSide">
-            <a href="../nurses/pending.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Pending ( <?php
+          <li id="pendingConsultationSide1">
+            <a href="pending.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Pending ( <?php
 
 $sql = "SELECT COUNT(*) AS row_count
                     FROM 
@@ -485,7 +485,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         </ul>
       </li>
       <li>
-        <a href="../nurses/vaccination.php" id="vaccinationSide2" class="gap-4  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+        <a href="vaccination.php" id="vaccinationSide2" class="gap-4  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
         <svg class="w-6 h-6 vaccination" fill="#4d4d4d" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M505.379,107.294c-9.647-9.647-91.12-91.12-100.681-100.681c-20.153-20.158-50.683,10.328-30.506,30.506l12.234,12.234 l-58.83,58.828L276.584,57.17c-20.153-20.158-50.683,10.328-30.506,30.506l23.524,23.524l-28.484,28.484l48.81,48.81 c20.153,20.153-10.326,50.69-30.506,30.506l-48.81-48.81l-17.287,17.287l48.81,48.81c20.152,20.152-10.326,50.69-30.506,30.506 l-48.81-48.81l-17.286,17.287l48.81,48.81c20.152,20.152-10.326,50.69-30.506,30.506l-48.81-48.81l-43.737,43.737 c-8.424,8.424-8.424,22.082,0,30.506l35.088,35.088L6.612,474.872c-20.152,20.152,10.326,50.69,30.506,30.506l99.763-99.763 l35.088,35.088c8.423,8.424,22.082,8.424,30.506,0L400.79,242.389l23.524,23.524c19.988,19.991,50.94-10.072,30.506-30.506 c-6.397-6.395-37.504-37.504-51.012-51.012l58.83-58.83l12.234,12.234C495.023,157.954,525.561,127.477,505.379,107.294z M373.303,153.889c-5.501-5.501-9.7-9.7-15.201-15.201L416.93,79.86l15.201,15.201L373.303,153.889z"></path> </g> </g> </g></svg>
           <span class="flex-1 ml-3 font-semibold whitespace-nowrap">Vaccination</span>
         </a>
@@ -507,7 +507,7 @@ while ($row = mysqli_fetch_assoc($result)) {
   <div class="2xl:py-5 pr-5 overflow-y-auto">
     <ul class="space-y-2">
       <li>
-        <a href="./nurses/index.php" id="sidehome" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+        <a href="index.php" id="sidehome" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
           <!-- <svg aria-hidden="true" class="w-6 h-6 text-gray-500 transition duration-75  group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg> -->
           <!-- <svg aria-hidden="true" class="w-6 h-6 text-red-500 transition duration-75  group-hover:text-gray-900 dark:group-hover:text-white" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" zoomAndPan="magnify" viewBox="0 0 750 749.999995" height="1000" preserveAspectRatio="xMidYMid meet" version="1.0"><defs><clipPath id="9d01e478d3"><path d="M 113 214 L 639 214 L 639 689.25 L 113 689.25 Z M 113 214 " clip-rule="nonzero"/></clipPath></defs><path  d="M 691.773438 281.488281 L 585.324219 203.1875 L 585.324219 109.785156 C 585.324219 95.140625 573.441406 83.296875 558.816406 83.296875 L 515.734375 83.296875 C 501.089844 83.296875 489.226562 95.164062 489.226562 109.785156 L 489.226562 132.476562 L 408.0625 72.78125 C 390.453125 59.796875 361.621094 59.796875 344.011719 72.78125 L 60.300781 281.488281 C 42.6875 294.453125 38.894531 319.488281 51.855469 337.121094 L 59.699219 347.761719 C 72.640625 365.390625 97.675781 369.207031 115.265625 356.246094 L 344.011719 187.902344 C 361.621094 174.9375 390.453125 174.9375 408.0625 187.902344 L 636.785156 356.246094 C 654.398438 369.207031 679.410156 365.371094 692.355469 347.761719 L 700.214844 337.121094 C 713.160156 319.488281 709.363281 294.453125 691.773438 281.488281 Z M 691.773438 281.488281 " /><path  d="M 606.898438 370.886719 L 408 223.886719 C 390.410156 210.882812 361.664062 210.882812 344.074219 223.886719 L 145.175781 370.886719 C 127.585938 383.894531 113.191406 402.914062 113.191406 413.222656 L 113.191406 626.347656 C 113.191406 660.945312 142.851562 689.011719 179.460938 689.011719 L 300.929688 689.011719 L 300.929688 500.484375 C 300.929688 485.925781 312.855469 474.019531 327.417969 474.019531 L 424.613281 474.019531 C 439.175781 474.019531 451.101562 485.925781 451.101562 500.484375 L 451.101562 689.011719 L 572.589844 689.011719 C 609.179688 689.011719 638.820312 660.945312 638.820312 626.347656 L 638.820312 413.222656 C 638.839844 402.914062 624.488281 383.894531 606.898438 370.886719 Z M 606.898438 370.886719 " /></svg> -->
           <!-- <i class="fa-solid fa-house"></i> -->
@@ -865,7 +865,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         </ul>
       </li>
       <li>
-        <a href="../nurses/vaccination.php" id="vaccinationSide" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+        <a href="vaccination.php" id="vaccinationSide" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
         <svg class="w-6 h-6 vaccination" fill="#4d4d4d" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M505.379,107.294c-9.647-9.647-91.12-91.12-100.681-100.681c-20.153-20.158-50.683,10.328-30.506,30.506l12.234,12.234 l-58.83,58.828L276.584,57.17c-20.153-20.158-50.683,10.328-30.506,30.506l23.524,23.524l-28.484,28.484l48.81,48.81 c20.153,20.153-10.326,50.69-30.506,30.506l-48.81-48.81l-17.287,17.287l48.81,48.81c20.152,20.152-10.326,50.69-30.506,30.506 l-48.81-48.81l-17.286,17.287l48.81,48.81c20.152,20.152-10.326,50.69-30.506,30.506l-48.81-48.81l-43.737,43.737 c-8.424,8.424-8.424,22.082,0,30.506l35.088,35.088L6.612,474.872c-20.152,20.152,10.326,50.69,30.506,30.506l99.763-99.763 l35.088,35.088c8.423,8.424,22.082,8.424,30.506,0L400.79,242.389l23.524,23.524c19.988,19.991,50.94-10.072,30.506-30.506 c-6.397-6.395-37.504-37.504-51.012-51.012l58.83-58.83l12.234,12.234C495.023,157.954,525.561,127.477,505.379,107.294z M373.303,153.889c-5.501-5.501-9.7-9.7-15.201-15.201L416.93,79.86l15.201,15.201L373.303,153.889z"></path> </g> </g> </g></svg>
           <span class="flex-1 ml-3 font-semibold whitespace-nowrap">Vaccination</span>
         </a>

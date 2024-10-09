@@ -3,6 +3,64 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+
+// $sql2 = "Select * FROM `sender`";
+//     $result2 = mysqli_query($con, $sql2);
+//     while ($list = mysqli_fetch_assoc($result2)) {
+//       $account = $list["email"];
+//       $accountpass = $list["password"];
+//     }
+
+//     $subject = 'Fit to Work';
+//     $message = 'Hi Sir and HR,<br> <br> Mr./Ms. Cedrick  is now fit to work. <br><br> Details <br>Name: Cedrick <br>Sect/Dept: ICT <br>Reason of Absence: FEVER <br>Date of Absence: October 07, 2024 <br>No. of Day/s: 1 <br>Remarks: <br>Others:  <br><br><br><br> This is a generated email. Please do not reply. <br><br> Electronic Health System';
+
+
+//     require '../vendor/autoload.php';
+
+//     $mail = new PHPMailer(true);
+//     //  email the admin               
+//     try {
+//       //Server settings
+//       $mail->isSMTP();                                      // Set mailer to use SMTP
+//       $mail->Host = 'mail.glorylocal.com.ph';                       // Specify main and backup SMTP servers
+//       $mail->SMTPAuth = true;                               // Enable SMTP authentication
+//       $mail->Username = $account;     // Your Email/ Server Email
+//       $mail->Password = $accountpass;                     // Your Password
+//       $mail->SMTPOptions = array(
+//         'ssl' => array(
+//           'verify_peer' => false,
+//           'verify_peer_name' => false,
+//           'allow_self_signed' => true
+//         )
+//       );
+//       $mail->SMTPSecure = 'none';
+//       $mail->Port = 465;
+
+//       //Send Email
+//       // $mail->setFrom('Helpdesk'); //eto ang mag front  notificationsys01@gmail.com
+
+//       //Recipients
+//       $mail->setFrom('healthbenefits@glorylocal.com.ph', 'Health Benefits');
+//       $mail->addAddress('mis.dev@glory.com.ph');
+//       $mail->AddCC('mis.dev@glory.com.ph');
+//       $mail->AddCC('mis.dev@glory.com.ph');
+//       $mail->isHTML(true);
+//       $mail->Subject = $subject;
+//       $mail->Body    = $message;
+//       $mail->send();
+
+//       $_SESSION['message'] = 'Message has been sent';
+//       echo "<script>alert('Email Sent') </script>";
+//       echo "<script> location.href='index.php'; </script>";
+
+
+//       // header("location: form.php");
+//     } catch (Exception $e) {
+//       $_SESSION['message'] = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+//       echo "<script>alert('Message could not be sent. Mailer Error. $account $accountpass $message ') </script>";
+//     }
+
+
 if (isset($_GET['rf'])) {
   $rfid = $_GET['rf'];
 } else {
@@ -211,7 +269,7 @@ if (isset($_POST['addFTW'])) {
       // header("location: form.php");
     } catch (Exception $e) {
       $_SESSION['message'] = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
-      echo "<script>alert('Message could not be sent. Mailer Error.') </script>";
+      echo "<script>alert('Message could not be sent. Mailer Error. $account $accountpass $message ') </script>";
     }
   }
 }
