@@ -29,13 +29,18 @@ if($num_rowsQue ==0){
    
 }
 else{
+  
   $checkRFID = "SELECT * FROM `employeespersonalinfo` WHERE `idNumber` = '$cardNumber'";
 $resultCheck = mysqli_query($con, $checkRFID);
+while($row=mysqli_fetch_assoc($resultCheck)){
+  $cardNumber = $row['rfidNumber'];
 
+}
 $num_rows = mysqli_num_rows($resultCheck);
 if($num_rows >=1){
 
     $checkQue = "SELECT * FROM `queing` WHERE `rfidNumber` = '$cardNumber' and `status` = 'processing'";
+    // echo $checkQue;
 $resultCheckQue = mysqli_query($con, $checkQue);
 $num_rowsQue = mysqli_num_rows($resultCheckQue);
 // echo "asasd", $num_rowsQue;
