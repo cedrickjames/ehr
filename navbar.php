@@ -260,7 +260,7 @@ if (isset($_POST['submitNewPassword'])) {
                             ON employeespersonalinfo.rfidNumber = consultation.rfid
                             LEFT JOIN users
                             ON consultation.nurseAssisting = users.idNumber 
-                            WHERE consultation.status = 'nurse2' and nurseAssisting = '$userID'
+                            WHERE consultation.status = 'nurse2' 
                         ) AS subquery;
                         
                     ";
@@ -640,7 +640,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                             ON employeespersonalinfo.rfidNumber = consultation.rfid
                             LEFT JOIN users
                             ON consultation.nurseAssisting = users.idNumber 
-                            WHERE consultation.status = 'nurse2' and nurseAssisting = '$userID'
+                            WHERE consultation.status = 'nurse2'
                         ) AS subquery;
                         
                     ";

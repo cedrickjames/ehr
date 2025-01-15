@@ -19,48 +19,6 @@ if (isset($_GET['rf'])) {
   $rfid = "not found";
 }
 
-if (isset($_POST['proceedToConsultation'])) {
-
-  $_SESSION['ftwTime'] = $_POST['ftwTime'];
-  $_SESSION['ftwCategories'] = $_POST['ftwCategories'];
-  $_SESSION['ftwBuilding'] = $_POST['ftwBuilding'];
-  $_SESSION['ftwConfinement'] = $_POST['ftwConfinement'];
-  $_SESSION['ftwMedCategory'] = $_POST['ftwMedCategory'];
-  $_SESSION['ftwSLDateFrom'] = $_POST['ftwSLDateFrom'];
-  $_SESSION['ftwSLDateTo'] = $_POST['ftwSLDateTo'];
-  $_SESSION['ftwDays'] = $_POST['ftwDays'];
-  $_SESSION['ftwAbsenceReason'] = $_POST['ftwAbsenceReason'];
-  $_SESSION['ftwDiagnosis'] = $_POST['ftwDiagnosis'];
-  $_SESSION['ftwBloodChem'] = $_POST['ftwBloodChem'];
-  $_SESSION['ftwCbc'] = $_POST['ftwCbc'];
-  $_SESSION['ftwUrinalysis'] = $_POST['ftwUrinalysis'];
-  $_SESSION['ftwFecalysis'] = $_POST['ftwFecalysis'];
-  $_SESSION['ftwXray'] = $_POST['ftwXray'];
-  $_SESSION['ftwOthersLab'] = $_POST['ftwOthersLab'];
-  $_SESSION['ftwBp'] = $_POST['ftwBp'];
-  $_SESSION['ftwTemp'] = $_POST['ftwTemp'];
-  $_SESSION['ftw02Sat'] = $_POST['ftw02Sat'];
-  $_SESSION['ftwPr'] = $_POST['ftwPr'];
-  $_SESSION['ftwRr'] = $_POST['ftwRr'];
-  $_SESSION['ftwRemarks'] = $_POST['ftwRemarks'];
-  $_SESSION['ftwOthersRemarks'] = $_POST['ftwOthersRemarks'];
-  $_SESSION['ftwCompleted'] = isset($_POST['ftwCompleted']) ? $_POST['ftwCompleted'] : "0";
-  $_SESSION['ftwWithPendingLab'] = $_POST['ftwWithPendingLab'];
-  $_SESSION['immediateEmail'] = $_POST['immediateEmail'];
-
-
-  $ftwMeds = $_POST['ftwMeds'];
-
-  if ($ftwMeds != "") {
-
-    $ftwMeds = implode(', ', $ftwMeds);
-  }
-
-  $_SESSION['ftwMeds'] = $ftwMeds;
-
-
-  header("location:consultation.php?rf=$rfid");
-}
 
 
 $userID = $_SESSION['userID'];
@@ -147,6 +105,42 @@ $userID = $_SESSION['userID'];
     $(".js-meds").select2({
       tags: true
     });
+    $(document).ready(function() {
+      if ($('#remarksSelect').val() != "Unfit to work") {
+            // Remove the "hidden" class from the input with id "medLab"
+            $("#fitToWorkFields").removeClass("hidden");
+          $("#restDays").addClass("hidden");
+          $("#unfitReason").addClass("hidden");
+
+          
+
+        }
+        else{
+          $("#unfitReason").removeClass("hidden");
+          $("#restDays").removeClass("hidden");
+
+          $("#fitToWorkFields").addClass("hidden");
+        }
+    })
+
+    $("#remarksSelect").change(function() {
+      if ($(this).val() != "Unfit to work") {
+            // Remove the "hidden" class from the input with id "medLab"
+            $("#fitToWorkFields").removeClass("hidden");
+          $("#restDays").addClass("hidden");
+          $("#unfitReason").addClass("hidden");
+
+        }
+        else{
+          $("#unfitReason").removeClass("hidden");
+
+          $("#restDays").removeClass("hidden");
+          $("#fitToWorkFields").addClass("hidden");
+        }
+
+    })
+    
+
 
 
     function addSelectedValue(value, qty) {

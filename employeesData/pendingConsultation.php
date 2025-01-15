@@ -38,6 +38,7 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $pr = $userRow['pr'];
   $rr = $userRow['rr'];
   $remarks = $userRow['remarks'];
+  // echo $remarks;
   $otherRemarks = $userRow['otherRemarks'];
   $finalDx = $userRow['finalDx'];
 
@@ -100,7 +101,9 @@ if (isset($_POST['updateConsultation'])) {
   $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
   $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
 
-  
+  if($cnsltnCompleted==1){
+    $cnsltnWithPendingLab='';
+  }
   // echo $smoking;
   $sql = "UPDATE `consultation` SET `type`='$cnsltnType',`categories`='$cnsltnCategories',`building`='$cnsltnBuilding',`chiefComplaint`='$cnsltnChiefComplaint',`diagnosis`='$cnsltnDiagnosis',`intervention`='$cnsltnIntervention',`clinicRestFrom`='$cnsltnClinicRestFrom',`clinicRestTo`='$cnsltnClinicRestTo',`meds`='$cnsltnMeds',`medsQty`='$cnsltnMedsQuantity',`bloodChemistry`='$cnsltnBloodChem',`cbc`='$cnsltnCbc',`urinalysis`='$cnsltnUrinalysis',`fecalysis`='$cnsltnFecalysis',`xray`='$cnsltnXray',`others`='$cnsltnOthersLab',`bp`='$cnsltnBp',`temp`='$cnsltnTemp',`02sat`='$cnsltn02Sat',`pr`='$cnsltnPr',`rr`='$cnsltnRr',`remarks`='$cnsltnRemarks',`medicalLab`='$cnstltnmedLab',`medicationDispense`='$cnstltnmedDis',`otherRemarks`='$cnsltnOthersRemarks',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
    
@@ -209,7 +212,7 @@ if (isset($_POST['updateConsultation'])) {
         <label class="block  my-auto font-semibold text-gray-900 ">Diagnosis: </label>
         <!-- <input type="text"  name="cnsltnDiagnosis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
         <select id="ftwDiagnosiOption" name="cnsltnDiagnosis" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option selected disabled>Select Diagnosis</option>
+          <option  disabled>Select Diagnosis</option>
           <option value="addDiagnosisButton">Add Diagnosis</option>
           <?php
           $sql1 = "Select * FROM `diagnosis`";
@@ -377,7 +380,7 @@ if (isset($_POST['updateConsultation'])) {
   <div id="medsdiv" class="col-span-2">
     <label class="block  my-auto font-semibold text-gray-900 ">What's your medicine? </label>
     <select id="nameOfMedicine" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-  <option selected disabled>Select Medicine</option>
+  <option disabled>Select Medicine</option>
   <option value="addMedicineButton">Add Medicine</option>
   <?php
   $sql1 = "Select * FROM `medicine`";
@@ -534,7 +537,7 @@ if (isset($_POST['updateConsultation'])) {
     
      
       <div class="col-span-4 gap-4">
-        <h3 class=" block my-auto  font-semibold text-gray-900 ">Remarks: </h3>
+        <h3 class=" block my-auto  font-semibold text-gray-900 ">Remarks: <?php //echo $remarks; ?> </h3>
         <select id="remarksSelect2" name="cnsltnRemarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option <?php if ($remarks == "Fit to Work") {
                     echo "selected";
@@ -544,16 +547,16 @@ if (isset($_POST['updateConsultation'])) {
                   } ?> value="Late FTW">Late FTW</option>
           <option <?php if ($remarks == "No Medical Certificate") {
                     echo "selected";
-                  } ?>value="No Medical Certificate">No Medical Certificate</option>
+                  } ?> value="No Medical Certificate">No Medical Certificate</option>
           <option <?php if ($remarks == "For Medical Laboratory") {
                     echo "selected";
-                  } ?>value="For Medical Laboratory">For Medical Laboratory</option>
+                  } ?> value="For Medical Laboratory">For Medical Laboratory</option>
           <option <?php if ($remarks == "For Medication Dispense") {
                     echo "selected";
-                  } ?>value="For Medication Dispense">For Medication Dispense</option>
+                  } ?> value="For Medication Dispense">For Medication Dispense</option>
           <option <?php if ($remarks == "Others") {
                     echo "selected";
-                  } ?>value="Others">Others</option>
+                  } ?> value="Others">Others</option>
         </select>
         <input type="text" name="medLab" value="<?php echo $medicalLab ?>" placeholder="Medical Laboratory" id="medLab" class="hidden  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
         <input type="text" name="medDis" value="<?php echo $medicationDispense ?>" placeholder="Medication Dispense" id="medDis" class="hidden  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">

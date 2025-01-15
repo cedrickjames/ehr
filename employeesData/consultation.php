@@ -51,8 +51,8 @@ $ftwTime = date('h:i A');
 if (isset($_GET['cnsltn'])) {
   $cnsltn = $_GET['cnsltn'];
 
-  $sqlcnslt = "SELECT * FROM `consultation` WHERE `rfid` = '$rfid' and `id` = '$cnsltn' ORDER BY `id` ASC; 
- ";
+  $sqlcnslt = "SELECT * FROM `consultation` WHERE `rfid` = '$rfid' and `id` = '$cnsltn' ORDER BY `id` ASC;";
+ 
   $resultcnslt = mysqli_query($con, $sqlcnslt);
   while ($row = mysqli_fetch_assoc($resultcnslt)) {
 
@@ -107,6 +107,7 @@ if (isset($_SESSION['ftwMeds'])) {
   // Handle the case where $_SESSION['ftwMeds'] is not set
 }
 // echo $ftwMeds;
+
 if (isset($_POST['addConsultation'])) {
 
   $cnsltnDate = $_POST['cnsltnDate'];
@@ -219,7 +220,7 @@ if (isset($_POST['updateConsultation'])) {
   $cnsltnRemarks = $_POST['cnsltnRemarks'];
   $cnsltnOthersRemarks = $_POST['cnsltnOthersRemarks'];
   $cnstltnmedLab = $_POST['medLab'];
-  $cnstltnmedDis= $_POST['medDis'];
+  // $cnstltnmedDis= $_POST['medDis'];
 
   
   $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
@@ -227,7 +228,7 @@ if (isset($_POST['updateConsultation'])) {
 
   
   // echo $smoking;
-  $sql = "UPDATE `consultation` SET `type`='$cnsltnType',`categories`='$cnsltnCategories',`building`='$cnsltnBuilding',`chiefComplaint`='$cnsltnChiefComplaint',`diagnosis`='$cnsltnDiagnosis',`intervention`='$cnsltnIntervention',`clinicRestFrom`='$cnsltnClinicRestFrom',`clinicRestTo`='$cnsltnClinicRestTo',`meds`='$cnsltnMeds',`medsQty`='$cnsltnMedsQuantity',`bloodChemistry`='$cnsltnBloodChem',`cbc`='$cnsltnCbc',`urinalysis`='$cnsltnUrinalysis',`fecalysis`='$cnsltnFecalysis',`xray`='$cnsltnXray',`others`='$cnsltnOthersLab',`bp`='$cnsltnBp',`temp`='$cnsltnTemp',`02sat`='$cnsltn02Sat',`pr`='$cnsltnPr',`rr`='$cnsltnRr',`remarks`='$cnsltnRemarks',`medicalLab`='$cnstltnmedLab',`medicationDispense`='$cnstltnmedDis',`otherRemarks`='$cnsltnOthersRemarks',`statusComplete`='$cnsltnCompleted',`withPendingLab`='  $cnsltnWithPendingLab ' WHERE `id` = '$cnsltn'";
+  $sql = "UPDATE `consultation` SET `type`='$cnsltnType',`categories`='$cnsltnCategories',`building`='$cnsltnBuilding',`chiefComplaint`='$cnsltnChiefComplaint',`diagnosis`='$cnsltnDiagnosis',`intervention`='$cnsltnIntervention',`clinicRestFrom`='$cnsltnClinicRestFrom',`clinicRestTo`='$cnsltnClinicRestTo',`meds`='$cnsltnMeds',`medsQty`='$cnsltnMedsQuantity',`bloodChemistry`='$cnsltnBloodChem',`cbc`='$cnsltnCbc',`urinalysis`='$cnsltnUrinalysis',`fecalysis`='$cnsltnFecalysis',`xray`='$cnsltnXray',`others`='$cnsltnOthersLab',`bp`='$cnsltnBp',`temp`='$cnsltnTemp',`02sat`='$cnsltn02Sat',`pr`='$cnsltnPr',`rr`='$cnsltnRr',`remarks`='$cnsltnRemarks',`medicalLab`='$cnstltnmedLab',`otherRemarks`='$cnsltnOthersRemarks',`statusComplete`='$cnsltnCompleted',`withPendingLab`='  $cnsltnWithPendingLab ' WHERE `id` = '$cnsltn'";
    
   
    $results = mysqli_query($con, $sql);
@@ -390,7 +391,7 @@ if (isset($_POST['updateConsultation'])) {
         <input type="text" value="<?php echo $ftwAbsenceReason ?>" name="cnsltnChiefComplaint" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       </div>
       <div class="col-span-2">
-        <label class="block  my-auto font-semibold text-gray-900 ">Diagnosis: </label>
+        <label class="block  my-auto font-semibold text-gray-900 ">Diagnosis: <?php echo $ftwDiagnosis;?></label>
         <!-- <input type="text"  name="cnsltnDiagnosis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
         <select id="ftwDiagnosiOption" name="cnsltnDiagnosis" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option selected disabled>Select Diagnosis</option>
@@ -403,7 +404,7 @@ if (isset($_POST['updateConsultation'])) {
           ?>
             <option <?php if ($ftwDiagnosis == $diagnosis) {
                       echo "selected";
-                    } ?> value=<?php echo $diagnosis; ?>><?php echo $diagnosis; ?></option>
+                    } ?> value="<?php echo $diagnosis; ?>"><?php echo $diagnosis; ?></option>
           <?php
 
             //  echo "<option value='$diagnosis' >$diagnosis</option>";
@@ -702,19 +703,10 @@ if (isset($_POST['updateConsultation'])) {
         <label class="block  my-auto  font-semibold text-gray-900 ">Remarks: </label>
         <div class="col-span-4 flex gap-2">
         <select id="remarksSelect" name="cnsltnRemarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option <?php if ($ftwRemarks == "Fit to Work") {
+        <option <?php if ($ftwRemarks == "n/a") {
                     echo "selected";
-                  } ?> value="Fit to Work">Fit To Work</option>
-          <option <?php if ($ftwRemarks == "Late Fit to Work") {
-                    echo "selected";
-                  } ?> value="Late Fit to Work">Late FTW</option>
-          <option <?php if ($ftwRemarks == "No Medical Certificate") {
-                    echo "selected";
-                  } ?> value="no Medical Certificate">No Medical Certificate</option>
-          <option <?php if ($ftwRemarks == "Others") {
-                    echo "selected";
-                  } ?> value="Others">Others</option>
-<option <?php if ($ftwRemarks == "For Medical Laboratory") {
+                  } ?> value="n/a">N/A</option>
+          <option <?php if ($ftwRemarks == "For Medical Laboratory") {
                     echo "selected";
                   } ?> value="For Medical Laboratory">For Medical Laboratory</option>
           <option <?php if ($ftwRemarks == "For Medication Dispense") {
@@ -723,7 +715,7 @@ if (isset($_POST['updateConsultation'])) {
 
         </select>
         <input type="text" name="medLab" placeholder="Medical Laboratory" id="medLab" class=" hidden bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-        <input type="text" name="medDis" placeholder="Medication Dispense" id="medDis" class="hidden  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        <!-- <input type="text" name="medDis" placeholder="Medication Dispense" id="medDis" class="hidden  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
 
         </div>
    

@@ -162,10 +162,10 @@ const modalMedicine = new Modal($tagertMedicineModal, optionsMedicineModal);
       if ($("#remarksSelect").val() === "For Medical Laboratory") {
             // Remove the "hidden" class from the input with id "medLab"
             $("#medLab").removeClass("hidden");
-            $("#medDis").addClass("hidden");
+            // $("#medDis").addClass("hidden");
         }  else if($("#remarksSelect").val() === "For Medication Dispense") {
             // If the option is not the desired one, you can add the "hidden" class
-            $("#medDis").removeClass("hidden");
+            // $("#medDis").removeClass("hidden");
             $("#medLab").addClass("hidden");
 
         }
@@ -179,17 +179,17 @@ const modalMedicine = new Modal($tagertMedicineModal, optionsMedicineModal);
           if ($(this).val() === "For Medical Laboratory") {
             // Remove the "hidden" class from the input with id "medLab"
             $("#medLab").removeClass("hidden");
-            $("#medDis").addClass("hidden");
+            // $("#medDis").addClass("hidden");
 
         } else if($(this).val() === "For Medication Dispense") {
             // If the option is not the desired one, you can add the "hidden" class
-            $("#medDis").removeClass("hidden");
+            // $("#medDis").removeClass("hidden");
             $("#medLab").addClass("hidden");
 
         }
         else{
           $("#medLab").addClass("hidden");
-            $("#medDis").addClass("hidden");
+            // $("#medDis").addClass("hidden");
 
         }
     });

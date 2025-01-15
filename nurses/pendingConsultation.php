@@ -163,7 +163,7 @@ function addSelectedValue(value, qty) {
   }
 
 
-    $("#completedConsultationSide").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
+    $("#pendingConsultationSide").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
     $("#sidehistory").removeClass("bg-gray-200");
     $("#sideMyRequest").removeClass("bg-gray-200");
     $("#sidepms").removeClass("bg-gray-200");
