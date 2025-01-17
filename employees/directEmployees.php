@@ -7,10 +7,11 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
 if (isset($_POST['addNewEmployeeManual'])) {
-    $rfid = $_POST['rfid'];
     $idNumber = $_POST['idNumber'];
     $name = $_POST['name'];
     $email = $_POST['email'];
+    $birthday = $_POST['birthday'];
+
     $age = $_POST['age'];
     $sex = $_POST['sex'];
     $address = $_POST['address'];
@@ -22,7 +23,7 @@ if (isset($_POST['addNewEmployeeManual'])) {
     $level = $_POST['level'];
     $dateHired = $_POST['dateHired'];
 
-    $addEmployeeGpi = "INSERT INTO `employeespersonalinfo`(`rfidNumber`, `idNumber`, `Name`, `email`, `age`, `sex`, `address`, `civilStatus`, `employer`, `department`, `section`, `position`, `level`, `dateHired`) VALUES ('$rfid','$idNumber','$name', '$email', '$age','$sex','$address','$civilStatus','$employer','$department','$section','$position', '$level', '$dateHired')";
+    $addEmployeeGpi = "INSERT INTO `employeespersonalinfo`(`idNumber`, `Name`, `email`, `birthday`,`age`, `sex`, `address`, `civilStatus`, `employer`, `department`, `section`, `position`, `level`, `dateHired`) VALUES ('$idNumber','$name', '$email','$birthday', '$age','$sex','$address','$civilStatus','$employer','$department','$section','$position', '$level', '$dateHired')";
     $resultInfo = mysqli_query($con, $addEmployeeGpi);
 
     if ($resultInfo) {
@@ -32,10 +33,12 @@ if (isset($_POST['addNewEmployeeManual'])) {
 }
 
 if (isset($_POST['editEmployeeRecord'])) {
-    $rfid = $_POST['editrfid'];
+    // $rfid = $_POST['editrfid'];
     $idNumber = $_POST['editidNumber'];
     $name = $_POST['editname'];
     $email = $_POST['editemail'];
+    $birthday = $_POST['editBirthday'];
+
     $age = $_POST['editage'];
     $sex = $_POST['editsex'];
     $address = $_POST['editaddress'];
@@ -47,7 +50,7 @@ if (isset($_POST['editEmployeeRecord'])) {
     $level = $_POST['editlevel'];
     $dateHired = $_POST['editdateHired'];
 
-    $editEmployeeGpi = "UPDATE `employeespersonalinfo` SET `rfidNumber`= '$rfid', `idNumber` = '$idNumber', `Name`= '$name', `email`='$email', `age`= '$age', `sex`= '$sex', `address`= '$address', `civilStatus`= '$civilStatus', `employer`= '$employer', `department`= '$department', `section`= '$section', `position`= '$position', `level`= '$level', `dateHired` = '$dateHired' WHERE `rfidNumber`= '$rfid' AND `employer`= '$employer'";
+    $editEmployeeGpi = "UPDATE `employeespersonalinfo` SET  `idNumber` = '$idNumber', `Name`= '$name', `email`='$email', `birthday`='$birthday',`age`= '$age', `sex`= '$sex', `address`= '$address', `civilStatus`= '$civilStatus', `employer`= '$employer', `department`= '$department', `section`= '$section', `position`= '$position', `level`= '$level', `dateHired` = '$dateHired' WHERE `idNumber`= '$idNumber' AND `employer`= '$employer'";
     $resultInfo = mysqli_query($con, $editEmployeeGpi);
 
     if ($resultInfo) {
@@ -59,6 +62,20 @@ if (isset($_POST['editEmployeeRecord'])) {
 if (isset($_POST['addNewEmployeesImport'])) {
 
 
+    $failedData  = [];
+
+
+    $format1 = explode(',', $_POST['departmentFormat1']);
+    $format2 = explode(',', $_POST['departmentFormat2']);
+    $format2 = array_map('trim', $format2);
+
+    $sexformat1 = explode(',', $_POST['sexFormat1']);
+    $sexformat2 = explode(',', $_POST['sexFormat2']);
+    $sexformat2 = array_map('trim', $sexformat2);
+
+    $civilformat1 = explode(',', $_POST['civilFormat1']);
+    $civilformat2 = explode(',', $_POST['civilFormat2']);
+    $civilformat2 = array_map('trim', $civilformat2);
     $fileName = $_FILES['import_file']['name'];
     // echo $fileName;
     $file_ext = pathinfo($fileName, PATHINFO_EXTENSION);
@@ -66,6 +83,8 @@ if (isset($_POST['addNewEmployeesImport'])) {
     if (in_array($file_ext, $allowed_ext)) {
 
         $count = 0;
+        $count1 = 0;
+
         $inputFileNamePath = $_FILES['import_file']['tmp_name'];
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileNamePath);
         $data = $spreadsheet->getActiveSheet()->toArray();
@@ -73,32 +92,82 @@ if (isset($_POST['addNewEmployeesImport'])) {
         echo "<script> console.log('$highestRow') </script>";
     }
     foreach ($data as $row) {
+      
         if ($count > 0) {
-            $rfid = $row['0'];
-            $idNumber = $row['1'];
-            $name = $row['2'];
-            $email = $row['3'];
+            $idNumber = $row['0'];
+            $name = $row['1'];
+            $email = $row['2'];
+            $birthday = $row['3'];
+            $birthdayObj = DateTime::createFromFormat('m/d/Y', $birthday);
+    $birthdayFormatted = $birthdayObj ? $birthdayObj->format('Y-m-d') : $birthday;
             $age = $row['4'];
             $sex = $row['5'];
+            $sexindex = array_search($sex, $sexformat1);
+            $sexcorrespondingValue = $sexformat2[$sexindex] ?? null; // Use null if index doesn't exist in $format2
+
             $address = $row['6'];
             $civilStatus = $row['7'];
+            $civilindex = array_search($civilStatus, $civilformat1);
+            $civilcorrespondingValue = $civilformat2[$civilindex] ?? null;
+
             $employer = $row['8'];
-            $department = $row['9'];
-            $section = $row['10'];
-            $position = $row['11'];
-            $level = $row['12'];
+            $building = $row['9'];
+            $department = $row['10'];
+            $index = array_search($department, $format1);
+            $correspondingValue = $format2[$index] ?? null; // Use null if index doesn't exist in $format2
+            $section = $row['11'];
+            $position = $row['12'];
             $dateHired = $row['13'];
+            $dateHiredObj = DateTime::createFromFormat('m/d/Y', $dateHired);
+$dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHired; // Fallback to original if parsing fails
 
-            $addEmployeeGpi = "INSERT INTO `employeespersonalinfo`(`rfidNumber`, `idNumber`, `Name`, `email`, `age`, `sex`, `address`, `civilStatus`, `employer`, `department`, `section`, `position`, `level`, `dateHired`) VALUES ('$rfid','$idNumber','$name', '$email', '$age','$sex','$address','$civilStatus','$employer','$department','$section','$position', '$level', '$dateHired')";
-            $resultInfo = mysqli_query($con, $addEmployeeGpi);
+            try {
+                $addEmployeeGpi = "INSERT INTO `employeespersonalinfo`(`idNumber`, `Name`, `email`, `birthday`, `age`, `sex`, `address`, `civilStatus`, `employer`, `building`,`department`, `section`, `position`,`level`, `dateHired`) VALUES ('$idNumber','$name', '$email','$birthdayFormatted', '$age','$sexcorrespondingValue','$address','$civilcorrespondingValue','$employer','$building','$correspondingValue','$section','$position','employee', '$dateHiredFormatted')";
+                $resultInfo = mysqli_query($con, $addEmployeeGpi);
+    
+            
+                if ($resultInfo) {
+                    $count1++;
+                    // Success message (optional)
+                    // echo "<script>alert('Data imported and saved successfully!');</script>";
+                }
+            } catch (mysqli_sql_exception $e) {
+                // Catch the exception and get the error message
+                $error = $e->getMessage();
+                // Display the error in an alert
 
-            if ($resultInfo) {
-                echo "<script>alert('Data imported and saved successfully.!') </script>";
-                echo "<script> location.href='index.php'; </script>";
+
+                echo "<script>alert('Error: " . addslashes($error) . "');</script>";
+                array_push($failedData, [$idNumber, $name,$email,$birthdayFormatted,$age,$sexcorrespondingValue,$address,$civilcorrespondingValue,$employer,$building,$correspondingValue,$section,$position,$dateHiredFormatted]);
+                // $failedData .= "<tr>";
+                // $failedData .= "\n<td>$idNumber</td>";
+                // $failedData .= "\n<td>$name</td>";
+                // $failedData .= "\n<td>$email</td>";
+                // $failedData .= "\n<td>$birthday</td>";
+                // $failedData .= "\n<td>$age</td>";
+                // $failedData .= "\n<td>$sexcorrespondingValue</td>";
+                // $failedData .= "\n<td>$address</td>";
+                // $failedData .= "\n<td>$civilcorrespondingValue</td>";
+                // $failedData .= "\n<td>$employer</td>";
+                // $failedData .= "\n<td>$building</td>";
+                // $failedData .= "\n<td>$correspondingValue</td>";
+                // $failedData .= "\n<td>$section</td>";
+                // $failedData .= "\n<td>$position</td>";
+                // $failedData .= "\n<td>$dateHired</td>";
+                // $failedData .= "</tr>";
+
+
+                
             }
         }
         $count = 1;
     }
+    $unsuccessfullcount =  $highestRow - $count1 - 1;
+    echo "<script>alert('There are $count1 successfully imported and $unsuccessfullcount unsuccessful!');</script>";
+    $_SESSION['failedData'] = $failedData;
+    echo "<script> location.href='failedDataFromImporting.php'; </script>";
+    
+
 }
 ?>
 <div class="text-[9px] 2xl:text-lg mb-5">
@@ -150,7 +219,7 @@ if (isset($_POST['addNewEmployeesImport'])) {
                                     <td><?php echo $row['employer']; ?> </td>
                                     <td>
                                         <div class="content-center flex flex-wrap justify-center gap-2">
-                                            <input type="text" class="hidden" name="rfid<?php echo $queNo; ?>" value="<?php echo $row['rfidNumber']; ?>">
+                                            <input type="text" class="hidden" name="rfid<?php echo $queNo; ?>" value="<?php echo $row['idNumber']; ?>">
                                             <button id="dropdownMenuIconButton<?php echo $queNo; ?>" data-dropdown-toggle="dropdownDots<?php echo $queNo; ?>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900  rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 bg-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
                                                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
                                                     <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
@@ -161,13 +230,13 @@ if (isset($_POST['addNewEmployeesImport'])) {
                                         <div id="dropdownDots<?php echo $queNo; ?>" class="dropdownoption z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                                             <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $queNo; ?>">
                                                 <li>
-                                                    <a type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['rfidNumber'] ?>" data-idnumber="<?php echo $row['idNumber'] ?>" data-name="<?php echo $row['Name'] ?>" data-email="<?php echo $row['email'] ?>" data-age="<?php echo $row['age'] ?>" data-sex="<?php echo $row['sex'] ?>" data-address="<?php echo $row['address'] ?>" data-civilstatus="<?php echo $row['civilStatus'] ?>" data-employer="<?php echo $row['employer'] ?>" data-department="<?php echo $row['department'] ?>" data-section="<?php echo $row['section'] ?>" data-position="<?php echo $row['position'] ?>" data-level="<?php echo $row['level'] ?>" data-datehired="<?php echo $row['dateHired'] ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                                    <a type="button" onclick="openEditEmployee(this)"  data-idnumber="<?php echo $row['idNumber'] ?>" data-name="<?php echo $row['Name'] ?>" data-email="<?php echo $row['email'] ?>" data-age="<?php echo $row['age'] ?>" data-birthday="<?php echo $row['birthday'] ?>"  data-sex="<?php echo $row['sex'] ?>" data-address="<?php echo $row['address'] ?>" data-civilstatus="<?php echo $row['civilStatus'] ?>" data-employer="<?php echo $row['employer'] ?>" data-department="<?php echo $row['department'] ?>" data-section="<?php echo $row['section'] ?>" data-position="<?php echo $row['position'] ?>" data-level="<?php echo $row['level'] ?>" data-datehired="<?php echo $row['dateHired'] ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
                                                 </li>
                                                 <li>
-                                                    <a href="../nurses/fitToWork.php?rf=<?php echo $row['rfidNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Fit To Work</a>
+                                                    <a href="../nurses/fitToWork.php?rf=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Fit To Work</a>
                                                 </li>
                                                 <li>
-                                                    <a href="../nurses/consultation.php?rf=<?php echo $row['rfidNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Consultation</a>
+                                                    <a href="../nurses/consultation.php?rf=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Consultation</a>
                                                 </li>
                                                 <li>
                                                     <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dental Consultation</a>
@@ -179,7 +248,7 @@ if (isset($_POST['addNewEmployeesImport'])) {
                                                     <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Pregnancy Notification</a>
                                                 </li>
                                                 <li>
-                                                    <a href="../nurses/medicalRecord.php?rf=<?php echo $row['rfidNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Record</a>
+                                                    <a href="../nurses/medicalRecord.php?rf=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Record</a>
                                                 </li>
                                             </ul>
 
@@ -225,10 +294,6 @@ if (isset($_POST['addNewEmployeesImport'])) {
             <form method="POST" class="px-4 md:px-5 py-2 text-[8pt]">
                 <div class="grid gap-2 mb-4 grid-cols-2">
                     <div class="col-span-2">
-                        <label for="rfid" class="block mb-1  text-gray-900 dark:text-white">RFID</label>
-                        <input type="text" name="rfid" id="rfid" placeholder="Please Tap the ID" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
-                    </div>
-                    <div class="col-span-2">
                         <label for="name" class="block mb-1  text-gray-900 dark:text-white">Id Number</label>
                         <input type="text" name="idNumber" id="idNumber" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="" required="">
                     </div>
@@ -239,6 +304,10 @@ if (isset($_POST['addNewEmployeesImport'])) {
                     <div class="col-span-2">
                         <label for="email" class="block mb-1  text-gray-900 dark:text-white">Email</label>
                         <input type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="" required="">
+                    </div>
+                    <div class="col-span-2">
+                        <label for="birthday" class="block mb-1  text-gray-900 dark:text-white">Birthday</label>
+                        <input type="date" name="birthday" id="birthday" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="" required="">
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label for="age" class="block mb-1  text-gray-900 dark:text-white">Age</label>
@@ -276,20 +345,15 @@ if (isset($_POST['addNewEmployeesImport'])) {
                         <label for="department" class="block mb-1  text-gray-900 dark:text-white">Department</label>
                         <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             <option selected disabled>Select Department</option>
-                            <option value="Accounting">Accounting</option>
-                            <option value="Administration">Administration</option>
-                            <option value="ICT">ICT</option>
-                            <option value="Direct Operation Kaizen">Direct Operation Kaizen</option>
-                            <option value="Parts Inspection">Parts Inspection</option>
-                            <option value="Parts Production">Parts Production</option>
-                            <option value="PPIC">PPIC</option>
-                            <option value="Production 1">Production 1</option>
-                            <option value="Production 2">Production 2</option>
-                            <option value="Production Support">Production Support</option>
-                            <option value="Production Technolog">Production Technology</option>
-                            <option value="Purchasing">Purchasing</option>
-                            <option value="Quality Assurance">Quality Assurance</option>
-                            <option value="Quality Control">Quality Control</option>
+                            <?php
+                          
+                            $sql = "SELECT * FROM `department` ORDER BY `department` ASC;";
+                            $result = mysqli_query($con, $sql);
+                            while ($row = mysqli_fetch_assoc($result)) {
+
+                            ?>
+                            <option value="<?php echo $row['department']; ?> "><?php echo $row['department']; ?> </option>
+                            <?php }?>
 
                         </select>
                     </div>
@@ -305,6 +369,8 @@ if (isset($_POST['addNewEmployeesImport'])) {
                         <label for="level" class="block mb-1  text-gray-900 dark:text-white">Level</label>
                         <select id="level" name="level" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             <option selected disabled>Select Level</option>
+                            <option value="employee">Employee</option>
+
                             <option value="head">Head</option>
                             <option value="hr">HR</option>
                         </select>
@@ -324,6 +390,50 @@ if (isset($_POST['addNewEmployeesImport'])) {
         </div>
     </div>
 </div>
+
+<div id="equivalentValues" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[100] justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    Choose Equivalent Values
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="equivalentValues">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-4 md:p-5 space-y-4">
+            <div class="grid grid-cols-2">
+    <div class="flex justify-center border border-gray-300 font-bold">Your Format</div> 
+    <div class="flex justify-center border border-gray-300 font-bold">Equivalent</div>
+    <div class="flex border border-gray-300">Sex</div>    <div class="flex border border-gray-300">Sex</div>
+    <div class="col-span-2 grid grid-cols-2" id="sexDiv">   </div>
+    <div class="flex border border-gray-300">Civil Status</div>    <div class="flex border border-gray-300">Civil Status</div>
+    <div class="col-span-2 grid grid-cols-2" id="civilDiv">   </div>
+    <div class="flex border border-gray-300">Department</div> <div class="flex border border-gray-300">Department</div>
+    <div class="col-span-2 grid grid-cols-2" id="departmentDiv">
+    <!-- <div class="flex justify-center border border-gray-300">PI</div> <div class="flex justify-center border border-gray-300">Parts Inspection</div>
+    <div class="flex justify-center border border-gray-300">Admin</div> <div class="flex justify-center border border-gray-300">Administration</div> -->
+    </div>
+    
+</div>
+
+
+            </div>
+            <!-- Modal footer -->
+            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                <button id="proceedButton" type="button"  data-modal-hide="equivalentValues" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Proceed</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div id="importDirectEmployees" tabindex="-1" aria-hidden="true" class=" hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative w-full max-w-md max-h-full">
@@ -348,12 +458,26 @@ if (isset($_POST['addNewEmployeesImport'])) {
 
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
                         <input type="file" name="import_file" class="block w-full  text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input">
+                        <input type="text" name="departmentFormat1" id="departmentFormat1">
+                        <input type="text" name="departmentFormat2" id="departmentFormat2">
+
+                        <input type="text" name="sexFormat1" id="sexFormat1">
+                        <input type="text" name="sexFormat2" id="sexFormat2">
+
+                        <input type="text" name="civilFormat1" id="civilFormat1">
+                        <input type="text" name="civilFormat2" id="civilFormat2">
 
                     </div>
 
 
                 </div>
-                <button type="submit" name="addNewEmployeesImport" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <button data-modal-target="equivalentValues" data-modal-toggle="equivalentValues" type="button" id="proceedImportButton" name="proceedImportButton"  class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Proceed
+                    <svg class="me-1 -ms-1 w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+</svg>
+                </button>
+                <button type="submit" id="addNewEmployeesImport" name="addNewEmployeesImport"  class="hidden text-white inline-flex items-center bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
                     </svg>
@@ -385,10 +509,10 @@ if (isset($_POST['addNewEmployeesImport'])) {
 
             <form method="POST" class="px-4 md:px-5 py-2 text-[8pt]">
                 <div class="grid gap-4 mb-4 grid-cols-2">
-                    <div class="col-span-2">
+                    <!-- <div class="col-span-2">
                         <label for="editrfid" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">RFID</label>
                         <input type="text" name="editrfid" id="editrfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="">
-                    </div>
+                    </div> -->
                     <div class="col-span-2">
                         <label for="editidNumber" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Id Number</label>
                         <input type="text" name="editidNumber" id="editidNumber" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="">
@@ -400,6 +524,10 @@ if (isset($_POST['addNewEmployeesImport'])) {
                     <div class="col-span-2">
                         <label for="editemail" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
                         <input type="text" name="editemail" id="editemail" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="">
+                    </div>
+                    <div class="col-span-2">
+                        <label for="editBirthday" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Birthday</label>
+                        <input type="date" name="editBirthday" id="editBirthday" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="">
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label for="editage" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Age</label>
@@ -461,7 +589,8 @@ if (isset($_POST['addNewEmployeesImport'])) {
                     <div class="col-span-2 sm:col-span-1">
                         <label for="editlevel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Level</label>
                         <select id="editlevel" name="editlevel" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <option value="head">Head</option>
+                        <option value="employee">Employee</option>    
+                        <option value="head">Head</option>
                             <option value="hr">HR</option>
                         </select>
                     </div>
@@ -512,7 +641,7 @@ if (isset($_POST['addNewEmployeesImport'])) {
 
     function openEditEmployee(element) {
         modalEdit.toggle();
-        document.getElementById("editrfid").value = element.getAttribute("data-rfid");
+       // document.getElementById("editrfid").value = element.getAttribute("data-rfid");
         document.getElementById("editidNumber").value = element.getAttribute("data-idnumber");
         document.getElementById("editname").value = element.getAttribute("data-name");
         document.getElementById("editemail").value = element.getAttribute("data-email");
@@ -526,6 +655,8 @@ if (isset($_POST['addNewEmployeesImport'])) {
         document.getElementById("editposition").value = element.getAttribute("data-position");
         document.getElementById("editlevel").value = element.getAttribute("data-level");
         document.getElementById("editdateHired").value = element.getAttribute("data-datehired");
+        document.getElementById("editBirthday").value = element.getAttribute("data-birthday");
+
     }
 
     document.getElementById("employer").addEventListener("keydown", function(event) {
@@ -535,19 +666,19 @@ if (isset($_POST['addNewEmployeesImport'])) {
     function exportTemplate() {
         var rows = [];
 
-        column1 = 'RFID Number';
-        column2 = 'Id Number';
-        column3 = 'Name';
-        column4 = 'Email';
+        column1 = 'Id Number';
+        column2 = 'Name';
+        column3 = 'Email';
+        column4 = 'Birthday';
         column5 = 'Age';
         column6 = 'Sex';
         column7 = 'Address';
         column8 = 'Civil Status';
         column9 = 'Employer';
-        column10 = 'Department';
-        column11 = 'Section';
-        column12 = 'Position';
-        column13 = 'Level';
+        column10 = 'Building';
+        column11 = 'Department';
+        column12 = 'Section';
+        column13 = 'Position';
         column14 = 'Date Hired';
 
         rows.push(
@@ -570,20 +701,20 @@ if (isset($_POST['addNewEmployeesImport'])) {
         );
 
         for (var i = 0, row; i < 1; i++) {
-            column1 = "Change format to 'Text'";
+            column1 ='';
             column2 = '';
             column3 = '';
-            column4 = '';
+            column4 = 'yyyy-mm-dd';
             column5 = '';
             column6 = '';
             column7 = '';
             column8 = '';
             column9 = 'GPI';
-            column10 = '';
+            column10 = '1';
             column11 = '';
             column12 = '';
             column13 = '';
-            column14 = '';
+            column14 = 'yyyy-mm-dd';
 
             rows.push(
                 [
