@@ -21,9 +21,9 @@ if (!isset($_SESSION['connected'])) {
 
   <link rel="stylesheet" href="../fontawesome-free-6.2.0-web/css/all.min.css">
   <link rel="stylesheet" href="../node_modules/DataTables/datatables.min.css">
-
+  <link href="../node_modules/select2/dist/css/select2.min.css" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="../node_modules/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css" />
-
+  <link rel="stylesheet" type="text/css" href="../styles.css" />
 </head>
 
 <body class="h-screen bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
@@ -41,15 +41,57 @@ if (!isset($_SESSION['connected'])) {
   </div>
 
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-
+  <script src="../node_modules/select2/dist/js/select2.min.js"></script>
   <script type="text/javascript" src="../node_modules/DataTables/datatables.min.js"></script>
   <script type="text/javascript" src="../node_modules/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js"></script>
 
 
   <script type="text/javascript" src="index.js"></script>
   <script>
+
+    
+$(".js-employees").select2({
+      tags: true
+    });
+
     $("#annualpeside").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
-    $("#gpiside_").addClass("bg-[#82c7cc]");
+    <?php
+    $sidebar1;
+
+    if($employer=="GPI"){
+      $sidebar1 ="#gpiside_";
+    }
+    else if($employer=="Maxim"){
+      $sidebar1 ="#maximside_";
+
+    }
+    else if($employer=="Nippi"){
+      $sidebar1 ="#nippiside_";
+
+    }
+    else if($employer=="Powerlane"){
+      $sidebar1 ="#powerlaneside_";
+
+    }
+    else if($employer=="Otrelo"){
+      $sidebar1 ="#otreloside_";
+
+    }
+    else if($employer=="Alarm"){
+      $sidebar1 ="#alarmside_";
+
+    }
+    else if($employer=="Mangreat"){
+      $sidebar1 ="#mangreatside_";
+
+    }
+    else if($employer=="Canteen"){
+      $sidebar1 ="#canteenside_";
+
+    }
+    ?>
+
+    $("<?php echo $sidebar1; ?>").addClass("bg-[#82c7cc]");
 
 
     $("#sidehistory").removeClass("bg-gray-200");

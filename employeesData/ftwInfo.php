@@ -1,9 +1,9 @@
 <?php
 
 if (isset($_GET['rf'])) {
-    $rfid = $_GET['rf'];
+    $idNumber = $_GET['rf'];
 } else {
-    $rfid = "not found";
+    $idNumber = "not found";
 }
 
 ?>
@@ -43,7 +43,7 @@ if (isset($_GET['rf'])) {
                     <tbody>
                         <?php
                         $ftwNo = 1;
-                        $sql = "SELECT * FROM `fittowork` WHERE `rfid` = '$rfid' ORDER BY `id` ASC; 
+                        $sql = "SELECT * FROM `fittowork` WHERE `idNumber` = '$idNumber' ORDER BY `id` ASC; 
                     ";
                         $result = mysqli_query($con, $sql);
                         while ($row = mysqli_fetch_assoc($result)) {

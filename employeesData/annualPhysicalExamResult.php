@@ -28,7 +28,7 @@
                     </thead>
                     <tbody>
                         <?php
-                        $sql = "SELECT * FROM `annualphysicalexam` WHERE `rfidNumber` = '$rfid' ORDER BY `id` ASC";
+                        $sql = "SELECT * FROM `annualphysicalexam` WHERE `idNumber` = '$idNumber' ORDER BY `id` ASC";
                         $result = mysqli_query($con, $sql);
                         while ($row = mysqli_fetch_assoc($result)) { ?>
                             <tr>

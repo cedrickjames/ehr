@@ -12,9 +12,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           // Extract the number from the button name
           $queNo = substr($key, strlen('assist_'));
 
-          $rfid =  $_POST['rfid'.$queNo];
-          $_SESSION['rfid'] = $rfid;
-          $sql = "UPDATE `queing` SET `status`='processing', `nurseAssisting` = '$userID' WHERE `rfidNumber` = '$rfid'";
+          $idNumber =  $_POST['rfid'.$queNo];
+          $_SESSION['rfid'] = $idNumber;
+          $sql = "UPDATE `queing` SET `status`='processing', `nurseAssisting` = '$userID' WHERE `idNumber` = '$idNumber'";
           $results = mysqli_query($con,$sql);
           
       }
@@ -22,9 +22,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Extract the number from the button name
         $queNo = substr($key, strlen('doneAssist_'));
 
-        $rfid =  $_POST['rfid'.$queNo];
-        // $_SESSION['rfid'] = $rfid;
-        $sql = "UPDATE `queing` SET `status`='done' WHERE `rfidNumber` = '$rfid'";
+        $idNumber =  $_POST['rfid'.$queNo];
+        // $_SESSION['rfid'] = $idNumber;
+        $sql = "UPDATE `queing` SET `status`='done' WHERE `idNumber` = '$idNumber'";
         $results = mysqli_query($con,$sql);
         
         // echo $queNo;
@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <?php
                         $queNo = 1;
                         $sql="SELECT consultation.*, 
-                        employeespersonalinfo.rfidNumber, 
+                        employeespersonalinfo.idNumber, 
                         employeespersonalinfo.Name, 
                         COALESCE(users.name, '') AS nurse_assisting_name
                     FROM 
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     INNER JOIN 
                         employeespersonalinfo 
                     ON 
-                        employeespersonalinfo.rfidNumber = consultation.rfid
+                        employeespersonalinfo.idNumber = consultation.idNumber
                     LEFT JOIN
                         users
                     ON
@@ -82,8 +82,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <td> <?php echo $queNo;?> </td>
                     <td> <?php echo $row['Name'];?> </td>
                     <td> <div class="content-center flex flex-wrap justify-center gap-2">
-                    <input type="text" class="hidden" name="rfid<?php echo $queNo;?>" value="<?php echo $row['rfidNumber'];?>">
-                    <a type="button" href="../doctor/doctorsConsultation.php?rf=<?php echo $row['rfidNumber']; ?>&dcnsltn=<?php echo $row['id'];?>" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 rounded-full px-3 py-2  text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">View</a>
+                    <input type="text" class="hidden" name="rfid<?php echo $queNo;?>" value="<?php echo $row['idNumber'];?>">
+                    <a type="button" href="../doctor/doctorsConsultation.php?rf=<?php echo $row['idNumber']; ?>&dcnsltn=<?php echo $row['id'];?>" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 rounded-full px-3 py-2  text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">View</a>
 <?php
 
 
@@ -94,10 +94,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div id="dropdownDots<?php echo $queNo;?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
     <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $queNo;?>">
       <li>
-        <a href="../nurses/fitToWork.php?rf=<?php echo $row['rfidNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Fit To Work</a>
+        <a href="../nurses/fitToWork.php?rf=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Fit To Work</a>
       </li>
       <li>
-        <a href="../nurses/consultation.php?rf=<?php echo $row['rfidNumber'] ;?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Consultation</a>
+        <a href="../nurses/consultation.php?rf=<?php echo $row['idNumber'] ;?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Consultation</a>
       </li>
       <li>
         <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dental Consultation</a>
@@ -109,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Pregnancy Notification</a>
       </li>
       <li>
-        <a href="../nurses/medicalRecord.php?rf=<?php echo $row['rfidNumber'] ;?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Record</a>
+        <a href="../nurses/medicalRecord.php?rf=<?php echo $row['idNumber'] ;?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Record</a>
       </li>
     </ul>
 

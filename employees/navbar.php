@@ -1,8 +1,8 @@
 <?php
 if (isset($_GET['rf'])) {
-  $rfid = $_GET['rf'];
+  $idNumber = $_GET['rf'];
 } else {
-  $rfid = "not found";
+  $idNumber = "not found";
 }
 $userID = $_SESSION['userID'];
 
@@ -218,7 +218,7 @@ if (isset($_POST['submitNewPassword'])) {
         </a>
       </li>
       <li>
-        <a href="../nurses/medicalRecord.php?rf=<?php echo $rfid; ?>" id="sidemedrecord" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+        <a href="../nurses/medicalRecord.php?rf=<?php echo $idNumber; ?>" id="sidemedrecord" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
           <!-- <svg aria-hidden="true" class="w-6 h-6 text-gray-500 transition duration-75  group-hover:text-gray-900 -white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg> -->
           <!-- <i class="fa-solid fa-ticket"></i>
                -->
@@ -251,7 +251,7 @@ if (isset($_POST['submitNewPassword'])) {
         </a>
       </li>
       <li>
-        <a href="../nurses/fitToWork.php?rf=<?php echo $rfid; ?>" id="fitToWorkSide" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+        <a href="../nurses/fitToWork.php?rf=<?php echo $idNumber; ?>" id="fitToWorkSide" class="  flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
           <svg class="w-6 h-6  " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" zoomAndPan="magnify" viewBox="0 0 750 749.999995" height="1000" preserveAspectRatio="xMidYMid meet" version="1.0">
             <defs>
               <clipPath id="804c23b4c9">
@@ -274,7 +274,7 @@ if (isset($_POST['submitNewPassword'])) {
         </a>
       </li>
       <li>
-        <a href="../nurses/consultation.php?rf=<?php echo $rfid; ?>" id="consultationSide" class=" flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
+        <a href="../nurses/consultation.php?rf=<?php echo $idNumber; ?>" id="consultationSide" class=" flex items-center p-1 2xl:p-4  font-normal text-gray-900 rounded-lg  hover:bg-gray-100 ">
           <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" zoomAndPan="magnify" viewBox="0 0 750 749.999995" height="1000" preserveAspectRatio="xMidYMid meet" version="1.0">
             <defs>
               <clipPath id="d75fb1a557">
@@ -345,28 +345,28 @@ if (isset($_POST['submitNewPassword'])) {
         </a>
         <ul id="companies1" class="hidden  py-2 space-y-2">
           <li>
-            <a id="gpiside1" href="index.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
+            <a id="gpiside1" href="index.php?employer=GPI" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
           </li>
           <li>
-            <a id="maximside1" href="maxim.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
+            <a id="maximside1" href="index.php?employer=Maxim" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
           </li>
           <li>
-            <a id="nippiside1" href="nippi.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
+            <a id="nippiside1" href="index.php?employer=Nippi" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
           </li>
           <li>
-            <a id="powerlaneside1" href="powerlane.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+            <a id="powerlaneside1" href="index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
           </li>
           <li>
-            <a id="otreloside1" href="otrelo.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
+            <a id="otreloside1" href="index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
-            <a id="mangreatside1" href="mangreat.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
+            <a id="mangreatside1" href="index.php?employer=Mangreat" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
           </li>
           <li>
-            <a id="alarmside1" href="alarm.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+            <a id="alarmside1" href="index.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
           </li>
           <li>
-            <a id="canteenside1" href="canteen.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
+            <a id="canteenside1" href="index.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
           </li>
         </ul>
       </li>
@@ -390,28 +390,28 @@ if (isset($_POST['submitNewPassword'])) {
         </a>
         <ul id="companies" class="hidden  py-2 space-y-2">
           <li>
-            <a id="gpiside" href="../preEmployment/index.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
+            <a id="gpiside" href="../preEmployment/index.php?employer=GPI" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
           </li>
           <li>
-            <a id="maximside" href="../preEmployment/maxim.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
+            <a id="maximside" href="../preEmployment/index.php?employer=Maxim" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
           </li>
           <li>
-            <a id="nippiside" href="../preEmployment/nippi.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
+            <a id="nippiside" href="../preEmployment/index.php?employer=Nippi" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
           </li>
           <li>
-            <a id="powerlaneside" href="../preEmployment/powerlane.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+            <a id="powerlaneside" href="../preEmployment/index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
           </li>
           <li>
-            <a id="otreloside" href="../preEmployment/otrelo.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
+            <a id="otreloside" href="../preEmployment/index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
-            <a id="mangreatside" href="../preEmployment/mangreat.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
+            <a id="mangreatside" href="../preEmployment/index.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
           </li>
           <li>
-            <a id="alarmside" href="../preEmployment/alarm.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+            <a id="alarmside" href="../preEmployment/index.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
           </li>
           <li>
-            <a id="canteenside" href="../preEmployment/canteen.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
+            <a id="canteenside" href="../preEmployment/index.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
           </li>
         </ul>
       </li>
@@ -452,28 +452,28 @@ if (isset($_POST['submitNewPassword'])) {
         </a>
         <ul id="agency" class="hidden  py-2 space-y-2">
           <li>
-            <a id="gpiside_" href="../annualPE/index.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
+            <a id="gpiside_" href="../annualPE/index.php?employer=GPI" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
           </li>
           <li>
-            <a id="maximside_" href="../annualPE/maxim.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
+            <a id="maximside_" href="../annualPE/index.php?employer=Maxim" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
           </li>
           <li>
-            <a id="nippiside_" href="../annualPE/nippi.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
+            <a id="nippiside_" href="../annualPE/index.php?employer=Nippi" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
           </li>
           <li>
-            <a id="powerlaneside_" href="../annualPE/powerlane.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+            <a id="powerlaneside_" href="../annualPE/index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
           </li>
           <li>
-            <a id="otreloside_" href="../annualPE/otrelo.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
+            <a id="otreloside_" href="../annualPE/index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
-            <a id="mangreatside_" href="../annualPE/mangreat.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
+            <a id="mangreatside_" href="../annualPE/index.php?employer=Mangreat" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
           </li>
           <li>
-            <a id="alarmside_" href="../annualPE/alarm.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+            <a id="alarmside_" href="../annualPE/index.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
           </li>
           <li>
-            <a id="canteenside_" href="../annualPE/canteen.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
+            <a id="canteenside_" href="../annualPE/index.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
           </li>
         </ul>
       </li>
@@ -491,28 +491,28 @@ if (isset($_POST['submitNewPassword'])) {
         </a>
         <ul id="agency1" class="hidden  py-2 space-y-2">
           <li>
-            <a id="gpiside_1" href="../bloodChem/index.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
+            <a id="gpiside_1" href="../bloodChem/index.php?employer=GPI" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
           </li>
           <li>
-            <a id="maximside_1" href="../bloodChem/maxim.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
+            <a id="maximside_1" href="../bloodChem/index.php?employer=Maxim" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
           </li>
           <li>
-            <a id="nippiside_1" href="../bloodChem/nippi.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
+            <a id="nippiside_1" href="../bloodChem/index.php?employer=Nippi" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
           </li>
           <li>
-            <a id="powerlaneside_1" href="../bloodChem/powerlane.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+            <a id="powerlaneside_1" href="../bloodChem/index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
           </li>
           <li>
-            <a id="otreloside_1" href="../bloodChem/otrelo.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
+            <a id="otreloside_1" href="../bloodChem/index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
-            <a id="mangreatside_1" href="../bloodChem/mangreat.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
+            <a id="mangreatside_1" href="../bloodChem/index.php?employer=Mangreat" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
           </li>
           <li>
-            <a id="alarmside_1" href="../bloodChem/alarm.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+            <a id="alarmside_1" href="../bloodChem/index.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
           </li>
           <li>
-            <a id="canteenside_1" href="../bloodChem/canteen.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
+            <a id="canteenside_1" href="../bloodChem/index.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
           </li>
         </ul>
       </li>

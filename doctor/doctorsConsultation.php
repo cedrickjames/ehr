@@ -55,6 +55,9 @@ date_default_timezone_set('Asia/Manila');
 
   <script type="text/javascript" src="index.js"></script>
   <script>
+
+
+
     $("#consultationSide").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
 
 
@@ -82,101 +85,139 @@ date_default_timezone_set('Asia/Manila');
 
 
     $(document).ready(function() {
-      if ($("#remarksSelect").val() === "For Medical Laboratory") {
+      if ($('#remarksSelect').val() != "Unfit to work") {
             // Remove the "hidden" class from the input with id "medLab"
-            $("#medLab").removeClass("hidden");
-
-        } 
-        else{
-          $("#medLab").addClass("hidden");
-            
+            $("#fitToWorkFields").removeClass("hidden");
+          $("#restDays").addClass("hidden");
+          $("#unfitReason").addClass("hidden");
+          
+          
 
         }
-    // Attach change event handler to remarksSelect
+        else{
+          $("#unfitReason").removeClass("hidden");
+          $("#restDays").removeClass("hidden");
+
+          $("#fitToWorkFields").addClass("hidden");
+        }
+    })
+
     $("#remarksSelect").change(function() {
-        // Check if the selected option is the one you want
-        if ($(this).val() === "For Medical Laboratory") {
+      if ($(this).val() != "Unfit to work") {
             // Remove the "hidden" class from the input with id "medLab"
-            $("#medLab").removeClass("hidden");
+            $("#fitToWorkFields").removeClass("hidden");
+          $("#restDays").addClass("hidden");
+          $("#unfitReason").addClass("hidden");
+
+        }
+        else{
+          $("#unfitReason").removeClass("hidden");
+
+          $("#restDays").removeClass("hidden");
+          $("#fitToWorkFields").addClass("hidden");
+        }
+
+    })
+    
+    $(document).ready(function() {
+      // if ($("#remarksSelect").val() === "For Medical Laboratory") {
+      //       // Remove the "hidden" class from the input with id "medLab"
+      //       $("#medLab").removeClass("hidden");
+
+      //   } 
+      //   else{
+      //     $("#medLab").addClass("hidden");
             
 
-        } 
-        else{
-          $("#medLab").addClass("hidden");
+      //   }
+    // Attach change event handler to remarksSelect
+    // $("#remarksSelect").change(function() {
+    //     // Check if the selected option is the one you want
+    //     if ($(this).val() === "For Medical Laboratory") {
+    //         // Remove the "hidden" class from the input with id "medLab"
+    //         $("#medLab").removeClass("hidden");
+            
+
+    //     } 
+    //     else{
+    //       $("#medLab").addClass("hidden");
            
 
-        }
-    });
-      var selectedValue = $("#intervention").val();
-      console.log(selectedValue)
-      if (selectedValue == "Clinic Rest Only" || selectedValue == "Medication, Clinic Rest and Medical Consultation") {
-        $('#clinicrest').removeClass('hidden');
-      } else {
-        $('#meds').removeClass('col-span-3');
-        $('#meds').addClass('col-span-4');
-        $('#fromtotime').addClass('hidden');
-        $('#clinicrest').addClass('hidden');
-        $('#meds').removeClass('col-span-3');
+    //     }
+    // });
 
-      }
-      $('#intervention').change(function() {
-        var selectedValue = $("#intervention").val();
-        console.log(selectedValue)
-        if (selectedValue == "Clinic Rest Only" || selectedValue == "Medication, Clinic Rest and Medical Consultation") {
-          $('#clinicrest').removeClass('hidden');
-          $('#meds').removeClass('col-span-2');
-          $('#meds').removeClass('col-span-4');
 
-          $('#meds').addClass('col-span-2');
 
-        } else {
-          $('#meds').removeClass('col-span-2');
-          $('#meds').addClass('col-span-4');
-          $('#clinicrest').addClass('hidden');
+      // var selectedValue = $("#intervention").val();
+      // console.log(selectedValue)
+      // if (selectedValue == "Clinic Rest Only" || selectedValue == "Medication, Clinic Rest and Medical Consultation") {
+      //   $('#clinicrest').removeClass('hidden');
+      // } else {
+      //   $('#meds').removeClass('col-span-3');
+      //   $('#meds').addClass('col-span-4');
+      //   $('#fromtotime').addClass('hidden');
+      //   $('#clinicrest').addClass('hidden');
+      //   $('#meds').removeClass('col-span-3');
 
-        }
-      });
+      // }
+      // $('#intervention').change(function() {
+      //   var selectedValue = $("#intervention").val();
+      //   console.log(selectedValue)
+      //   if (selectedValue == "Clinic Rest Only" || selectedValue == "Medication, Clinic Rest and Medical Consultation") {
+      //     $('#clinicrest').removeClass('hidden');
+      //     $('#meds').removeClass('col-span-2');
+      //     $('#meds').removeClass('col-span-4');
 
-      $('#remarksSelect').change(function() {
-        var selectedRemarks = $("#remarksSelect").val();
-        if (selectedRemarks == "Others") {
-          $('#othersInput').removeClass('hidden');
-          $('#forLab').addClass('hidden');
-          $('#forMed').addClass('hidden');
-        } else if (selectedRemarks == "For Laboratory") {
-          $('#othersInput').addClass('hidden');
-          $('#forLab').removeClass('hidden');
-          $('#forMed').addClass('hidden');
-        } else if (selectedRemarks == "Medication Dispense") {
-          $('#othersInput').addClass('hidden');
-          $('#forLab').addClass('hidden');
-          $('#forMed').removeClass('hidden');
-        } else {
-          $('#othersInput').addClass('hidden');
-          $('#forLab').addClass('hidden');
-          $('#forMed').addClass('hidden');
+      //     $('#meds').addClass('col-span-2');
 
-        }
-      });
-      var selectedRemarks = $("#remarksSelect").val();
-      if (selectedRemarks == "Others") {
-        $('#othersInput').removeClass('hidden');
-        $('#forLab').addClass('hidden');
-        $('#forMed').addClass('hidden');
-      } else if (selectedRemarks == "For Laboratory") {
-        $('#othersInput').addClass('hidden');
-        $('#forLab').removeClass('hidden');
-        $('#forMed').addClass('hidden');
-      } else if (selectedRemarks == "Medication Dispense") {
-        $('#othersInput').addClass('hidden');
-        $('#forLab').addClass('hidden');
-        $('#forMed').removeClass('hidden');
-      } else {
-        $('#othersInput').addClass('hidden');
-        $('#forLab').addClass('hidden');
-        $('#forMed').addClass('hidden');
+      //   } else {
+      //     $('#meds').removeClass('col-span-2');
+      //     $('#meds').addClass('col-span-4');
+      //     $('#clinicrest').addClass('hidden');
 
-      }
+      //   }
+      // });
+
+      // $('#remarksSelect').change(function() {
+      //   var selectedRemarks = $("#remarksSelect").val();
+      //   if (selectedRemarks == "Others") {
+      //     $('#othersInput').removeClass('hidden');
+      //     $('#forLab').addClass('hidden');
+      //     $('#forMed').addClass('hidden');
+      //   } else if (selectedRemarks == "For Laboratory") {
+      //     $('#othersInput').addClass('hidden');
+      //     $('#forLab').removeClass('hidden');
+      //     $('#forMed').addClass('hidden');
+      //   } else if (selectedRemarks == "Medication Dispense") {
+      //     $('#othersInput').addClass('hidden');
+      //     $('#forLab').addClass('hidden');
+      //     $('#forMed').removeClass('hidden');
+      //   } else {
+      //     $('#othersInput').addClass('hidden');
+      //     $('#forLab').addClass('hidden');
+      //     $('#forMed').addClass('hidden');
+
+      //   }
+      // });
+      // var selectedRemarks = $("#remarksSelect").val();
+      // if (selectedRemarks == "Others") {
+      //   $('#othersInput').removeClass('hidden');
+      //   $('#forLab').addClass('hidden');
+      //   $('#forMed').addClass('hidden');
+      // } else if (selectedRemarks == "For Laboratory") {
+      //   $('#othersInput').addClass('hidden');
+      //   $('#forLab').removeClass('hidden');
+      //   $('#forMed').addClass('hidden');
+      // } else if (selectedRemarks == "Medication Dispense") {
+      //   $('#othersInput').addClass('hidden');
+      //   $('#forLab').addClass('hidden');
+      //   $('#forMed').removeClass('hidden');
+      // } else {
+      //   $('#othersInput').addClass('hidden');
+      //   $('#forLab').addClass('hidden');
+      //   $('#forMed').addClass('hidden');
+
+      // }
     });
   </script>
 </body>

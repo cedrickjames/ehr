@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `annualphysicalexam` (
   `id` int(10) NOT NULL,
   `dateReceived` date DEFAULT NULL,
   `datePerformed` date DEFAULT NULL,
-  `rfidNumber` varchar(20) DEFAULT NULL,
+  `idNumber` varchar(20) DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL,
   `section` varchar(20) DEFAULT NULL,
   `building` varchar(20) DEFAULT NULL,
@@ -209,7 +209,7 @@ INSERT INTO `emaillist` (`id`, `name`, `department`, `email`) VALUES
 
 CREATE TABLE IF NOT EXISTS `employeespersonalinfo` (
   `id` int(20) NOT NULL,
-  `rfidNumber` varchar(100) DEFAULT NULL,
+  `idNumber` varchar(100) DEFAULT NULL,
   `idNumber` varchar(20) DEFAULT NULL,
   `Name` varchar(100) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
@@ -229,7 +229,7 @@ CREATE TABLE IF NOT EXISTS `employeespersonalinfo` (
 -- Dumping data for table `employeespersonalinfo`
 --
 
-INSERT INTO `employeespersonalinfo` (`id`, `rfidNumber`, `idNumber`, `Name`, `email`, `age`, `sex`, `address`, `civilStatus`, `employer`, `department`, `section`, `position`, `level`, `dateHired`) VALUES
+INSERT INTO `employeespersonalinfo` (`id`, `idNumber`, `idNumber`, `Name`, `email`, `age`, `sex`, `address`, `civilStatus`, `employer`, `department`, `section`, `position`, `level`, `dateHired`) VALUES
 (1, '0012511458', 'gp-22-722', 'Cedrick James Orozo', NULL, 24, 'male', 'Palangue 2, Naic, Cavite', 'Single', 'GPI', 'ICT', 'MIS/Administration', 'Specialist', '', '04/06/2022'),
 (2, '0013618307', 'cg-772-696', 'Mark Ely Aragon', NULL, 24, 'male', 'Rosario, Cavite', 'Married', 'Maxim', 'ICT', 'MIS/Administration', 'Technical Support', '', '09/05/2023'),
 (3, '0009727321', 'cg-772-739', 'Yoshiyuki John Daganta', NULL, 24, 'male', 'Trece Martirez City, Cavite', 'Divorced', 'Maxim', 'ICT', 'MIS/Administration', 'Technical Support', '', '11/14/2023'),
@@ -375,7 +375,7 @@ INSERT INTO `medicalcertificate` (`id`, `rfid`, `consultationId`, `date`, `treat
 
 CREATE TABLE IF NOT EXISTS `pastmedicalhistory` (
   `id` int(11) NOT NULL,
-  `rfidNumber` varchar(50) NOT NULL,
+  `idNumber` varchar(50) NOT NULL,
   `smoking` tinyint(1) DEFAULT NULL,
   `drugs` tinyint(1) DEFAULT NULL,
   `alcohol` tinyint(1) DEFAULT NULL,
@@ -414,7 +414,7 @@ CREATE TABLE IF NOT EXISTS `pastmedicalhistory` (
 -- Dumping data for table `pastmedicalhistory`
 --
 
-INSERT INTO `pastmedicalhistory` (`id`, `rfidNumber`, `smoking`, `drugs`, `alcohol`, `asthma`, `ptb`, `diabetes`, `heartDisease`, `hpn`, `renalDisease`, `othersFH`, `pastAndPresentMedHistory`, `far`, `near`, `adequate`, `inadequate`, `surgicalHistory`, `presentMedication`, `allergies`, `intervalMH`, `duration`, `flow`, `menorrhagia`, `metrorrhagia`, `amenorrhea`, `dysmenorrhea`, `gravida`, `para`, `termBirth`, `livingChildren`, `preTermBirth`, `abortion`, `multiplePregnancies`) VALUES
+INSERT INTO `pastmedicalhistory` (`id`, `idNumber`, `smoking`, `drugs`, `alcohol`, `asthma`, `ptb`, `diabetes`, `heartDisease`, `hpn`, `renalDisease`, `othersFH`, `pastAndPresentMedHistory`, `far`, `near`, `adequate`, `inadequate`, `surgicalHistory`, `presentMedication`, `allergies`, `intervalMH`, `duration`, `flow`, `menorrhagia`, `metrorrhagia`, `amenorrhea`, `dysmenorrhea`, `gravida`, `para`, `termBirth`, `livingChildren`, `preTermBirth`, `abortion`, `multiplePregnancies`) VALUES
 (1, '0008584956', 0, 0, 1, 0, 0, 1, 1, 0, 1, '', '(+) Vehicular Accident - 2022\r\nFam Hx.: (+) DM II - Fathers side', '40/50', '20/20', 0, 1, '(+) NSD - G3P2 - 2006     (+) Appendectomy - 2009', 'Mefenamic Acid 500mg', 'NKA', '28-30 days', '5-7 days', 'Heavy', 1, 0, 1, 1, '3', '3', '3', '3', '0', '0', '0'),
 (2, '0013618307', 1, 1, 1, 1, 1, 1, 1, 1, 1, 'zsd', '(+) Vehicular Accident - 2022\r\nFam Hx.: (+) DM II - Fathers side1', '40/501', '20/201', 0, 1, '(+) NSD - G3P2 - 2006     (+) Appendectomy - 20091', 'Mefenamic Acid 500mg1', 'NKA1', '28-30 days1', '5-7 days1', 'Heavy1', 1, 1, 1, 1, '31', '31', '31', '31', '01', '01', '01'),
 (3, '0012521874', 1, 0, 0, 0, 0, 0, 1, 0, 1, '', '(+) Vehicular Accident - 2022\r\nFam Hx.: (+) DM II - Fathers side', '40/50', '20/20', 0, 1, '(+) NSD - G3P2 - 2006     (+) Appendectomy - 2009', 'Mefenamic Acid 500mg', 'NKA', '', '', '', 0, 0, 0, 0, '', '', '', '', '', '', ''),
@@ -430,7 +430,7 @@ CREATE TABLE IF NOT EXISTS `preemployment` (
   `id` int(10) NOT NULL,
   `dateReceived` date DEFAULT NULL,
   `datePerformed` date DEFAULT NULL,
-  `rfidNumber` varchar(20) DEFAULT NULL,
+  `idNumber` varchar(20) DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL,
   `section` varchar(20) DEFAULT NULL,
   `IMC` varchar(20) DEFAULT NULL,
@@ -456,7 +456,7 @@ CREATE TABLE IF NOT EXISTS `preemployment` (
 -- Dumping data for table `preemployment`
 --
 
-INSERT INTO `preemployment` (`id`, `dateReceived`, `datePerformed`, `rfidNumber`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `assessor`, `confirmationDate`, `FMC`) VALUES
+INSERT INTO `preemployment` (`id`, `dateReceived`, `datePerformed`, `idNumber`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `assessor`, `confirmationDate`, `FMC`) VALUES
 (1, '2024-07-15', '2024-07-12', '04008584126', 'Juan Dela Cruz', 'MIS', '2', '2', '2', '2', '2', '2', '2', '2', '1', '2', '2', 'test', 'test', 'complied', NULL, '2024-07-15', 't'),
 (3, '2024-07-15', '2024-07-12', '0012511458', 'Cedrick James Orozo', 'MIS/Administration', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', ' test', ' test', 'complied', 'Nurse J', '2024-07-15', 't'),
 (24, '2024-07-15', '2024-07-12', '0013572190', 'Felmhar Vivo', 'Information Security', '2', '2', '2', '2', '2', '2', '2', '2', '1', '2', '2', ' test', ' test', 'complied', NULL, '2024-07-15', 't'),
@@ -484,7 +484,7 @@ INSERT INTO `preemployment` (`id`, `dateReceived`, `datePerformed`, `rfidNumber`
 
 CREATE TABLE IF NOT EXISTS `queing` (
   `id` int(20) NOT NULL,
-  `rfidNumber` varchar(100) DEFAULT NULL,
+  `idNumber` varchar(100) DEFAULT NULL,
   `status` varchar(20) DEFAULT NULL,
   `nurseAssisting` varchar(30) DEFAULT NULL,
   `date` varchar(100) DEFAULT NULL
@@ -494,7 +494,7 @@ CREATE TABLE IF NOT EXISTS `queing` (
 -- Dumping data for table `queing`
 --
 
-INSERT INTO `queing` (`id`, `rfidNumber`, `status`, `nurseAssisting`, `date`) VALUES
+INSERT INTO `queing` (`id`, `idNumber`, `status`, `nurseAssisting`, `date`) VALUES
 (2, '0013618307', 'done', 'GP-23-781', ''),
 (3, '0009727321', 'done', 'GP-23-781', ''),
 (17, '0008584956', 'processing', 'GP-23-781', ''),

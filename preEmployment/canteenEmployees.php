@@ -23,7 +23,7 @@ if (isset($_POST['addPreEmployment'])) {
     $date_received = $_POST['date_received'];
     $date_performed = $_POST['date_performed'];
     $name = $_POST['name'];
-    $rfid = $_POST['rfid'];
+    $idNumber = $_POST['rfid'];
     $section = $_POST['section'];
     $imc = $_POST['imc'];
     $oeh = $_POST['oeh'];
@@ -43,7 +43,7 @@ if (isset($_POST['addPreEmployment'])) {
     $confirmationdate = $_POST['confirmationdate'];
     $fmc = $_POST['fmc'];
 
-    $addPreEmployment = "INSERT INTO `preemployment`(`dateReceived`, `datePerformed`, `rfidNumber`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`, `confirmationDate`, `FMC`) VALUES ('$date_received','$date_performed','$rfid','$name','$section','$imc','$oeh','$pe','$cbc','$ua','$fa','$cxr','$va', '$den', '$dt', '$pt', '$others', '$followupstatus', '$status', '$attendee', '$confirmationdate', '$fmc')";
+    $addPreEmployment = "INSERT INTO `preemployment`(`dateReceived`, `datePerformed`, `idNumber`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`, `confirmationDate`, `FMC`) VALUES ('$date_received','$date_performed','$idNumber','$name','$section','$imc','$oeh','$pe','$cbc','$ua','$fa','$cxr','$va', '$den', '$dt', '$pt', '$others', '$followupstatus', '$status', '$attendee', '$confirmationdate', '$fmc')";
     $resultInfo = mysqli_query($con, $addPreEmployment);
 
     if ($resultInfo) {
@@ -56,7 +56,7 @@ if (isset($_POST['editPreEmployment'])) {
     $date_received = $_POST['editDate_received'];
     $date_performed = $_POST['editDate_performed'];
     $name = $_POST['editName'];
-    $rfid = $_POST['editRfid'];
+    $idNumber = $_POST['editRfid'];
     $section = $_POST['editSection'];
     $imc = $_POST['editImc'];
     $oeh = $_POST['editOeh'];
@@ -76,7 +76,7 @@ if (isset($_POST['editPreEmployment'])) {
     $confirmationdate = $_POST['editConfirmationdate'];
     $fmc = $_POST['editFmc'];
 
-    $editPreEmployment = "UPDATE `preemployment`SET `dateReceived`='$date_received' , `datePerformed` = '$date_performed', `name`= '$name', `section`= '$section', `IMC`= '$imc', `OEH`= '$oeh', `PE`= '$pe', `CBC`= '$cbc', `U_A`= '$ua', `FA`= '$fa', `CXR`= '$cxr', `VA`= '$va', `DEN`= '$den', `DT`= '$dt', `PT`= '$pt', `otherTest`= '$others', `followUpStatus`= '$followupstatus', `status`= '$status', `attendee` = '$attendee',`confirmationDate`= '$confirmationdate', `FMC`= '$fmc' WHERE `rfidNumber`='$rfid'";
+    $editPreEmployment = "UPDATE `preemployment`SET `dateReceived`='$date_received' , `datePerformed` = '$date_performed', `name`= '$name', `section`= '$section', `IMC`= '$imc', `OEH`= '$oeh', `PE`= '$pe', `CBC`= '$cbc', `U_A`= '$ua', `FA`= '$fa', `CXR`= '$cxr', `VA`= '$va', `DEN`= '$den', `DT`= '$dt', `PT`= '$pt', `otherTest`= '$others', `followUpStatus`= '$followupstatus', `status`= '$status', `attendee` = '$attendee',`confirmationDate`= '$confirmationdate', `FMC`= '$fmc' WHERE `idNumber`='$idNumber'";
     $resultInfo = mysqli_query($con, $editPreEmployment);
 
     if ($resultInfo) {
@@ -85,14 +85,14 @@ if (isset($_POST['editPreEmployment'])) {
     }
 }
 
-// Function to check if RFID number exists in database and save non-existent ones in an array
-function isRfidNumberExists($con, $rfidNumber)
+// Function to check if Id Number exists in database and save non-existent ones in an array
+function isidNumberExists($con, $idNumber)
 {
-    // Escape the RFID number to prevent SQL injection (assuming $con is your mysqli connection)
-    $rfidNumber = mysqli_real_escape_string($con, $rfidNumber);
+    // Escape the Id Number to prevent SQL injection (assuming $con is your mysqli connection)
+    $idNumber = mysqli_real_escape_string($con, $idNumber);
 
-    // Query to check if RFID number exists
-    $query = "SELECT COUNT(*) AS count FROM employeespersonalinfo WHERE rfidNumber = '$rfidNumber' AND `employer` ='Canteen'";
+    // Query to check if Id Number exists
+    $query = "SELECT COUNT(*) AS count FROM employeespersonalinfo WHERE idNumber = '$idNumber' AND `employer` ='Canteen'";
     $result = mysqli_query($con, $query);
 
     // Check if query execution was successful
@@ -107,7 +107,7 @@ function isRfidNumberExists($con, $rfidNumber)
     // Free result set
     mysqli_free_result($result);
 
-    // Return true if count > 0 (RFID exists), false otherwise
+    // Return true if count > 0 (ID Number exists), false otherwise
     return $count > 0;
 }
 
@@ -121,7 +121,7 @@ function saveToDatabase($con, $data, $count)
         if ($count > 0) {
             $dateReceived = $row['0'];
             $datePerformed = $row['1'];
-            $rfidNumber = $row['2'];
+            $idNumber = $row['2'];
             $IMC = $row['3'];
             $OEH = $row['4'];
             $PE = $row['5'];
@@ -140,33 +140,33 @@ function saveToDatabase($con, $data, $count)
             $confirmationDate = $row['18'];
             $FMC = $row['19'];
 
-            // Check if RFID number exists in db_table
-            if (!isRfidNumberExists($con, $rfidNumber)) {
-                // Log error for non-existent RFID numbers
-                $errorLogs[] = "RFID number '$rfidNumber' not found in Employee List";
+            // Check if Id Number exists in db_table
+            if (!isidNumberExists($con, $idNumber)) {
+                // Log error for non-existent Id Numbers
+                $errorLogs[] = "Id Number '$idNumber' not found in Employee List";
                 continue; // Skip saving this row
             }
 
             // If validation passes, save to database
-            $result = mysqli_query($con, "SELECT `Name`, `section` FROM `employeespersonalinfo` WHERE `rfidNumber` = '$rfidNumber' AND `employer` ='Canteen'");
+            $result = mysqli_query($con, "SELECT `Name`, `section` FROM `employeespersonalinfo` WHERE `idNumber` = '$idNumber' AND `employer` ='Canteen'");
             while ($userRow = mysqli_fetch_assoc($result)) {
                 $name = $userRow['Name'];
                 $section = $userRow['section'];
 
-                $result1 = mysqli_query($con, "SELECT * FROM `preemployment` WHERE `rfidNumber` = '$rfidNumber'");
+                $result1 = mysqli_query($con, "SELECT * FROM `preemployment` WHERE `idNumber` = '$idNumber'");
                 $numrows = mysqli_num_rows($result1);
                 if ($numrows > 0) {
-                    $addPreEmployment = "UPDATE `preemployment` SET `dateReceived` = '$dateReceived', `datePerformed` = '$datePerformed', `name`='$name', `section`='$section', `IMC` = '$IMC', `OEH`='$OEH', `PE` = '$PE', `CBC` ='$CBC', `U_A` = '$U_A', `FA`='$FA', `CXR` ='$CXR', `VA`='$VA', `DEN`='$DEN', `DT`='$DT', `PT` = '$PT', `otherTest` = '$otherTest', `followUpStatus` = '$followUpStatus', `status`='$status', `attendee`='$attendee', `confirmationDate`='$confirmationDate', `FMC`='$FMC' WHERE `rfidNumber` = '$rfidNumber'";
+                    $addPreEmployment = "UPDATE `preemployment` SET `dateReceived` = '$dateReceived', `datePerformed` = '$datePerformed', `name`='$name', `section`='$section', `IMC` = '$IMC', `OEH`='$OEH', `PE` = '$PE', `CBC` ='$CBC', `U_A` = '$U_A', `FA`='$FA', `CXR` ='$CXR', `VA`='$VA', `DEN`='$DEN', `DT`='$DT', `PT` = '$PT', `otherTest` = '$otherTest', `followUpStatus` = '$followUpStatus', `status`='$status', `attendee`='$attendee', `confirmationDate`='$confirmationDate', `FMC`='$FMC' WHERE `idNumber` = '$idNumber'";
                     $resultInfo = mysqli_query($con, $addPreEmployment);
                 } else {
-                    $addPreEmployment = "INSERT INTO `preemployment`(`dateReceived`, `datePerformed`, `rfidNumber`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`,`confirmationDate`, `FMC`) VALUES ('$dateReceived','$datePerformed','$rfidNumber','$name','$section','$IMC','$OEH','$PE','$CBC','$U_A','$FA','$CXR', '$VA', '$DEN', '$DT', '$PT', ' $otherTest', ' $followUpStatus', '$status', '$attendee','$confirmationDate', '$FMC')";
+                    $addPreEmployment = "INSERT INTO `preemployment`(`dateReceived`, `datePerformed`, `idNumber`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`,`confirmationDate`, `FMC`) VALUES ('$dateReceived','$datePerformed','$idNumber','$name','$section','$IMC','$OEH','$PE','$CBC','$U_A','$FA','$CXR', '$VA', '$DEN', '$DT', '$PT', ' $otherTest', ' $followUpStatus', '$status', '$attendee','$confirmationDate', '$FMC')";
                     $resultInfo = mysqli_query($con, $addPreEmployment);
                 }
             }
 
             // Check if query execution was successful
             if ($resultInfo === false) {
-                $errorLogs[] = "Failed to insert data for RFID number '$rfidNumber': " . mysqli_error($con);
+                $errorLogs[] = "Failed to insert data for Id Number '$idNumber': " . mysqli_error($con);
             }
         }
         $count = 1;
@@ -272,16 +272,16 @@ if (isset($_POST['addPreEmploymentImport'])) {
                         <tbody>
                             <?php
                             $preEmpNo = 1;
-                            $sql = "SELECT p.*, e.employer, e.Name, e.section, e.rfidNumber FROM preemployment p 
-                                    JOIN employeespersonalinfo e ON e.rfidNumber = p.rfidNumber WHERE e.employer = 'Canteen' ORDER BY `id` ASC";
+                            $sql = "SELECT p.*, e.employer, e.Name, e.section, e.idNumber FROM preemployment p 
+                                    JOIN employeespersonalinfo e ON e.idNumber = p.idNumber WHERE e.employer = 'Canteen' ORDER BY `id` ASC";
                             $result = mysqli_query($con, $sql);
                             while ($row = mysqli_fetch_assoc($result)) { ?>
                                 <tr>
                                     <td><?php echo $preEmpNo; ?></td>
-                                    <!-- <td> <button type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['rfidNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date_received="<?php echo $row['dateReceived']; ?>" data-date_performed="<?php echo $row['datePerformed']; ?>" data-imc="<?php echo $row['IMC']; ?>" data-oeh="<?php echo $row['OEH']; ?>" data-pe="<?php echo $row['PE']; ?>" data-cbc="<?php echo $row['CBC']; ?>" data-ua="<?php echo $row['U_A']; ?>" data-fa="<?php echo $row['FA']; ?>" data-cxr="<?php echo $row['CXR']; ?>" data-va="<?php echo $row['VA']; ?>" data-den="<?php echo $row['DEN']; ?>" data-dt="<?php echo $row['DT']; ?>" data-pt="<?php echo $row['PT']; ?>" data-others="<?php echo $row['otherTest']; ?>" data-followupstatus="<?php echo $row['followUpStatus']; ?>" data-status="<?php echo $row['status']; ?>" data-attendee="<?php echo $row['attendee']; ?>" data-confirmationdate="<?php echo $row['confirmationDate']; ?>" data-fmc="<?php echo $row['FMC']; ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button></td> -->
+                                    <!-- <td> <button type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['idNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date_received="<?php echo $row['dateReceived']; ?>" data-date_performed="<?php echo $row['datePerformed']; ?>" data-imc="<?php echo $row['IMC']; ?>" data-oeh="<?php echo $row['OEH']; ?>" data-pe="<?php echo $row['PE']; ?>" data-cbc="<?php echo $row['CBC']; ?>" data-ua="<?php echo $row['U_A']; ?>" data-fa="<?php echo $row['FA']; ?>" data-cxr="<?php echo $row['CXR']; ?>" data-va="<?php echo $row['VA']; ?>" data-den="<?php echo $row['DEN']; ?>" data-dt="<?php echo $row['DT']; ?>" data-pt="<?php echo $row['PT']; ?>" data-others="<?php echo $row['otherTest']; ?>" data-followupstatus="<?php echo $row['followUpStatus']; ?>" data-status="<?php echo $row['status']; ?>" data-attendee="<?php echo $row['attendee']; ?>" data-confirmationdate="<?php echo $row['confirmationDate']; ?>" data-fmc="<?php echo $row['FMC']; ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button></td> -->
                                     <td>
                                         <div class="content-center flex flex-wrap justify-center gap-2">
-                                            <input type="text" class="hidden" name="rfid<?php echo $preEmpNo; ?>" value="<?php echo $row['rfidNumber']; ?>">
+                                            <input type="text" class="hidden" name="rfid<?php echo $preEmpNo; ?>" value="<?php echo $row['idNumber']; ?>">
                                             <button id="dropdownMenuIconButton<?php echo $preEmpNo; ?>" data-dropdown-toggle="dropdownDots<?php echo $preEmpNo; ?>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900  rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 bg-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
                                                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
                                                     <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
@@ -294,7 +294,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
                                         <div id="dropdownDots<?php echo $preEmpNo; ?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                                             <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $preEmpNo; ?>">
                                                 <li>
-                                                    <a type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['rfidNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date_received="<?php echo $row['dateReceived']; ?>" data-date_performed="<?php echo $row['datePerformed']; ?>" data-imc="<?php echo $row['IMC']; ?>" data-oeh="<?php echo $row['OEH']; ?>" data-pe="<?php echo $row['PE']; ?>" data-cbc="<?php echo $row['CBC']; ?>" data-ua="<?php echo $row['U_A']; ?>" data-fa="<?php echo $row['FA']; ?>" data-cxr="<?php echo $row['CXR']; ?>" data-va="<?php echo $row['VA']; ?>" data-den="<?php echo $row['DEN']; ?>" data-dt="<?php echo $row['DT']; ?>" data-pt="<?php echo $row['PT']; ?>" data-others="<?php echo $row['otherTest']; ?>" data-followupstatus="<?php echo $row['followUpStatus']; ?>" data-status="<?php echo $row['status']; ?>" data-attendee="<?php echo $row['attendee']; ?>" data-confirmationdate="<?php echo $row['confirmationDate']; ?>" data-fmc="<?php echo $row['FMC']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit Pre-Employment Record</a>
+                                                    <a type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['idNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date_received="<?php echo $row['dateReceived']; ?>" data-date_performed="<?php echo $row['datePerformed']; ?>" data-imc="<?php echo $row['IMC']; ?>" data-oeh="<?php echo $row['OEH']; ?>" data-pe="<?php echo $row['PE']; ?>" data-cbc="<?php echo $row['CBC']; ?>" data-ua="<?php echo $row['U_A']; ?>" data-fa="<?php echo $row['FA']; ?>" data-cxr="<?php echo $row['CXR']; ?>" data-va="<?php echo $row['VA']; ?>" data-den="<?php echo $row['DEN']; ?>" data-dt="<?php echo $row['DT']; ?>" data-pt="<?php echo $row['PT']; ?>" data-others="<?php echo $row['otherTest']; ?>" data-followupstatus="<?php echo $row['followUpStatus']; ?>" data-status="<?php echo $row['status']; ?>" data-attendee="<?php echo $row['attendee']; ?>" data-confirmationdate="<?php echo $row['confirmationDate']; ?>" data-fmc="<?php echo $row['FMC']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit Pre-Employment Record</a>
                                                 </li>
 
                                             </ul>
@@ -357,18 +357,18 @@ if (isset($_POST['addPreEmploymentImport'])) {
                         <select id="name" name="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                             <option selected disabled>Search Name</option>
                             <?php
-                            $sql1 = "SELECT * FROM employeespersonalinfo e WHERE e.employer = 'Canteen' AND e.rfidNumber NOT IN (SELECT p.rfidNumber FROM preemployment p);";
+                            $sql1 = "SELECT * FROM employeespersonalinfo e WHERE e.employer = 'Canteen' AND e.idNumber NOT IN (SELECT p.idNumber FROM preemployment p);";
                             $result = mysqli_query($con, $sql1);
                             while ($list = mysqli_fetch_assoc($result)) {
-                                $rfid = $list["rfidNumber"];
+                                $idNumber = $list["idNumber"];
                                 $name = $list["Name"];
                                 $section = $list["section"]; ?>
-                                <option value="<?php echo  $name; ?>" data-rfid="<?php echo  $rfid; ?>" data-section="<?php echo  $section; ?>"> <?php echo  $name; ?> </option> <?php
+                                <option value="<?php echo  $name; ?>" data-rfid="<?php echo  $idNumber; ?>" data-section="<?php echo  $section; ?>"> <?php echo  $name; ?> </option> <?php
                                                                                                                                                                                 } ?>
                         </select>
                     </div>
                     <div  class="content-center  col-span-2">
-                        <label for="rfid" class="block mb-1  text-gray-900 dark:text-white">RFID</label>
+                        <label for="rfid" class="block mb-1  text-gray-900 dark:text-white">ID Number</label>
                         <input type="text" name="rfid" id="rfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " required="">
                     </div>
                     <div  class="content-center  col-span-2">
@@ -536,7 +536,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
                         <input id="editName" name="editName"  class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
                     </div>
                     <div  class="content-center  col-span-2">
-                        <label for="editRfid" class="block mb-1  text-gray-900 dark:text-white">RFID</label>
+                        <label for="editRfid" class="block mb-1  text-gray-900 dark:text-white">ID Number</label>
                         <input type="text" name="editRfid" id="editRfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
                     </div>
                     <div class="content-center  col-span-2">
@@ -761,7 +761,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
 
         column1 = 'Date Received';
         column2 = 'Date Performed';
-        column3 = 'RFID Number';
+        column3 = 'Id Number';
         column4 = 'IMC';
         column5 = 'OEH';
         column6 = 'PE';
@@ -808,7 +808,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
         for (var i = 0, row; i < 1; i++) {
             column1 = '';
             column2 = '';
-            column3 = "Change format to 'Text'";
+            column3 = "";
             column4 = '';
             column5 = '';
             column6 = '';

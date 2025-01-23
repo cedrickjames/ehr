@@ -14,7 +14,7 @@ include("includes/connect.php");
 $con->next_result();
 
 $sql = mysqli_query($con, "SELECT f.*, e.Name, e.section, e.department, e.building  AS bldg, e.employer, e.sex FROM `fittowork`f 
-LEFT JOIN `employeespersonalinfo` e ON e.rfidNumber = f.rfid WHERE MONTH(f.date) = '$monthNumber'
+LEFT JOIN `employeespersonalinfo` e ON e.idNumber = f.idNumber WHERE MONTH(f.date) = '$monthNumber'
     AND YEAR(f.date) = '$year' ORDER BY `id` ASC");
 
 

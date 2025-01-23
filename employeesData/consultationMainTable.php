@@ -108,7 +108,7 @@ if (isset($_POST['updateFTW2'])) {
                         <?php
                         $cnsltnNo = 1;
                         $sql = "
-                        SELECT c.*, e.Name FROM `consultation` c LEFT JOIN `employeespersonalinfo` e ON e.rfidNumber = c.rfid where c.status = 'done' ORDER BY `id`  ASC;";
+                        SELECT c.*, e.Name FROM `consultation` c LEFT JOIN `employeespersonalinfo` e ON e.idNumber = c.idNumber where c.status = 'done' ORDER BY `id`  ASC;";
                         $result = mysqli_query($con, $sql);
                         while ($row = mysqli_fetch_assoc($result)) {
 
@@ -117,15 +117,15 @@ if (isset($_POST['updateFTW2'])) {
                             <tr>
                                 <td> <?php echo $cnsltnNo; ?> </td>
                                 <td>
-                                    <a type="button" href="../nurses/consultation.php?rf=<?php echo $row['rfid']; ?>&cnsltn=<?php echo $row['id'];?>" class="lg:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Show</a>
+                                    <a type="button" href="../nurses/consultation.php?rf=<?php echo $row['idNumber']; ?>&cnsltn=<?php echo $row['id'];?>" class="lg:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Show</a>
                                 </td>
+                                <td> <?php echo $row['Name'] ?> </td>
 
                                 <td> <?php if ($row['statusComplete'] == true) {
                                             echo "Completed";
                                         } else {
                                             echo "With Pending Lab";
                                         } ?> </td>
-                                <td> <?php echo $row['Name'] ?> </td>
                                 <td> <?php echo $row['date']; ?> </td>
                                 <td> <?php echo $row['time']; ?> </td>
                                 <td> <?php echo $row['type']; ?> </td>

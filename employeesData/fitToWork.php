@@ -62,18 +62,18 @@ use PHPMailer\PHPMailer\Exception;
 
 
 if (isset($_GET['rf'])) {
-  $rfid = $_GET['rf'];
+  $idNumber = $_GET['rf'];
 } else {
-  $rfid = "not found";
+  $idNumber = "not found";
 }
+$nurseId = $_SESSION['userID'];
 
-
-$sqluserinfo = "SELECT employeespersonalinfo.rfidNumber, employeespersonalinfo.*, queing.*, users.email
+$sqluserinfo = "SELECT employeespersonalinfo.idNumber, employeespersonalinfo.*, queing.*, users.email
 FROM queing
 
-INNER JOIN employeespersonalinfo ON employeespersonalinfo.rfidNumber = queing.rfidNumber 
+INNER JOIN employeespersonalinfo ON employeespersonalinfo.idNumber = queing.idNumber 
 INNER JOIN users ON users.idNumber = queing.nurseAssisting
-where employeespersonalinfo.rfidNumber = '$rfid' AND queing.status = 'processing';";
+where employeespersonalinfo.idNumber = '$idNumber' AND queing.status = 'processing';";
 
 $resultInfo = mysqli_query($con, $sqluserinfo);
 while ($userRow = mysqli_fetch_assoc($resultInfo)) {
@@ -102,7 +102,7 @@ $ftwTime = date('h:i A');
 if (isset($_GET['ftw'])) {
   $ftw = $_GET['ftw'];
 
-  $sqlcnslt = "SELECT * FROM `fittowork` WHERE `rfid` = '$rfid' and `id` = '$ftw' ORDER BY `id` ASC;";
+  $sqlcnslt = "SELECT * FROM `fittowork` WHERE `idNumber` = '$idNumber' and `id` = '$ftw' ORDER BY `id` ASC;";
   $resultcnslt = mysqli_query($con, $sqlcnslt);
   while ($row = mysqli_fetch_assoc($resultcnslt)) {
 
@@ -182,9 +182,20 @@ if (isset($_POST['addFTW'])) {
   $ftwMedCategory = $_POST['ftwMedCategory'];
   $ftwSLDateFrom = $_POST['ftwSLDateFrom'];
   $ftwSLDateTo = $_POST['ftwSLDateTo'];
+
+  $ftwSLDateFrom = date("F j, Y", strtotime($ftwSLDateFrom));
+  $ftwSLDateTo = date("F j, Y", strtotime($ftwSLDateTo));
+
   $ftwDays = $_POST['ftwDays'];
   $ftwAbsenceReason = $_POST['ftwAbsenceReason'];
   $ftwDiagnosis = $_POST['ftwDiagnosis'];
+
+
+  $cnsltnIntervention = $_POST['cnsltnIntervention'];
+  $cnsltnClinicRestFrom = $_POST['cnsltnClinicRestFrom'];
+  $cnsltnClinicRestTo = $_POST['cnsltnClinicRestTo'];
+
+
   $ftwBloodChem = $_POST['ftwBloodChem'];
   $ftwCbc = $_POST['ftwCbc'];
   $ftwUrinalysis = $_POST['ftwUrinalysis'];
@@ -206,12 +217,15 @@ if (isset($_POST['addFTW'])) {
   $immediateEmail = $_POST['immediateEmail'];
   $immediateHead = $_POST['immediateHead'];
   
-  $ftwMeds = $_POST['ftwMeds'];
 
 
-  if ($ftwMeds != "") {
 
+  if (isset($_POST['ftwMeds']) && !empty($_POST['ftwMeds'])) {
+    $ftwMeds = $_POST['ftwMeds'];
     $ftwMeds = implode(', ', $ftwMeds);
+  }
+  else{
+    $ftwMeds="";
   }
   if ($ftwRemarks == "Unfit to work") {
 
@@ -223,7 +237,7 @@ if (isset($_POST['addFTW'])) {
   
 
   // echo $smoking;
-  $sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `isFitToWork`,`isMedcertRequired`,`daysOfRest`,`reasonOfUnfitToWork`,`remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`) VALUES ('head','$department','$rfid','$ftwDate','$ftwTime','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$isMedcertRequired','$ftwDaysOfRest','$ftwUnfitReason','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab')";
+  $sql = "INSERT INTO `fittowork`( `approval`, `department`,`idNumber`, `nurseAssisting`,`date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `isFitToWork`,`isMedcertRequired`,`daysOfRest`,`reasonOfUnfitToWork`,`remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`) VALUES ('head','$department','$idNumber','$nurseId','$ftwDate','$ftwTime','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$cnsltnIntervention','$cnsltnClinicRestFrom','$cnsltnClinicRestTo','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$isMedcertRequired','$ftwDaysOfRest','$ftwUnfitReason','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab')";
   $results = mysqli_query($con, $sql);
 
   if ($results) {
@@ -235,71 +249,97 @@ if (isset($_POST['addFTW'])) {
     }
 
     if($ftwRemarks == "Unfit to work"){
-      $subject = 'Unfit to Work';
-      $message = '
-    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
-        <h2 style="color: #0073e6; text-align: center;">Employee Status Notification</h2>
-        <p>Hi <strong>' . $immediateHead . '</strong> and HR,</p>
-        
-        <div style="padding: 10px; background-color: #ffe5e5; border-left: 5px solid red; margin-bottom: 15px;">
-            <strong style="font-size: 18px; color: red;">Mr./Ms. ' . $name . ' is NOT fit to work.</strong>
-        </div>
-        
-        <h3 style="color: #555; border-bottom: 2px solid #0073e6; padding-bottom: 5px;">Details</h3>
-        <ul style="list-style-type: none; padding: 0;">
-            <li><strong>Name:</strong> ' . $name . '</li>
-            <li><strong style="color: red;">Reason:</strong> ' . $ftwUnfitReason . '</li>
-            <li><strong style="color: red;">Days of Rest:</strong> ' . $ftwDaysOfRest . '</li>
-            <li><strong>Sect/Dept:</strong> ' . $section . '</li>
-            <li><strong>Reason of Absence:</strong> ' . $ftwAbsenceReason . '</li>
-            <li><strong>Date of Absence:</strong> ' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</li>
-            <li><strong>No. of Day/s:</strong> ' . $ftwDays . '</li>
-            <li><strong>Status:</strong> ' . $ftwRemarks . '</li>
-            <li><strong>Remarks:</strong> ' . $ftwOthersRemarks . '</li>
-        </ul>
-        
-        <p style="font-size: 12px; color: #777; margin-top: 20px; text-align: center;">
-            <em>This is a generated email. Please do not reply.</em>
-        </p>
-        
-        <div style="text-align: center; margin-top: 20px;">
-            <strong style="color: #0073e6;">Clinic</strong>
-        </div>
-    </div>
-';
+      $subject = 'Employee Fit-to-work Status';
+      $message = '<div style="width: 1000px; font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 3px solid red; border-radius: 8px; ">
+       
+      <p>Hi <strong>' . $immediateHead . '</strong> and <strong>HR </strong>,</p>
+      <p>This to inform you that Ms./Mr. <span style="font-weight: bolder">' . $name . ' </span> had visited the clinic for fit-to-work confirmation and was assessed to be <span style="color: red; font-weight: bolder">&quot;UNFIT TO WORK &quot;.</span></p>
+      
+            
+           <table style=" border-spacing: 10px;">
+            
+            <tr>
+                <td>ID Number:</td>
+                <td>&nbsp; &nbsp;'.$idNumber.'</td>
+            </tr>
+            <tr>
+                <td>Reason:</td>
+                <td>&nbsp;&nbsp; '. $ftwUnfitReason .'</td>
+            </tr>
+            <tr>
+                <td>Day/s of Rest:</td>
+                <td>&nbsp;&nbsp; '. $ftwDaysOfRest .'</td>
+            </tr>
+            <tr>
+                <td>Date of Absence:</td>
+                <td>&nbsp;&nbsp; ' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</td>
+            </tr>
+            <tr>
+                <td>No. of days absent:</td>
+                <td>&nbsp;&nbsp; ' . $ftwDays . '</td>
+            </tr>
+            <tr>
+                <td>Reason of Absence:</td>
+                <td> &nbsp;&nbsp;'. $ftwAbsenceReason .'</td>
+            </tr>
+              
+        </table>
+      
+      <p>Yours truly, </p>
+      
+      <p>OH Nurse / Clinic Staff</p>
+      
+            <p style="font-size: 12px; color: #0073e6;">
+                <em>This is a generated email. Please do not reply.</em>
+            </p>
+            
+            
+        </div>';
+      
 
     }
     else{
-      $subject = 'Fit to Work';
-      $message = '
-      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
-          <h2 style="color: #28a745; text-align: center;">Employee Status Notification</h2>
-          <p>Hi <strong>' . $immediateHead . '</strong> and HR,</p>
-          
-          <div style="padding: 10px; background-color: #e6f9e6; border-left: 5px solid #28a745; margin-bottom: 15px;">
-              <strong style="font-size: 18px; color: #28a745;">Mr./Ms. ' . $name . ' is now fit to work.</strong>
-          </div>
-          
-          <h3 style="color: #555; border-bottom: 2px solid #28a745; padding-bottom: 5px;">Details</h3>
-          <ul style="list-style-type: none; padding: 0;">
-              <li><strong>Name:</strong> ' . $name . '</li>
-              <li><strong>Sect/Dept:</strong> ' . $section . '</li>
-              <li><strong>Reason of Absence:</strong> ' . $ftwAbsenceReason . '</li>
-              <li><strong>Date of Absence:</strong> ' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</li>
-              <li><strong>No. of Day/s:</strong> ' . $ftwDays . '</li>
-              <li><strong>Remarks:</strong> ' . $ftwRemarks . '</li>
-              <li><strong>Others:</strong> ' . $ftwOthersRemarks . '</li>
-          </ul>
-          
-          <p style="font-size: 12px; color: #777; margin-top: 20px; text-align: center;">
-              <em>This is a generated email. Please do not reply.</em>
-          </p>
-          
-          <div style="text-align: center; margin-top: 20px;">
-              <strong style="color: #28a745;">Clinic</strong>
-          </div>
-      </div>
-  ';
+      $subject = 'Employee Fit-to-work Status';
+      $message = '<div style="width: 1000px; font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 3px solid green; border-radius: 8px; ">
+       
+  <p>Hi <strong>' . $immediateHead . '</strong> and <strong>HR </strong>,</p>
+  <p>This to inform you that Ms./Mr. <span style="font-weight: bolder">' . $name . ' </span> had visited the clinic for fit-to-work confirmation and was assessed to be <span style="color: green; font-weight: bolder">&quot;FIT TO WORK &quot;.</span></p>
+  
+        
+       <table style=" border-spacing: 10px;">
+        
+        <tr>
+            <td>ID Number:</td>
+            <td>&nbsp; &nbsp;'.$idNumber.'</td>
+        </tr>
+        <tr>
+            <td>Date of Absence:</td>
+            <td>&nbsp;&nbsp; ' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</td>
+        </tr>
+        <tr>
+            <td>No. of days absent:</td>
+            <td>&nbsp;&nbsp; ' . $ftwDays . '</td>
+        </tr>
+        <tr>
+            <td>Reason of Absence:</td>
+            <td> &nbsp;&nbsp;'. $ftwAbsenceReason .'</td>
+        </tr>
+          <tr>
+            <td>Remarks:</td>
+            <td>&nbsp;&nbsp; '. $ftwOthersRemarks .'</td>
+        </tr>
+    </table>
+  
+  <p>Yours truly, </p>
+  
+  <p>OH Nurse / Clinic Staff</p>
+  
+        <p style="font-size: 12px; color: #0073e6;">
+            <em>This is a generated email. Please do not reply.</em>
+        </p>
+        
+        
+    </div>';
   
     }
    
@@ -355,52 +395,69 @@ if (isset($_POST['addFTW'])) {
 
 if (isset($_POST['proceedToConsultation'])) {
   
-  $cnsltnDate = $_POST['cnsltnDate'];
-  $cnsltnTime = $_POST['cnsltnTime'];
+  $cnsltnDate = $_POST['ftwDate'];
+  $cnsltnTime = $_POST['ftwTime'];
   $cnsltnType = $_POST['cnsltnType'];
 
-  $ftwCtnCategories = $_POST['ftwCtnCategories'];
-  $ftwCtnConfinement = $_POST['ftwCtnConfinement'];
-  $ftwCtnSLDateFrom = $_POST['ftwCtnSLDateFrom'];
-  $ftwCtnSLDateTo = $_POST['ftwCtnSLDateTo'];
-  $ftwCtnDays = $_POST['ftwCtnDays'];
-  $ftwCtnAbsenceReason = $_POST['ftwCtnAbsenceReason'];
-  $ftwCtnRemarks = $_POST['ftwCtnRemarks'];
+  $ftwCtnCategories = $_POST['ftwCategories'];
+  $ftwCtnConfinement = $_POST['ftwConfinement'];
+  $ftwCtnSLDateFrom = $_POST['ftwSLDateFrom'];
+  $ftwCtnSLDateTo = $_POST['ftwSLDateTo'];
+  $ftwCtnDays = $_POST['ftwDays'];
+  $ftwCtnAbsenceReason = $_POST['ftwAbsenceReason'];
+  $ftwCtnRemarks = $_POST['ftwRemarks'];
 
 
+  $isMedcertRequired = $_POST['medicalCertificate'];
+  $ftwDaysOfRest = $_POST['ftwDaysOfRest'];
+ $ftwUnfitReason = $_POST['ftwUnfitReason'];
 
-  $cnsltnCategories = $_POST['cnsltnCategories'];
-  $cnsltnBuilding = $_POST['cnsltnBuilding'];
-  $cnsltnChiefComplaint = $_POST['cnsltnChiefComplaint'];
-  $cnsltnDiagnosis = $_POST['cnsltnDiagnosis'];
-  $cnsltnIntervention = $_POST['cnsltnIntervention'];
+
+//  $ftwMedCategory = $_POST['ftwMedCategory'];
+
+  $cnsltnCategories = $_POST['ftwMedCategory'];
+  $cnsltnBuilding = $_POST['ftwBuilding'];
+  $cnsltnChiefComplaint = $_POST['ftwAbsenceReason'];
+  $cnsltnDiagnosis = $_POST['ftwDiagnosis'];
+  $cnsltnIntervention = $_POST['cnsltnIntervention']; // siguro mag lagay muna ng modal before proceeding para dito sa intervention, clinic rest and meds
   $cnsltnClinicRestFrom = $_POST['cnsltnClinicRestFrom'];
   $cnsltnClinicRestTo = $_POST['cnsltnClinicRestTo'];
-  $cnsltnMeds = $_POST['cnsltnMeds'];
+  // $cnsltnMeds = $_POST['ftwMeds'];
 
-
-  if ($cnsltnMeds != "") {
-
+  if (isset($_POST['ftwMeds']) && !empty($_POST['ftwMeds'])) {
+    $cnsltnMeds = $_POST['ftwMeds'];
     $cnsltnMeds = implode(', ', $cnsltnMeds);
+
+  }
+  else{
+
+  $cnsltnMeds = "";
+
   }
 
-  $cnsltnMedsQuantity = $_POST['cnsltnMedsQuantity'];
 
-  $cnsltnBloodChem = $_POST['cnsltnBloodChem'];
-  $cnsltnCbc = $_POST['cnsltnCbc'];
-  $cnsltnUrinalysis = $_POST['cnsltnUrinalysis'];
-  $cnsltnFecalysis = $_POST['cnsltnFecalysis'];
-  $cnsltnXray = $_POST['cnsltnXray'];
-  $cnsltnOthersLab = $_POST['cnsltnOthersLab'];
-  $cnsltnBp = $_POST['cnsltnBp'];
-  $cnsltnTemp = $_POST['cnsltnTemp'];
-  $cnsltn02Sat = $_POST['cnsltn02Sat'];
-  $cnsltnPr = $_POST['cnsltnPr'];
-  $cnsltnRr = $_POST['cnsltnRr'];
-  $cnsltnRemarks = $_POST['cnsltnRemarks'];
-  $cnsltnOthersRemarks = $_POST['cnsltnOthersRemarks'];
-  $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
-  $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
+  // if ($cnsltnMeds != "") {
+
+  //   $cnsltnMeds = implode(', ', $cnsltnMeds);
+  // }
+  // $cnsltnMedsQuantity = $_POST['cnsltnMedsQuantity'];
+
+  $cnsltnBloodChem = $_POST['ftwBloodChem'];
+  $cnsltnCbc = $_POST['ftwCbc'];
+  $cnsltnUrinalysis = $_POST['ftwUrinalysis'];
+  $cnsltnFecalysis = $_POST['ftwFecalysis'];
+  $cnsltnXray = $_POST['ftwXray'];
+  $cnsltnOthersLab = $_POST['ftwOthersLab'];
+  $cnsltnBp = $_POST['ftwBp'];
+  $cnsltnTemp = $_POST['ftwTemp'];
+  $cnsltn02Sat = $_POST['ftw02Sat'];
+  $cnsltnPr = $_POST['ftwPr'];
+  $cnsltnRr = $_POST['ftwRr'];
+  $cnsltnRemarks = $_POST['ftwRemarks'];
+  $cnsltnOthersRemarks = $_POST['ftwOthersRemarks'];
+  $cnsltnCompleted = isset($_POST['ftwCompleted']) ? $_POST['ftwCompleted'] : "0";
+  $cnsltnWithPendingLab = $_POST['ftwWithPendingLab'];
+
 
   if($cnsltnCompleted == 1){
 $status = 'done';
@@ -410,7 +467,7 @@ $status = 'doc';
 
   }
   // echo $smoking;
-  $sql = "INSERT INTO `consultation`(`rfid`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`medsQty`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `otherRemarks`,`statusComplete`,`withPendingLab`,`ftwApproval`, `ftwDepartment`, `ftwCategories`, `ftwConfinement`,`ftwDateOfSickLeaveFrom`, `ftwDateOfSickLeaveTo`,`ftwDays`, `ftwReasonOfAbsence`, `ftwRemarks`) VALUES ('$rfid','$status','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds','$cnsltnMedsQuantity', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnRemarks', '$cnsltnOthersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab', 'head', '$department','$ftwCtnCategories','$ftwCtnConfinement','$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason','$ftwCtnRemarks')";
+  $sql = "INSERT INTO `consultation`(`idNumber`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `otherRemarks`,`statusComplete`,`withPendingLab`,`ftwApproval`, `ftwDepartment`, `ftwCategories`, `ftwConfinement`,`ftwDateOfSickLeaveFrom`, `ftwDateOfSickLeaveTo`,`ftwDays`, `ftwReasonOfAbsence`, `ftwRemarks`,`isFitToWork`,`isMedcertRequired`,`daysOfRest`,`reasonOfUnfitToWork`) VALUES ('$idNumber','$status','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnRemarks', '$cnsltnOthersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab', 'head', '$department','$ftwCtnCategories','$ftwCtnConfinement','$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason','$ftwCtnRemarks','$ftwCtnRemarks','$isMedcertRequired','$ftwDaysOfRest','$ftwUnfitReason')";
   $results = mysqli_query($con, $sql);
 
   if ($results) {
@@ -446,22 +503,24 @@ $status = 'doc';
   $_SESSION['immediateEmail'] = $_POST['immediateEmail'];
 
 
-  $ftwMeds = $_POST['ftwMeds'];
 
-  if ($ftwMeds != "") {
-
+  if (isset($_POST['ftwMeds']) && !empty($_POST['ftwMeds'])) {
+    $ftwMeds = $_POST['ftwMeds'];
     $ftwMeds = implode(', ', $ftwMeds);
-  }
-
   $_SESSION['ftwMeds'] = $ftwMeds;
 
+  }
+  else{
+    $ftwMeds = "";
+  $_SESSION['ftwMeds'] = $ftwMeds;
 
-  header("location:consultation.php?rf=$rfid");
+  }
+ 
+
+
+  // header("location:consultation.php?rf=$idNumber");
 }
 
-if (isset($_POST['addConsultation'])) {
-
-}
 
 
 
@@ -515,7 +574,7 @@ if (isset($_POST['updateFTW'])) {
 ?>
 
 <div class="relative ">
-  <form method="POST" action="">
+  <form method="POST" action="" id="myForm" onsubmit="">
     <input type="text" id="updateRecord" name="updateRecord" value="<?php echo $ftw; ?>" class="hidden">
     <p class="mb-2 2xl:mb-5"><span class=" self-center text-[12px] 2xl:text-lg font-semibold whitespace-nowrap   text-[#193F9F]">Fit To Work</span></p>
 
@@ -633,19 +692,19 @@ if (isset($_POST['updateFTW'])) {
 
 
         <label class=" block my-auto font-semibold text-gray-900 ">Days</label>
-        <input type="number" required value="<?php echo $ftwDays ?>" name="ftwDays" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        <input type="number" required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" value="<?php echo $ftwDays ?>" id="ftwDays" name="ftwDays" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
       </div>
 
       <div class=" gap-4 col-span-2">
         <label class="block  my-auto w-full font-semibold text-gray-900 ">Reason of Absence: </label>
-        <input type="text" required value="<?php echo $ftwAbsenceReason ?>" name="ftwAbsenceReason" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        <input type="text" required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" value="<?php echo $ftwAbsenceReason ?>" id="ftwAbsenceReason" name="ftwAbsenceReason" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       </div>
-      <div class=" gap-4 col-span-2">
-        <label class="block  my-auto  font-semibold text-gray-900 ">Diagnosis: </label>
+      <div id="diagnosisDiv"  class="relative gap-4 col-span-2">
+        <label  class="block  my-auto  font-semibold text-gray-900 ">Diagnosis: </label>
         <!-- <input type="text"  name="ftwDiagnosis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
-        <select required id="ftwDiagnosiOption" name="ftwDiagnosis" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option selected disabled>Select Diagnosis</option>
+        <select  required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" id="ftwDiagnosiOption" name="ftwDiagnosis" class="js-diagnosis bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option selected disabled value="">Select Diagnosis</option>
           <option value="addDiagnosisButton">Add Diagnosis</option>
           <?php
           $sql1 = "Select * FROM `diagnosis`";
@@ -663,7 +722,7 @@ if (isset($_POST['updateFTW'])) {
           }
           ?>
         </select>
-
+ 
 
 
 
@@ -697,16 +756,62 @@ if (isset($_POST['updateFTW'])) {
           </div>
         </div>
 
-
+  
 
 
 
       </div>
-      <div class="grid grid-cols-4 col-span-4" id="medicineDivs">
+
+      <div class="col-span-2">
+        <label class="block  my-auto font-semibold text-gray-900 ">Intervention: </label>
+
+        <select id="interventionSelect" name="cnsltnIntervention" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option  value="Medication Only">Medication only</option>
+          <option selected value="Medical Consultation">Medical Consultation</option>
+          <option value="Medication and Medical Consultation">Medication and Medical Consultation</option>
+          <option value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
+          <option value="Clinic Rest Only">Clinic Rest Only</option>
+
+
+
+        </select>
+
+      </div>
+      <div class="col-span-2">
+        <label class="block  my-auto font-semibold text-gray-900 ">Type: </label>
+
+
+        <select id="categoriesSelect" name="cnsltnType" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option selected value="Initial">Initial</option>
+          <option value="Follow Up">Follow Up</option>
+
+        </select>
+
+      </div>
+
+
+      <div id="clinicRestTime" class="hidden col-span-4">
+        <label class="block  my-auto font-semibold text-gray-900 ">Clinic Rest: </label>
+        <div class=" content-center flex gap-4 col-span-2">
+
+          <div class="relative w-1/2">
+            <input type="time" name="cnsltnClinicRestFrom" id="fromDate" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+            <label for="fromDate" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">From</label>
+          </div>
+
+          <div class="relative w-1/2">
+
+            <input type="time" name="cnsltnClinicRestTo" id="toDate" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+            <label for="toDate" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">To</label>
+          </div>
+
+        </div>
+      </div>
+      <div  class="grid grid-cols-4 col-span-4" id="medicineDivs">
         <div class="col-span-4">
 
           <label class="block  my-auto font-semibold text-gray-900 ">Medicine (Add medicine below): </label>
-          <select name="ftwMeds[]" id="ftwMeds" multiple="multiple" class="form-control js-meds w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+          <select name="ftwMeds[]" id="ftwMeds" multiple="multiple" class="js-meds form-control  w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
             <?php
             // echo $ftwMeds;
@@ -735,7 +840,7 @@ if (isset($_POST['updateFTW'])) {
             <div id="medsdiv" class="col-span-2">
               <label class="block  my-auto font-semibold text-gray-900 ">What's your medicine? </label>
 
-              <select id="nameOfMedicine" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+              <select id="nameOfMedicine" class="js-meds bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option selected disabled>Select Medicine</option>
           <option value="addMedicineButton">Add Medicine</option>
           <?php
@@ -753,6 +858,38 @@ if (isset($_POST['updateFTW'])) {
           ?>
 
         </select>
+        <div id="addMedicine" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+          <div class="relative w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <!-- Modal header -->
+              <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                  Add Medicine
+                </h3>
+                <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="addMedicine">
+                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                  </svg>
+                  <span class="sr-only">Close modal</span>
+                </button>
+              </div>
+              <!-- Modal body -->
+              <div class="p-4 md:p-5">
+                <form class="space-y-4" action="#">
+                  <div>
+
+                    <input type="text" name="medicine" id="medicine" class="mb-4 bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" />
+                  </div>
+
+
+                  <button type="button" onclick="addMedicine()" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add</button>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
 
             </div>
 
@@ -766,7 +903,7 @@ if (isset($_POST['updateFTW'])) {
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
                       </svg>
                     </button>
-                    <input type="text" name="cnsltnMedsQuantity" id="quantityMeds" data-input-counter data-input-counter-min="1" data-input-counter-max="50" aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" value="1" required />
+                    <input type="text" name="cnsltnMedsQuantity" id="quantityMeds" data-input-counter data-input-counter-min="1" data-input-counter-max="50" aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" value="1" />
                     <button type="button" id="increment-button" data-input-counter-increment="quantityMeds" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                       <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
@@ -855,7 +992,80 @@ if (isset($_POST['updateFTW'])) {
 
         </div>
       </div>
-      <div class="col-span-4 " >
+      
+      <div class="col-span-4 gap-4 mb-4">
+        <label class="block  my-auto  font-semibold text-gray-900 ">Remarks: </label>
+        <input type="text" value="<?php echo $ftwOthersRemarks; ?>" name="ftwOthersRemarks" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      </div>
+
+
+      <div class="col-span-4 justify-center flex gap-2">
+        <?php
+        if (!isset($_GET['ftw'])) { ?>
+          <button type="button"  name="proceedButton" id="proceedButton"class="w-full text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Record</button>
+
+      <button type="submit" id="addFitToWork"  name="addFTW" class="hidden col-span-4 mt-4 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Record</button>
+          
+        <?php
+        } else {
+        ?>
+          <button type="submit" name="updateFTW" class="w-64 text-white bg-gradient-to-r from-[#9b0066]  to-[#ca9ac1] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300  shadow-lg shadow-pink-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Update Record</button>
+        <?php
+        }
+        ?>
+
+      </div>
+  
+
+
+
+    
+
+<div id="askFirst" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="askFirst">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+            <div class="p-4 md:p-5 text-center">
+                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
+                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Record or Proceed to consultation?</h3>
+              <div class="col-span-4 justify-center flex gap-2">
+              <button type="button" id="proceedToFitToWork" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Record</button>
+              <button type="submit" name="proceedToConsultation" id="submitWithoutValidation" class="w-64 text-white bg-gradient-to-r from-[#9b0066]  to-[#ca9ac1] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300  shadow-lg shadow-pink-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Proceed to Consultation</button>
+              </div>
+                 
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="fitToWorkModal" tabindex="-1" aria-hidden="true" class=" hidden fixed overflow-y-auto overflow-x-hidden  top-0 right-0 left-0 z-[100] justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-4xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    Fit to Work
+                </h3>
+                <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="fitToWorkModal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-4 md:p-5 grid grid-cols-4">
+            <div class="col-span-4 " >
         <label class="block  my-auto  font-semibold text-gray-900 ">Fit to Work or Unfit to Work: </label>
         <select id="remarksSelect" name="ftwRemarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option <?php if ($ftwRemarks == "Fit to Work") {
@@ -874,24 +1084,24 @@ if (isset($_POST['updateFTW'])) {
       </div>
       <div class="col-span-4" id="fitToWorkFields">
       <h3 class=" font-semibold text-gray-900 dark:text-white">Medical Certificate</h3>
-      <ul class="gap-2 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+      <ul class="gap-2 items-center w-full text-[12px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
       <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
         <div class=" gap-2 flex items-center ps-3">
             <input id="horizontal-medicalCertificate-id" type="radio" checked value="noNeed" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-            <label for="horizontal-medicalCertificate-id" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">no need</label>
+            <label for="horizontal-medicalCertificate-id" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">no need</label>
         </div>
     </li>
 
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
         <div class="gap-2 flex items-center ps-3">
             <input id="horizontal-medicalCertificate-license" type="radio" value="withMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-            <label for="horizontal-medicalCertificate-license" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">with MedCert</label>
+            <label for="horizontal-medicalCertificate-license" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">with MedCert</label>
         </div>
     </li>
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
         <div class=" gap-2 flex items-center ps-3">
             <input id="horizontal-medicalCertificate-noMedcert" type="radio" value="noMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-            <label for="horizontal-medicalCertificate-noMedcert" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">no Medcert</label>
+            <label for="horizontal-medicalCertificate-noMedcert" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">no Medcert</label>
         </div>
     </li>
     
@@ -901,17 +1111,14 @@ if (isset($_POST['updateFTW'])) {
 
       <div class="content-center col-span-2" id="restDays">
 <label class=" block my-auto font-semibold text-gray-900 ">Days of rest</label>
-<input type="number"  name="ftwDaysOfRest" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+<input type="number" id="ftwDaysOfRest"  name="ftwDaysOfRest" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
 </div>
 <div class="content-center col-span-2" id="unfitReason">
 <label class=" block my-auto font-semibold text-gray-900 ">Reason</label>
-<input type="text"  name="ftwUnfitReason" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+<input type="text" id="ftwUnfitReason"  name="ftwUnfitReason" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
-      <div class="col-span-4 gap-4">
-        <label class="block  my-auto  font-semibold text-gray-900 ">Remarks: </label>
-        <input type="text" value="<?php echo $ftwOthersRemarks; ?>" name="ftwOthersRemarks" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-      </div>
+
 
       <div class="col-span-4 gap-4">
 
@@ -947,10 +1154,10 @@ if (isset($_POST['updateFTW'])) {
       <div class=" gap-4  col-span-2">
         <label class="block my-auto  font-semibold text-gray-900 ">Immediate Head:</label>
 
-        <select id="immediateHead" name="immediateHead" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+        <select id="immediateHead" required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" name="immediateHead" class="js-meds bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option selected disabled value="">Please select</option>
           <?php
-          $sql1 = "Select * FROM `employeespersonalinfo` WHERE `department` = '$department' AND `level` = 'head'";
+          $sql1 = "Select * FROM `employeespersonalinfo` WHERE `level` = 'head'";
           $result = mysqli_query($con, $sql1);
           while ($list = mysqli_fetch_assoc($result)) {
             $immediateName = $list["Name"];
@@ -966,26 +1173,20 @@ if (isset($_POST['updateFTW'])) {
       <div class=" gap-4  col-span-2">
         <label class="block my-auto  font-semibold text-gray-900 ">Email:</label>
 
-        <input type="text" id="immediateEmail" name="immediateEmail" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        <input type="text" required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" id="immediateEmail" name="immediateEmail" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
       </div>
 
-      <div class="col-span-4 justify-center flex gap-2">
-        <?php
-        if (!isset($_GET['ftw'])) { ?>
-          <button type="submit" name="addFTW" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Record</button>
+      <button type="submit" id="addFTW" name="addFTW" class=" col-span-4 mt-4 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Record</button>
+                    
+            </div>
 
-          <button type="submit" name="proceedToConsultation" class="w-64 text-white bg-gradient-to-r from-[#9b0066]  to-[#ca9ac1] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300  shadow-lg shadow-pink-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Proceed to Consultation</button>
-        <?php
-        } else {
-        ?>
-          <button type="submit" name="updateFTW" class="w-64 text-white bg-gradient-to-r from-[#9b0066]  to-[#ca9ac1] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300  shadow-lg shadow-pink-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Update Record</button>
-        <?php
-        }
-        ?>
-
-      </div>
+        </div>
     </div>
+</div> 
+
+</div>
+
   </form>
 </div>
 

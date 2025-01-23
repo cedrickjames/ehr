@@ -9,9 +9,9 @@ if (!isset($_SESSION['connected'])) {
 $userID = $_SESSION['userID'];
 
 if (isset($_GET['rf'])) {
-  $rfid = $_GET['rf'];
+  $idNumber = $_GET['rf'];
 } else {
-  $rfid = "not found";
+  $idNumber = "not found";
 }
 
 ?>
@@ -38,7 +38,7 @@ if (isset($_GET['rf'])) {
   <div style=" background: linear-gradient(-45deg, #05458cba,rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));" class="h-full ml-56 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50  ">
      
 <?php
-    if ($rfid == "not found") {
+    if ($idNumber == "not found") {
       echo "<div class='m-4'>";
       require_once '../employeesData/medicalRecordTable.php';
       echo "</div>";

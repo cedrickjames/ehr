@@ -22,7 +22,8 @@ if(!isset($_SESSION['connected'])){
   <link rel="stylesheet" href="../node_modules/DataTables/datatables.min.css">
 
 <link rel="stylesheet" type="text/css" href="../node_modules/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css"/>
-
+<link href="../node_modules/select2/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="../styles.css" />
 </head>
 <body  class="h-screen bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
 <?php require_once 'navbar.php';?>
@@ -43,7 +44,7 @@ if(!isset($_SESSION['connected'])){
 <script type="text/javascript" src="../node_modules/DataTables/datatables.min.js"></script>
     <script type="text/javascript" src="../node_modules/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js"></script>
     
-
+    <script src="../node_modules/select2/dist/js/select2.min.js"></script>
     <script type="text/javascript" src="index.js"></script>
 <script>
     
@@ -64,7 +65,9 @@ $(".homeIcon").attr("fill", "#4d4d4d");
 $(".empIcon").attr("fill", "#4d4d4d"); 
 
 
-
+$(".js-employees").select2({
+      tags: true
+    });
 
 
 const $targetEl = document.getElementById('sidebar');

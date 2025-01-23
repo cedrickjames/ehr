@@ -104,7 +104,7 @@ if (isset($_POST['updateFTW2'])) {
                     <tbody>
                         <?php
                         $ftwNo = 1;
-                        $sql = "SELECT f.*, e.Name, f.building AS building_transaction FROM `fittowork`f LEFT JOIN `employeespersonalinfo` e ON e.rfidNumber = f.rfid ORDER BY `id` ASC;";
+                        $sql = "SELECT f.*, e.Name, f.building AS building_transaction FROM `fittowork`f LEFT JOIN `employeespersonalinfo` e ON e.idNumber = f.idNumber ORDER BY `id` ASC;";
                         $result = mysqli_query($con, $sql);
                         while ($row = mysqli_fetch_assoc($result)) {
 

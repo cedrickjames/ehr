@@ -12,9 +12,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           // Extract the number from the button name
           $queNo = substr($key, strlen('assist_'));
 
-          $rfid =  $_POST['rfid'.$queNo];
-          $_SESSION['rfid'] = $rfid;
-          $sql = "UPDATE `queing` SET `status`='processing', `nurseAssisting` = '$userID' WHERE `rfidNumber` = '$rfid' and `status` = 'waiting'";
+          $idNumber =  $_POST['idNumber'.$queNo];
+          $_SESSION['idNumber'] = $idNumber;
+          $sql = "UPDATE `queing` SET `status`='processing', `nurseAssisting` = '$userID' WHERE `idNumber` = '$idNumber' and `status` = 'waiting'";
           $results = mysqli_query($con,$sql);
           
       }
@@ -22,9 +22,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Extract the number from the button name
         $queNo = substr($key, strlen('doneAssist_'));
 
-        $rfid =  $_POST['rfid'.$queNo];
-        // $_SESSION['rfid'] = $rfid;
-        $sql = "UPDATE `queing` SET `status`='done' WHERE `rfidNumber` = '$rfid'";
+        $idNumber =  $_POST['idNumber'.$queNo];
+        // $_SESSION['idNumber'] = $idNumber;
+        $sql = "UPDATE `queing` SET `status`='done' WHERE `idNumber` = '$idNumber'";
         $results = mysqli_query($con,$sql);
         
         // echo $queNo;
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $queNo = 1;
                         $sql="SELECT 
                         queing.*, 
-                        employeespersonalinfo.rfidNumber, 
+                        employeespersonalinfo.idNumber, 
                         employeespersonalinfo.*, 
                         COALESCE(users.name, '') AS nurse_assisting_name
                     FROM 
@@ -73,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     INNER JOIN 
                         employeespersonalinfo 
                     ON 
-                        employeespersonalinfo.rfidNumber = queing.rfidNumber
+                        employeespersonalinfo.idNumber = queing.idNumber
                     LEFT JOIN
                         users
                     ON
@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <td> <?php echo $row['Name'];?> </td>
                     <td><?php echo $row['employer'];?> </td>
                     <td> <div class="content-center flex flex-wrap justify-center gap-2">
-                    <input type="text" class="hidden" name="rfid<?php echo $queNo;?>" value="<?php echo $row['rfidNumber'];?>">
+                    <input type="text" class="hidden" name="idNumber<?php echo $queNo;?>" value="<?php echo $row['idNumber'];?>">
                     <button  <?php 
                     if($row['status'] == "waiting") {
                       echo "disabled";
@@ -221,10 +221,10 @@ Done
 <div id="dropdownDots<?php echo $queNo;?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
     <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $queNo;?>">
       <li>
-        <a href="../nurses/fitToWork.php?rf=<?php echo $row['rfidNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Fit To Work</a>
+        <a href="../nurses/fitToWork.php?rf=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Fit To Work</a>
       </li>
       <li>
-        <a href="../nurses/consultation.php?rf=<?php echo $row['rfidNumber'] ;?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Consultation</a>
+        <a href="../nurses/consultation.php?rf=<?php echo $row['idNumber'] ;?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Consultation</a>
       </li>
       <li>
         <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dental Consultation</a>
@@ -236,10 +236,10 @@ Done
         <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Pregnancy Notification</a>
       </li>
       <li>
-        <a href="../nurses/medicalRecord.php?rf=<?php echo $row['rfidNumber'] ;?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Record</a>
+        <a href="../nurses/medicalRecord.php?rf=<?php echo $row['idNumber'] ;?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Record</a>
       </li>
       <li>
-        <a href="../nurses/vaccination.php?rf=<?php echo $row['rfidNumber'] ;?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Vaccination</a>
+        <a href="../nurses/vaccination.php?rf=<?php echo $row['idNumber'] ;?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Vaccination</a>
       </li>
     </ul>
 

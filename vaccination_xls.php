@@ -19,13 +19,13 @@ include("includes/connect.php");
 
 $con->next_result();
 if($vax == "All"){
-    $sql = "SELECT v.*, e.Name FROM `vaccination` v LEFT JOIN `employeespersonalinfo` e ON e.rfidNumber = v.rfid WHERE (MONTH(v.firstDose) = '$monthNumber'
+    $sql = "SELECT v.*, e.Name FROM `vaccination` v LEFT JOIN `employeespersonalinfo` e ON e.idNumber = v.idNumber WHERE (MONTH(v.firstDose) = '$monthNumber'
     AND YEAR(v.firstDose) = '$year') OR (MONTH(v.secondDose) = '$monthNumber'
     AND YEAR(v.secondDose) = '$year') OR (MONTH(v.thirdDose) = '$monthNumber'
     AND YEAR(v.thirdDose) = '$year') ORDER BY `id` ASC";
 }
 else{
-    $sql = "SELECT v.*, e.Name FROM `vaccination` v LEFT JOIN `employeespersonalinfo` e ON e.rfidNumber = v.rfid WHERE v.vaccineType = '$vax' AND (MONTH(v.firstDose) = '$monthNumber'
+    $sql = "SELECT v.*, e.Name FROM `vaccination` v LEFT JOIN `employeespersonalinfo` e ON e.idNumber = v.idNumber WHERE v.vaccineType = '$vax' AND (MONTH(v.firstDose) = '$monthNumber'
     AND YEAR(v.firstDose) = '$year') OR (MONTH(v.secondDose) = '$monthNumber'
     AND YEAR(v.secondDose) = '$year') OR (MONTH(v.thirdDose) = '$monthNumber'
     AND YEAR(v.thirdDose) = '$year') ORDER BY `id` ASC";

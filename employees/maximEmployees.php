@@ -7,7 +7,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
 if (isset($_POST['addNewEmployeeManual'])) {
-    $rfid = $_POST['rfid'];
+    $idNumber = $_POST['rfid'];
     $idNumber = $_POST['idNumber'];
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -22,7 +22,7 @@ if (isset($_POST['addNewEmployeeManual'])) {
     $level = $_POST['level'];
     $dateHired = $_POST['dateHired'];
 
-    $addEmployee = "INSERT INTO `employeespersonalinfo`(`rfidNumber`, `idNumber`, `Name`, `email`, `age`, `sex`, `address`, `civilStatus`, `employer`, `department`, `section`, `position`, `level`, `dateHired`) VALUES ('$rfid','$idNumber','$name', '$email', '$age','$sex','$address','$civilStatus','$employer','$department','$section','$position', '$level', '$dateHired')";
+    $addEmployee = "INSERT INTO `employeespersonalinfo`(`idNumber`, `idNumber`, `Name`, `email`, `age`, `sex`, `address`, `civilStatus`, `employer`, `department`, `section`, `position`, `level`, `dateHired`) VALUES ('$idNumber','$idNumber','$name', '$email', '$age','$sex','$address','$civilStatus','$employer','$department','$section','$position', '$level', '$dateHired')";
     $resultInfo = mysqli_query($con, $addEmployee);
 
     if ($resultInfo) {
@@ -32,7 +32,7 @@ if (isset($_POST['addNewEmployeeManual'])) {
 }
 
 if (isset($_POST['editEmployeeRecord'])) {
-    $rfid = $_POST['editrfid'];
+    $idNumber = $_POST['editrfid'];
     $idNumber = $_POST['editidNumber'];
     $name = $_POST['editname'];
     $email = $_POST['editemail'];
@@ -47,7 +47,7 @@ if (isset($_POST['editEmployeeRecord'])) {
     $level = $_POST['editlevel'];
     $dateHired = $_POST['editdateHired'];
 
-    $editEmployee = "UPDATE `employeespersonalinfo` SET `rfidNumber`= '$rfid', `idNumber` = '$idNumber', `Name`= '$name', `email`='$email', `age`= '$age', `sex`= '$sex', `address`= '$address', `civilStatus`= '$civilStatus', `employer`= '$employer', `department`= '$department', `section`= '$section', `position`= '$position', `level`= '$level', `dateHired` = '$dateHired' WHERE `rfidNumber`= '$rfid' AND `employer`= '$employer'";
+    $editEmployee = "UPDATE `employeespersonalinfo` SET `idNumber`= '$idNumber', `idNumber` = '$idNumber', `Name`= '$name', `email`='$email', `age`= '$age', `sex`= '$sex', `address`= '$address', `civilStatus`= '$civilStatus', `employer`= '$employer', `department`= '$department', `section`= '$section', `position`= '$position', `level`= '$level', `dateHired` = '$dateHired' WHERE `idNumber`= '$idNumber' AND `employer`= '$employer'";
     $resultInfo = mysqli_query($con, $editEmployee);
 
     if ($resultInfo) {
@@ -74,7 +74,7 @@ if (isset($_POST['addNewEmployeesImport'])) {
     }
     foreach ($data as $row) {
         if ($count > 0) {
-            $rfid = $row['0'];
+            $idNumber = $row['0'];
             $idNumber = $row['1'];
             $name = $row['2'];
             $email = $row['3'];
@@ -89,7 +89,7 @@ if (isset($_POST['addNewEmployeesImport'])) {
             $level = $row['12'];
             $dateHired = $row['13'];
 
-            $addEmployee = "INSERT INTO `employeespersonalinfo`(`rfidNumber`, `idNumber`, `Name`, `email`, `age`, `sex`, `address`, `civilStatus`, `employer`, `department`, `section`, `position`, `level`, `dateHired`) VALUES ('$rfid','$idNumber','$name', '$email', '$age','$sex','$address','$civilStatus','$employer','$department','$section','$position', '$level', '$dateHired')";
+            $addEmployee = "INSERT INTO `employeespersonalinfo`(`idNumber`, `idNumber`, `Name`, `email`, `age`, `sex`, `address`, `civilStatus`, `employer`, `department`, `section`, `position`, `level`, `dateHired`) VALUES ('$idNumber','$idNumber','$name', '$email', '$age','$sex','$address','$civilStatus','$employer','$department','$section','$position', '$level', '$dateHired')";
             $resultInfo = mysqli_query($con, $addEmployee);
 
             if ($resultInfo) {
@@ -150,7 +150,7 @@ if (isset($_POST['addNewEmployeesImport'])) {
                                     <td><?php echo $row['employer']; ?> </td>
                                     <td>
                                         <div class="content-center flex flex-wrap justify-center gap-2">
-                                            <input type="text" class="hidden" name="rfid<?php echo $queNo; ?>" value="<?php echo $row['rfidNumber']; ?>">
+                                            <input type="text" class="hidden" name="rfid<?php echo $queNo; ?>" value="<?php echo $row['idNumber']; ?>">
                                             <button id="dropdownMenuIconButton<?php echo $queNo; ?>" data-dropdown-toggle="dropdownDots<?php echo $queNo; ?>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900  rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 bg-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
                                                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
                                                     <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
@@ -161,13 +161,13 @@ if (isset($_POST['addNewEmployeesImport'])) {
                                         <div id="dropdownDots<?php echo $queNo; ?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                                             <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $queNo; ?>">
                                                 <li>
-                                                    <a type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['rfidNumber'] ?>" data-idnumber="<?php echo $row['idNumber'] ?>" data-name="<?php echo $row['Name'] ?>" data-email="<?php echo $row['email'] ?>" data-age="<?php echo $row['age'] ?>" data-sex="<?php echo $row['sex'] ?>" data-address="<?php echo $row['address'] ?>" data-civilstatus="<?php echo $row['civilStatus'] ?>" data-employer="<?php echo $row['employer'] ?>" data-department="<?php echo $row['department'] ?>" data-section="<?php echo $row['section'] ?>" data-position="<?php echo $row['position'] ?>" data-level="<?php echo $row['level'] ?>" data-datehired="<?php echo $row['dateHired'] ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                                    <a type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['idNumber'] ?>" data-idnumber="<?php echo $row['idNumber'] ?>" data-name="<?php echo $row['Name'] ?>" data-email="<?php echo $row['email'] ?>" data-age="<?php echo $row['age'] ?>" data-sex="<?php echo $row['sex'] ?>" data-address="<?php echo $row['address'] ?>" data-civilstatus="<?php echo $row['civilStatus'] ?>" data-employer="<?php echo $row['employer'] ?>" data-department="<?php echo $row['department'] ?>" data-section="<?php echo $row['section'] ?>" data-position="<?php echo $row['position'] ?>" data-level="<?php echo $row['level'] ?>" data-datehired="<?php echo $row['dateHired'] ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
                                                 </li>
                                                 <li>
-                                                    <a href="../nurses/fitToWork.php?rf=<?php echo $row['rfidNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Fit To Work</a>
+                                                    <a href="../nurses/fitToWork.php?rf=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Fit To Work</a>
                                                 </li>
                                                 <li>
-                                                    <a href="../nurses/consultation.php?rf=<?php echo $row['rfidNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Consultation</a>
+                                                    <a href="../nurses/consultation.php?rf=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Consultation</a>
                                                 </li>
                                                 <li>
                                                     <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dental Consultation</a>
@@ -179,7 +179,7 @@ if (isset($_POST['addNewEmployeesImport'])) {
                                                     <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Pregnancy Notification</a>
                                                 </li>
                                                 <li>
-                                                    <a href="../nurses/medicalRecord.php?rf=<?php echo $row['rfidNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Record</a>
+                                                    <a href="../nurses/medicalRecord.php?rf=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Record</a>
                                                 </li>
                                             </ul>
 
@@ -225,7 +225,7 @@ if (isset($_POST['addNewEmployeesImport'])) {
             <form method="POST" class="px-4 md:px-5 py-2 text-[8pt]">
                 <div class="grid gap-2 mb-4 grid-cols-2">
                     <div class="col-span-2">
-                        <label for="rfid" class="block mb-1  text-gray-900 dark:text-white">RFID</label>
+                        <label for="rfid" class="block mb-1  text-gray-900 dark:text-white">ID Number</label>
                         <input type="text" name="rfid" id="rfid" placeholder="Please Tap the ID" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
                     </div>
                     <div class="col-span-2">
@@ -386,7 +386,7 @@ if (isset($_POST['addNewEmployeesImport'])) {
             <form method="POST" class="px-4 md:px-5 py-2 text-[8pt]">
                 <div class="grid gap-4 mb-4 grid-cols-2">
                     <div class="col-span-2">
-                        <label for="editrfid" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">RFID</label>
+                        <label for="editrfid" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID Number</label>
                         <input type="text" name="editrfid" id="editrfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="">
                     </div>
                     <div class="col-span-2">
@@ -535,7 +535,7 @@ if (isset($_POST['addNewEmployeesImport'])) {
     function exportTemplate() {
         var rows = [];
 
-        column1 = 'RFID Number';
+        column1 = 'Id Number';
         column2 = 'Id Number';
         column3 = 'Name';
         column4 = 'Email';
@@ -570,7 +570,7 @@ if (isset($_POST['addNewEmployeesImport'])) {
         );
 
         for (var i = 0, row; i < 1; i++) {
-            column1 = "Change format to 'Text'";
+            column1 = "";
             column2 = '';
             column3 = '';
             column4 = '';

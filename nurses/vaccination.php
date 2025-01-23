@@ -14,9 +14,9 @@ if (!isset($_SESSION['connected'])) {
 date_default_timezone_set('Asia/Manila');
 
 if (isset($_GET['rf'])) {
-  $rfid = $_GET['rf'];
+  $idNumber = $_GET['rf'];
 } else {
-  $rfid = "not found";
+  $idNumber = "not found";
 }
 
 if (isset($_POST['proceedToConsultation'])) {
@@ -59,7 +59,7 @@ if (isset($_POST['proceedToConsultation'])) {
   $_SESSION['ftwMeds'] = $ftwMeds;
 
 
-  header("location:consultation.php?rf=$rfid");
+  header("location:consultation.php?rf=$idNumber");
 }
 
 
@@ -92,7 +92,7 @@ $userID = $_SESSION['userID'];
 
   <div style=" background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));" class=" m-auto ml-56 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
     <?php
-    if ($rfid == "not found") {
+    if ($idNumber == "not found") {
       echo "<div class='m-2'>";
       require_once '../employeesData/vaccinationTable.php';
       echo "</div>";
@@ -137,6 +137,11 @@ $userID = $_SESSION['userID'];
     $(".vaccination").attr("fill", "#FFFFFF");
     $(".homeIcon").attr("fill", "#4d4d4d");
 
+        
+$(".js-employees").select2({
+      tags: true
+    });
+    
 
     $(".js-diagnosis").select2({
       tags: true
@@ -175,6 +180,21 @@ $userID = $_SESSION['userID'];
 
       });
     });
+
+    $(document).ready(function() {
+      $('#empname').change(function() {
+        var selectedID = $(this).find('option:selected').data('rfid');
+        $('#idNumber').val(selectedID);
+      });
+
+
+
+
+
+      
+    });
+
+
 
 
     const $tagertDiagnosisModal = document.getElementById('addDiagnosis');
@@ -253,6 +273,10 @@ $userID = $_SESSION['userID'];
 
 
     }
+
+    
+
+
   </script>
 </body>
 

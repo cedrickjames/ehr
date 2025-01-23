@@ -1,9 +1,9 @@
 
 <?php 
 if (isset($_GET['rf'])) {
-  $rfid = $_GET['rf'];
+  $idNumber = $_GET['rf'];
 } else {
-$rfid = "not found";
+$idNumber = "not found";
 
 }
 

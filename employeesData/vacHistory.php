@@ -1,9 +1,9 @@
 <?php
 
 if (isset($_GET['rf'])) {
-    $rfid = $_GET['rf'];
+    $idNumber = $_GET['rf'];
 } else {
-    $rfid = "not found";
+    $idNumber = "not found";
 }
 
 ?>
@@ -31,7 +31,7 @@ if (isset($_GET['rf'])) {
                     <tbody>
                         <?php
                         $vcnNo = 1;
-                        $sql = "SELECT * FROM `vaccination` WHERE `rfid` = '$rfid' ORDER BY `id` ASC";
+                        $sql = "SELECT * FROM `vaccination` WHERE `idNumber` = '$idNumber' ORDER BY `id` ASC";
                         $result = mysqli_query($con, $sql);
                         while ($row = mysqli_fetch_assoc($result)) {
 

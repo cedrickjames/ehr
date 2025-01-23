@@ -9,19 +9,20 @@ if(isset($_POST['addQue'])){
     $_SESSION['lastQue']=$cardNumber;
 
 // echo $cardNumber;
-$checkRFID = "SELECT * FROM `employeespersonalinfo` WHERE `rfidNumber` = '$cardNumber'";
+$checkRFID = "SELECT * FROM `employeespersonalinfo` WHERE `idNumber` = '$cardNumber'";
 $resultCheck = mysqli_query($con, $checkRFID);
 
 $num_rows = mysqli_num_rows($resultCheck);
 if($num_rows >=1){
 
-    $checkQue = "SELECT * FROM `queing` WHERE `rfidNumber` = '$cardNumber' and `status` = 'processing'";
+    $checkQue = "SELECT * FROM `queing` WHERE `idNumber` = '$cardNumber' and `status` = 'processing'";
 $resultCheckQue = mysqli_query($con, $checkQue);
 $num_rowsQue = mysqli_num_rows($resultCheckQue);
 // echo "asasd", $num_rowsQue;
 if($num_rowsQue ==0){
+  $currentDate = date('Y-m-d');
 
-    $addQue = "INSERT INTO `queing`(`rfidNumber`, `status`) VALUES ('$cardNumber','waiting')";
+    $addQue = "INSERT INTO `queing`(`idNumber`, `status`,`date`) VALUES ('$cardNumber','waiting','$currentDate')";
     $resultInfo = mysqli_query($con, $addQue);
 
 }
@@ -35,14 +36,15 @@ $resultCheck = mysqli_query($con, $checkRFID);
 $num_rows = mysqli_num_rows($resultCheck);
 if($num_rows >=1){
 
-    $checkQue = "SELECT * FROM `queing` WHERE `rfidNumber` = '$cardNumber' and `status` = 'processing'";
+    $checkQue = "SELECT * FROM `queing` WHERE `idNumber` = '$cardNumber' and `status` = 'processing'";
 $resultCheckQue = mysqli_query($con, $checkQue);
 $num_rowsQue = mysqli_num_rows($resultCheckQue);
 // echo "asasd", $num_rowsQue;
 if($num_rowsQue ==0){
   while($row=mysqli_fetch_assoc($resultCheck)){
-    $cardNumber = $row['rfidNumber'];
-    $addQue = "INSERT INTO `queing`(`rfidNumber`, `status`) VALUES ('$cardNumber','waiting')";
+    $cardNumber = $row['idNumber'];
+    $currentDate = date('Y-m-d');
+    $addQue = "INSERT INTO `queing`(`idNumber`, `status`,`date`) VALUES ('$cardNumber','waiting','$currentDate')";
     $resultInfo = mysqli_query($con, $addQue);
   }
 
@@ -123,7 +125,7 @@ if($num_rowsQue ==0){
   // echo $_SESSION['lastQue'];
         if($_SESSION['lastQue']!= ''){
           $cardNumberSession = $_SESSION['lastQue'];
-          $sqlCheckQue = "SELECT * from `employeespersonalinfo` WHERE `rfidNumber` = '$cardNumberSession' OR `idNumber` = '$cardNumberSession';";
+          $sqlCheckQue = "SELECT * from `employeespersonalinfo` WHERE `idNumber` = '$cardNumberSession' OR `idNumber` = '$cardNumberSession';";
   // echo $sqlCheckQue;
           $resultlast = mysqli_query($con,$sqlCheckQue);
           if($resultlast){
@@ -150,7 +152,7 @@ if($num_rowsQue ==0){
                 <?php
                         $sql="SELECT 
                         queing.*, 
-                        employeespersonalinfo.rfidNumber, 
+                        employeespersonalinfo.idNumber, 
                         employeespersonalinfo.*, 
                         COALESCE(users.name, '') AS nurse_assisting_name
                     FROM 
@@ -158,7 +160,7 @@ if($num_rowsQue ==0){
                     INNER JOIN 
                         employeespersonalinfo 
                     ON 
-                        employeespersonalinfo.rfidNumber = queing.rfidNumber
+                        employeespersonalinfo.idNumber = queing.idNumber
                     LEFT JOIN
                         users
                     ON

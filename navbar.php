@@ -1,8 +1,8 @@
 <?php
 if (isset($_GET['rf'])) {
-  $rfid = $_GET['rf'];
+  $idNumber = $_GET['rf'];
 } else {
-  $rfid = "not found";
+  $idNumber = "not found";
 }
 
 $userID = $_SESSION['userID'];
@@ -20,7 +20,6 @@ if (isset($_POST['registerUser'])) {
   $userName = strtolower($userName);
 
   $sql = "INSERT INTO `users`(`idNumber`, `name`, `userName`, `password`, `type`, `department`,`email`, `status`) VALUES ('$idnumber','$name','$userName','$password','$userType','$userDepartment', '$email', 1)";
-
   $results = mysqli_query($con, $sql);
 
   if ($results) {
@@ -251,13 +250,12 @@ if (isset($_POST['submitNewPassword'])) {
 
                                                                                                                                         $sql = "SELECT COUNT(*) AS row_count
                         FROM (
-                            SELECT consultation.*, 
-                                   employeespersonalinfo.rfidNumber, 
+                            SELECT employeespersonalinfo.idNumber, 
                                    employeespersonalinfo.Name, 
                                    COALESCE(users.name, '') AS nurse_assisting_name
                             FROM consultation  
                             INNER JOIN employeespersonalinfo 
-                            ON employeespersonalinfo.rfidNumber = consultation.rfid
+                            ON employeespersonalinfo.idNumber = consultation.idNumber
                             LEFT JOIN users
                             ON consultation.nurseAssisting = users.idNumber 
                             WHERE consultation.status = 'nurse2' 
@@ -282,7 +280,7 @@ $sql = "SELECT COUNT(*) AS row_count
                     INNER JOIN 
                         employeespersonalinfo 
                     ON 
-                        employeespersonalinfo.rfidNumber = consultation.rfid
+                        employeespersonalinfo.idNumber = consultation.idNumber
                     LEFT JOIN
                         users
                     ON
@@ -312,28 +310,28 @@ while ($row = mysqli_fetch_assoc($result)) {
         </a>
         <ul id="companies2" class="hidden  py-2 space-y-2">
           <li>
-            <a id="gpiside2" href="../employees/index.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
+            <a id="gpiside2" href="../employees/index.php?employer=GPI" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
           </li>
           <li>
-            <a id="maximside2" href="../employees/maxim.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
+            <a id="maximside2" href="../employees/index.php?employer=Maxim" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
           </li>
           <li>
-            <a id="nippiside2" href="../employees/nippi.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
+            <a id="nippiside2" href="../employees/index.php?employer=Nippi" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
           </li>
           <li>
-            <a id="powerlaneside2" href="../employees/powerlane.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+            <a id="powerlaneside2" href="../employees/index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
           </li>
           <li>
-            <a id="otreloside2" href="../employees/otrelo.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
+            <a id="otreloside2" href="../employees/index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
-            <a id="mangreatside2" href="../employees/mangreat.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
+            <a id="mangreatside2" href="../employees/index.php?employer=Mangreat" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
           </li>
           <li>
-            <a id="alarmside2" href="../employees/alarm.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+            <a id="alarmside2" href="../employees/index.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
           </li>
           <li>
-            <a id="canteenside2" href="../employees/canteen.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
+            <a id="canteenside2" href="../employees/index.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
           </li>
         </ul>
       </li>
@@ -357,28 +355,28 @@ while ($row = mysqli_fetch_assoc($result)) {
         </a>
         <ul id="companies3" class="hidden  py-2 space-y-2">
           <li>
-            <a id="gpiside2" href="../preEmployment/index.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
+            <a id="gpiside2" href="../preEmployment/index.php?employer=GPI" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
           </li>
           <li>
-            <a id="maximside2" href="../preEmployment/maxim.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
+            <a id="maximside2" href="../preEmployment/index.php?employer=Maxim" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
           </li>
           <li>
-            <a id="nippiside2" href="../preEmployment/nippi.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
+            <a id="nippiside2" href="../preEmployment/index.php?employer=Nippi" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
           </li>
           <li>
-            <a id="powerlaneside2" href="../preEmployment/powerlane.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+            <a id="powerlaneside2" href="../preEmployment/index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
           </li>
           <li>
-            <a id="otreloside2" href="../preEmployment/otrelo.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
+            <a id="otreloside2" href="../preEmployment/index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
-            <a id="mangreatside2" href="../employees/mangreat.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
+            <a id="mangreatside2" href="../employees/index.php?employer=Mangreat" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
           </li>
           <li>
-            <a id="alarmside2" href="../preEmployment/alarm.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+            <a id="alarmside2" href="../preEmployment/index.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
           </li>
           <li>
-            <a id="canteenside2" href="../preEmployment/canteen.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
+            <a id="canteenside2" href="../preEmployment/index.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
           </li>
         </ul>
       </li>
@@ -419,28 +417,28 @@ while ($row = mysqli_fetch_assoc($result)) {
         </a>
         <ul id="agency2" class="hidden  py-2 space-y-2">
           <li>
-            <a id="gpiside_2" href="../annualPE/index.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
+            <a id="gpiside_2" href="../annualPE/index.php?employer=GPI" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
           </li>
           <li>
-            <a id="maximside_2" href="../annualPE/maxim.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
+            <a id="maximside_2" href="../annualPE/index.php?employer=Maxim" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
           </li>
           <li>
-            <a id="nippiside_2" href="../annualPE/nippi.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
+            <a id="nippiside_2" href="../annualPE/index.php?employer=Nippi" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
           </li>
           <li>
-            <a id="powerlaneside_2" href="../annualPE/powerlane.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+            <a id="powerlaneside_2" href="../annualPE/index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
           </li>
           <li>
-            <a id="otreloside_2" href="../annualPE/otrelo.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
+            <a id="otreloside_2" href="../annualPE/index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
-            <a id="mangreatside_2" href="../annualPE/mangreat.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
+            <a id="mangreatside_2" href="../annualPE/index.php?employer=Mangreat" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
           </li>
           <li>
-            <a id="alarmside_2" href="../annualPE/alarm.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+            <a id="alarmside_2" href="../annualPE/index.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
           </li>
           <li>
-            <a id="canteenside_2" href="../annualPE/canteen.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
+            <a id="canteenside_2" href="../annualPE/index.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
           </li>
         </ul>
       </li>
@@ -459,28 +457,28 @@ while ($row = mysqli_fetch_assoc($result)) {
         </a>
         <ul id="agency12" class="hidden  py-2 space-y-2">
           <li>
-            <a id="gpiside_12" href="../bloodChem/index.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
+            <a id="gpiside_12" href="../bloodChem/index.php?employer=GPI" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
           </li>
           <li>
-            <a id="maximside_12" href="../bloodChem/maxim.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
+            <a id="maximside_12" href="../bloodChem/index.php?employer=Maxim" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
           </li>
           <li>
-            <a id="nippiside_12" href="../bloodChem/nippi.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
+            <a id="nippiside_12" href="../bloodChem/index.php?employer=Nippi" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
           </li>
           <li>
-            <a id="powerlaneside_12" href="../bloodChem/powerlane.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+            <a id="powerlaneside_12" href="../bloodChem/index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
           </li>
           <li>
-            <a id="otreloside_12" href="../bloodChem/otrelo.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
+            <a id="otreloside_12" href="../bloodChem/index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
-            <a id="mangreatside_12" href="../bloodChem/mangreat.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
+            <a id="mangreatside_12" href="../bloodChem/index.php?employer=Mangreat" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
           </li>
           <li>
-            <a id="alarmside_12" href="../bloodChem/alarm.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+            <a id="alarmside_12" href="../bloodChem/index.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
           </li>
           <li>
-            <a id="canteenside_12" href="../bloodChem/canteen.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
+            <a id="canteenside_12" href="../bloodChem/index.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
           </li>
         </ul>
       </li>
@@ -631,13 +629,12 @@ while ($row = mysqli_fetch_assoc($result)) {
 
                                                                                                                                         $sql = "SELECT COUNT(*) AS row_count
                         FROM (
-                            SELECT consultation.*, 
-                                   employeespersonalinfo.rfidNumber, 
+                            SELECT employeespersonalinfo.idNumber, 
                                    employeespersonalinfo.Name, 
                                    COALESCE(users.name, '') AS nurse_assisting_name
                             FROM consultation  
                             INNER JOIN employeespersonalinfo 
-                            ON employeespersonalinfo.rfidNumber = consultation.rfid
+                            ON employeespersonalinfo.idNumber = consultation.idNumber
                             LEFT JOIN users
                             ON consultation.nurseAssisting = users.idNumber 
                             WHERE consultation.status = 'nurse2'
@@ -662,7 +659,7 @@ $sql = "SELECT COUNT(*) AS row_count
                     INNER JOIN 
                         employeespersonalinfo 
                     ON 
-                        employeespersonalinfo.rfidNumber = consultation.rfid
+                        employeespersonalinfo.idNumber = consultation.idNumber
                     LEFT JOIN
                         users
                     ON
@@ -692,28 +689,28 @@ while ($row = mysqli_fetch_assoc($result)) {
         </a>
         <ul id="companies1" class="hidden  py-2 space-y-2">
           <li>
-            <a id="gpiside1" href="../employees/index.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
+            <a id="gpiside1" href="../employees/index.php?employer=GPI" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
           </li>
           <li>
-            <a id="maximside1" href="../employees/maxim.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
+            <a id="maximside1" href="../employees/index.php?employer=Maxim" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
           </li>
           <li>
-            <a id="nippiside1" href="../employees/nippi.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
+            <a id="nippiside1" href="../employees/index.php?employer=Nippi" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
           </li>
           <li>
-            <a id="powerlaneside1" href="../employees/powerlane.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+            <a id="powerlaneside1" href="../employees/index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
           </li>
           <li>
-            <a id="otreloside1" href="../employees/otrelo.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
+            <a id="otreloside1" href="../employees/index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
-            <a id="mangreatside1" href="../employees/mangreat.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
+            <a id="mangreatside1" href="../employees/index.php?employer=Mangreat" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
           </li>
           <li>
-            <a id="alarmside1" href="../employees/alarm.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+            <a id="alarmside1" href="../employees/index.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
           </li>
           <li>
-            <a id="canteenside1" href="../employees/canteen.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
+            <a id="canteenside1" href="../employees/index.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
           </li>
         </ul>
       </li>
@@ -737,28 +734,28 @@ while ($row = mysqli_fetch_assoc($result)) {
         </a>
         <ul id="companies" class="hidden  py-2 space-y-2">
           <li>
-            <a id="gpiside" href="../preEmployment/index.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
+            <a id="gpiside" href="../preEmployment/index.php?employer=GPI" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
           </li>
           <li>
-            <a id="maximside" href="../preEmployment/maxim.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
+            <a id="maximside" href="../preEmployment/index.php?employer=Maxim" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
           </li>
           <li>
-            <a id="nippiside" href="../preEmployment/nippi.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
+            <a id="nippiside" href="../preEmployment/index.php?employer=Nippi" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
           </li>
           <li>
-            <a id="powerlaneside" href="../preEmployment/powerlane.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+            <a id="powerlaneside" href="../preEmployment/index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
           </li>
           <li>
-            <a id="otreloside" href="../preEmployment/otrelo.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
+            <a id="otreloside" href="../preEmployment/index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
-            <a id="mangreatside" href="../employees/mangreat.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
+            <a id="mangreatside" href="../preEmployment/index.php?employer=Mangreat" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
           </li>
           <li>
-            <a id="alarmside" href="../preEmployment/alarm.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+            <a id="alarmside" href="../preEmployment/index.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
           </li>
           <li>
-            <a id="canteenside" href="../preEmployment/canteen.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
+            <a id="canteenside" href="../preEmployment/index.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
           </li>
         </ul>
       </li>
@@ -799,28 +796,28 @@ while ($row = mysqli_fetch_assoc($result)) {
         </a>
         <ul id="agency" class="hidden  py-2 space-y-2">
           <li>
-            <a id="gpiside_" href="../annualPE/index.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
+            <a id="gpiside_" href="../annualPE/index.php?employer=GPI" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
           </li>
           <li>
-            <a id="maximside_" href="../annualPE/maxim.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
+            <a id="maximside_" href="../annualPE/index.php?employer=Maxim" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
           </li>
           <li>
-            <a id="nippiside_" href="../annualPE/nippi.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
+            <a id="nippiside_" href="../annualPE/index.php?employer=Nippi" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
           </li>
           <li>
-            <a id="powerlaneside_" href="../annualPE/powerlane.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+            <a id="powerlaneside_" href="../annualPE/index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
           </li>
           <li>
-            <a id="otreloside_" href="../annualPE/otrelo.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
+            <a id="otreloside_" href="../annualPE/index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
-            <a id="mangreatside_" href="../annualPE/mangreat.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
+            <a id="mangreatside_" href="../annualPE/index.php?employer=Mangreat" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
           </li>
           <li>
-            <a id="alarmside_" href="../annualPE/alarm.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+            <a id="alarmside_" href="../annualPE/index.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
           </li>
           <li>
-            <a id="canteenside_" href="../annualPE/canteen.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
+            <a id="canteenside_" href="../annualPE/index.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
           </li>
         </ul>
       </li>
@@ -839,28 +836,28 @@ while ($row = mysqli_fetch_assoc($result)) {
         </a>
         <ul id="agency1" class="hidden  py-2 space-y-2">
           <li>
-            <a id="gpiside_1" href="../bloodChem/index.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
+            <a id="gpiside_1" href="../bloodChem/index.php?employer=GPI" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
           </li>
           <li>
-            <a id="maximside_1" href="../bloodChem/maxim.php" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
+            <a id="maximside_1" href="../bloodChem/index.php?employer=Maxim" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
           </li>
           <li>
-            <a id="nippiside_1" href="../bloodChem/nippi.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
+            <a id="nippiside_1" href="../bloodChem/index.php?employer=Nippi" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
           </li>
           <li>
-            <a id="powerlaneside_1" href="../bloodChem/powerlane.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+            <a id="powerlaneside_1" href="../bloodChem/index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
           </li>
           <li>
-            <a id="otreloside_1" href="../bloodChem/otrelo.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
+            <a id="otreloside_1" href="../bloodChem/index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
-            <a id="mangreatside_1" href="../bloodChem/mangreat.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
+            <a id="mangreatside_1" href="../bloodChem/index.php?employer=Mangreat" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
           </li>
           <li>
-            <a id="alarmside_1" href="../bloodChem/alarm.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+            <a id="alarmside_1" href="../bloodChem/index.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
           </li>
           <li>
-            <a id="canteenside_1" href="../bloodChem/canteen.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
+            <a id="canteenside_1" href="../bloodChem/index.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
           </li>
         </ul>
       </li>

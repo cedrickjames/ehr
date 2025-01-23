@@ -4,13 +4,13 @@ include("../includes/connect.php");
 
 
 if (isset($_GET['rf'])) {
-  $rfid = $_GET['rf'];
+  $idNumber = $_GET['rf'];
 } else {
-  $rfid = "not found";
+  $idNumber = "not found";
 }
 
-if ($rfid == "not found") {
-  // $rfid;
+if ($idNumber == "not found") {
+  // $idNumber;
   $name = "Undefined";
   $age = 0;
   $sex = 'n/a';
@@ -22,11 +22,11 @@ if ($rfid == "not found") {
   $dateHired = '01/01/1999';
 }
 
-// $sql1 = "SELECT employeespersonalinfo.rfidNumber, employeespersonalinfo.*
+// $sql1 = "SELECT employeespersonalinfo.idNumber, employeespersonalinfo.*
 // FROM queing
-// INNER JOIN employeespersonalinfo ON employeespersonalinfo.rfidNumber = queing.rfidNumber where employeespersonalinfo.rfidNumber = '$rfid';";
+// INNER JOIN employeespersonalinfo ON employeespersonalinfo.idNumber = queing.idNumber where employeespersonalinfo.idNumber = '$idNumber';";
 $sql1 = "SELECT*
-FROM employeespersonalinfo where rfidNumber = '$rfid';";
+FROM employeespersonalinfo where idNumber = '$idNumber';";
 $result = mysqli_query($con, $sql1);
 while ($userRow = mysqli_fetch_assoc($result)) {
   $name = $userRow['Name'];

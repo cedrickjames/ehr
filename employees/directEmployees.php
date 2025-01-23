@@ -33,7 +33,7 @@ if (isset($_POST['addNewEmployeeManual'])) {
 }
 
 if (isset($_POST['editEmployeeRecord'])) {
-    // $rfid = $_POST['editrfid'];
+    // $idNumber = $_POST['editrfid'];
     $idNumber = $_POST['editidNumber'];
     $name = $_POST['editname'];
     $email = $_POST['editemail'];
@@ -172,7 +172,7 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
 ?>
 <div class="text-[9px] 2xl:text-lg mb-5">
     <div class="flex justify-between">
-        <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Direct Employees</span></p>
+        <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]"><?php echo $employer ; ?> Employees</span></p>
 
         <button type="button" data-dropdown-toggle="options" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800  rounded-lg  px-5 py-2.5 text-center me-2 mb-2">Options</button>
         <div id="options" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
@@ -208,7 +208,7 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
                         <tbody>
                             <?php
                             $queNo = 1;
-                            $sql = "SELECT * FROM `employeespersonalinfo` WHERE `employer` = 'GPI' ORDER BY `Name` ASC; 
+                            $sql = "SELECT * FROM `employeespersonalinfo` WHERE `employer` = '$employer' ORDER BY `Name` ASC; 
                     ";
                             $result = mysqli_query($con, $sql);
                             while ($row = mysqli_fetch_assoc($result)) {
@@ -250,6 +250,10 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
                                                 <li>
                                                     <a href="../nurses/medicalRecord.php?rf=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Record</a>
                                                 </li>
+                                                
+                                                <li>
+                                                <a href="../nurses/vaccination.php?rf=<?php echo $row['idNumber'] ;?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Vaccination</a>
+                                            </li>
                                             </ul>
 
                                         </div>
@@ -339,7 +343,7 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label for="employer" class="block mb-1  text-gray-900 dark:text-white">Employer</label>
-                        <input type="text" name="employer" value="GPI" id="employer" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                        <input type="text" name="employer" value="<?php echo $employer; ?>" id="employer" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label for="department" class="block mb-1  text-gray-900 dark:text-white">Department</label>
@@ -442,7 +446,7 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-2 border-b rounded-t dark:border-gray-600">
                 <h3 class=" font-semibold text-gray-900 dark:text-white">
-                    Import Direct Employees
+                    Import <?php echo $employer ; ?> Employees
                 </h3>
                 <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="importDirectEmployees">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -481,7 +485,7 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
                     <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
                     </svg>
-                    Import Direct Employees
+                    Import <?php echo $employer ; ?> Employees
                 </button>
             </form>
         </div>
@@ -510,7 +514,7 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
             <form method="POST" class="px-4 md:px-5 py-2 text-[8pt]">
                 <div class="grid gap-4 mb-4 grid-cols-2">
                     <!-- <div class="col-span-2">
-                        <label for="editrfid" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">RFID</label>
+                        <label for="editrfid" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID Number</label>
                         <input type="text" name="editrfid" id="editrfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="">
                     </div> -->
                     <div class="col-span-2">
@@ -556,7 +560,7 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label for="editemployer" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employer</label>
-                        <input type="text" name="editemployer" id="editemployer" value="GPI" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="" readonly>
+                        <input type="text" name="editemployer" id="editemployer" value="<?php echo $employer; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="" readonly>
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label for="editdepartment" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Department</label>
@@ -709,7 +713,7 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
             column6 = '';
             column7 = '';
             column8 = '';
-            column9 = 'GPI';
+            column9 = '<?php echo $employer; ?>';
             column10 = '1';
             column11 = '';
             column12 = '';
@@ -748,7 +752,7 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
         var encodedUri = encodeURI(csvContent);
         var link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "GPI Employees Template.csv");
+        link.setAttribute("download", "<?php echo $employer; ?> Employees Template.csv");
         document.body.appendChild(link);
         /* download the data file named "Stock_Price_Report.csv" */
         link.click();

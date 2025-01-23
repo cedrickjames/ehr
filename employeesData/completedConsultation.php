@@ -6,9 +6,9 @@ if (isset($_GET['dcnsltn'])) {
   $dcnsltn = "not found";
 }
 if (isset($_GET['rf'])) {
-  $rfid = $_GET['rf'];
+  $idNumber = $_GET['rf'];
 } else {
-  $rfid = "not found";
+  $idNumber = "not found";
 }
 
 $sqluserinfo = "SELECT * from consultation WHERE id = '$dcnsltn';";
@@ -109,7 +109,7 @@ if (isset($_POST['updateConsultation'])) {
 
   if ($results) {
     echo "<script>alert('Successfull') </script>";
-    echo "<script> location.href='completedConsultation.php?rf=",$rfid,"&dcnsltn=",$dcnsltn,"'; </script>";
+    echo "<script> location.href='completedConsultation.php?rf=",$idNumber,"&dcnsltn=",$dcnsltn,"'; </script>";
   }
 }
 
@@ -604,7 +604,7 @@ if (isset($_POST['updateConsultation'])) {
           Update</button>
           <?php if ($havemedCert == '1') {
             ?>
-            <a type="button"  href='../medicalCertificate.php?rf=<?php echo $rfid;?>&mdcrtid=<?php echo $dcnsltn;?>' target='_blank' class="text-center inline-flex items-center text-white bg-gradient-to-r from-[#115400]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[9px] 2xl:text-xl px-5 py-1 text-center me-2 mb-2">
+            <a type="button"  href='../medicalCertificate.php?rf=<?php echo $idNumber;?>&mdcrtid=<?php echo $dcnsltn;?>' target='_blank' class="text-center inline-flex items-center text-white bg-gradient-to-r from-[#115400]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[9px] 2xl:text-xl px-5 py-1 text-center me-2 mb-2">
           <?php require_once '../src/navBarIcons/medcert.svg' ?>
           Med Cert</a>
             <?php

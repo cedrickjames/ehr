@@ -11,9 +11,9 @@ include ("includes/connect.php");
 
 
       if (isset($_GET['rf'])) {
-        $rfid = $_GET['rf'];
+        $idNumber = $_GET['rf'];
     } else {
-      $rfid = "not found";
+      $idNumber = "not found";
     
     }
     
@@ -24,7 +24,7 @@ include ("includes/connect.php");
       
       }
       $sqluserinfo = "SELECT medicalcertificate.*,  
-      employeespersonalinfo.rfidNumber,
+      employeespersonalinfo.idNumber,
        employeespersonalinfo.*
       FROM 
           medicalcertificate  
@@ -32,7 +32,7 @@ include ("includes/connect.php");
           employeespersonalinfo 
      
       ON
-          medicalcertificate.rfid  = employeespersonalinfo.rfidNumber WHERE medicalcertificate.consultationId = $mdcrtId ORDER BY
+          medicalcertificate.idNumber  = employeespersonalinfo.idNumber WHERE medicalcertificate.consultationId = $mdcrtId ORDER BY
 medicalcertificate.id ASC; ";
       $resultInfo = mysqli_query($con, $sqluserinfo);
       while($userRow = mysqli_fetch_assoc($resultInfo)){

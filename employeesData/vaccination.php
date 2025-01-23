@@ -4,9 +4,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 if (isset($_GET['rf'])) {
-  $rfid = $_GET['rf'];
+  $idNumber = $_GET['rf'];
 } else {
-  $rfid = "not found";
+  $idNumber = "not found";
 }
 
 $currentDate = date('Y-m-d');
@@ -14,7 +14,7 @@ $currentDate = date('Y-m-d');
 if (isset($_GET['vcn'])) {
   $vcn = $_GET['vcn'];
 
-  $sqlcnslt = "SELECT * FROM `vaccination` WHERE `rfid` = '$rfid' and `id` = '$vcn' ORDER BY `id` ASC;";
+  $sqlcnslt = "SELECT * FROM `vaccination` WHERE `idNumber` = '$idNumber' and `id` = '$vcn' ORDER BY `id` ASC;";
   $resultcnslt = mysqli_query($con, $sqlcnslt);
   while ($row = mysqli_fetch_assoc($resultcnslt)) {
 
@@ -43,7 +43,7 @@ if (isset($_GET['vcn'])) {
 
 
 if (isset($_POST['addVax'])) {
-  $rfid = $_GET['rf'];
+  $idNumber = $_GET['rf'];
   $vaxType = $_POST['vaxType'];
   $vaxBrand = $_POST['vaxBrand'];
   $firstDose = $_POST['firstDose'];
@@ -54,11 +54,11 @@ if (isset($_POST['addVax'])) {
   $provider3 = $_POST['provider3'];
   $remarks = $_POST['remarks'];
  
-  $sql = "INSERT INTO `vaccination`( `rfid`, `vaccineType`, `vaccineBrand`, `firstDose`, `provider1`,`secondDose`, `provider2`, `thirdDose`,`provider3`, `remarks`) VALUES ('$rfid','$vaxType','$vaxBrand','$firstDose','$provider1','$secondDose','$provider2','$thirdDose','$provider3','$remarks')";
+  $sql = "INSERT INTO `vaccination`( `idNumber`, `vaccineType`, `vaccineBrand`, `firstDose`, `provider1`,`secondDose`, `provider2`, `thirdDose`,`provider3`, `remarks`) VALUES ('$idNumber','$vaxType','$vaxBrand','$firstDose','$provider1','$secondDose','$provider2','$thirdDose','$provider3','$remarks')";
   $results = mysqli_query($con, $sql);
   if ($results) {
     echo "<script>alert('Record added succesfully!')</script>";
-    echo "<script> location.href='../nurses/vaccination.php?rf=$rfid'; </script>";
+    echo "<script> location.href='../nurses/vaccination.php?rf=$idNumber'; </script>";
   } else {
     echo "<script>alert('There's a problem saving to database.')</script>";
   }
@@ -66,7 +66,7 @@ if (isset($_POST['addVax'])) {
 
 
 if (isset($_POST['updateVax'])) {
-  $rfid = $_GET['rf'];
+  $idNumber = $_GET['rf'];
   $vcn = $_GET['vcn'];
   $vaxType = $_POST['vaxType'];
   $vaxBrand = $_POST['vaxBrand'];
@@ -82,7 +82,7 @@ if (isset($_POST['updateVax'])) {
   $results = mysqli_query($con, $sql);
   if ($results) {
     echo "<script>alert('Record updated succesfully!')</script>";
-    echo "<script> location.href='../nurses/vaccination.php?rf=$rfid'; </script>";
+    echo "<script> location.href='../nurses/vaccination.php?rf=$idNumber'; </script>";
   } else {
     echo "<script>alert('There's a problem updating.')</script>";
   }

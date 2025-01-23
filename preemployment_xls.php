@@ -14,13 +14,13 @@ include("includes/connect.php");
 
 $con->next_result();
 if($employer == "All"){
-    $sql = "SELECT p.*, e.employer, e.Name, e.section, e.rfidNumber FROM preemployment p 
-    JOIN employeespersonalinfo e ON e.rfidNumber = p.rfidNumber WHERE MONTH(p.dateReceived) = '$monthNumber'
+    $sql = "SELECT p.*, e.employer, e.Name, e.section, e.idNumber FROM preemployment p 
+    JOIN employeespersonalinfo e ON e.idNumber = p.idNumber WHERE MONTH(p.dateReceived) = '$monthNumber'
     AND YEAR(p.dateReceived) = '$year' ORDER BY `id` ASC";
 }
 else{
-    $sql = "SELECT p.*, e.employer, e.Name, e.section, e.rfidNumber FROM preemployment p 
-    JOIN employeespersonalinfo e ON e.rfidNumber = p.rfidNumber WHERE e.employer = '$employer' AND MONTH(p.dateReceived) = '$monthNumber'
+    $sql = "SELECT p.*, e.employer, e.Name, e.section, e.idNumber FROM preemployment p 
+    JOIN employeespersonalinfo e ON e.idNumber = p.idNumber WHERE e.employer = '$employer' AND MONTH(p.dateReceived) = '$monthNumber'
     AND YEAR(p.dateReceived) = '$year' ORDER BY `id` ASC";
 }
 

@@ -53,7 +53,6 @@ $("#sidehome").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]
 $("#sidehistory").removeClass("bg-gray-200");
 $("#sideMyRequest").removeClass("bg-gray-200");
 $("#sidepms").removeClass("bg-gray-200");
-
 $("#sidehome1").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
 $("#sidehistory1").removeClass("bg-gray-200");
 $("#sideMyRequest1").removeClass("bg-gray-200");

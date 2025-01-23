@@ -15,10 +15,10 @@ include("includes/connect.php");
 
 $con->next_result();
 if ($employer == "All") {
-    $sql = "SELECT p.*, e.employer, e.Name, e.section, e.department,e.building, e.rfidNumber , e.sex, p.building AS bldg_transaction FROM bloodchem p JOIN employeespersonalinfo e ON e.rfidNumber = p.rfid WHERE MONTH(p.date) = '$monthNumber'
+    $sql = "SELECT p.*, e.employer, e.Name, e.section, e.department,e.building, e.idNumber , e.sex, p.building AS bldg_transaction FROM bloodchem p JOIN employeespersonalinfo e ON e.idNumber = p.idNumber WHERE MONTH(p.date) = '$monthNumber'
     AND YEAR(p.date) = '$year' ORDER BY `id` ASC";
 } else {
-    $sql = "SELECT p.*, e.employer, e.Name, e.section, e.department,e.building, e.rfidNumber , e.sex, p.building AS bldg_transaction FROM bloodchem p JOIN employeespersonalinfo e ON e.rfidNumber = p.rfid WHERE e.employer = '$employer' AND MONTH(p.date) = '$monthNumber'
+    $sql = "SELECT p.*, e.employer, e.Name, e.section, e.department,e.building, e.idNumber , e.sex, p.building AS bldg_transaction FROM bloodchem p JOIN employeespersonalinfo e ON e.idNumber = p.idNumber WHERE e.employer = '$employer' AND MONTH(p.date) = '$monthNumber'
     AND YEAR(p.date) = '$year' ORDER BY `id` ASC";
 }
 

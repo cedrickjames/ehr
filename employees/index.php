@@ -6,6 +6,12 @@ if (!isset($_SESSION['connected'])) {
   header("location: ../logout.php");
 }
 
+if (isset($_GET['employer'])) {
+  $employer = $_GET['employer'];
+} else {
+  $employer = "not found";
+}
+
 ?>
 
 
@@ -51,15 +57,51 @@ if (!isset($_SESSION['connected'])) {
 
   <script type="text/javascript" src="index.js"></script>
   <script>
-    $("#empside").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
-    $("#gpiside1").addClass("bg-[#82c7cc]");
 
+    <?php
+    $sidebar1;
+
+    if($employer=="GPI"){
+      $sidebar1 ="#gpiside1";
+    }
+    else if($employer=="Maxim"){
+      $sidebar1 ="#maximside1";
+
+    }
+    else if($employer=="Nippi"){
+      $sidebar1 ="#nippiside1";
+
+    }
+    else if($employer=="Powerlane"){
+      $sidebar1 ="#powerlaneside1";
+
+    }
+    else if($employer=="Otrelo"){
+      $sidebar1 ="#otreloside1";
+
+    }
+    else if($employer=="Alarm"){
+      $sidebar1 ="#alarmside1";
+
+    }
+    else if($employer=="Mangreat"){
+      $sidebar1 ="#mangreatside1";
+
+    }
+    else if($employer=="Canteen"){
+      $sidebar1 ="#canteenside1";
+
+    }
+    ?>
+
+    $("<?php echo $sidebar1; ?>").addClass("bg-[#82c7cc]");
+    $("#empside").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
 
     $("#sidehistory").removeClass("bg-gray-200");
     $("#sideMyRequest").removeClass("bg-gray-200");
     $("#sidepms").removeClass("bg-gray-200");
 
-    $("#preempside1").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
+    $("#empside1").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
     $("#sidehistory1").removeClass("bg-gray-200");
     $("#sideMyRequest1").removeClass("bg-gray-200");
     $("#sidepms1").removeClass("bg-gray-200");

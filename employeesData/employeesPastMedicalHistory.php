@@ -3,9 +3,9 @@
 
 
 if (isset($_GET['rf'])) {
-    $rfid = $_GET['rf'];
+    $idNumber = $_GET['rf'];
 } else {
-    $rfid = "not found";
+    $idNumber = "not found";
 }
 
 
@@ -50,11 +50,11 @@ if (isset($_POST['editPastMed'])) {
     $abortionMiscarriage =  $_POST['abortion'];
     $multiplePregnancies =  $_POST['multiplePregnancies'];
 
-    $query = mysqli_query($con, "SELECT * FROM `pastmedicalhistory` WHERE `rfidNumber`= '$rfid'");
+    $query = mysqli_query($con, "SELECT * FROM `pastmedicalhistory` WHERE `idNumber`= '$idNumber'");
     $numrows = mysqli_num_rows($query);
 
     if ($numrows > 0) {
-        $sql = "UPDATE `pastmedicalhistory` SET `smoking`='$smoking',`drugs`='$drugs',`alcohol`='$alcohol',`asthma`='$asthma',`ptb`='$ptb',`diabetes`='$diabetes',`heartDisease`='$heartDisease',`hpn`='$hpn',`renalDisease`='$renalDisease',`adequate`='$adequate',`inadequate`='$inadequate',`menorrhagia`='$menorrhagia',`metrorrhagia`='$metrorrhagia',`amenorrhea`='$amenorrhea',`dysmenorrhea`='$dysmenorrhea',`othersFH`='$othersFHInput',`pastAndPresentMedHistory`='$pastPresentMed',`far`='$far',`near`='$near',`surgicalHistory`='$surgicalHistory',`presentMedication`='$presentMedication',`allergies`='$allergies',`intervalMH`='$interval',`duration`='$duration',`flow`='$flow',`gravida`='$gravida',`para`='$para',`termBirth`='$termBirth',`livingChildren`='$livingChildren',`preTermBirth`='$preTermBirth',`abortion`='$abortionMiscarriage',`multiplePregnancies`='$multiplePregnancies' WHERE `rfidNumber` = '$rfid';";
+        $sql = "UPDATE `pastmedicalhistory` SET `smoking`='$smoking',`drugs`='$drugs',`alcohol`='$alcohol',`asthma`='$asthma',`ptb`='$ptb',`diabetes`='$diabetes',`heartDisease`='$heartDisease',`hpn`='$hpn',`renalDisease`='$renalDisease',`adequate`='$adequate',`inadequate`='$inadequate',`menorrhagia`='$menorrhagia',`metrorrhagia`='$metrorrhagia',`amenorrhea`='$amenorrhea',`dysmenorrhea`='$dysmenorrhea',`othersFH`='$othersFHInput',`pastAndPresentMedHistory`='$pastPresentMed',`far`='$far',`near`='$near',`surgicalHistory`='$surgicalHistory',`presentMedication`='$presentMedication',`allergies`='$allergies',`intervalMH`='$interval',`duration`='$duration',`flow`='$flow',`gravida`='$gravida',`para`='$para',`termBirth`='$termBirth',`livingChildren`='$livingChildren',`preTermBirth`='$preTermBirth',`abortion`='$abortionMiscarriage',`multiplePregnancies`='$multiplePregnancies' WHERE `idNumber` = '$idNumber';";
         $results = mysqli_query($con, $sql);
 
         if ($results) {
@@ -64,8 +64,8 @@ if (isset($_POST['editPastMed'])) {
             echo "<script>alert('There's a problem updating the medical record.') </script>";
         }
     } else {
-        $sql = "INSERT INTO `pastmedicalhistory`(`rfidNumber`, `smoking`, `drugs`, `alcohol`, `asthma`, `ptb`, `diabetes`, `heartDisease`, `hpn`, `renalDisease`, `othersFH`, `pastAndPresentMedHistory`, `far`, `near`, `adequate`, `inadequate`, `surgicalHistory`, `presentMedication`, `allergies`, `intervalMH`, `duration`, `flow`, `menorrhagia`, `metrorrhagia`, `amenorrhea`, `dysmenorrhea`, `gravida`, `para`, `termBirth`, `livingChildren`, `preTermBirth`, `abortion`, `multiplePregnancies`) 
-        VALUES ('$rfid','$smoking','$drugs','$alcohol','$asthma','$ptb','$diabetes','$heartDisease','$hpn','$renalDisease','$othersFHInput','$pastPresentMed','$far','$near','$adequate','$inadequate','$surgicalHistory','$presentMedication','$allergies','$interval','$duration','$flow','$menorrhagia','$metrorrhagia','$amenorrhea','$dysmenorrhea','$gravida','$para','$termBirth','$livingChildren','$preTermBirth','$abortionMiscarriage','$multiplePregnancies')";
+        $sql = "INSERT INTO `pastmedicalhistory`(`idNumber`, `smoking`, `drugs`, `alcohol`, `asthma`, `ptb`, `diabetes`, `heartDisease`, `hpn`, `renalDisease`, `othersFH`, `pastAndPresentMedHistory`, `far`, `near`, `adequate`, `inadequate`, `surgicalHistory`, `presentMedication`, `allergies`, `intervalMH`, `duration`, `flow`, `menorrhagia`, `metrorrhagia`, `amenorrhea`, `dysmenorrhea`, `gravida`, `para`, `termBirth`, `livingChildren`, `preTermBirth`, `abortion`, `multiplePregnancies`) 
+        VALUES ('$idNumber','$smoking','$drugs','$alcohol','$asthma','$ptb','$diabetes','$heartDisease','$hpn','$renalDisease','$othersFHInput','$pastPresentMed','$far','$near','$adequate','$inadequate','$surgicalHistory','$presentMedication','$allergies','$interval','$duration','$flow','$menorrhagia','$metrorrhagia','$amenorrhea','$dysmenorrhea','$gravida','$para','$termBirth','$livingChildren','$preTermBirth','$abortionMiscarriage','$multiplePregnancies')";
 
         $results = mysqli_query($con, $sql);
 
@@ -114,9 +114,13 @@ $preTermBirth = "";
 $abortionMiscarriage = "";
 $multiplePregnancies = "";
 
-$sql1 = "SELECT pastmedicalhistory.rfidNumber, pastmedicalhistory.*
-FROM queing
-INNER JOIN pastmedicalhistory ON pastmedicalhistory.rfidNumber = queing.rfidNumber where pastmedicalhistory.rfidNumber = '$rfid';";
+// $sql1 = "SELECT pastmedicalhistory.idNumber, pastmedicalhistory.*
+// FROM queing
+// INNER JOIN pastmedicalhistory ON pastmedicalhistory.idNumber = queing.idNumber where pastmedicalhistory.idNumber = '$idNumber';";
+
+$sql1 = "SELECT *
+FROM pastmedicalhistory where idNumber = '$idNumber';";
+// echo $sql1;
 $result = mysqli_query($con, $sql1);
 while ($userRow = mysqli_fetch_assoc($result)) {
 
@@ -307,11 +311,11 @@ while ($userRow = mysqli_fetch_assoc($result)) {
             <div class="col-span-2 gap-2 flex">
                 <div class=" ">
                     <label for="base-input" class="block mb-0 2xl:mb-2 text-[9px] 2xl:text-sm font-medium text-gray-900 ">Far: </label>
-                    <input type="text" name="far" value="<?php echo $far; ?>" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
+                    <input type="text" name="far" value="<?php echo $far; ?>"  class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
                 </div>
                 <div class="">
                     <label for="base-input" class="block mb-0 2xl:mb-2 text-[9px] 2xl:text-sm font-medium text-gray-900 ">Near</label>
-                    <input type="text" id="base-input" name="near" value="<?php echo $near; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
+                    <input type="text"  name="near" value="<?php echo $near; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
                 </div>
 
             </div>
@@ -342,26 +346,26 @@ while ($userRow = mysqli_fetch_assoc($result)) {
 
             </ul>
             <h3 class="my-auto mb-4 font-semibold text-gray-900 ">E. Surgical History:</h3>
-            <input type="text" name="surgicalHistory" value="<?php echo $surgicalHistory; ?>" id="base-input" class="col-span-2 bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
+            <input type="text" name="surgicalHistory" value="<?php echo $surgicalHistory; ?>"  class="col-span-2 bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
             <h3 class="my-auto mb-4 font-semibold text-gray-900 ">F. Present Medication: </h3>
-            <input type="text" name="presentMedication" value="<?php echo $presentMedication; ?>" id="base-input" class="col-span-2 bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
+            <input type="text" name="presentMedication" value="<?php echo $presentMedication; ?>"  class="col-span-2 bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
             <h3 class="my-auto mb-4 font-semibold text-gray-900 ">G. Allergies: </h3>
-            <input type="text" name="allergies" value="<?php echo $allergies; ?>" id="base-input" class="col-span-2 bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
+            <input type="text" name="allergies" value="<?php echo $allergies; ?>"  class="col-span-2 bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
 
             <h3 class="col-span-3 my-auto mb-4 font-semibold text-gray-900  italic">H. For Women only: </h3>
             <h3 class=" font-semibold text-gray-900  ">Menstrual History:</h3>
             <div class="col-span-2 gap-2 flex">
                 <div class="mb-5 ">
                     <label for="base-input" class="block mb-0 2xl:mb-2 text-[9px] 2xl:text-sm font-medium text-gray-900 ">Interval: </label>
-                    <input type="text" name="intervalMH" value="<?php echo $interval; ?>" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
+                    <input type="text" name="intervalMH" value="<?php echo $interval; ?>"  class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
                 </div>
                 <div class="mb-5">
                     <label for="base-input" class="block mb-0 2xl:mb-2 text-[9px] 2xl:text-sm font-medium text-gray-900 ">Duration</label>
-                    <input type="text" name="duration" value="<?php echo $duration; ?>" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
+                    <input type="text" name="duration" value="<?php echo $duration; ?>"  class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
                 </div>
                 <div class="mb-5">
                     <label for="base-input" class="block mb-0 2xl:mb-2 text-[9px] 2xl:text-sm font-medium text-gray-900 ">Flow:</label>
-                    <input type="text" name="flow" value="<?php echo $flow; ?>" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
+                    <input type="text" name="flow" value="<?php echo $flow; ?>"  class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
                 </div>
             </div>
 
@@ -413,37 +417,37 @@ while ($userRow = mysqli_fetch_assoc($result)) {
             <div class="col-span-2 gap-2 flex">
                 <div class=" ">
                     <label for="base-input" class="block mb-0 2xl:mb-2 text-[9px] 2xl:text-sm font-medium text-gray-900 ">Gravida:</label>
-                    <input type="text" name="gravida" id="base-input" value="<?php echo $gravida; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
+                    <input type="text" name="gravida"  value="<?php echo $gravida; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
                 </div>
                 <div class="">
                     <label for="base-input" class="block mb-0 2xl:mb-2 text-[9px] 2xl:text-sm font-medium text-gray-900 ">Para:</label>
-                    <input type="text" name="para" id="base-input" value="<?php echo $para; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
+                    <input type="text" name="para"  value="<?php echo $para; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
                 </div>
                 <div class="">
                     <label for="base-input" class="block mb-0 2xl:mb-2 text-[9px] 2xl:text-sm font-medium text-gray-900 ">Term Birth: </label>
-                    <input type="text" name="termBirth" id="base-input" value="<?php echo $termBirth; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
+                    <input type="text" name="termBirth"  value="<?php echo $termBirth; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
                 </div>
             </div>
             <div></div>
             <div class="col-span-2 gap-2 flex">
                 <div class=" w-1/2 ">
                     <label for="base-input" class="block mb-0 2xl:mb-2 text-[9px] 2xl:text-sm font-medium text-gray-900 ">Living Children: </label>
-                    <input type="text" name="livingChildren" id="base-input" value="<?php echo $livingChildren; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
+                    <input type="text" name="livingChildren"  value="<?php echo $livingChildren; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
                 </div>
                 <div class=" w-1/2">
                     <label for="base-input" class="block mb-0 2xl:mb-2 text-[9px] 2xl:text-sm font-medium text-gray-900 ">Pre-Term Birth: </label>
-                    <input type="text" name="preTermBirth" id="base-input" value="<?php echo $preTermBirth; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
+                    <input type="text" name="preTermBirth"  value="<?php echo $preTermBirth; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
                 </div>
             </div>
             <div></div>
             <div class="col-span-2 gap-2 flex">
                 <div class=" w-1/2 ">
                     <label for="base-input" class="block mb-0 2xl:mb-2 text-[9px] 2xl:text-sm font-medium text-gray-900 ">Abortion/ Miscarriage: </label>
-                    <input type="text" name="abortion" id="base-input" value="<?php echo $abortionMiscarriage; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
+                    <input type="text" name="abortion"  value="<?php echo $abortionMiscarriage; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
                 </div>
                 <div class=" w-1/2">
                     <label for="base-input" class="block mb-0 2xl:mb-2 text-[9px] 2xl:text-sm font-medium text-gray-900 ">Multiple Pregnancies:</label>
-                    <input type="text" name="multiplePregnancies" id="base-input" value="<?php echo $multiplePregnancies; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
+                    <input type="text" name="multiplePregnancies"  value="<?php echo $multiplePregnancies; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[9px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 2xl:p-2.5    ">
                 </div>
             </div>
             <div id="updateBtn" class="hidden col-span-3 justify-center flex">

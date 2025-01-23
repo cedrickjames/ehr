@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <tbody>
                             <?php
                             $ftwNo = 1;
-                            $sql = "SELECT  fittowork.*, employeespersonalinfo.Name  FROM fittowork  INNER JOIN employeespersonalinfo ON employeespersonalinfo.rfidNumber = fittowork.rfid  WHERE fittowork.approval = 'hr'  ORDER BY `id` ASC;";
+                            $sql = "SELECT  fittowork.*, employeespersonalinfo.Name  FROM fittowork  INNER JOIN employeespersonalinfo ON employeespersonalinfo.idNumber = fittowork.idNumber  WHERE fittowork.approval = 'hr'  ORDER BY `id` ASC;";
                             $result = mysqli_query($con, $sql);
                             while ($row = mysqli_fetch_assoc($result)) {
 

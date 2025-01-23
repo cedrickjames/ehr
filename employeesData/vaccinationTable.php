@@ -1,5 +1,12 @@
 <?php
 
+require '../vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+$provider1 = $_SESSION['name'];
+
 if (isset($_POST['excelReport'])) {
     $_SESSION['month'] = $_POST['month'];
     $_SESSION['year'] = $_POST['year'];
@@ -14,6 +21,168 @@ if (isset($_POST['excelReport'])) {
 <?php
 exit;
 }
+
+
+if (isset($_POST['addVaccinationImport'])) {
+    $fileName = $_FILES['import_file']['name'];
+    $file_ext = pathinfo($fileName, PATHINFO_EXTENSION);
+    $allowed_ext = ['xls', 'csv', 'xlsx'];
+    if (in_array($file_ext, $allowed_ext)) {
+        $count = 0;
+        $inputFileNamePath = $_FILES['import_file']['tmp_name'];
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileNamePath);
+        $data = $spreadsheet->getActiveSheet()->toArray();
+
+        try {
+            // Save data to database and collect error logs
+            $errorLogs = saveToDatabase($con, $data, $count);
+
+            // Close database connection
+            mysqli_close($con);
+
+            // Output success or error messages
+            if (empty($errorLogs)) {
+                echo "<script>alert('Data imported and saved successfully.!') </script>";
+                echo "<script> location.href='vaccination.php'; </script>";
+
+            } else {
+                echo "Errors occurred during import:<br>";
+                foreach ($errorLogs as $error) {
+                    echo "$error<br>";
+                }
+            }
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    } else {
+        echo "<script>alert('Invalid file format. Allowed formats: xls, csv, xlsx');</script>";
+    }
+}
+
+
+function isidNumberExists($con, $idNumber)
+{
+    // Escape the Id Number to prevent SQL injection (assuming $con is your mysqli connection)
+    $idNumber = mysqli_real_escape_string($con, $idNumber);
+
+    // Query to check if Id Number exists
+    $query = "SELECT COUNT(*) AS count FROM employeespersonalinfo WHERE idNumber = '$idNumber'";
+    $result = mysqli_query($con, $query);
+
+    // Check if query execution was successful
+    if ($result === false) {
+        die("Query failed: " . mysqli_error($con));
+    }
+
+    // Fetch the count from the result
+    $row = mysqli_fetch_assoc($result);
+    $count = (int)$row['count'];
+
+    // Free result set
+    mysqli_free_result($result);
+
+    // Return true if count > 0 (ID Number exists), false otherwise
+    return $count > 0;
+}
+
+// Function to save data to database
+function saveToDatabase($con, $data, $count)
+{
+    // Initialize an array to collect errors
+    $errorLogs = [];
+
+    foreach ($data as $row) {
+        if ($count > 0) {
+            $idNumber = $row['0'];
+            $vaccineType = $row['1'];
+            $vaccineBrand = $row['2'];
+            $firstDose = $row['3'];
+
+            $firstDoseDate = DateTime::createFromFormat('m/d/Y', $firstDose);
+            $firstDoseDateFormated = $firstDoseDate ? $firstDoseDate->format('Y-m-d') : $firstDoseDate;
+
+
+            $provider1 = $row['4'];
+            $secondDose = $row['5'];
+
+            $secondDoseDate = DateTime::createFromFormat('m/d/Y', $secondDose);
+            $secondDoseDateFormated = $secondDoseDate ? $secondDoseDate->format('Y-m-d') : $secondDose;
+
+            $provider2 = $row['6'];
+            $thirdDose = $row['7'];
+
+            $thirdDoseDate = DateTime::createFromFormat('m/d/Y', $thirdDose);
+            $thirdDoseDateFormated = $thirdDoseDate ? $thirdDoseDate->format('Y-m-d') : $thirdDose;
+
+            $provider3 = $row['8'];
+            $remarks = $row['9'];
+            
+
+            // Check if Id Number exists in db_table
+            if (!isidNumberExists($con, $idNumber)) {
+                // Log error for non-existent Id Numbers
+                $errorLogs[] = "Id Number '$idNumber' not found in Employee List";
+                continue; // Skip saving this row
+            }
+
+            // If validation passes, save to database
+            $result = mysqli_query($con, "SELECT `Name` FROM `employeespersonalinfo` WHERE `idNumber` = '$idNumber'");
+            while ($userRow = mysqli_fetch_assoc($result)) {
+                $name = $userRow['Name'];
+
+        
+                    $addPreEmploymentGpi = "INSERT INTO `vaccination`(`idNumber`, `vaccineType`, `vaccineBrand`, `firstDose`, `provider1`,`secondDose`, `provider2`, `thirdDose`,`provider3`, `remarks`) VALUES ('$idNumber','$vaccineType','$vaccineBrand','$firstDoseDateFormated','$provider1','$secondDoseDateFormated','$provider2','$thirdDoseDateFormated','$provider3','$remarks')";
+                    $resultInfo = mysqli_query($con, $addPreEmploymentGpi);
+                
+            }
+
+            // Check if query execution was successful
+            if ($resultInfo === false) {
+                $errorLogs[] = "Failed to insert data for Id Number '$idNumber': " . mysqli_error($con);
+            }
+        }
+        $count = 1;
+    }
+
+    // Return error logs array
+    return $errorLogs;
+}
+
+
+
+
+
+
+
+if (isset($_POST['addVax'])) {
+    $idNumber = $_POST['idNumber'];
+    $vaxType = $_POST['vaxType'];
+    $vaxBrand = $_POST['vaxBrand'];
+    $firstDose = $_POST['firstDose'];
+    $provider1 = $_POST['provider1'];
+    $secondDose = $_POST['secondDose'];
+    $provider2 = $_POST['provider2'];
+    $thirdDose = $_POST['thirdDose'];
+    $provider3 = $_POST['provider3'];
+    $remarks = $_POST['remarks'];
+   
+if($vaxType=="" || $vaxType==NULL){
+    echo "<script>alert('You have to add Vaccine Type!')</script>";
+
+} else{
+    $sql = "INSERT INTO `vaccination`( `idNumber`, `vaccineType`, `vaccineBrand`, `firstDose`, `provider1`,`secondDose`, `provider2`, `thirdDose`,`provider3`, `remarks`) VALUES ('$idNumber','$vaxType','$vaxBrand','$firstDose','$provider1','$secondDose','$provider2','$thirdDose','$provider3','$remarks')";
+    $results = mysqli_query($con, $sql);
+    if ($results) {
+      echo "<script>alert('Record added succesfully!')</script>";
+    //   echo "type: ",$vaxType;
+    //   echo "<script> location.href='../nurses/vaccination.php?rf=$idNumber'; </script>";
+    } else {
+      echo "<script>alert('There's a problem saving to database.')</script>";
+    }
+}
+
+ 
+  }
 
 
 
@@ -33,7 +202,7 @@ if (isset($_POST['updateVax'])) {
     $results = mysqli_query($con, $sql);
     if ($results) {
       echo "<script>alert('Record updated succesfully!')</script>";
-      echo "<script> location.href='vaccination.php?rfid=$rfid'; </script>";
+    //   echo "<script> location.href='vaccination.php?rfid=$idNumber'; </script>";
     } else {
       echo "<script>alert('There's a problem updating.')</script>";
     }
@@ -46,9 +215,33 @@ if (isset($_POST['updateVax'])) {
 <div class="text-[9px] 2xl:text-lg mb-5">
     <div class="flex justify-between">
         <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Vaccination Record</span></p>
-       
+        <div class="flex items-center order-2">
         <button type="button" data-modal-target="exportVax" data-modal-toggle="exportVax" class="lg:block text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Export</button>
+        <button type="button" data-dropdown-toggle="options" class="lg:block text-white bg-gradient-to-r from-[#00669B] to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 ">Add</button>
+            <div id="options" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                <ul class="py-2  text-gray-700 dark:text-gray-200" aria-labelledby="options">
+                    <li>
+                        <a type="button" data-modal-target="addVaccination" data-modal-toggle="addVaccination" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Add Vaccination</a>
+                    </li>
+                    <li>
+                        <a type="button" data-modal-target="importVaccination" data-modal-toggle="importVaccination" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Import Data</a>
+                    </li>
+                    <li>
+                        <a type="button" onclick="exportTemplate()" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Export Template</a>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
     </div>
+
+
+    
+
+
+
+
     <div id="" class="">
         <div class=" p-4 rounded-lg  bg-gray-50 " id="" role="tabpanel" aria-labelledby="profile-tab">
             <section class="mt-2 2xl:mt-10">
@@ -72,7 +265,7 @@ if (isset($_POST['updateVax'])) {
                     <tbody>
                         <?php
                          $vcnNo = 1;
-                         $sql = "SELECT v.*, e.Name FROM `vaccination` v LEFT JOIN `employeespersonalinfo` e ON e.rfidNumber = v.rfid";
+                         $sql = "SELECT v.*, e.Name FROM `vaccination` v LEFT JOIN `employeespersonalinfo` e ON e.idNumber = v.idNumber";
                         $result = mysqli_query($con, $sql);
                         while ($row = mysqli_fetch_assoc($result)) {
 
@@ -126,6 +319,10 @@ if (isset($_POST['updateVax'])) {
     </div>
 
 </div>
+
+
+
+
 <div id="exportVax" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative w-full max-w-md max-h-full">
         <!-- Modal content -->
@@ -218,11 +415,11 @@ if (isset($_POST['updateVax'])) {
       </div>
       <div class="content-center  col-span-2">
         <label class="block  my-auto font-semibold text-gray-900 ">Vaccine Type: </label>
-        <select id="vaxType" name="vaxType" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option selected>Select Type</option>
+        <select required id="vaxType" name="vaxType"  class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option disabled selected value="">Select Type</option>
           <option value="flu">Flu</option>
-          <option value="hepa b">Hepa B</option>
-          <option value="cervical">Cervical</option>
+          <option value="Hepa B">Hepa B</option>
+          <option value="Cervical">Cervical</option>
         </select>
 
       </div>
@@ -283,7 +480,171 @@ if (isset($_POST['updateVax'])) {
 </div>
 
 
+<div id="addVaccination" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class=" font-semibold text-gray-900 dark:text-white">
+                    Add Vaccination
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="addVaccination">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form method="POST" action="" class="m-4">
+    <input type="text" id="" name="" value="" class="hidden">
+
+    <div class="text-[9px] 2xl:text-lg  rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full w-full p-4 ">
+    <div class="col-span-4 gap-4 mb-4">
+                        <label for="name" class="block mb-1  text-gray-900 dark:text-white">Name</label>
+                        <select id="empname" name="empname" class="js-employees bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                            <option selected disabled>Search Name</option>
+                            <?php
+                            $sql1 = "SELECT * FROM employeespersonalinfo";
+                            $result = mysqli_query($con, $sql1);
+                            while ($list = mysqli_fetch_assoc($result)) {
+                                $idNumber = $list["idNumber"];
+                                $name = $list["Name"];
+                                $section = $list["section"];
+
+                                 ?>
+                                
+                                <option value="<?php echo  $name; ?>" data-rfid="<?php echo  $idNumber; ?>" data-section="<?php echo  $section; ?>"> <?php echo  $name; ?> </option> <?php
+                                                                                                                                                                                } ?>
+                        </select>
+                    </div>
+                    <div class="content-center  col-span-4">
+        <label class="block my-auto  font-semibold text-gray-900 ">Id Number: </label>
+        <input type="text" id="idNumber" name="idNumber" value="" readonly class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+      </div>
+      <div class="content-center  col-span-2">
+        <label class="block  my-auto font-semibold text-gray-900 ">Vaccine Type: </label>
+        <select required id="vaxType" name="vaxType" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option selected disabled value="">Select Type</option>
+          <option  value="Flu">Flu</option>
+          <option  value="Hepa B">Hepa B</option>
+          <option  value="Cervical">Cervical</option>
+
+        </select>
+
+      </div>
+      <div class="content-center  col-span-2">
+        <label class="block my-auto  font-semibold text-gray-900 ">Vaccine Brand: </label>
+        <input type="text" id="vaxBrand" name="vaxBrand" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+      </div>
+
+      <div class="content-center  col-span-2">
+
+        <label class="block my-auto  font-semibold text-gray-900 ">First Dose: </label>
+         <input type="date" id="firstDose" name="firstDose" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+
+      </div>
+        <div class="content-center  col-span-2">
+
+        <label class="block my-auto  font-semibold text-gray-900 ">Provider's Name: </label>
+         <input type="text" id="provider1" name="provider1" value="<?php echo $provider1; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+
+      </div>
+      <div class="content-center  col-span-2">
+
+        <label class="block my-auto  font-semibold text-gray-900 ">Second Dose: </label>
+        <input type="date" id="secondDose" name="secondDose" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+
+        </div>
+        <div class="content-center  col-span-2">
+
+        <label class="block my-auto  font-semibold text-gray-900 ">Provider's Name: </label>
+        <input type="text" id="provider2" name="provider2" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+
+        </div>
+        <div class="content-center  col-span-2">
+
+        <label class="block my-auto  font-semibold text-gray-900 ">Third Dose: </label>
+        <input type="date" id="thirdDose" name="thirdDose" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+
+        </div>
+        <div class="content-center  col-span-2">
+
+        <label class="block my-auto  font-semibold text-gray-900 ">Provider's Name: </label>
+        <input type="text" id="provider3" name="provider3" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+
+        </div>
+        <div class="col-span-4">
+      <label class="block my-auto  font-semibold text-gray-900 ">Remarks: </label>
+      <textarea id="remarks" name="remarks" rows="3" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="">
+
+      </textarea>
+
+      </div>
+
+      <div class="col-span-4 justify-center flex gap-2">
+        <?php
+        if (!isset($_GET['vcn'])) { ?>
+          <button type="submit" name="addVax" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Add Record</button>
+        <?php
+        } else {
+        ?>
+          <button type="submit" name="updateVax" class="w-64 text-white bg-gradient-to-r from-[#9b0066]  to-[#ca9ac1] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300  shadow-lg shadow-pink-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Update Record</button>
+        <?php
+        }
+        ?>
+
+      </div>
+    </div>
+  </form>
+        </div>
+    </div>
+</div>
+
+<div id="importVaccination" tabindex="-1" aria-hidden="true" class=" hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative w-full max-w-md max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-2 border-b rounded-t dark:border-gray-600">
+                <h3 class=" font-semibold text-gray-900 dark:text-white">
+                    Import Vaccination Data
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="importAnnualPe">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form method="POST" class="px-4 md:px-5 py-2 text-[8pt]" enctype="multipart/form-data">
+                <div class="grid gap-2 mb-4 grid-cols-2">
+                    <div class="col-span-2">
+
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
+                        <input type="file" name="import_file" class="block w-full  text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input">
+
+                    </div>
+
+
+                </div>
+                <button type="submit" name="addVaccinationImport" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    Import Data
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
+
+
+   
     const editVaccination = document.getElementById('editVaccination');
     const VaccinationModal = {
         backdropClasses: 'bg-gray-900/50 dark:bg-gray-900/80 relative inset-0 z-40',
@@ -311,4 +672,89 @@ if (isset($_POST['updateVax'])) {
         document.getElementById("remarks").value = element.getAttribute("data-remarks");
 
     }
+
+    
+    function exportTemplate() {
+        var rows = [];
+
+        column1 = 'Id Number';
+        column3 = 'Vaccine Type';
+        column4 = 'Brand';
+        column5 = '1st Dose';
+        column6 = 'Provider';
+        column7 = '2nd Dose';
+        column8 = 'Provider';
+        column9 = '3rd Dose';
+        column10 = 'Provider';
+        column11 = 'Remarks';
+
+
+        rows.push(
+            [
+                column1,
+                column3,
+                column4,
+                column5,
+                column6,
+                column7,
+                column8,
+                column9,
+                column10,
+                column11,
+          
+            ]
+        );
+
+        for (var i = 0, row; i < 1; i++) {
+            column1 ='';
+            column3 = '';
+            column4 = '';
+            column5 = 'yyyy-mm-dd';
+            column6 = '';
+            column7 = 'yyyy-mm-dd';
+            column8 = '';
+            column9 = 'yyyy-mm-dd';
+            column10 = '';
+            column11 = '';
+ 
+
+            rows.push(
+                [
+                    column1,
+                    column3,
+                    column4,
+                    column5,
+                    column6,
+                    column7,
+                    column8,
+                    column9,
+                    column10,
+                    column11,
+  
+                ]
+            );
+
+        }
+        csvContent = "data:text/csv;charset=utf-8,";
+        /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
+        rows.forEach(function(rowArray) {
+            row = rowArray.join('","');
+            row = '"' + row + '"';
+            csvContent += row + "\r\n";
+        });
+
+        /* create a hidden <a> DOM node and set its download attribute */
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "Vaccination Template.csv");
+        document.body.appendChild(link);
+        /* download the data file named "Stock_Price_Report.csv" */
+        link.click();
+
+
+
+
+    }
+
 </script>

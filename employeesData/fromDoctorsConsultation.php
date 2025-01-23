@@ -10,16 +10,16 @@ if (isset($_GET['dcnsltn'])) {
 }
 
 if (isset($_GET['rf'])) {
-  $rfid = $_GET['rf'];
+  $idNumber = $_GET['rf'];
 } else {
-  $rfid = "not found";
+  $idNumber = "not found";
 }
-
-$sqluserinfo = "SELECT employeespersonalinfo.rfidNumber, employeespersonalinfo.*, queing.*, users.email
+$nurseId = $_SESSION['userID'];
+$sqluserinfo = "SELECT employeespersonalinfo.idNumber, employeespersonalinfo.*, queing.*, users.email
 FROM queing
-INNER JOIN employeespersonalinfo ON employeespersonalinfo.rfidNumber = queing.rfidNumber 
+INNER JOIN employeespersonalinfo ON employeespersonalinfo.idNumber = queing.idNumber 
 INNER JOIN users ON users.idNumber = queing.nurseAssisting
-where employeespersonalinfo.rfidNumber = '$rfid' AND queing.status = 'processing';";
+where employeespersonalinfo.idNumber = '$idNumber' AND queing.status = 'processing';";
 $resultInfo = mysqli_query($con, $sqluserinfo);
 while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $department = $userRow['department'];
@@ -28,9 +28,9 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $nurse_email = $userRow['email'];
 }
 
-$sqluserinfo = "SELECT consultation.*, employeespersonalinfo.Name, medicalcertificate.id as medcertID, medicalcertificate.rfid as medcertRfid, medicalcertificate.consultationId, medicalcertificate.date as medcertDate, medicalcertificate.treatedOn, medicalcertificate.dueTo, medicalcertificate.diagnosis as medcertDiag, medicalcertificate.remarks as medcertRemarks
+$sqluserinfo = "SELECT consultation.*, employeespersonalinfo.Name, medicalcertificate.id as medcertID, medicalcertificate.idNumber as medcertRfid, medicalcertificate.consultationId, medicalcertificate.date as medcertDate, medicalcertificate.treatedOn, medicalcertificate.dueTo, medicalcertificate.diagnosis as medcertDiag, medicalcertificate.remarks as medcertRemarks
 FROM consultation
-INNER JOIN employeespersonalinfo ON consultation.rfid = employeespersonalinfo.rfidNumber LEFT JOIN
+INNER JOIN employeespersonalinfo ON consultation.idNumber = employeespersonalinfo.idNumber LEFT JOIN
                         medicalcertificate
                     ON
                         consultation.id = medicalcertificate.consultationId WHERE consultation.id  = '$dcnsltn';";
@@ -48,7 +48,16 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $clinicRestTo = $userRow['clinicRestTo'];
   $meds = $userRow['meds'];
 
+  $medicalLab = $userRow['medicalLab'];
+  $medicationDispense = $userRow['medicationDispense'];
+
+
   $bloodChemistry = $userRow['bloodChemistry'];
+  $isFitToWork = $userRow['isFitToWork'];
+  $ftwDaysOfRest = $userRow['daysOfRest'];
+  $ftwUnfitReason = $userRow['reasonOfUnfitToWork'];
+
+
   $cbc = $userRow['cbc'];
   $urinalysis = $userRow['urinalysis'];
   $fecalysis = $userRow['fecalysis'];
@@ -84,26 +93,15 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
 
 if (isset($_POST['submitFromDoctorsConsultation'])) {
 
-  $remarksSelect2 = $_POST['remarksSelect3'];
+  $remarksSelect2 = $_POST['ftwRemarks'];
 
-  if ($remarksSelect2 == "Fit to Work") {
+  if ($remarksSelect2 != "" || $remarksSelect2 != NULL) {
     $otherRemarks = $_POST['otherRemarks'];
-    $medLab = $_POST['medLab'];
-    $medDis = $_POST['medDis'];
-    $cnsltnCompleted = $_POST['cnsltnCompleted'];
+    $medLab = $_POST['forLab'];
+    $medDis = $_POST['forMed'];
+    $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
     $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
-    if ($cnsltnCompleted == 'Completed') {
-      $cnsltnCompleted = '1';
-      $cnsltnWithPendingLab = '0';
-    } elseif ($cnsltnCompleted == 'With Pending Lab') {
-      $cnsltnCompleted = '0';
-      $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
-    } else {
-      $cnsltnCompleted = '0';
-      $cnsltnWithPendingLab = '';
-    }
-
-    $sql = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `otherRemarks` = '$otherRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
+    $sql = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `medicalLab` = '$medLab', `medicationDispense`= '$medDis', `otherRemarks` = '$otherRemarks', `withPendingLab` = '$cnsltnWithPendingLab', `statusComplete`='$cnsltnCompleted' WHERE `id` = '$dcnsltn'";
     $results = mysqli_query($con, $sql);
 
 
@@ -125,9 +123,11 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
     $cnsltnBuilding = $_POST['cnsltnBuilding'];
     // $cnsltnChiefComplaint = $_POST['cnsltnChiefComplaint'];
     $cnsltnDiagnosis = $_POST['cnsltnDiagnosis'];
-    // $cnsltnIntervention = $_POST['cnsltnIntervention'];
+
+    $cnsltnIntervention = $_POST['cnsltnIntervention'];
     $cnsltnClinicRestFrom = $_POST['cnsltnClinicRestFrom'];
     $cnsltnClinicRestTo = $_POST['cnsltnClinicRestTo'];
+
     // $cnsltnMeds = $_POST['cnsltnMeds'];
     $cnsltnBloodChem = $_POST['cnsltnBloodChem'];
     $cnsltnCbc = $_POST['cnsltnCbc'];
@@ -144,14 +144,29 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
     $immediateEmail = $_POST['immediateEmail'];
     $immediateHead = $_POST['immediateHead'];
     $cnsltnMeds = $_POST['cnsltnMeds'];
+    $isMedcertRequired = $_POST['medicalCertificate'];
+    $ftwDaysOfRest = $_POST['ftwDaysOfRest'];
+    $ftwUnfitReason = $_POST['ftwUnfitReason'];
+    $ftwOthersRemarks = $_POST['otherRemarks'];
 
+
+
+
+
+    if ($remarksSelect2 == "Unfit to work") {
+
+      $isMedcertRequired ="";
+    }else{
+      $ftwUnfitReason="";
+      $ftwDaysOfRest="";
+    }
 
 
     // $sql1 = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `otherRemarks` = '$otherRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
     // $results1 = mysqli_query($con,$sql1);
 
 
-    $sql = "INSERT INTO `fittowork`( `approval`, `department`,`rfid`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`) VALUES ('head','$department','$rfid','$cnsltnDate','$cnsltnTime','$cnsltnCategories','$cnsltnBuilding','$ftwCtnConfinement','$ftwCtnCategories', '$cnsltnMeds' , '$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason','$cnsltnDiagnosis','$cnsltnBloodChem','$cnsltnCbc','$cnsltnUrinalysis','$cnsltnFecalysis','$cnsltnXray','$cnsltnOthersLab','$cnsltnBp','$cnsltnTemp','$cnsltn02Sat','$cnsltnPr','$cnsltnRr','$remarksSelect2','$otherRemarks','$cnsltnCompleted','$cnsltnWithPendingLab')";
+    $sql = "INSERT INTO `fittowork`( `approval`, `department`,`idNumber`,`nurseAssisting`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `isFitToWork`,`isMedcertRequired`,`daysOfRest`,`reasonOfUnfitToWork`,`remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`) VALUES ('head','$department','$idNumber','$nurseId','$cnsltnDate','$cnsltnTime','$cnsltnCategories','$cnsltnBuilding','$ftwCtnConfinement','$ftwCtnCategories', '$cnsltnMeds' , '$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason','$cnsltnDiagnosis','$cnsltnIntervention','$cnsltnClinicRestFrom','$cnsltnClinicRestTo','$cnsltnBloodChem','$cnsltnCbc','$cnsltnUrinalysis','$cnsltnFecalysis','$cnsltnXray','$cnsltnOthersLab','$cnsltnBp','$cnsltnTemp','$cnsltn02Sat','$cnsltnPr','$cnsltnRr','$remarksSelect2','$isMedcertRequired','$ftwDaysOfRest','$ftwUnfitReason','$remarksSelect2','$otherRemarks','$cnsltnCompleted','$cnsltnWithPendingLab')";
     $results = mysqli_query($con, $sql);
 
 
@@ -165,9 +180,76 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
 
 
-      $subject = 'Fit to Work';
-      $message = 'Hi ' . $immediateHead . ',<br> <br> Mr./Ms. ' . $name . ' is now fit to work. <br><br> Details <br>Name: ' . $name . '<br>Sect/Dept: ' . $section . ' <br>Reason of Absence: ' . $ftwCtnAbsenceReason . '<br>Date of Absence: ' . $ftwCtnSLDateFrom . ' - ' . $ftwCtnSLDateTo . '<br>No. of Day/s: ' . $ftwCtnDays . ' <br>Remarks: ' . $remarksSelect2 . '<br>Others: ' . $otherRemarks . '<br><br><br><br>  This is a generated email. Please do not reply. <br><br> Electronic Health System';
+     
+    if($remarksSelect2 == "Unfit to work"){
+      $subject = 'Unfit to Work';
+      $message = '
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+        <h2 style="color: #0073e6; text-align: center;">Employee Status Notification</h2>
+        <p>Hi <strong>' . $immediateHead . '</strong> and HR,</p>
+        
+        <div style="padding: 10px; background-color: #ffe5e5; border-left: 5px solid red; margin-bottom: 15px;">
+            <strong style="font-size: 18px; color: red;">Mr./Ms. ' . $name . ' is NOT fit to work.</strong>
+        </div>
+        
+        <h3 style="color: #555; border-bottom: 2px solid #0073e6; padding-bottom: 5px;">Details</h3>
+        <ul style="list-style-type: none; padding: 0;">
+            <li><strong>Name:</strong> ' . $name . '</li>
+            <li><strong style="color: red;">Reason:</strong> ' . $ftwUnfitReason . '</li>
+            <li><strong style="color: red;">Days of Rest:</strong> ' . $ftwDaysOfRest . '</li>
+            <li><strong>Sect/Dept:</strong> ' . $section . '</li>
+            <li><strong>Reason of Absence:</strong> ' . $ftwCtnAbsenceReason . '</li>
+            <li><strong>Date of Absence:</strong> ' . $ftwCtnSLDateFrom . ' to ' . $ftwCtnSLDateTo . '</li>
+            <li><strong>No. of Day/s:</strong> ' . $ftwCtnDays . '</li>
+            <li><strong>Status:</strong> ' . $remarksSelect2 . '</li>
+            <li><strong>Remarks:</strong> ' . $ftwOthersRemarks . '</li>
+        </ul>
+        
+        <p style="font-size: 12px; color: #777; margin-top: 20px; text-align: center;">
+            <em>This is a generated email. Please do not reply.</em>
+        </p>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <strong style="color: #0073e6;">Clinic</strong>
+        </div>
+    </div>
+';
 
+    }
+    else{
+      $subject = 'Fit to Work';
+      $message = '
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+          <h2 style="color: #28a745; text-align: center;">Employee Status Notification</h2>
+          <p>Hi <strong>' . $immediateHead . '</strong> and HR,</p>
+          
+          <div style="padding: 10px; background-color: #e6f9e6; border-left: 5px solid #28a745; margin-bottom: 15px;">
+              <strong style="font-size: 18px; color: #28a745;">Mr./Ms. ' . $name . ' is now fit to work.</strong>
+          </div>
+          
+          <h3 style="color: #555; border-bottom: 2px solid #28a745; padding-bottom: 5px;">Details</h3>
+          <ul style="list-style-type: none; padding: 0;">
+              <li><strong>Name:</strong> ' . $name . '</li>
+              <li><strong>Sect/Dept:</strong> ' . $section . '</li>
+              <li><strong>Reason of Absence:</strong> ' . $ftwCtnAbsenceReason . '</li>
+              <li><strong>Date of Absence:</strong> ' . $ftwCtnSLDateFrom . ' to ' . $ftwCtnSLDateTo . '</li>
+              <li><strong>No. of Day/s:</strong> ' . $ftwCtnDays . '</li>
+              <li><strong>Remarks:</strong> ' . $remarksSelect2 . '</li>
+              <li><strong>Others:</strong> ' . $ftwOthersRemarks . '</li>
+          </ul>
+          
+          <p style="font-size: 12px; color: #777; margin-top: 20px; text-align: center;">
+              <em>This is a generated email. Please do not reply.</em>
+          </p>
+          
+          <div style="text-align: center; margin-top: 20px;">
+              <strong style="color: #28a745;">Clinic</strong>
+          </div>
+      </div>
+  ';
+  
+}
+   
 
       require '../vendor/autoload.php';
 
@@ -204,7 +286,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
         $_SESSION['message'] = 'Message has been sent';
         echo "<script>alert('Email Sent') </script>";
-        echo "<script> location.href='fromDoctor.php'; </script>";
+        // echo "<script> location.href='fromDoctor.php'; </script>";
 
 
         // header("location: form.php");
@@ -215,23 +297,10 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
     }
   } else {
     $otherRemarks = $_POST['otherRemarks'];
-    $medLab = $_POST['medLab'];
-    $medDis = $_POST['medDis'];
-    $cnsltnCompleted = $_POST['cnsltnCompleted'];
-    // $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
-    if ($cnsltnCompleted == 'Completed') {
-      $cnsltnCompleted = '1';
-      $cnsltnWithPendingLab = '0';
-      $status = 'done';
-    } elseif ($cnsltnCompleted == 'With Pending Lab') {
-      $cnsltnCompleted = '0';
-      $cnsltnWithPendingLab = '1';
-      $status = "done";
-    } else {
-      $cnsltnCompleted = '0';
-      $cnsltnWithPendingLab = '0';
-      $status = "done";
-    }
+    $medLab = $_POST['forLab'];
+    $medDis = $_POST['forMed'];
+    $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
+    $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
     if (isset($_POST['cnsltnCompleted'])) {
       $sql = "UPDATE `consultation` SET `status` = '$status', `remarks`='$remarksSelect2', `otherRemarks` = '$otherRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
       // echo $sql;
@@ -242,7 +311,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
       }
     } else {
       echo "<script>alert('Please select status') </script>";
-      echo "<script> location.href='fromDoctor.php'; </script>";
+      // echo "<script> location.href='fromDoctor.php'; </script>";
     }
   }
 }
@@ -349,7 +418,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
       </div>
       <div id="interventionId" class="col-span-4  gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Intervention: </h3>
-        <select id="interventionSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+        <select id="interventionSelect" name="cnsltnIntervention" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option <?php if ($intervention == "Medication Only") {
                     echo "selected";
                   } ?> value="Medication Only">Medication only</option>
@@ -466,50 +535,66 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
         </div>
       </div>
-      <div class="col-span-4 ">
-      <h3 class=" my-auto  font-semibold text-gray-900 ">Remarks: </h3>
-        <div class="col-span-4  flex">
-        <select id="remarksSelect2" name="remarksSelect3" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option <?php if ($remarks == "Fit To Work") {
+      <div class="col-span-4 <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "hidden"; } ?>"  >
+      <div class="col-span-4 " >
+        <label class="block  my-auto  font-semibold text-gray-900 ">Fit to Work or Unfit to Work: </label>
+        <select <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="remarksSelect" name="ftwRemarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option <?php if ($remarks == "Fit to Work") {
                     echo "selected";
                   } ?> value="Fit to Work">Fit To Work</option>
-          <option <?php if ($remarks == "Late FTW") {
+                  <option <?php if ($remarks == "Late Fit to Work") {
                     echo "selected";
-                  } ?> value="Late FTW">Late FTW</option>
-          <option <?php if ($remarks == "No Medical Certificate") {
+                  } ?> value="Late Fit to Work">Late FTW</option>
+          <option <?php if ($remarks == "Unfit to work") {
                     echo "selected";
-                  } ?> value="No Medical Certificate">No Medical Certificate</option>
-          <option <?php if ($remarks == "For Medical Laboratory") {
-                    echo "selected";
-                  } ?> value="For Medical Laboratory">For Medical Laboratory</option>
-          <option <?php if ($remarks == "For Medication Dispense") {
-                    echo "selected";
-                  } ?> value="For Medication Dispense">For Medication Dispense</option>
-          <option <?php if ($remarks == "Others") {
-                    echo "selected";
-                  } ?> value="Others">Others</option>
+                  } ?> value="Unfit to work">Unfit to work</option>
         </select>
-        <input type="text" name="medLab" value="<?php echo $medlab; ?>" placeholder="Medical Laboratory" id="medLab" class="hidden  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-        <input type="text" name="medDis" placeholder="Medication Dispense" id="medDis" class="hidden  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
-        </div>
-        
+
 
       </div>
 
+      <div class="col-span-4" id="fitToWorkFields">
+      <h3 class=" font-semibold text-gray-900 dark:text-white">Medical Certificate</h3>
+      <ul  class="gap-2 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+      <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+        <div class=" gap-2 flex items-center ps-3">
+            <input <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-id" type="radio" checked value="noNeed" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <label for="horizontal-medicalCertificate-id" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">no need</label>
+        </div>
+    </li>
 
+    <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+        <div class="gap-2 flex items-center ps-3">
+            <input <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-license" type="radio" value="withMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <label for="horizontal-medicalCertificate-license" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">with MedCert</label>
+        </div>
+    </li>
+    <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+        <div class=" gap-2 flex items-center ps-3">
+            <input <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-noMedcert" type="radio" value="noMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <label for="horizontal-medicalCertificate-noMedcert" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">no Medcert</label>
+        </div>
+    </li>
+    
 
+</ul>
+      </div>
 
+      <div class="content-center col-span-2" id="restDays">
+<label class=" block my-auto font-semibold text-gray-900 ">Days of rest</label>
+<input <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> value="<?php echo $ftwDaysOfRest; ?>" type="number"  name="ftwDaysOfRest" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
-
-
-
-
-      <div id="ftwdiv1" class="hidden flex gap-4  col-span-4">
+</div>
+<div class="content-center col-span-2" id="unfitReason">
+<label class=" block my-auto font-semibold text-gray-900 ">Reason</label>
+<input <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> value="<?php echo $ftwUnfitReason; ?>" type="text"  name="ftwUnfitReason" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                </div>
+                <div id="ftwdiv1" class=" flex gap-4  col-span-4">
         <hr style="width:100%; height: 2px;  margin-bottom: 0px;     background-color: #969696; ">
       </div>
 
-      <div id="ftwdiv2" class="hidden flex gap-4  col-span-2">
+      <div id="ftwdiv2" class=" col-span-4">
 
         <h3 class="my-auto  font-semibold text-gray-900 ">Categories: </h3>
         <select id="categoriesSelect" name="ftwCtnCategories" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
@@ -523,7 +608,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
         </select>
 
       </div>
-      <div id="ftwdiv3" class="hidden flex gap-4  col-span-2">
+      <div id="ftwdiv3" class=" col-span-4">
 
         <h3 class="my-auto  font-semibold text-gray-900 ">Confinement Type: </h3>
         <select id="categoriesSelect" name="ftwCtnConfinement" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
@@ -538,13 +623,13 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
       </div>
 
-      <div id="ftwdiv4" class="hidden content-centerhidden flex gap-4 col-span-1">
+      <div id="ftwdiv4" class=" content-centerhidden flex gap-4 col-span-1">
         <h3 class="w-full my-auto font-semibold text-gray-900 ">Date of Sick Leave</h3>
 
       </div>
 
 
-      <div id="ftwdiv5" class=" content-center hidden flex gap-2 2xl:gap-4 col-span-3">
+      <div id="ftwdiv5" class=" content-center  flex gap-2 2xl:gap-4 col-span-3">
         <input type="date" name="ftwCtnSLDateFrom" value="<?php echo $ftwSLDateFrom; ?>" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
 
         <input type="date" name="ftwCtnSLDateTo" value="<?php echo $ftwSLDateTo; ?>" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
@@ -554,36 +639,34 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
         <input type="number" name="ftwCtnDays" value="<?php echo $ftwDays; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
       </div>
-      <div id="ftwdiv6" class="hidden flex gap-4 col-span-4">
+      <div id="ftwdiv6" class=" col-span-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Reason of Absence: </h3>
         <input type="text" value="<?php echo $ftwReasonOfAbsence; ?>" name="ftwCtnAbsenceReason" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       </div>
-      <div id="ftwdiv7" class="hidden flex gap-4  col-span-2">
+      <div id="ftwdiv7" class="col-span-4">
 
         <h3 class="my-auto  font-semibold text-gray-900 ">Immediate Head: </h3>
-        <select id="immediateHead" name="immediateHead" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+        <select id="immediateHead" name="immediateHead" class="js-meds bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <!-- <option selected disabled value="">Please select</option> -->
           <?php
-          $sql1 = "Select * FROM `employeespersonalinfo` WHERE `department` = '$department' AND `level` = 'head'";
+          $sql1 = "Select * FROM `employeespersonalinfo` WHERE `level` = 'head'";
           $result = mysqli_query($con, $sql1);
           while ($list = mysqli_fetch_assoc($result)) {
             $immediateName = $list["Name"];
             $email = $list["email"];
 
             echo "<option value='$immediateName' data-email='$email' >$immediateName</option>";
-
+          }
           ?>
 
         </select>
 
       </div>
-      <div id="ftwdiv8" class="hidden flex gap-4  col-span-2">
+      <div id="ftwdiv8" class=" col-span-4">
 
         <h3 class="my-auto  font-semibold text-gray-900 "> Email: </h3>
-      <?php echo "
-        <input type='text' id='immediateEmail' name='immediateEmail' value='$email' class='  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 '>";
-          }
-      ?>
+        <input type='text' id='immediateEmail' name='immediateEmail' value='' class='  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 '>
+      
 
       </div>
       <!-- <div id="ftwdiv8" class="hidden flex gap-4  col-span-2">
@@ -593,12 +676,25 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
       </div> -->
 
-      <div id="ftwdiv9" class="hidden flex gap-4  col-span-4">
+      <div id="ftwdiv9" class=" flex gap-4  col-span-4">
         <hr style="width:100%; height: 2px;  margin-bottom: 0px;     background-color: #969696;">
       </div>
 
 
+      </div>
 
+      
+      
+      
+      <div id="forLab" class="col-span-4   gap-4">
+        <h3 class=" my-auto  font-semibold text-gray-900 ">For Medical Laboratory: </h3>
+        <input type="text" value="<?php echo $medicalLab; ?>" name="forLab" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      </div>
+
+      <div id="forMed" class="col-span-4   gap-4">
+        <h3 class=" my-auto  font-semibold text-gray-900 ">For Medication Dispense: </h3>
+        <input type="text" value="<?php echo $medicationDispense;?>" name="forMed" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      </div>
 
 
       <div class="col-span-4  gap-4">
@@ -615,7 +711,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
         <?php
         if ($consultationId != "") {
 
-          echo "<h3 class='my-auto  font-semibold text-gray-900 '>Medical Certificate: </h3> <a href='../medicalCertificate.php?rf=$rfid&mdcrtid=$consultationId' target='_blank'  class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>View Medcert</a>";
+          echo "<h3 class='my-auto  font-semibold text-gray-900 '>Medical Certificate: </h3> <a href='../medicalCertificate.php?rf=$idNumber&mdcrtid=$consultationId' target='_blank'  class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>View Medcert</a>";
         } else {
         ?>
         <?php

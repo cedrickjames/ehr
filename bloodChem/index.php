@@ -49,8 +49,44 @@ if (!isset($_SESSION['connected'])) {
   <script src="../node_modules/select2/dist/js/select2.min.js"></script>
   <script type="text/javascript" src="index.js"></script>
   <script>
+     <?php
+    $sidebar1;
+
+    if($employer=="GPI"){
+      $sidebar1 ="#gpiside_1";
+    }
+    else if($employer=="Maxim"){
+      $sidebar1 ="#maximside_1";
+
+    }
+    else if($employer=="Nippi"){
+      $sidebar1 ="#nippiside_1";
+
+    }
+    else if($employer=="Powerlane"){
+      $sidebar1 ="#powerlaneside_1";
+
+    }
+    else if($employer=="Otrelo"){
+      $sidebar1 ="#otreloside_1";
+
+    }
+    else if($employer=="Alarm"){
+      $sidebar1 ="#alarmside_1";
+
+    }
+    else if($employer=="Mangreat"){
+      $sidebar1 ="#mangreatside_1";
+
+    }
+    else if($employer=="Canteen"){
+      $sidebar1 ="#canteenside_1";
+
+    }
+    ?>
+
+    $("<?php echo $sidebar1; ?>").addClass("bg-[#82c7cc]");
     $("#bloodchemSide").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
-    $("#gpiside_1").addClass("bg-[#82c7cc]");
 
 
     $("#sidehistory").removeClass("bg-gray-200");

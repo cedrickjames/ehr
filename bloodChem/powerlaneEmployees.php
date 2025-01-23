@@ -20,7 +20,7 @@ if (isset($_POST['excelReport'])) {
 }
 
 if (isset($_POST['addBloodChem'])) {
-    $rfid = $_POST['hlprfid'];
+    $idNumber = $_POST['hlprfid'];
     $date = $_POST['hlpdate'];
     $time = $_POST['hlptime'];
     $building = $_POST['hlpbuilding_transaction'];
@@ -49,7 +49,7 @@ if (isset($_POST['addBloodChem'])) {
         $Meds = implode(', ', $Meds);
     }
 
-    $addBloodChem = "INSERT INTO `bloodchem`(`rfid`, `date`, `time` ,`building`, `type`, `diagnosis`, `intervention`, `medications`, `followupdate`, `FBS`, `cholesterol`, `triglycerides`, `HDL`, `LDL`, `BUN`, `BUA`, `SGPT`, `SGDT`, `HBA1C`, `others` ,`remarks`) VALUES ('$rfid','$date','$time','$building','$type','$diagnosis','$intervention','$Meds','$followupdate','$fbs','$cholesterol','$triglycerides', '$hdl', '$ldl', '$bun', '$bua', '$sgpt', '$sgdt', '$hbaic', '$others', '$remarks')";
+    $addBloodChem = "INSERT INTO `bloodchem`(`idNumber`, `date`, `time` ,`building`, `type`, `diagnosis`, `intervention`, `medications`, `followupdate`, `FBS`, `cholesterol`, `triglycerides`, `HDL`, `LDL`, `BUN`, `BUA`, `SGPT`, `SGDT`, `HBA1C`, `others` ,`remarks`) VALUES ('$idNumber','$date','$time','$building','$type','$diagnosis','$intervention','$Meds','$followupdate','$fbs','$cholesterol','$triglycerides', '$hdl', '$ldl', '$bun', '$bua', '$sgpt', '$sgdt', '$hbaic', '$others', '$remarks')";
     $resultInfo = mysqli_query($con, $addBloodChem);
 
     if ($resultInfo) {
@@ -60,7 +60,7 @@ if (isset($_POST['addBloodChem'])) {
 
 if (isset($_POST['editBloodChem'])) {
     $id = $_POST['editid'];
-    $rfid = $_POST['editrfid'];
+    $idNumber = $_POST['editrfid'];
     $name = $_POST['editname'];
     $section = $_POST['editsection'];
     $date = $_POST['editdate'];
@@ -100,14 +100,14 @@ if (isset($_POST['editBloodChem'])) {
     }
 }
 
-// Function to check if RFID number exists in database and save non-existent ones in an array
-function isRfidNumberExists($con, $rfidNumber)
+// Function to check if Id Number exists in database and save non-existent ones in an array
+function isidNumberExists($con, $idNumber)
 {
-    // Escape the RFID number to prevent SQL injection (assuming $con is your mysqli connection)
-    $rfidNumber = mysqli_real_escape_string($con, $rfidNumber);
+    // Escape the Id Number to prevent SQL injection (assuming $con is your mysqli connection)
+    $idNumber = mysqli_real_escape_string($con, $idNumber);
 
-    // Query to check if RFID number exists
-    $query = "SELECT COUNT(*) AS count FROM employeespersonalinfo WHERE rfidNumber = '$rfidNumber' AND `employer` ='Powerlane'";
+    // Query to check if Id Number exists
+    $query = "SELECT COUNT(*) AS count FROM employeespersonalinfo WHERE idNumber = '$idNumber' AND `employer` ='Powerlane'";
     $result = mysqli_query($con, $query);
 
     // Check if query execution was successful
@@ -122,7 +122,7 @@ function isRfidNumberExists($con, $rfidNumber)
     // Free result set
     mysqli_free_result($result);
 
-    // Return true if count > 0 (RFID exists), false otherwise
+    // Return true if count > 0 (ID Number exists), false otherwise
     return $count > 0;
 }
 
@@ -137,7 +137,7 @@ function saveToDatabase($con, $data, $count)
             $date = $row['0'];
             $time = $row['1'];
             $building = $row['2'];
-            $rfidNumber = $row['3'];
+            $idNumber = $row['3'];
             $type = $row['4'];
             $diagnosis = $row['5'];
             $intervention = $row['6'];
@@ -156,33 +156,33 @@ function saveToDatabase($con, $data, $count)
             $others = $row['19'];
             $remarks = $row['20'];
 
-            // Check if RFID number exists in db_table
-            if (!isRfidNumberExists($con, $rfidNumber)) {
-                // Log error for non-existent RFID numbers
-                $errorLogs[] = "RFID number '$rfidNumber' not found in Employee List";
+            // Check if Id Number exists in db_table
+            if (!isidNumberExists($con, $idNumber)) {
+                // Log error for non-existent Id Numbers
+                $errorLogs[] = "Id Number '$idNumber' not found in Employee List";
                 continue; // Skip saving this row
             }
 
             // If validation passes, save to database
-            $result = mysqli_query($con, "SELECT `Name`, `section` FROM `employeespersonalinfo` WHERE `rfidNumber` = '$rfidNumber' AND `employer` ='Powerlane'");
+            $result = mysqli_query($con, "SELECT `Name`, `section` FROM `employeespersonalinfo` WHERE `idNumber` = '$idNumber' AND `employer` ='Powerlane'");
             while ($userRow = mysqli_fetch_assoc($result)) {
                 $name = $userRow['Name'];
                 $section = $userRow['section'];
 
-                $result1 = mysqli_query($con, "SELECT * FROM `bloodchem` WHERE `rfid` = '$rfidNumber'");
+                $result1 = mysqli_query($con, "SELECT * FROM `bloodchem` WHERE `idNumber` = '$idNumber'");
                 $numrows = mysqli_num_rows($result1);
                 if ($numrows > 0) {
-                    $addHlp = "UPDATE `bloodchem` SET `date`='$date' , `time` = '$time', `building`= '$building', `type`= '$type', `diagnosis`= '$diagnosis', `intervention`= '$intervention', `medications`= '$Meds', `followupdate`= '$followupdate', `FBS`= '$fbs', `cholesterol`= '$cholesterol', `triglycerides`= '$triglycerides', `HDL`= '$hdl', `LDL`= '$ldl', `BUN`= '$bun', `BUA`= '$bua', `SGPT`= '$sgpt', `SGDT`= '$sgdt', `HBA1C`= '$hbaic', `others` = '$others',`remarks`= '$remarks' WHERE `rfid`='$rfidNumber'";
+                    $addHlp = "UPDATE `bloodchem` SET `date`='$date' , `time` = '$time', `building`= '$building', `type`= '$type', `diagnosis`= '$diagnosis', `intervention`= '$intervention', `medications`= '$Meds', `followupdate`= '$followupdate', `FBS`= '$fbs', `cholesterol`= '$cholesterol', `triglycerides`= '$triglycerides', `HDL`= '$hdl', `LDL`= '$ldl', `BUN`= '$bun', `BUA`= '$bua', `SGPT`= '$sgpt', `SGDT`= '$sgdt', `HBA1C`= '$hbaic', `others` = '$others',`remarks`= '$remarks' WHERE `idNumber`='$idNumber'";
                     $resultInfo = mysqli_query($con, $addHlp);
                 } else {
-                    $addHlp = "INSERT INTO `bloodchem`(`rfid`, `date`, `time` ,`building`, `type`, `diagnosis`, `intervention`, `medications`, `followupdate`, `FBS`, `cholesterol`, `triglycerides`, `HDL`, `LDL`, `BUN`, `BUA`, `SGPT`, `SGDT`, `HBA1C`, `others` ,`remarks`) VALUES ('$rfidNumber','$date','$time','$building','$type','$diagnosis','$intervention','$Meds','$followupdate','$fbs','$cholesterol','$triglycerides', '$hdl', '$ldl', '$bun', '$bua', '$sgpt', '$sgdt', '$hbaic', '$others', '$remarks')";
+                    $addHlp = "INSERT INTO `bloodchem`(`idNumber`, `date`, `time` ,`building`, `type`, `diagnosis`, `intervention`, `medications`, `followupdate`, `FBS`, `cholesterol`, `triglycerides`, `HDL`, `LDL`, `BUN`, `BUA`, `SGPT`, `SGDT`, `HBA1C`, `others` ,`remarks`) VALUES ('$idNumber','$date','$time','$building','$type','$diagnosis','$intervention','$Meds','$followupdate','$fbs','$cholesterol','$triglycerides', '$hdl', '$ldl', '$bun', '$bua', '$sgpt', '$sgdt', '$hbaic', '$others', '$remarks')";
                     $resultInfo = mysqli_query($con, $addHlp);
                 }
             }
 
             // Check if query execution was successful
             if ($resultInfo === false) {
-                $errorLogs[] = "Failed to insert data for RFID number '$rfidNumber': " . mysqli_error($con);
+                $errorLogs[] = "Failed to insert data for Id Number '$idNumber': " . mysqli_error($con);
             }
         }
         $count = 1;
@@ -285,8 +285,8 @@ if (isset($_POST['addBloodChemImport'])) {
                         <tbody>
                             <?php
                             $ApeNo = 1;
-                            $sql = "SELECT p.*, e.employer, e.Name, e.section, e.rfidNumber FROM bloodchem p 
-                                    JOIN employeespersonalinfo e ON e.rfidNumber = p.rfid WHERE e.employer = 'Powerlane' ORDER BY `id` ASC";
+                            $sql = "SELECT p.*, e.employer, e.Name, e.section, e.idNumber FROM bloodchem p 
+                                    JOIN employeespersonalinfo e ON e.idNumber = p.idNumber WHERE e.employer = 'Powerlane' ORDER BY `id` ASC";
                             $result = mysqli_query($con, $sql);
                             while ($row = mysqli_fetch_assoc($result)) { ?>
                                 <tr>
@@ -294,7 +294,7 @@ if (isset($_POST['addBloodChemImport'])) {
 
                                     <td>
                                         <div class="content-center flex flex-wrap justify-center gap-2">
-                                            <input type="text" class="hidden" name="rfid<?php echo $ApeNo; ?>" value="<?php echo $row['rfidNumber']; ?>">
+                                            <input type="text" class="hidden" name="rfid<?php echo $ApeNo; ?>" value="<?php echo $row['idNumber']; ?>">
                                             <button id="dropdownMenuIconButton<?php echo $ApeNo; ?>" data-dropdown-toggle="dropdownDots<?php echo $ApeNo; ?>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900  rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 bg-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
                                                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
                                                     <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
@@ -307,7 +307,7 @@ if (isset($_POST['addBloodChemImport'])) {
                                         <div id="dropdownDots<?php echo $ApeNo; ?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                                             <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $ApeNo; ?>">
                                                 <li>
-                                                    <a type="button" onclick="openEditEmployee(this)" data-id="<?php echo $row['id'] ?>" data-rfid="<?php echo $row['rfidNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date="<?php echo $row['date']; ?>" data-time="<?php echo $row['time']; ?>" data-building="<?php echo $row['building']; ?>" data-type="<?php echo $row['type']; ?>" data-diagnosis="<?php echo $row['diagnosis']; ?>" data-intervention="<?php echo $row['intervention']; ?>" data-medications="<?php echo $row['medications']; ?>" data-followupdate="<?php echo $row['followupdate']; ?>" data-FBS="<?php echo $row['FBS']; ?>" data-cholesterol="<?php echo $row['cholesterol']; ?>" data-triglycerides="<?php echo $row['triglycerides']; ?>" data-HDL="<?php echo $row['HDL']; ?>" data-LDL="<?php echo $row['LDL']; ?>" data-BUN="<?php echo $row['BUN']; ?>" data-BUA="<?php echo $row['BUA']; ?>" data-SGPT="<?php echo $row['SGPT']; ?>" data-SGDT="<?php echo $row['SGDT']; ?>" data-HBA1C="<?php echo $row['HBA1C']; ?>" data-others="<?php echo $row['others']; ?>" data-remarks="<?php echo $row['remarks']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit HLP Record</a>
+                                                    <a type="button" onclick="openEditEmployee(this)" data-id="<?php echo $row['id'] ?>" data-rfid="<?php echo $row['idNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date="<?php echo $row['date']; ?>" data-time="<?php echo $row['time']; ?>" data-building="<?php echo $row['building']; ?>" data-type="<?php echo $row['type']; ?>" data-diagnosis="<?php echo $row['diagnosis']; ?>" data-intervention="<?php echo $row['intervention']; ?>" data-medications="<?php echo $row['medications']; ?>" data-followupdate="<?php echo $row['followupdate']; ?>" data-FBS="<?php echo $row['FBS']; ?>" data-cholesterol="<?php echo $row['cholesterol']; ?>" data-triglycerides="<?php echo $row['triglycerides']; ?>" data-HDL="<?php echo $row['HDL']; ?>" data-LDL="<?php echo $row['LDL']; ?>" data-BUN="<?php echo $row['BUN']; ?>" data-BUA="<?php echo $row['BUA']; ?>" data-SGPT="<?php echo $row['SGPT']; ?>" data-SGDT="<?php echo $row['SGDT']; ?>" data-HBA1C="<?php echo $row['HBA1C']; ?>" data-others="<?php echo $row['others']; ?>" data-remarks="<?php echo $row['remarks']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit HLP Record</a>
                                                 </li>
 
                                             </ul>
@@ -397,18 +397,18 @@ if (isset($_POST['addBloodChemImport'])) {
                         <select id="hlpname" name="hlpname" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                             <option selected disabled>Search Name</option>
                             <?php
-                            $sql1 = "SELECT * FROM employeespersonalinfo e WHERE e.employer = 'Powerlane' AND e.rfidNumber NOT IN (SELECT p.rfid FROM bloodchem p);";
+                            $sql1 = "SELECT * FROM employeespersonalinfo e WHERE e.employer = 'Powerlane' AND e.idNumber NOT IN (SELECT p.idNumber FROM bloodchem p);";
                             $result = mysqli_query($con, $sql1);
                             while ($list = mysqli_fetch_assoc($result)) {
-                                $rfid = $list["rfidNumber"];
+                                $idNumber = $list["idNumber"];
                                 $name = $list["Name"];
                                 $section = $list["section"]; ?>
-                                <option value="<?php echo  $name; ?>" data-hlprfid="<?php echo  $rfid; ?>" data-hlpsection="<?php echo  $section; ?>"> <?php echo  $name; ?> </option> <?php
+                                <option value="<?php echo  $name; ?>" data-hlprfid="<?php echo  $idNumber; ?>" data-hlpsection="<?php echo  $section; ?>"> <?php echo  $name; ?> </option> <?php
                                                                                                                                                                                     } ?>
                         </select>
                     </div>
                     <div class="content-center  col-span-2">
-                        <label for="hlprfid" class="block mb-1  text-gray-900 dark:text-white">RFID</label>
+                        <label for="hlprfid" class="block mb-1  text-gray-900 dark:text-white">ID Number</label>
                         <input type="text" name="hlprfid" id="hlprfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " required="">
                     </div>
                     <div class="content-center  col-span-2">
@@ -723,7 +723,7 @@ if (isset($_POST['addBloodChemImport'])) {
                         <input type="text" name="editname" id="editname" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
                     </div>
                     <div class="content-center  col-span-2">
-                        <label for="editrfid" class="block mb-1 font-semibold  text-gray-900 dark:text-white">RFID</label>
+                        <label for="editrfid" class="block mb-1 font-semibold  text-gray-900 dark:text-white">ID Number</label>
                         <input type="text" name="editrfid" id="editrfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
                     </div>
                     <div class="content-center  col-span-2">
@@ -1122,7 +1122,7 @@ if (isset($_POST['addBloodChemImport'])) {
         column1 = 'Date';
         column2 = 'Time';
         column3 = 'Building Transaction';
-        column4 = 'RFID';
+        column4 = 'ID Number';
         column5 = 'Type';
         column6 = 'Diagnosis';
         column7 = 'Intervention';
@@ -1171,7 +1171,7 @@ if (isset($_POST['addBloodChemImport'])) {
             column1 = '';
             column2 = '';
             column3 = '';
-            column4 = "Change format to 'Text'";
+            column4 = "";
             column5 = '';
             column6 = '';
             column7 = '';
