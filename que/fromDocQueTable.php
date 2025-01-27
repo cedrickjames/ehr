@@ -42,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <thead>
               <tr>
                 <th>No.</th>
+                <th>Date</th>
                 <th>Name</th>
                 <th>Action</th>
                 <th>Nurse</th>
@@ -80,6 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 echo "#d9ffdd";
                                               } ?>">
                   <td> <?php echo $queNo; ?> </td>
+                  <td> <?php echo $row['date']; ?> </td>
                   <td> <?php echo $row['Name']; ?> </td>
                   <td>
                     <div class="content-center flex flex-wrap justify-center gap-2">

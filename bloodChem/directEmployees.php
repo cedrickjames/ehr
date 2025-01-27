@@ -61,7 +61,7 @@ if (isset($_POST['addBloodChem'])) {
 
     if ($resultInfo) {
         echo "<script>alert('Added Successfuly!') </script>";
-        echo "<script> location.href='index.php'; </script>";
+        echo "<script> location.href='index.php?employer=$employer'; </script>";
     }
 }
 
@@ -103,7 +103,7 @@ if (isset($_POST['editBloodChem'])) {
 
     if ($resultInfo) {
         echo "<script>alert('Updated Successfuly!') </script>";
-        echo "<script> location.href='index.php'; </script>";
+        echo "<script> location.href='index.php?employer=$employer'; </script>";
     }
 }
 

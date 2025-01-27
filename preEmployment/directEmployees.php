@@ -88,7 +88,7 @@ if (isset($_POST['editPreEmployment'])) {
 
     if ($resultInfo) {
         echo "<script>alert('Updated Successfuly!') </script>";
-        echo "<script> location.href='index.php'; </script>";
+        echo "<script> location.href='index.php?employer=$employer'; </script>";
     }
 }
 
@@ -456,7 +456,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
                         <label for="attendee" class="block mb-1  text-gray-900 dark:text-white">Attendee</label>
                         <input type="text" name="attendee" id="attendee" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="Nurse/Doctor" required="">
                     </div>
-                    <div  class="content-center  col-span-2">
+                    <div id="compliancediv" class="content-center  col-span-2">
                         <label for="confirmationdate" class="block mb-1  text-gray-900 dark:text-white">Compliance Date</label>
                         <input type="date" name="confirmationdate" id="confirmationdate" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" required="">
                     </div>
@@ -625,7 +625,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
                         <input type="text" name="editAttendee" id="editAttendee" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="Nurse/Doctor" >
                     </div>
            
-                    <div  class="content-center  col-span-2">
+                    <div  class="content-center  col-span-2" id="editComplianceDiv">
                         <label for="editConfirmationdate" class="block mb-1  text-gray-900 dark:text-white">Compliance Date</label>
                         <input type="date" name="editConfirmationdate" id="editConfirmationdate" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="" >
                     </div>
@@ -764,6 +764,15 @@ if (isset($_POST['addPreEmploymentImport'])) {
         document.getElementById("editAttendee").value = element.getAttribute("data-attendee");
         document.getElementById("editConfirmationdate").value = element.getAttribute("data-confirmationdate");
         document.getElementById("editFmc").value = element.getAttribute("data-fmc");
+
+        if ($("#editStatus").val() == "complied") {
+    $("#editComplianceDiv").removeClass("hidden");
+    editconfirmationdate.required = true;
+  }else{
+    $("#editComplianceDiv").addClass("hidden");
+    editconfirmationdate.removeAttribute('required');
+
+  }
     }
 
     document.getElementById("employer").addEventListener("keydown", function(event) {

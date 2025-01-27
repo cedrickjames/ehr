@@ -138,6 +138,83 @@ $userID = $_SESSION['userID'];
     $(".homeIcon").attr("fill", "#4d4d4d");
 
         
+
+const $targetVaccine = document.getElementById('addVaccine');
+  const vaccineModal = {
+    placement: 'center-center',
+    backdrop: 'static',
+    backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
+    closable: true,
+    onHide: () => {
+    },
+    onShow: () => {
+
+    },
+    onToggle: () => {
+    }
+  };
+  const modalVaccine = new Modal($targetVaccine, vaccineModal);
+
+$(document).ready(function() {
+    // Attach change event handler to remarksSelect
+    $("#vaxType").change(function() {
+      // Check if the selected option is the one you want
+      if ($(this).val() === "addVaccineType") {
+        // Remove the "hidden" class from the input with id "medLab"
+        modalVaccine.toggle();
+      }
+    });
+
+    $("#vaxType2").change(function() {
+      // Check if the selected option is the one you want
+      if ($(this).val() === "addVaccineType") {
+        // Remove the "hidden" class from the input with id "medLab"
+        modalVaccine.toggle();
+      }
+    });
+  });
+
+
+  function addVaccine() {
+    var vaccine = document.getElementById("vaccine").value;
+    var addVaccine = new XMLHttpRequest();
+    addVaccine.open("POST", "addVaccine.php", true);
+    addVaccine.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    addVaccine.onreadystatechange = function() {
+      if (addVaccine.readyState === XMLHttpRequest.DONE) {
+        if (addVaccine.status === 200) {
+          // Update was successful
+          modalVaccine.toggle();
+          alert("Added Successfuly!")
+        } else {
+          console.log("Error: " + addVaccine.status);
+        }
+      }
+    };
+
+    // Construct the data to be updated
+    var data = "addedVaccine=" + encodeURIComponent(vaccine);
+    var optionValue = $("#vaccine").val();
+
+    $("#vaxType").append($('<option>', {
+      value: optionValue,
+      text: optionValue
+    }));
+    $("#vaxType2").append($('<option>', {
+      value: optionValue,
+      text: optionValue
+    }));
+    // data += "&computername="+ encodeURIComponent(result);
+
+    // Add any other parameters needed for the update
+    addVaccine.send(data);
+  }
+
+
+
+
+
+
 $(".js-employees").select2({
       tags: true
     });

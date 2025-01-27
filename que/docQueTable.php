@@ -47,6 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <tr>
                             <th >No.</th>
                             <th >Name</th>
+                            <th >Type</th>
                             <th >Action</th>
                             <th >Nurse</th>
 
@@ -81,6 +82,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ?> <tr style="background-color: <?php if($row['status'] == 'processing'){echo "#d9ffdd";} ?>"> 
                     <td> <?php echo $queNo;?> </td>
                     <td> <?php echo $row['Name'];?> </td>
+                    <td> <?php if($row['ftwRemarks'] !='' || $row['ftwRemarks']!= NULL){echo "For Fit To Work";} else{echo "For Consultation";}?> </td>
+
                     <td> <div class="content-center flex flex-wrap justify-center gap-2">
                     <input type="text" class="hidden" name="rfid<?php echo $queNo;?>" value="<?php echo $row['idNumber'];?>">
                     <a type="button" href="../doctor/doctorsConsultation.php?rf=<?php echo $row['idNumber']; ?>&dcnsltn=<?php echo $row['id'];?>" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 rounded-full px-3 py-2  text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">View</a>

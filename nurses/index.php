@@ -62,6 +62,13 @@ $(".homeIcon").attr("fill", "#FFFFFF");
 
 
 
+$('#userEmployeeId').on('input', function () {
+  // console.log("asd");
+  const inputVal = $(this).val(); // Get the value from the first input
+      $('#username').val(inputVal); // Set the value in the "username" input
+      $('#defaultpassword').val(inputVal); // Set the value in the "defaultpassword" input
+
+})
 
 const $targetEl = document.getElementById('sidebar');
 
@@ -141,6 +148,9 @@ drawer.show();
 // sidebar=0;/
     
 }
+
+
+
 
 </script>
 </body>

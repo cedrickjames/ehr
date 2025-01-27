@@ -103,7 +103,7 @@ if (isset($_POST['submitNewPassword'])) {
             <a href="../que" target="_blank" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Queing</a>
           </li>
           <li>
-            <a data-modal-target="registerModal" data-modal-toggle="registerModal" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Register user</a>
+          <a href="../users"   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">User Management</a>
           </li>
           <li>
             <a data-modal-target="changePassword" data-modal-toggle="changePassword" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Change Password</a>
@@ -317,7 +317,7 @@ if (isset($_POST['submitNewPassword'])) {
               <path fill="#4d4d4d" class="consultationIcon" d="M 572.886719 676.941406 L 566.160156 609.84375 L 543.925781 609.84375 L 552.878906 699.308594 L 699.308594 699.308594 L 699.308594 676.941406 L 572.886719 676.941406 " fill-opacity="1" fill-rule="nonzero" />
             </g>
           </svg>
-          <span class="flex-1 ml-3 font-semibold whitespace-nowrap">Consultation</span>
+          <span class="flex-1 ml-3 font-semibold whitespace-nowrap">Clinic Visit</span>
         </a>
         <ul id="dropdown-example" class=" py-2 space-y-2">
           <li id="fromDoctorsSide">
@@ -326,8 +326,51 @@ if (isset($_POST['submitNewPassword'])) {
           <li>
             <a href="#" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Completed</a>
           </li>
-          <li id="pendingConsultationSide">
-            <a href="../nurses/pending.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Pending</a>
+          <li id="pendingConsultationSide1">
+            <a href="../nurses/pending.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Pending Consultation ( <?php
+
+$sql = "SELECT COUNT(*) AS row_count
+                    FROM 
+                        consultation  
+                    INNER JOIN 
+                        employeespersonalinfo 
+                    ON 
+                        employeespersonalinfo.idNumber = consultation.idNumber
+                    LEFT JOIN
+                        users
+                    ON
+                        consultation.nurseAssisting = users.idNumber WHERE consultation.withPendingLab !='' ORDER BY
+    consultation.id ASC;
+
+";
+$result = mysqli_query($con, $sql);
+while ($row = mysqli_fetch_assoc($result)) {
+  echo $row['row_count']; ?>
+
+<?php } ?>)</a>
+          </li>
+          <li id="pendingConsultationSide1">
+            <a href="../nurses/pendingFTW.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Pending FTW ( <?php
+
+$sql = "SELECT COUNT(*) AS row_count
+                    FROM 
+                        fittowork  
+                    INNER JOIN 
+                        employeespersonalinfo 
+                    ON 
+                        employeespersonalinfo.idNumber = fittowork.idNumber
+                    LEFT JOIN
+                        users
+                    ON
+                        fittowork.nurseAssisting = users.idNumber WHERE fittowork.withPendingLab !='' ORDER BY
+    fittowork.id ASC;
+
+";
+$result = mysqli_query($con, $sql);
+while ($row = mysqli_fetch_assoc($result)) {
+  echo $row['row_count']; ?>
+
+<?php } ?>)</a>
           </li>
         </ul>
       </li>
@@ -570,6 +613,15 @@ if (isset($_POST['submitNewPassword'])) {
 
                                                                                                               ?>
             </select>
+            <label for="month" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company</label>
+
+<select id="company" name="company" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+  <option selected value="GPI">GPI</option>
+  <option value="Maxim">Maxim</option>
+  <option value="Nippi">Nippi</option>
+  <option value="Powerlane">Powerlane</option>
+
+
             <label for="month" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User Type</label>
 
             <select id="userType" name="userType" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">

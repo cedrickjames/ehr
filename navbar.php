@@ -14,12 +14,17 @@ if (isset($_POST['registerUser'])) {
   $userDepartment = $_POST['userDepartment'];
   $userType = $_POST['userType'];
   $password = '12345'; // default password
-  $password = password_hash($password, PASSWORD_DEFAULT);
+  // $password = password_hash($password, PASSWORD_DEFAULT);
+  $password = password_hash($idnumber, PASSWORD_DEFAULT);
+
   $userName = strpos($name, " ");
   $userName = substr($name, 0, $userName);
   $userName = strtolower($userName);
+  $company = $_POST['company'];
 
-  $sql = "INSERT INTO `users`(`idNumber`, `name`, `userName`, `password`, `type`, `department`,`email`, `status`) VALUES ('$idnumber','$name','$userName','$password','$userType','$userDepartment', '$email', 1)";
+  //change default udername and password to employee id
+
+  $sql = "INSERT INTO `users`(`idNumber`, `name`, `userName`, `password`, `type`, `department`,`company`,`email`, `status`) VALUES ('$idnumber','$name','$idnumber','$password','$userType','$userDepartment','$company', '$email', 1)";
   $results = mysqli_query($con, $sql);
 
   if ($results) {
@@ -104,7 +109,7 @@ if (isset($_POST['submitNewPassword'])) {
             <a href="../que" target="_blank" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Queing</a>
           </li>
           <li>
-            <a data-modal-target="registerModal" data-modal-toggle="registerModal" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Register user</a>
+            <a href="../users"  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">User Management</a>
           </li>
           <li>
             <a data-modal-target="changePassword" data-modal-toggle="changePassword" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Change Password</a>
@@ -272,7 +277,7 @@ if (isset($_POST['submitNewPassword'])) {
             <a href="completed.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Completed</a>
           </li>
           <li id="pendingConsultationSide1">
-            <a href="pending.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Pending ( <?php
+            <a href="pending.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Pending Consultation ( <?php
 
 $sql = "SELECT COUNT(*) AS row_count
                     FROM 
@@ -286,6 +291,29 @@ $sql = "SELECT COUNT(*) AS row_count
                     ON
                         consultation.nurseAssisting = users.idNumber WHERE consultation.withPendingLab !='' ORDER BY
     consultation.id ASC;
+
+";
+$result = mysqli_query($con, $sql);
+while ($row = mysqli_fetch_assoc($result)) {
+  echo $row['row_count']; ?>
+
+<?php } ?>)</a>
+          </li>
+          <li id="pendingConsultationSide1">
+            <a href="pending.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Pending FTW ( <?php
+
+$sql = "SELECT COUNT(*) AS row_count
+                    FROM 
+                        fittowork  
+                    INNER JOIN 
+                        employeespersonalinfo 
+                    ON 
+                        employeespersonalinfo.idNumber = fittowork.idNumber
+                    LEFT JOIN
+                        users
+                    ON
+                        fittowork.nurseAssisting = users.idNumber WHERE fittowork.withPendingLab !='' ORDER BY
+    fittowork.id ASC;
 
 ";
 $result = mysqli_query($con, $sql);
@@ -651,7 +679,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             <a href="completed.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Completed</a>
           </li>
           <li id="pendingConsultationSide">
-            <a href="pending.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Pending ( <?php
+            <a href="pending.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Pending Consultation( <?php
 
 $sql = "SELECT COUNT(*) AS row_count
                     FROM 
@@ -665,6 +693,29 @@ $sql = "SELECT COUNT(*) AS row_count
                     ON
                         consultation.nurseAssisting = users.idNumber WHERE consultation.withPendingLab !='' ORDER BY
     consultation.id ASC;
+
+";
+$result = mysqli_query($con, $sql);
+while ($row = mysqli_fetch_assoc($result)) {
+  echo $row['row_count']; ?>
+
+<?php } ?>)</a>
+          </li>
+          <li id="pendingFTWSide">
+            <a href="pendingFTW.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Pending FTW( <?php
+
+$sql = "SELECT COUNT(*) AS row_count
+                    FROM 
+                        fittowork  
+                    INNER JOIN 
+                        employeespersonalinfo 
+                    ON 
+                        employeespersonalinfo.idNumber = fittowork.idNumber
+                    LEFT JOIN
+                        users
+                    ON
+                        fittowork.nurseAssisting = users.idNumber WHERE fittowork.withPendingLab !='' ORDER BY
+    fittowork.id ASC;
 
 ";
 $result = mysqli_query($con, $sql);
@@ -895,10 +946,10 @@ while ($row = mysqli_fetch_assoc($result)) {
   </div>
 </div>
 
-<div id="registerModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-  <div class="relative w-full max-w-md max-h-full">
+<div id="registerModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+  <div class="relative w-full max-w-xl max-h-full">
     <!-- Modal content -->
-    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700" >
       <button type="button" data-modal-toggle="registerModal" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white">
         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -908,20 +959,30 @@ while ($row = mysqli_fetch_assoc($result)) {
       <div class="px-6 py-6 lg:px-8">
         <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Register</h3>
         <form class="space-y-6" action="" method="POST">
-          <div>
-            <div>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="col-span-1">
               <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employee ID</label>
               <input type="text" name="userEmployeeId" id="userEmployeeId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
             </div>
-            <div>
+            <div class="col-span-1">
 
               <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
               <input type="text" name="userFullName" id="fullName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
             </div>
-            <div>
+            <div class="col-span-1">
+              <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User Name</label>
+              <input type="text" readonly disabled id="username" class=" cursor-not-allowed bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+            </div>
+            <div class="col-span-1">
+
+              <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Default Password</label>
+              <input type="text" readonly disabled id="defaultpassword" class="cursor-not-allowed bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+            </div>
+            <div class="col-span-1">
               <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
               <input type="email" name="userEmail" id="userEmail" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
             </div>
+            <div>
             <label for="userDepartment" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Department</label>
 
             <select id="userDepartment" name="userDepartment" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -937,17 +998,38 @@ while ($row = mysqli_fetch_assoc($result)) {
 
                                                                                                               ?>
             </select>
-            <label for="month" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User Type</label>
+            </div>
+            <div>
+            <label for="month" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company</label>
+
+<select id="company" name="company" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+  <option selected value="GPI">GPI</option>
+  <option value="Maxim">Maxim</option>
+  <option value="Nippi">Nippi</option>
+  <option value="Powerlane">Powerlane</option>
+
+
+
+</select>
+            </div>
+
+<div>
+
+<label for="month" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User Type</label>
 
             <select id="userType" name="userType" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
               <option selected value="nurse">Nurse</option>
               <option value="head">Department Head</option>
               <option value="hr">HR</option>
+              <option value="coordinator">Coordinator</option>
               <option value="doctor">Doctor</option>
 
 
 
             </select>
+</div>
+   
+            
 
           </div>
 

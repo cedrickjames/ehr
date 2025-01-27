@@ -56,26 +56,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <tbody>
               <?php
               $queNo = 1;
-              $sql = "SELECT consultation.*, 
+              $sql = "SELECT fittowork.*, 
                         employeespersonalinfo.idNumber, 
                         employeespersonalinfo.Name, 
                         COALESCE(users.name, '') AS nurse_assisting_name
                     FROM 
-                        consultation  
+                        fittowork  
                     INNER JOIN 
                         employeespersonalinfo 
                     ON 
-                        employeespersonalinfo.idNumber = consultation.idNumber
+                        employeespersonalinfo.idNumber = fittowork.idNumber
                     LEFT JOIN
                         users
                     ON
-                        consultation.nurseAssisting = users.idNumber WHERE consultation.withPendingLab !='' ORDER BY
-    consultation.id ASC; 
+                        fittowork.nurseAssisting = users.idNumber WHERE fittowork.withPendingLab !='' ORDER BY
+    fittowork.id ASC; 
                     ";
               $result = mysqli_query($con, $sql);
               while ($row = mysqli_fetch_assoc($result)) {
 
-              ?> <tr >
+              ?> <tr>
                   <td> <?php echo $queNo; ?> </td>
                   <td> <?php 
                   $date = new DateTime($row['date']);
@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <td>
                     <div class="content-center flex flex-wrap justify-center gap-2">
                       <input type="text" class="hidden" name="rfid<?php echo $queNo; ?>" value="<?php echo $row['idNumber']; ?>">
-                      <a type="button" href="../nurses/pendingConsultation.php?rf=<?php echo $row['idNumber']; ?>&dcnsltn=<?php echo $row['id']; ?>" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 rounded-full px-3 py-2  text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">View</a>
+                      <a type="button" href="../nurses/pendingFitToWork.php?rf=<?php echo $row['idNumber']; ?>&ftwid=<?php echo $row['id']; ?>" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 rounded-full px-3 py-2  text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">View</a>
                       <?php
 
 

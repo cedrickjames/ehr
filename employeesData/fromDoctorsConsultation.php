@@ -542,9 +542,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
           <option <?php if ($remarks == "Fit to Work") {
                     echo "selected";
                   } ?> value="Fit to Work">Fit To Work</option>
-                  <option <?php if ($remarks == "Late Fit to Work") {
-                    echo "selected";
-                  } ?> value="Late Fit to Work">Late FTW</option>
+                
           <option <?php if ($remarks == "Unfit to work") {
                     echo "selected";
                   } ?> value="Unfit to work">Unfit to work</option>
@@ -574,6 +572,12 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
         <div class=" gap-2 flex items-center ps-3">
             <input <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-noMedcert" type="radio" value="noMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
             <label for="horizontal-medicalCertificate-noMedcert" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">no Medcert</label>
+        </div>
+    </li>
+    <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+        <div class=" gap-2 flex items-center ps-3">
+            <input <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-invalidMedCert" type="radio" value="invalidMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <label for="horizontal-medicalCertificate-invalidMedCert" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">Invalid Medcert</label>
         </div>
     </li>
     

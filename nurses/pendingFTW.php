@@ -6,6 +6,9 @@ if(!isset($_SESSION['connected'])){
   header("location: ../logout.php");
 }
 
+
+$userID = $_SESSION['userID'];
+
 ?>
 
 
@@ -22,16 +25,15 @@ if(!isset($_SESSION['connected'])){
   <link rel="stylesheet" href="../node_modules/DataTables/datatables.min.css">
 
 <link rel="stylesheet" type="text/css" href="../node_modules/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css"/>
-<link href="../node_modules/select2/dist/css/select2.min.css" rel="stylesheet" />
-<link rel="stylesheet" type="text/css" href="../styles.css" />
+
 </head>
 <body  class="h-screen bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
-<?php require_once 'navbar.php';?>
+<?php require_once '../navbar.php';?>
 
-<div style= " background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));"class="h-full  ml-56 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
+<div style= " background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));"class="h-full ml-56 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
   <div class="m-2">
 
-  <?php require_once 'directEmployees.php';?>
+  <?php require_once '../que/pendingFTWTable.php';?>
       
 
     
@@ -44,30 +46,22 @@ if(!isset($_SESSION['connected'])){
 <script type="text/javascript" src="../node_modules/DataTables/datatables.min.js"></script>
     <script type="text/javascript" src="../node_modules/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js"></script>
     
-    <script src="../node_modules/select2/dist/js/select2.min.js"></script>
+
     <script type="text/javascript" src="index.js"></script>
 <script>
     
-$("#preempside").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
-$("#gpiside").addClass("bg-[#82c7cc]");
-
-
+$("#pendingFTWSide").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
 $("#sidehistory").removeClass("bg-gray-200");
 $("#sideMyRequest").removeClass("bg-gray-200");
 $("#sidepms").removeClass("bg-gray-200");
 
-$("#preempside1").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
 $("#sidehistory1").removeClass("bg-gray-200");
 $("#sideMyRequest1").removeClass("bg-gray-200");
 $("#sidepms1").removeClass("bg-gray-200");
-$(".preempIcon").attr("fill", "#FFFFFF"); 
+// $(".homeIcon").attr("fill", "#FFFFFF"); 
 $(".homeIcon").attr("fill", "#4d4d4d"); 
-$(".empIcon").attr("fill", "#4d4d4d"); 
 
 
-$(".js-employees").select2({
-      tags: true
-    });
 
 
 const $targetEl = document.getElementById('sidebar');
@@ -148,50 +142,6 @@ drawer.show();
 // sidebar=0;/
     
 }
-
-$(document).ready(function() {
-  var confirmationdate = document.getElementById('confirmationdate');
-
-  $("#status").change(function() {
-    if ($(this).val() == "complied") {
-      $("#compliancediv").removeClass("hidden");
-      confirmationdate.required = true;
-    }else{
-      $("#compliancediv").addClass("hidden");
-      confirmationdate.removeAttribute('required');
-
-    }
-
-
-    });
-
-
-
-
-
-    var editconfirmationdate = document.getElementById('editConfirmationdate');
-
-$("#editStatus").change(function() {
-  if ($(this).val() == "complied") {
-    $("#editComplianceDiv").removeClass("hidden");
-    editconfirmationdate.required = true;
-  }else{
-    $("#editComplianceDiv").addClass("hidden");
-    editconfirmationdate.removeAttribute('required');
-
-  }
-
-
-  });
-  
-
-
-
-});
-
-
-
-
 
 
 </script>

@@ -54,7 +54,7 @@ if (isset($_POST['addAnnualPe'])) {
 
     if ($resultInfo) {
         echo "<script>alert('Added Successfuly!') </script>";
-        echo "<script> location.href='index.php'; </script>";
+        echo "<script> location.href='index.php?employer=$employer'; </script>";
     }
 }
 
@@ -87,7 +87,7 @@ if (isset($_POST['editAnnualPe'])) {
 
     if ($resultInfo) {
         echo "<script>alert('Updated Successfuly!') </script>";
-        echo "<script> location.href='index.php'; </script>";
+        echo "<script> location.href='index.php?employer=$employer'; </script>";
     }
 }
 

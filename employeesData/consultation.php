@@ -315,7 +315,6 @@ if (isset($_POST['updateConsultation'])) {
         <label class="block  my-auto  font-semibold text-gray-900 ">Remarks: </label>
         <select id="remarksSelect1" name="ftwCtnRemarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option  value="Fit to Work">Fit To Work</option>
-          <option  value="Late Fit to Work">Late FTW</option>
           <option  value="no Medical Certificate">No Medical Certificate</option>
           <option  value="Others">Others</option>
 

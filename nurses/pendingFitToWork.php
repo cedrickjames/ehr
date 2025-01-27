@@ -1,24 +1,12 @@
 <?php
-
 session_start();
-
-// use PHPMailer\PHPMailer\PHPMailer;
-// use PHPMailer\PHPMailer\Exception;
-
-
 // Set the timezone to Manila
+
 include("../includes/connect.php");
 if (!isset($_SESSION['connected'])) {
   header("location: ../logout.php");
 }
 date_default_timezone_set('Asia/Manila');
-
-if (isset($_GET['rf'])) {
-  $idNumber = $_GET['rf'];
-} else {
-  $idNumber = "not found";
-}
-
 
 
 $userID = $_SESSION['userID'];
@@ -39,14 +27,11 @@ $userID = $_SESSION['userID'];
   <link rel="stylesheet" href="../node_modules/DataTables/datatables.min.css">
   <script src="../node_modules/flowbite/dist/datepicker.js"></script>
   <link href="../node_modules/select2/dist/css/select2.min.css" rel="stylesheet" />
-  <link rel="stylesheet" type="text/css" href="../styles.css" />
-
   <link rel="stylesheet" type="text/css" href="../node_modules/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css" />
-
+  <link rel="stylesheet" type="text/css" href="../styles.css"/>
 </head>
 
-<body class="h-screen bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
-
+<body class="bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
   <?php require_once '../navbar.php'; ?>
   <div id="loading-message">
         <div role="status" class="self-center flex">
@@ -59,41 +44,36 @@ $userID = $_SESSION['userID'];
         </div>
 
     </div>
-  <div  id="content" style="display: none; background: linear-gradient(-45deg, #05458cba, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));" class="h-full ml-56 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
-  
- 
-  <?php
-    if ($idNumber == "not found") {
-      echo "<div class='m-4'>";
-      require_once '../employeesData/ftwTable.php';
-      echo "</div>";
-    } else {
-      echo "<div class='mb-5 grid grid-cols-1 sm:grid-cols-11 gap-4 w-full'>
-      <div class='overflow-y-auto h-screen relative  sm:col-span-6 '>";
 
-      require_once '../employeesData/employeesPersonalData.php';
-      require_once '../employeesData/fitToWork.php';
 
-      echo "</div>
-      <div class='overflow-y-auto h-screen sm:col-span-5'>";
+  <div id="content" style="display: none; background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));" class=" m-auto ml-52 2xl:ml-80 flex  left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
+    <div class="mb-5 grid grid-cols-1 sm:grid-cols-11 gap-4 w-full ">
+      <div class="overflow-y-auto h-screen relative  sm:col-span-6 ">
+        <?php require_once '../employeesData/employeesPersonalData.php'; ?>
+        <?php require_once '../employeesData/pendingFitToWork.php'; ?>
+      </div>
+      <div class="overflow-y-auto h-screen sm:col-span-5">
+        <?php require_once '../employeesData/employeesPastMedicalHistory.php'; ?>
+        <?php require_once '../employeesData/consultationTable.php'; ?>
 
-      require_once '../employeesData/ftwInfo.php';
 
-      echo "</div>
-    </div>";
-    } ?>
+
+
+
+      </div>
+
+
+
+    </div>
 
   </div>
-
-
-
 
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 
   <script type="text/javascript" src="../node_modules/DataTables/datatables.min.js"></script>
   <script type="text/javascript" src="../node_modules/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js"></script>
-  <script src="../node_modules/select2/dist/js/select2.min.js"></script>
 
+  <script src="../node_modules/select2/dist/js/select2.min.js"></script>
   <script type="text/javascript" src="index.js"></script>
   <script>
 
@@ -153,18 +133,19 @@ immediateEmail.removeAttribute('required');
 });
 
 
-  $("#fitToWorkSide").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
-  $("#sidehistory").removeClass("bg-gray-200");
-  $("#sideMyRequest").removeClass("bg-gray-200");
-  $("#sidepms").removeClass("bg-gray-200");
+$("#pendingFTWSide").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
+    $("#sidehistory").removeClass("bg-gray-200");
+    $("#sideMyRequest").removeClass("bg-gray-200");
+    $("#sidepms").removeClass("bg-gray-200");
 
-  $("#fitToWorkSide1").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
-  $("#sidehistory1").removeClass("bg-gray-200");
-  $("#sideMyRequest1").removeClass("bg-gray-200");
-  $("#sidepms1").removeClass("bg-gray-200");
-  $(".ftwIcon").attr("fill", "#FFFFFF");
-  $(".homeIcon").attr("fill", "#4d4d4d");
 
+    $("#sidehistory1").removeClass("bg-gray-200");
+    $("#sideMyRequest1").removeClass("bg-gray-200");
+    $("#sidepms1").removeClass("bg-gray-200");
+    $(".consultationIcon").attr("fill", "#4d4d4d");
+    $(".homeIcon").attr("fill", "#4d4d4d");
+    $(".medcertIcon").attr("fill", "#FFFFFF");
+    $(".proceedIcon").attr("fill", "#FFFFFF");
 
   $(".js-diagnosis").select2({
     tags: true
@@ -185,7 +166,7 @@ var ftwUnfitReason = document.getElementById('ftwUnfitReason');
 ftwUnfitReason.removeAttribute('required');
 
           // Remove the "hidden" class from the input with id "medLab"
-          // $("#fitToWorkFields").removeClass("hidden");
+          $("#fitToWorkFields").removeClass("hidden");
         $("#restDays").addClass("hidden");
         $("#unfitReason").addClass("hidden");
         
@@ -202,7 +183,7 @@ ftwUnfitReason.required = true;
         $("#unfitReason").removeClass("hidden");
         $("#restDays").removeClass("hidden");
 
-        // $("#fitToWorkFields").addClass("hidden");
+        $("#fitToWorkFields").addClass("hidden");
       }
   })
 
@@ -217,7 +198,7 @@ ftwUnfitReason.removeAttribute('required');
 
 
           // Remove the "hidden" class from the input with id "medLab"
-          // $("#fitToWorkFields").removeClass("hidden");
+          $("#fitToWorkFields").removeClass("hidden");
         $("#restDays").addClass("hidden");
         $("#unfitReason").addClass("hidden");
 
@@ -232,7 +213,7 @@ ftwUnfitReason.required = true;
         $("#unfitReason").removeClass("hidden");
 
         $("#restDays").removeClass("hidden");
-        // $("#fitToWorkFields").addClass("hidden");
+        $("#fitToWorkFields").addClass("hidden");
       }
 
   })

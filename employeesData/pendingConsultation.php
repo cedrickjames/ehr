@@ -600,6 +600,7 @@ if (isset($_POST['updateConsultation'])) {
         </ul>
 
       </div>
+      
       <div class="col-span-4 gap-4 justify-center flex h-14">
         <button type="submit" name="updateConsultation" class="w-full justify-center mt-2 text-center inline-flex items-center text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[9px] 2xl:text-xl px-5 py-1 text-center me-2 mb-2">
           <?php require_once '../src/navBarIcons/proceed.svg' ?>

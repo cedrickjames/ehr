@@ -5,6 +5,8 @@ $userID = $_SESSION['userID'];
 
 
 if(isset($_POST['addQue'])){
+  $queTime = date('h:i A');
+
     $cardNumber = $_POST['cardNumber'];
     $_SESSION['lastQue']=$cardNumber;
 
@@ -22,7 +24,7 @@ $num_rowsQue = mysqli_num_rows($resultCheckQue);
 if($num_rowsQue ==0){
   $currentDate = date('Y-m-d');
 
-    $addQue = "INSERT INTO `queing`(`idNumber`, `status`,`date`) VALUES ('$cardNumber','waiting','$currentDate')";
+    $addQue = "INSERT INTO `queing`(`idNumber`, `status`,`date`,`time`) VALUES ('$cardNumber','waiting','$currentDate','$queTime')";
     $resultInfo = mysqli_query($con, $addQue);
 
 }
@@ -44,7 +46,7 @@ if($num_rowsQue ==0){
   while($row=mysqli_fetch_assoc($resultCheck)){
     $cardNumber = $row['idNumber'];
     $currentDate = date('Y-m-d');
-    $addQue = "INSERT INTO `queing`(`idNumber`, `status`,`date`) VALUES ('$cardNumber','waiting','$currentDate')";
+    $addQue = "INSERT INTO `queing`(`idNumber`, `status`,`date`,`time`) VALUES ('$cardNumber','waiting','$currentDate','$queTime')";
     $resultInfo = mysqli_query($con, $addQue);
   }
 

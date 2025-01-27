@@ -103,7 +103,7 @@ if (isset($_POST['submitNewPassword'])) {
             <a href="../que" target="_blank" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Queing</a>
           </li>
           <li>
-            <a data-modal-target="registerModal" data-modal-toggle="registerModal" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Register user</a>
+          <a href="../users"   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">User Management</a>
           </li>
           <li>
             <a data-modal-target="changePassword" data-modal-toggle="changePassword" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Change Password</a>
@@ -326,8 +326,51 @@ if (isset($_POST['submitNewPassword'])) {
           <li>
             <a href="#" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Completed</a>
           </li>
-          <li id="pendingConsultationSide">
-            <a href="../nurses/pending.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Pending</a>
+          <li id="pendingConsultationSide1">
+            <a href="../nurses/pending.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Pending Consultation ( <?php
+
+$sql = "SELECT COUNT(*) AS row_count
+                    FROM 
+                        consultation  
+                    INNER JOIN 
+                        employeespersonalinfo 
+                    ON 
+                        employeespersonalinfo.idNumber = consultation.idNumber
+                    LEFT JOIN
+                        users
+                    ON
+                        consultation.nurseAssisting = users.idNumber WHERE consultation.withPendingLab !='' ORDER BY
+    consultation.id ASC;
+
+";
+$result = mysqli_query($con, $sql);
+while ($row = mysqli_fetch_assoc($result)) {
+  echo $row['row_count']; ?>
+
+<?php } ?>)</a>
+          </li>
+          <li id="pendingConsultationSide1">
+            <a href="../nurses/pendingFTW.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group">Pending FTW ( <?php
+
+$sql = "SELECT COUNT(*) AS row_count
+                    FROM 
+                        fittowork  
+                    INNER JOIN 
+                        employeespersonalinfo 
+                    ON 
+                        employeespersonalinfo.idNumber = fittowork.idNumber
+                    LEFT JOIN
+                        users
+                    ON
+                        fittowork.nurseAssisting = users.idNumber WHERE fittowork.withPendingLab !='' ORDER BY
+    fittowork.id ASC;
+
+";
+$result = mysqli_query($con, $sql);
+while ($row = mysqli_fetch_assoc($result)) {
+  echo $row['row_count']; ?>
+
+<?php } ?>)</a>
           </li>
         </ul>
       </li>
