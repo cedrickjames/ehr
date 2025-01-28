@@ -71,13 +71,17 @@ if (isset($_POST['updateConsultation'])) {
   $cnsltnIntervention = $_POST['cnsltnIntervention'];
   $cnsltnClinicRestFrom = $_POST['cnsltnClinicRestFrom'];
   $cnsltnClinicRestTo = $_POST['cnsltnClinicRestTo'];
-  $cnsltnMeds = $_POST['cnsltnMeds'];
-
-
-  if ($cnsltnMeds != "") {
-
+  if (isset($_POST['cnsltnMeds']) && !empty($_POST['cnsltnMeds'])) {
+    $cnsltnMeds = $_POST['cnsltnMeds'];
     $cnsltnMeds = implode(', ', $cnsltnMeds);
-  }
+
+  }  else{
+
+    $cnsltnMeds = "";
+  
+    }
+  
+
 
   $cnsltnMedsQuantity = $_POST['cnsltnMedsQuantity'];
 
@@ -92,27 +96,33 @@ if (isset($_POST['updateConsultation'])) {
   $cnsltn02Sat = $_POST['cnsltn02Sat'];
   $cnsltnPr = $_POST['cnsltnPr'];
   $cnsltnRr = $_POST['cnsltnRr'];
-  $cnsltnRemarks = $_POST['cnsltnRemarks'];
+  // $cnsltnRemarks = $_POST['cnsltnRemarks'];
   $cnsltnOthersRemarks = $_POST['cnsltnOthersRemarks'];
-  $cnstltnmedLab = $_POST['medLab'];
-  $cnstltnmedDis= $_POST['medDis'];
+  // $cnstltnmedLab = $_POST['medLab'];
+  // $cnstltnmedDis= $_POST['medDis'];
 
   
   $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
   $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
 
   if($cnsltnCompleted==1){
+    $cnstltnmedLab = $cnsltnWithPendingLab;
+  
     $cnsltnWithPendingLab='';
   }
+  else{
+   
+    
+      }
   // echo $smoking;
-  $sql = "UPDATE `consultation` SET `type`='$cnsltnType',`categories`='$cnsltnCategories',`building`='$cnsltnBuilding',`chiefComplaint`='$cnsltnChiefComplaint',`diagnosis`='$cnsltnDiagnosis',`intervention`='$cnsltnIntervention',`clinicRestFrom`='$cnsltnClinicRestFrom',`clinicRestTo`='$cnsltnClinicRestTo',`meds`='$cnsltnMeds',`medsQty`='$cnsltnMedsQuantity',`bloodChemistry`='$cnsltnBloodChem',`cbc`='$cnsltnCbc',`urinalysis`='$cnsltnUrinalysis',`fecalysis`='$cnsltnFecalysis',`xray`='$cnsltnXray',`others`='$cnsltnOthersLab',`bp`='$cnsltnBp',`temp`='$cnsltnTemp',`02sat`='$cnsltn02Sat',`pr`='$cnsltnPr',`rr`='$cnsltnRr',`remarks`='$cnsltnRemarks',`medicalLab`='$cnstltnmedLab',`medicationDispense`='$cnstltnmedDis',`otherRemarks`='$cnsltnOthersRemarks',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
+  $sql = "UPDATE `consultation` SET  `type`='$cnsltnType',`categories`='$cnsltnCategories',`building`='$cnsltnBuilding',`chiefComplaint`='$cnsltnChiefComplaint',`diagnosis`='$cnsltnDiagnosis',`intervention`='$cnsltnIntervention',`clinicRestFrom`='$cnsltnClinicRestFrom',`clinicRestTo`='$cnsltnClinicRestTo',`meds`='$cnsltnMeds',`medsQty`='$cnsltnMedsQuantity',`bloodChemistry`='$cnsltnBloodChem',`cbc`='$cnsltnCbc',`urinalysis`='$cnsltnUrinalysis',`fecalysis`='$cnsltnFecalysis',`xray`='$cnsltnXray',`others`='$cnsltnOthersLab',`bp`='$cnsltnBp',`temp`='$cnsltnTemp',`02sat`='$cnsltn02Sat',`pr`='$cnsltnPr',`rr`='$cnsltnRr',`medicalLab`='$cnstltnmedLab',`otherRemarks`='$cnsltnOthersRemarks',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
    
   
    $results = mysqli_query($con, $sql);
 
   if ($results) {
     echo "<script>alert('Successfull') </script>";
-    echo "<script> location.href='pendingConsultation.php?rf=",$idNumber,"&dcnsltn=",$dcnsltn,"'; </script>";
+    // echo "<script> location.href='pending.php' ;</script>";
   }
 }
 
@@ -222,7 +232,7 @@ if (isset($_POST['updateConsultation'])) {
           ?>
             <option <?php if ($diagnosis == $diagnosis1) {
                       echo "selected";
-                    } ?> value=<?php echo $diagnosis1; ?>><?php echo $diagnosis1; ?></option>
+                    } ?> value="<?php echo $diagnosis1; ?>"><?php echo $diagnosis1; ?></option>
           <?php
 
             //  echo "<option value='$diagnosis' >$diagnosis</option>";
@@ -536,7 +546,7 @@ if (isset($_POST['updateConsultation'])) {
       </div>
     
      
-      <div class="col-span-4 gap-4">
+      <!-- <div class="col-span-4 gap-4">
         <h3 class=" block my-auto  font-semibold text-gray-900 ">Remarks: <?php //echo $remarks; ?> </h3>
         <select id="remarksSelect2" name="cnsltnRemarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option <?php if ($remarks == "Fit to Work") {
@@ -561,7 +571,7 @@ if (isset($_POST['updateConsultation'])) {
         <input type="text" name="medLab" value="<?php echo $medicalLab ?>" placeholder="Medical Laboratory" id="medLab" class="hidden  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
         <input type="text" name="medDis" value="<?php echo $medicationDispense ?>" placeholder="Medication Dispense" id="medDis" class="hidden  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
-      </div>
+      </div> -->
       <div class="col-span-4  gap-4">
         <h3 class="  block my-auto  font-semibold text-gray-900 ">Others: </h3>
         <input type="text" value="<?php echo $otherRemarks; ?>" name="cnsltnOthersRemarks"  class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
@@ -578,17 +588,17 @@ if (isset($_POST['updateConsultation'])) {
             <div class="gap-2 flex items-center ps-3">
               <input  <?php if ($statusComplete == '1') {
                                                               echo "checked";
-                                                            } ?> id="vue-checkbox-list" type="checkbox" name="cnsltnCompleted" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-              <label for="vue-checkbox-list" class="w-full py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">Completed</label>
+                                                            } ?> id="completedId" type="checkbox" name="cnsltnCompleted" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+              <label for="completedId" class="w-full py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">Completed</label>
             </div>
           </li>
 
           <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
             <div class="gap-2 flex items-center ps-3">
-              <input id="vue-checkbox-list" type="checkbox" name="cnsltnWithPendingLab"  <?php if ($withPendingLab != '') {
+              <input id="withPendingLab" type="checkbox" name="cnsltnWithPendingLab"  <?php if ($withPendingLab != '') {
                                                               echo "checked";
                                                             } ?> value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-              <label for="vue-checkbox-list" class=" py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">With Pending Lab</label>
+              <label for="withPendingLab" class=" py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">With Pending Lab</label>
               <div class="relative z-0 group">
                 <input type="text" value="<?php echo $withPendingLab;?>" name="cnsltnWithPendingLab" id="floating_email" class="block py-2.5 px-0  text-[10px] 2xl:text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                 <label for="floating_email" class="peer-focus:font-medium absolute text-[10px] 2xl:text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"></label>

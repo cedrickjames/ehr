@@ -87,7 +87,7 @@ date_default_timezone_set('Asia/Manila');
     $(document).ready(function() {
       if ($('#remarksSelect').val() != "Unfit to work") {
             // Remove the "hidden" class from the input with id "medLab"
-            $("#fitToWorkFields").removeClass("hidden");
+            
           $("#restDays").addClass("hidden");
           $("#unfitReason").addClass("hidden");
           
@@ -98,14 +98,14 @@ date_default_timezone_set('Asia/Manila');
           $("#unfitReason").removeClass("hidden");
           $("#restDays").removeClass("hidden");
 
-          $("#fitToWorkFields").addClass("hidden");
+          
         }
     })
 
     $("#remarksSelect").change(function() {
       if ($(this).val() != "Unfit to work") {
             // Remove the "hidden" class from the input with id "medLab"
-            $("#fitToWorkFields").removeClass("hidden");
+            
           $("#restDays").addClass("hidden");
           $("#unfitReason").addClass("hidden");
 
@@ -114,7 +114,7 @@ date_default_timezone_set('Asia/Manila');
           $("#unfitReason").removeClass("hidden");
 
           $("#restDays").removeClass("hidden");
-          $("#fitToWorkFields").addClass("hidden");
+          
         }
 
     })

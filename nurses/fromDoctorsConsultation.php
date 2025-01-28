@@ -211,6 +211,44 @@ else{
 });
 
 
+$(document).ready(function () {
+
+if ($('#withPendingCheckBox').is(':checked')) {
+      // Code to execute when the checkbox is checked
+      $("#pendingLabDueDateDiv").removeClass("hidden");
+
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.required = true;
+
+      
+      // alert('Checkbox is checked!');
+
+
+    } else {
+      // Code to execute when the checkbox is unchecked
+      $("#pendingLabDueDateDiv").addClass("hidden");
+
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.removeAttribute('required');
+    }
+    
+  $('#withPendingCheckBox').change(function () {
+    if ($(this).is(':checked')) {
+      // Code to execute when the checkbox is checked
+      $("#pendingLabDueDateDiv").removeClass("hidden");
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.required = true;
+      // alert('Checkbox is checked!');
+
+
+    } else {
+      // Code to execute when the checkbox is unchecked
+      $("#pendingLabDueDateDiv").addClass("hidden");
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.removeAttribute('required');
+    }
+  });
+});
 
 // $(document).ready(function() {
 //   var selectedRemarksValue = $('#remarksSelect2').find('option:selected').val();
@@ -279,7 +317,7 @@ else{
 $(document).ready(function() {
       if ($('#remarksSelect').val() != "Unfit to work") {
             // Remove the "hidden" class from the input with id "medLab"
-            $("#fitToWorkFields").removeClass("hidden");
+            
           $("#restDays").addClass("hidden");
           $("#unfitReason").addClass("hidden");
           
@@ -290,14 +328,14 @@ $(document).ready(function() {
           $("#unfitReason").removeClass("hidden");
           $("#restDays").removeClass("hidden");
 
-          $("#fitToWorkFields").addClass("hidden");
+          
         }
     })
 
     $("#remarksSelect").change(function() {
       if ($(this).val() != "Unfit to work") {
             // Remove the "hidden" class from the input with id "medLab"
-            $("#fitToWorkFields").removeClass("hidden");
+            
           $("#restDays").addClass("hidden");
           $("#unfitReason").addClass("hidden");
 
@@ -306,7 +344,7 @@ $(document).ready(function() {
           $("#unfitReason").removeClass("hidden");
 
           $("#restDays").removeClass("hidden");
-          $("#fitToWorkFields").addClass("hidden");
+          
         }
 
     })

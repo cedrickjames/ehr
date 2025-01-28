@@ -81,15 +81,26 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $name = $userRow['Name'];
   $section = $userRow['section'];
   $nurse_email = $userRow['email'];
+  $employer = $userRow['employer'];
+  $ftwTime = $userRow['time'];
+
 }
 
-$sqluserhr = "SELECT * FROM `users` WHERE `type` = 'hr'  LIMIT 1";
+
+if($employer=='GPI'){
+  $sqluserhr = "SELECT * FROM `users` WHERE `type` = 'hr'";
+  $coorHR = "HR";
+}else{
+  $sqluserhr = "SELECT * FROM `users` WHERE `company` = '$employer'";
+  $coorHR = "Coordinators";
+}
+$hremail = [];
 
 $resultInfohr = mysqli_query($con, $sqluserhr);
 while ($userRow = mysqli_fetch_assoc($resultInfohr)) {
-  $hremail = $userRow['email'];
+  // $hremail = $userRow['email'];
   $hrname = $userRow['name'];
- 
+  $hremail[] = $userRow['email'];
 } 
 
 
@@ -188,6 +199,10 @@ if (isset($_POST['updateFTW'])) {
 
   $ftwDate = $_POST['ftwDate'];
   $ftwTime = $_POST['ftwTime'];
+
+  $timeOfFiling = $_POST['timeOfFiling'];
+
+
   $ftwCategories = $_POST['ftwCategories'];
   $ftwBuilding = $_POST['ftwBuilding'];
   $ftwConfinement = $_POST['ftwConfinement'];
@@ -197,6 +212,8 @@ if (isset($_POST['updateFTW'])) {
 
   $ftwSLDateFrom = date("F j, Y", strtotime($ftwSLDateFrom));
   $ftwSLDateTo = date("F j, Y", strtotime($ftwSLDateTo));
+
+  $ftwTimeEmail = date("F j, Y", strtotime($ftwTime));
 
   $ftwDays = $_POST['ftwDays'];
   $ftwAbsenceReason = $_POST['ftwAbsenceReason'];
@@ -254,20 +271,22 @@ if (isset($_POST['updateFTW'])) {
   else{
     $ftwMeds="";
   }
-  if ($ftwRemarks == "Unfit to work") {
-
-    $isMedcertRequired ="";
-  }else{
+  if ($ftwRemarks == "Fit to Work") {
     $ftwUnfitReason="";
     $ftwDaysOfRest="";
   }
   
   if($ftwCompleted==1){
+    $laboratory=$ftwWithPendingLab;
     $ftwWithPendingLab='';
   }
-  echo $ftwWithPendingLab='';
+
+  $statusColorMedCert='black';
+  $statusColorFiling='black';
+
+
   // echo $smoking;
-  $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`intervention`='$cnsltnIntervention',`clinicRestFrom`='$cnsltnClinicRestFrom',`clinicRestTo`='$cnsltnClinicRestTo',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`isFitToWork`='$ftwRemarks',`isMedcertRequired`='$isMedcertRequired',`daysOfRest`='$ftwDaysOfRest',`reasonOfUnfitToWork`='$ftwUnfitReason',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab',`pendingLabDueDate`='$pendingLabDueDate' WHERE `id`= '$ftwid';";
+  $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`timeOfFiling`='$timeOfFiling',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`intervention`='$cnsltnIntervention',`clinicRestFrom`='$cnsltnClinicRestFrom',`clinicRestTo`='$cnsltnClinicRestTo',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`isFitToWork`='$ftwRemarks',`isMedcertRequired`='$isMedcertRequired',`daysOfRest`='$ftwDaysOfRest',`reasonOfUnfitToWork`='$ftwUnfitReason',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab',`laboratory`='$laboratory',`pendingLabDueDate`='$pendingLabDueDate' WHERE `id`= '$ftwid';";
   $results = mysqli_query($con, $sql);
   
   if ($results) {
@@ -277,12 +296,32 @@ if (isset($_POST['updateFTW'])) {
       $account = $list["email"];
       $accountpass = $list["password"];
     }
+    
+  if($isMedcertRequired =='noMedCert'){
+    $isMedcertRequired = 'No Medical Certificate Submitted';
+    $statusColorMedCert = 'red';
+
+  }
+  else if($isMedcertRequired=='invalidMedCert'){
+    $isMedcertRequired = 'Invalid Medical Certificate';
+    $statusColorMedCert = 'red';
+  }
+  else if($isMedcertRequired=='noNeed'){
+    $isMedcertRequired = 'Not Required';
+  }
+  else if($isMedcertRequired=='withMedCert'){
+    $isMedcertRequired = 'Medcert Provided';
+  }
+ 
+  if($timeOfFiling!='On Time'){
+    $statusColorFiling = 'red';
+  }
 
     if($ftwRemarks == "Unfit to work"){
       $subject = 'Employee Fit-to-work Status';
       $message = '<div style="width: 1000px; font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 3px solid red; border-radius: 8px; ">
        
-      <p>Hi <strong>' . $immediateHead . '</strong> and <strong>HR </strong>,</p>
+      <p>Hi <strong>' . $immediateHead . '</strong> and <strong>'.$coorHR.'</strong>,</p>
       <p>This to inform you that Ms./Mr. <span style="font-weight: bolder">' . $name . ' </span> had visited the clinic for fit-to-work confirmation and was assessed to be <span style="color: red; font-weight: bolder">&quot;UNFIT TO WORK &quot;.</span></p>
       
             
@@ -294,24 +333,38 @@ if (isset($_POST['updateFTW'])) {
             </tr>
             <tr>
                 <td>Reason:</td>
-                <td>&nbsp;&nbsp; '. $ftwUnfitReason .'</td>
+                <td>&nbsp;&nbsp;'. $ftwUnfitReason .'</td>
             </tr>
             <tr>
                 <td>Day/s of Rest:</td>
-                <td>&nbsp;&nbsp; '. $ftwDaysOfRest .'</td>
+                <td>&nbsp;&nbsp;'. $ftwDaysOfRest .'</td>
             </tr>
             <tr>
                 <td>Date of Absence:</td>
-                <td>&nbsp;&nbsp; ' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</td>
+                <td>&nbsp;&nbsp;' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</td>
             </tr>
             <tr>
                 <td>No. of days absent:</td>
-                <td>&nbsp;&nbsp; ' . $ftwDays . '</td>
+                <td>&nbsp;&nbsp;' . $ftwDays . '</td>
+            </tr>
+            <tr>
+                <td> Medical Certificate:</td>
+                 <td style="color: '.$statusColorMedCert.'">&nbsp;&nbsp;'. $isMedcertRequired .'</td>
             </tr>
             <tr>
                 <td>Reason of Absence:</td>
                 <td> &nbsp;&nbsp;'. $ftwAbsenceReason .'</td>
             </tr>
+             <tr>
+            <td>
+            Filing Status:</td>
+            <td style="color: '.$statusColorFiling.'">&nbsp;&nbsp;'. $timeOfFiling .'</td>
+           </tr>
+             <tr>
+            <td>
+            Date and Time of Filing :</td>
+            <td>&nbsp;&nbsp;'.$ftwTimeEmail.' '. $ftwTime .'</td>
+        </tr>
               
         </table>
       
@@ -325,14 +378,13 @@ if (isset($_POST['updateFTW'])) {
             
             
         </div>';
-      
 
     }
     else{
       $subject = 'Employee Fit-to-work Status';
       $message = '<div style="width: 1000px; font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 3px solid green; border-radius: 8px; ">
        
-  <p>Hi <strong>' . $immediateHead . '</strong> and <strong>HR </strong>,</p>
+  <p>Hi <strong>' . $immediateHead . '</strong> and <strong>'.$coorHR.'</strong>,</p>
   <p>This to inform you that Ms./Mr. <span style="font-weight: bolder">' . $name . ' </span> had visited the clinic for fit-to-work confirmation and was assessed to be <span style="color: green; font-weight: bolder">&quot;FIT TO WORK &quot;.</span></p>
   
         
@@ -344,20 +396,37 @@ if (isset($_POST['updateFTW'])) {
         </tr>
         <tr>
             <td>Date of Absence:</td>
-            <td>&nbsp;&nbsp; ' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</td>
+            <td>&nbsp;&nbsp;' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</td>
         </tr>
         <tr>
             <td>No. of days absent:</td>
-            <td>&nbsp;&nbsp; ' . $ftwDays . '</td>
+            <td>&nbsp;&nbsp;' . $ftwDays . '</td>
         </tr>
         <tr>
             <td>Reason of Absence:</td>
             <td> &nbsp;&nbsp;'. $ftwAbsenceReason .'</td>
         </tr>
+        <tr>
+            <td>
+            Medical Certificate:</td>
+            <td style="color: '.$statusColorMedCert.'">&nbsp;&nbsp;'. $isMedcertRequired .'</td>
+        </tr>
+        <tr>
+            <td>
+            Filing Status:</td>
+            <td style="color: '.$statusColorFiling.'">&nbsp;&nbsp;'. $timeOfFiling .'</td>
+        </tr>
+         <tr>
+            <td>
+            Date and Time of Filing :</td>
+            <td>&nbsp;&nbsp;'.$ftwTimeEmail.' '. $ftwTime .'</td>
+        </tr>
+         
           <tr>
             <td>Remarks:</td>
-            <td>&nbsp;&nbsp; '. $ftwOthersRemarks .'</td>
+            <td>&nbsp;&nbsp;'. $ftwOthersRemarks .'</td>
         </tr>
+        
     </table>
   
   <p>Yours truly, </p>
@@ -402,7 +471,9 @@ if (isset($_POST['updateFTW'])) {
       $mail->setFrom('healthbenefits@glorylocal.com.ph', 'Health Benefits');
       $mail->addAddress($immediateEmail);
       $mail->AddCC($nurse_email);
-      $mail->AddCC($hremail);
+      foreach ($hremail as $email) {
+        $mail->AddCC($email);
+    }
       $mail->isHTML(true);
       $mail->Subject = $subject;
       $mail->Body    = $message;
@@ -445,7 +516,7 @@ if (isset($_POST['proceedToConsultation'])) {
   $ftwDaysOfRest = $_POST['ftwDaysOfRest'];
  $ftwUnfitReason = $_POST['ftwUnfitReason'];
 
-
+ $timeOfFiling = $_POST['timeOfFiling'];
 //  $ftwMedCategory = $_POST['ftwMedCategory'];
 
   $cnsltnCategories = $_POST['ftwMedCategory'];
@@ -500,7 +571,7 @@ $status = 'doc';
 
   }
   // echo $smoking;
-  $sql = "INSERT INTO `consultation`(`idNumber`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `otherRemarks`,`statusComplete`,`withPendingLab`,`ftwApproval`, `ftwDepartment`, `ftwCategories`, `ftwConfinement`,`ftwDateOfSickLeaveFrom`, `ftwDateOfSickLeaveTo`,`ftwDays`, `ftwReasonOfAbsence`, `ftwRemarks`,`isFitToWork`,`isMedcertRequired`,`daysOfRest`,`reasonOfUnfitToWork`) VALUES ('$idNumber','$status','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnRemarks', '$cnsltnOthersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab', 'head', '$department','$ftwCtnCategories','$ftwCtnConfinement','$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason','$ftwCtnRemarks','$ftwCtnRemarks','$isMedcertRequired','$ftwDaysOfRest','$ftwUnfitReason')";
+  $sql = "INSERT INTO `consultation`(`idNumber`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `otherRemarks`,`statusComplete`,`withPendingLab`,`ftwApproval`, `ftwDepartment`, `ftwCategories`, `ftwConfinement`,`ftwDateOfSickLeaveFrom`, `ftwDateOfSickLeaveTo`,`ftwDays`, `ftwReasonOfAbsence`, `ftwRemarks`,`isFitToWork`,`isMedcertRequired`,`timeOfFiling`,`daysOfRest`,`reasonOfUnfitToWork`) VALUES ('$idNumber','$status','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnRemarks', '$cnsltnOthersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab', 'head', '$department','$ftwCtnCategories','$ftwCtnConfinement','$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason','$ftwCtnRemarks','$ftwCtnRemarks','$isMedcertRequired','$timeOfFiling','$ftwDaysOfRest','$ftwUnfitReason')";
   $results = mysqli_query($con, $sql);
 
   if ($results) {
@@ -1069,26 +1140,48 @@ $status = 'doc';
 
 
       </div>
+      
+      <div class="col-span-4" >
+      <h3 class=" font-semibold text-gray-900 dark:text-white">Time of Filing</h3>
+      <ul class="gap-2 items-center w-full text-[12px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+      <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+        <div class=" gap-2 flex items-center ps-3">
+            <input id="horizontal-timeOfFiling-id" type="radio" checked value="On Time" name="timeOfFiling" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <label for="horizontal-timeOfFiling-id" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">On Time</label>
+        </div>
+    </li>
+
+    <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+        <div class="gap-2 flex items-center ps-3">
+            <input id="horizontal-timeOfFiling-license" type="radio" value="Late Filing" name="timeOfFiling" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <label for="horizontal-timeOfFiling-license" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">Late</label>
+        </div>
+    </li>
+   
+    
+
+</ul>
+      </div>
       <div class="col-span-4" id="fitToWorkFields">
       <h3 class=" font-semibold text-gray-900 dark:text-white">Medical Certificate</h3>
       <ul class="gap-2 items-center w-full text-[12px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
       <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
         <div class=" gap-2 flex items-center ps-3">
             <input id="horizontal-medicalCertificate-id" <?php if($isMedcertRequired=='noNeed'){ echo "checked";} ?> type="radio" value="noNeed" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-            <label for="horizontal-medicalCertificate-id" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">no need</label>
+            <label for="horizontal-medicalCertificate-id" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">Not Required</label>
         </div>
     </li>
 
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
         <div class="gap-2 flex items-center ps-3">
             <input id="horizontal-medicalCertificate-license" <?php if($isMedcertRequired=='withMedCert'){ echo "checked";} ?> type="radio" value="withMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-            <label for="horizontal-medicalCertificate-license" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">with MedCert</label>
+            <label for="horizontal-medicalCertificate-license" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">MedCert Provided</label>
         </div>
     </li>
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
         <div class=" gap-2 flex items-center ps-3">
             <input id="horizontal-medicalCertificate-noMedcert" <?php if($isMedcertRequired=='noMedCert'){ echo "checked";} ?> type="radio" value="noMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-            <label for="horizontal-medicalCertificate-noMedcert" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">no Medcert</label>
+            <label for="horizontal-medicalCertificate-noMedcert" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">MedCert Not Provided</label>
         </div>
     </li>
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">

@@ -166,7 +166,7 @@ var ftwUnfitReason = document.getElementById('ftwUnfitReason');
 ftwUnfitReason.removeAttribute('required');
 
           // Remove the "hidden" class from the input with id "medLab"
-          $("#fitToWorkFields").removeClass("hidden");
+          
         $("#restDays").addClass("hidden");
         $("#unfitReason").addClass("hidden");
         
@@ -183,7 +183,7 @@ ftwUnfitReason.required = true;
         $("#unfitReason").removeClass("hidden");
         $("#restDays").removeClass("hidden");
 
-        $("#fitToWorkFields").addClass("hidden");
+        
       }
   })
 
@@ -198,7 +198,7 @@ ftwUnfitReason.removeAttribute('required');
 
 
           // Remove the "hidden" class from the input with id "medLab"
-          $("#fitToWorkFields").removeClass("hidden");
+          
         $("#restDays").addClass("hidden");
         $("#unfitReason").addClass("hidden");
 
@@ -213,7 +213,7 @@ ftwUnfitReason.required = true;
         $("#unfitReason").removeClass("hidden");
 
         $("#restDays").removeClass("hidden");
-        $("#fitToWorkFields").addClass("hidden");
+        
       }
 
   })

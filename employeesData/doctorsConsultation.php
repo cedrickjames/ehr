@@ -39,6 +39,10 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $clinicRestTo = $userRow['clinicRestTo'];
   $meds = $userRow['meds'];
   $medsQty = $userRow['medsQty'];
+  $isMedcertRequired = $userRow['isMedcertRequired'];
+  $timeOfFiling = $userRow['timeOfFiling'];
+
+
 
 
   $bloodChemistry = $userRow['bloodChemistry'];
@@ -69,6 +73,8 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
 if (isset($_POST['submitDoctorsConsultation'])) {
 
   $finalDx = $_POST['finalDx'];
+  $timeOfFiling = $_POST['timeOfFiling'];
+
   
   if (isset($_POST['ftwRemarks']) && !empty($_POST['ftwRemarks'])) {
     $remarksSelect = $_POST['ftwRemarks']; //
@@ -106,10 +112,7 @@ if (isset($_POST['submitDoctorsConsultation'])) {
 }
   
 
- if ($ftwRemarks == "Unfit to work") {
-
-  $isMedcertRequired ="";
-}else{
+ if ($ftwRemarks != "Unfit to work") {
   $ftwUnfitReason="";
   $ftwDaysOfRest="";
 }
@@ -119,7 +122,7 @@ if (isset($_POST['submitDoctorsConsultation'])) {
   //   $sql = "UPDATE `consultation` SET `status` = 'nurse2', `remarks` = '$remarksSelect', `finalDx`='$finalDx' WHERE `id` = '$dcnsltn'";
   //   $results = mysqli_query($con, $sql);
   // }
-  $sql = "UPDATE `consultation` SET `status` = 'nurse2', `remarks` = '$remarksSelect', `finalDx`='$finalDx', `medicalLab` = '$medlab',`medicationDispense`='$forMed',`isFitToWork`='$ftwRemarks',`isMedcertRequired`='$isMedcertRequired',`daysOfRest`='$ftwDaysOfRest',`reasonOfUnfitToWork`='$ftwUnfitReason',`ftwRemarks`='$ftwRemarks' WHERE `id` = '$dcnsltn'";
+  $sql = "UPDATE `consultation` SET `status` = 'nurse2', `remarks` = '$remarksSelect', `finalDx`='$finalDx', `medicalLab` = '$medlab',`medicationDispense`='$forMed',`isFitToWork`='$ftwRemarks',`isMedcertRequired`='$isMedcertRequired',`timeOfFiling`='$timeOfFiling',`daysOfRest`='$ftwDaysOfRest',`reasonOfUnfitToWork`='$ftwUnfitReason',`ftwRemarks`='$ftwRemarks' WHERE `id` = '$dcnsltn'";
   $results = mysqli_query($con, $sql);
   if ($results) {
     echo "<script>alert('Record Updated Successfuly!') </script>";
@@ -382,32 +385,54 @@ if (isset($_POST['submitDoctorsConsultation'])) {
 
 
       </div>
+      
+      <div class="col-span-4" >
+      <h3 class=" font-semibold text-gray-900 dark:text-white">Time of Filing</h3>
+      <ul class="gap-2 items-center w-full text-[12px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+      <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+        <div class=" gap-2 flex items-center ps-3">
+            <input <?php if($timeOfFiling=="On Time"){ echo "checked";} ?>  id="horizontal-timeOfFiling-id" type="radio" checked value="On Time" name="timeOfFiling" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <label for="horizontal-timeOfFiling-id" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">On Time</label>
+        </div>
+    </li>
+
+    <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+        <div class="gap-2 flex items-center ps-3">
+            <input <?php if($timeOfFiling=="Late Filing"){ echo "checked";} ?>  id="horizontal-timeOfFiling-license" type="radio" value="Late Filing" name="timeOfFiling" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <label for="horizontal-timeOfFiling-license" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">Late</label>
+        </div>
+    </li>
+   
+    
+
+</ul>
+      </div>
 
       <div class="col-span-4" id="fitToWorkFields">
       <h3 class=" font-semibold text-gray-900 dark:text-white">Medical Certificate</h3>
       <ul  class="gap-2 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
       <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
         <div class=" gap-2 flex items-center ps-3">
-            <input <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-id" type="radio" checked value="noNeed" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-            <label for="horizontal-medicalCertificate-id" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">no need</label>
+            <input <?php if($isMedcertRequired=="noNeed"){ echo "checked";} if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-id" type="radio"  value="noNeed" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <label for="horizontal-medicalCertificate-id" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Not Required</label>
         </div>
     </li>
 
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
         <div class="gap-2 flex items-center ps-3">
-            <input <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-license" type="radio" value="withMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-            <label for="horizontal-medicalCertificate-license" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">with MedCert</label>
+            <input <?php if($isMedcertRequired=="withMedCert"){ echo "checked";} if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-license" type="radio" value="withMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <label for="horizontal-medicalCertificate-license" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">MedCert Provided</label>
         </div>
     </li>
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
         <div class=" gap-2 flex items-center ps-3">
-            <input <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-noMedcert" type="radio" value="noMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-            <label for="horizontal-medicalCertificate-noMedcert" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">no Medcert</label>
+            <input <?php if($isMedcertRequired=="noMedCert"){ echo "checked";} if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-noMedcert" type="radio" value="noMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <label for="horizontal-medicalCertificate-noMedcert" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">MedCert Not Provided</label>
         </div>
     </li>
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
         <div class=" gap-2 flex items-center ps-3">
-            <input <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-invalidMedCert" type="radio" value="invalidMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <input <?php if($isMedcertRequired=="invalidMedCert"){ echo "checked";} if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-invalidMedCert" type="radio" value="invalidMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
             <label for="horizontal-medicalCertificate-invalidMedCert" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">Invalid Medcert</label>
         </div>
     </li>

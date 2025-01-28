@@ -26,7 +26,26 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $name = $userRow['Name'];
   $section = $userRow['section'];
   $nurse_email = $userRow['email'];
+  $employer = $userRow['employer'];
+  $ftwTime = $userRow['time'];
 }
+if($employer=='GPI'){
+  $sqluserhr = "SELECT * FROM `users` WHERE `type` = 'hr'";
+  $coorHR = "HR";
+}else{
+  $sqluserhr = "SELECT * FROM `users` WHERE `company` = '$employer'";
+  $coorHR = "Coordinators";
+}
+$hremail = [];
+
+
+$resultInfohr = mysqli_query($con, $sqluserhr);
+while ($userRow = mysqli_fetch_assoc($resultInfohr)) {
+  // $hremail = $userRow['email'];
+  $hrname = $userRow['name'];
+  $hremail[] = $userRow['email'];
+} 
+
 
 $sqluserinfo = "SELECT consultation.*, employeespersonalinfo.Name, medicalcertificate.id as medcertID, medicalcertificate.idNumber as medcertRfid, medicalcertificate.consultationId, medicalcertificate.date as medcertDate, medicalcertificate.treatedOn, medicalcertificate.dueTo, medicalcertificate.diagnosis as medcertDiag, medicalcertificate.remarks as medcertRemarks
 FROM consultation
@@ -50,6 +69,11 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
 
   $medicalLab = $userRow['medicalLab'];
   $medicationDispense = $userRow['medicationDispense'];
+
+  $timeOfFiling = $userRow['timeOfFiling'];
+  $isMedcertRequired = $userRow['isMedcertRequired'];
+
+
 
 
   $bloodChemistry = $userRow['bloodChemistry'];
@@ -93,7 +117,15 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
 
 if (isset($_POST['submitFromDoctorsConsultation'])) {
 
-  $remarksSelect2 = $_POST['ftwRemarks'];
+
+
+  if (isset($_POST['ftwRemarks']) && !empty($_POST['ftwRemarks'])) {
+    $remarksSelect2 = $_POST['ftwRemarks'];
+  }
+  else{
+    $remarksSelect2 ="";
+  }
+
 
   if ($remarksSelect2 != "" || $remarksSelect2 != NULL) {
     $otherRemarks = $_POST['otherRemarks'];
@@ -110,6 +142,8 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
     $cnsltnTime = $_POST['cnsltnTime'];
     $cnsltnType = $_POST['cnsltnType'];
 
+    $timeOfFiling = $_POST['timeOfFiling'];
+
     $ftwCtnCategories = $_POST['cnsltnCategories'];
     $ftwCtnConfinement = $_POST['ftwCtnConfinement'];
     $ftwCtnSLDateFrom = $_POST['ftwCtnSLDateFrom'];
@@ -117,7 +151,11 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
     $ftwCtnDays = $_POST['ftwCtnDays'];
     $ftwCtnAbsenceReason = $_POST['ftwCtnAbsenceReason'];
 
-
+    $ftwSLDateFrom = date("F j, Y", strtotime($ftwCtnSLDateFrom));
+    $ftwSLDateTo = date("F j, Y", strtotime($ftwCtnSLDateTo));
+  
+    $ftwTimeEmail = date("F j, Y", strtotime($cnsltnTime));
+  
 
     $cnsltnCategories = $_POST['ftwCtnCategories'];
     $cnsltnBuilding = $_POST['cnsltnBuilding'];
@@ -153,10 +191,8 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
 
 
-    if ($remarksSelect2 == "Unfit to work") {
+    if ($remarksSelect2 != "Unfit to work") {
 
-      $isMedcertRequired ="";
-    }else{
       $ftwUnfitReason="";
       $ftwDaysOfRest="";
     }
@@ -164,6 +200,8 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
     // $sql1 = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `otherRemarks` = '$otherRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
     // $results1 = mysqli_query($con,$sql1);
+ $statusColorMedCert='black';
+  $statusColorFiling='black';
 
 
     $sql = "INSERT INTO `fittowork`( `approval`, `department`,`idNumber`,`nurseAssisting`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `isFitToWork`,`isMedcertRequired`,`daysOfRest`,`reasonOfUnfitToWork`,`remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`) VALUES ('head','$department','$idNumber','$nurseId','$cnsltnDate','$cnsltnTime','$cnsltnCategories','$cnsltnBuilding','$ftwCtnConfinement','$ftwCtnCategories', '$cnsltnMeds' , '$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason','$cnsltnDiagnosis','$cnsltnIntervention','$cnsltnClinicRestFrom','$cnsltnClinicRestTo','$cnsltnBloodChem','$cnsltnCbc','$cnsltnUrinalysis','$cnsltnFecalysis','$cnsltnXray','$cnsltnOthersLab','$cnsltnBp','$cnsltnTemp','$cnsltn02Sat','$cnsltnPr','$cnsltnRr','$remarksSelect2','$isMedcertRequired','$ftwDaysOfRest','$ftwUnfitReason','$remarksSelect2','$otherRemarks','$cnsltnCompleted','$cnsltnWithPendingLab')";
@@ -179,75 +217,151 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
       }
 
 
+      if($isMedcertRequired =='noMedCert'){
+        $isMedcertRequired = 'No Medical Certificate Submitted';
+        $statusColorMedCert = 'red';
+    
+      }
+      else if($isMedcertRequired=='invalidMedCert'){
+        $isMedcertRequired = 'Invalid Medical Certificate';
+        $statusColorMedCert = 'red';
+      }
+      else if($isMedcertRequired=='noNeed'){
+        $isMedcertRequired = 'Not Required';
+      }
+      else if($isMedcertRequired=='withMedCert'){
+        $isMedcertRequired = 'Medcert Provided';
+      }
+     
+
+
+      if($timeOfFiling!='On Time'){
+        $statusColorFiling = 'red';
+      }
 
      
     if($remarksSelect2 == "Unfit to work"){
-      $subject = 'Unfit to Work';
-      $message = '
-    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
-        <h2 style="color: #0073e6; text-align: center;">Employee Status Notification</h2>
-        <p>Hi <strong>' . $immediateHead . '</strong> and HR,</p>
-        
-        <div style="padding: 10px; background-color: #ffe5e5; border-left: 5px solid red; margin-bottom: 15px;">
-            <strong style="font-size: 18px; color: red;">Mr./Ms. ' . $name . ' is NOT fit to work.</strong>
-        </div>
-        
-        <h3 style="color: #555; border-bottom: 2px solid #0073e6; padding-bottom: 5px;">Details</h3>
-        <ul style="list-style-type: none; padding: 0;">
-            <li><strong>Name:</strong> ' . $name . '</li>
-            <li><strong style="color: red;">Reason:</strong> ' . $ftwUnfitReason . '</li>
-            <li><strong style="color: red;">Days of Rest:</strong> ' . $ftwDaysOfRest . '</li>
-            <li><strong>Sect/Dept:</strong> ' . $section . '</li>
-            <li><strong>Reason of Absence:</strong> ' . $ftwCtnAbsenceReason . '</li>
-            <li><strong>Date of Absence:</strong> ' . $ftwCtnSLDateFrom . ' to ' . $ftwCtnSLDateTo . '</li>
-            <li><strong>No. of Day/s:</strong> ' . $ftwCtnDays . '</li>
-            <li><strong>Status:</strong> ' . $remarksSelect2 . '</li>
-            <li><strong>Remarks:</strong> ' . $ftwOthersRemarks . '</li>
-        </ul>
-        
-        <p style="font-size: 12px; color: #777; margin-top: 20px; text-align: center;">
-            <em>This is a generated email. Please do not reply.</em>
-        </p>
-        
-        <div style="text-align: center; margin-top: 20px;">
-            <strong style="color: #0073e6;">Clinic</strong>
-        </div>
-    </div>
-';
+      $subject = 'Employee Fit-to-work Status';
+      $message = '<div style="width: 1000px; font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 3px solid red; border-radius: 8px; ">
+       
+      <p>Hi <strong>' . $immediateHead . '</strong> and <strong>'.$coorHR.'</strong>,</p>
+      <p>This to inform you that Ms./Mr. <span style="font-weight: bolder">' . $name . ' </span> had visited the clinic for fit-to-work confirmation and was assessed to be <span style="color: red; font-weight: bolder">&quot;UNFIT TO WORK &quot;.</span></p>
+      
+            
+           <table style=" border-spacing: 10px;">
+            
+            <tr>
+                <td>ID Number:</td>
+                <td>&nbsp; &nbsp;'.$idNumber.'</td>
+            </tr>
+            <tr>
+                <td>Reason:</td>
+                <td>&nbsp;&nbsp;'. $ftwUnfitReason .'</td>
+            </tr>
+            <tr>
+                <td>Day/s of Rest:</td>
+                <td>&nbsp;&nbsp;'. $ftwDaysOfRest .'</td>
+            </tr>
+            <tr>
+                <td>Date of Absence:</td>
+                <td>&nbsp;&nbsp;' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</td>
+            </tr>
+            <tr>
+                <td>No. of days absent:</td>
+                <td>&nbsp;&nbsp;' . $ftwCtnDays . '</td>
+            </tr>
+            <tr>
+                <td> Medical Certificate:</td>
+                 <td style="color: '.$statusColorMedCert.'">&nbsp;&nbsp;'. $isMedcertRequired .'</td>
+            </tr>
+            <tr>
+                <td>Reason of Absence:</td>
+                <td> &nbsp;&nbsp;'. $ftwCtnAbsenceReason .'</td>
+            </tr>
+             <tr>
+            <td>
+            Filing Status:</td>
+            <td style="color: '.$statusColorFiling.'">&nbsp;&nbsp;'. $timeOfFiling .'</td>
+           </tr>
+             <tr>
+            <td>
+            Date and Time of Filing :</td>
+            <td>&nbsp;&nbsp;'.$ftwTimeEmail.' '. $cnsltnTime .'</td>
+        </tr>
+              
+        </table>
+      
+      <p>Yours truly, </p>
+      
+      <p>OH Nurse / Clinic Staff</p>
+      
+            <p style="font-size: 12px; color: #0073e6;">
+                <em>This is a generated email. Please do not reply.</em>
+            </p>
+            
+            
+        </div>';
 
     }
     else{
-      $subject = 'Fit to Work';
-      $message = '
-      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
-          <h2 style="color: #28a745; text-align: center;">Employee Status Notification</h2>
-          <p>Hi <strong>' . $immediateHead . '</strong> and HR,</p>
-          
-          <div style="padding: 10px; background-color: #e6f9e6; border-left: 5px solid #28a745; margin-bottom: 15px;">
-              <strong style="font-size: 18px; color: #28a745;">Mr./Ms. ' . $name . ' is now fit to work.</strong>
-          </div>
-          
-          <h3 style="color: #555; border-bottom: 2px solid #28a745; padding-bottom: 5px;">Details</h3>
-          <ul style="list-style-type: none; padding: 0;">
-              <li><strong>Name:</strong> ' . $name . '</li>
-              <li><strong>Sect/Dept:</strong> ' . $section . '</li>
-              <li><strong>Reason of Absence:</strong> ' . $ftwCtnAbsenceReason . '</li>
-              <li><strong>Date of Absence:</strong> ' . $ftwCtnSLDateFrom . ' to ' . $ftwCtnSLDateTo . '</li>
-              <li><strong>No. of Day/s:</strong> ' . $ftwCtnDays . '</li>
-              <li><strong>Remarks:</strong> ' . $remarksSelect2 . '</li>
-              <li><strong>Others:</strong> ' . $ftwOthersRemarks . '</li>
-          </ul>
-          
-          <p style="font-size: 12px; color: #777; margin-top: 20px; text-align: center;">
-              <em>This is a generated email. Please do not reply.</em>
-          </p>
-          
-          <div style="text-align: center; margin-top: 20px;">
-              <strong style="color: #28a745;">Clinic</strong>
-          </div>
-      </div>
-  ';
+      $subject = 'Employee Fit-to-work Status';
+      $message = '<div style="width: 1000px; font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 3px solid green; border-radius: 8px; ">
+       
+  <p>Hi <strong>' . $immediateHead . '</strong> and <strong>'.$coorHR.'</strong>,</p>
+  <p>This to inform you that Ms./Mr. <span style="font-weight: bolder">' . $name . ' </span> had visited the clinic for fit-to-work confirmation and was assessed to be <span style="color: green; font-weight: bolder">&quot;FIT TO WORK &quot;.</span></p>
   
+        
+       <table style=" border-spacing: 10px;">
+        
+        <tr>
+            <td>ID Number:</td>
+            <td>&nbsp; &nbsp;'.$idNumber.'</td>
+        </tr>
+        <tr>
+            <td>Date of Absence:</td>
+            <td>&nbsp;&nbsp;' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</td>
+        </tr>
+        <tr>
+            <td>No. of days absent:</td>
+            <td>&nbsp;&nbsp;' . $ftwCtnDays . '</td>
+        </tr>
+        <tr>
+            <td>Reason of Absence:</td>
+            <td> &nbsp;&nbsp;'. $ftwCtnAbsenceReason .'</td>
+        </tr>
+        <tr>
+            <td>
+            Medical Certificate:</td>
+            <td style="color: '.$statusColorMedCert.'">&nbsp;&nbsp;'. $isMedcertRequired .'</td>
+        </tr>
+        <tr>
+            <td>
+            Filing Status:</td>
+            <td style="color: '.$statusColorFiling.'">&nbsp;&nbsp;'. $timeOfFiling .'</td>
+        </tr>
+         <tr>
+            <td>
+            Date and Time of Filing :</td>
+            <td>&nbsp;&nbsp;'.$ftwTimeEmail.' '. $cnsltnTime .'</td>
+        </tr>
+         
+          <tr>
+            <td>Remarks:</td>
+            <td>&nbsp;&nbsp;'. $ftwOthersRemarks .'</td>
+        </tr>
+        
+    </table>
+  
+  <p>Yours truly, </p>
+  
+  <p>OH Nurse / Clinic Staff</p>
+  
+        <p style="font-size: 12px; color: #0073e6;">
+            <em>This is a generated email. Please do not reply.</em>
+        </p>
+        
+        
+    </div>';
 }
    
 
@@ -279,6 +393,9 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
         $mail->setFrom('healthbenefits@glorylocal.com.ph', 'Health Benefits');
         $mail->addAddress($immediateEmail);
         $mail->AddCC($nurse_email);
+        foreach ($hremail as $email) {
+          $mail->AddCC($email);
+      }
         $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body    = $message;
@@ -286,7 +403,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
         $_SESSION['message'] = 'Message has been sent';
         echo "<script>alert('Email Sent') </script>";
-        // echo "<script> location.href='fromDoctor.php'; </script>";
+        echo "<script> location.href='fromDoctor.php'; </script>";
 
 
         // header("location: form.php");
@@ -301,6 +418,17 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
     $medDis = $_POST['forMed'];
     $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
     $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
+
+    if($cnsltnCompleted == 1){
+      $status = 'done';
+      $cnsltnWithPendingLab='';
+        }
+        else{
+      $status = 'done';
+      
+        }
+
+
     if (isset($_POST['cnsltnCompleted'])) {
       $sql = "UPDATE `consultation` SET `status` = '$status', `remarks`='$remarksSelect2', `otherRemarks` = '$otherRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
       // echo $sql;
@@ -551,32 +679,54 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
 
       </div>
+      
+      <div class="col-span-4" >
+      <h3 class=" font-semibold text-gray-900 dark:text-white">Time of Filing</h3>
+      <ul class="gap-2 items-center w-full text-[12px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+      <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+        <div class=" gap-2 flex items-center ps-3">
+            <input <?php if($timeOfFiling=="On Time"){ echo "checked";} ?>  id="horizontal-timeOfFiling-id" type="radio" checked value="On Time" name="timeOfFiling" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <label for="horizontal-timeOfFiling-id" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">On Time</label>
+        </div>
+    </li>
+
+    <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+        <div class="gap-2 flex items-center ps-3">
+            <input <?php if($timeOfFiling=="Late Filing"){ echo "checked";} ?> id="horizontal-timeOfFiling-license" type="radio" value="Late Filing" name="timeOfFiling" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <label for="horizontal-timeOfFiling-license" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">Late</label>
+        </div>
+    </li>
+   
+    
+
+</ul>
+      </div>
 
       <div class="col-span-4" id="fitToWorkFields">
       <h3 class=" font-semibold text-gray-900 dark:text-white">Medical Certificate</h3>
       <ul  class="gap-2 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
       <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
         <div class=" gap-2 flex items-center ps-3">
-            <input <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-id" type="radio" checked value="noNeed" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-            <label for="horizontal-medicalCertificate-id" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">no need</label>
+            <input <?php if($isMedcertRequired=="noNeed"){ echo "checked";} if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-id" type="radio" checked value="noNeed" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <label for="horizontal-medicalCertificate-id" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Not Required</label>
         </div>
     </li>
 
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
         <div class="gap-2 flex items-center ps-3">
-            <input <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-license" type="radio" value="withMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-            <label for="horizontal-medicalCertificate-license" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">with MedCert</label>
+            <input <?php if($isMedcertRequired=="withMedCert"){ echo "checked";} if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-license" type="radio" value="withMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <label for="horizontal-medicalCertificate-license" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">MedCert Provided</label>
         </div>
     </li>
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
         <div class=" gap-2 flex items-center ps-3">
-            <input <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-noMedcert" type="radio" value="noMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-            <label for="horizontal-medicalCertificate-noMedcert" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">no Medcert</label>
+            <input <?php if($isMedcertRequired=="noMedCert"){ echo "checked";} if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-noMedcert" type="radio" value="noMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <label for="horizontal-medicalCertificate-noMedcert" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">MedCert Not Provided</label>
         </div>
     </li>
     <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
         <div class=" gap-2 flex items-center ps-3">
-            <input <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-invalidMedCert" type="radio" value="invalidMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <input <?php if($isMedcertRequired=="invalidMedCert"){ echo "checked";} if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="horizontal-medicalCertificate-invalidMedCert" type="radio" value="invalidMedCert" name="medicalCertificate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
             <label for="horizontal-medicalCertificate-invalidMedCert" class="w-full py-3 ms-2 text-[12px] 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">Invalid Medcert</label>
         </div>
     </li>
@@ -728,11 +878,11 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
         <ul class="col-span-2 items-center w-full text-[10px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  ">
           <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
             <div class="gap-2 flex items-center ps-3">
-              <input id="vue-checkbox-list" type="radio" name="cnsltnCompleted" value="Completed" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-              <label for="vue-checkbox-list" class="w-full py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">Completed</label>
+              <input id="completeRadio" type="radio" name="cnsltnCompleted" value="Completed" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+              <label for="completeRadio" class="w-full py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">Completed</label>
               <div class="w-full flex gap-1">
-              <input id="vue-checkbox-list" type="radio" name="cnsltnCompleted" value="With Pending Lab" class=" my-auto w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-              <label for="vue-checkbox-list" class=" py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">With Pending Lab</label>
+              <input id="pendingRadio" type="radio" name="cnsltnCompleted" value="With Pending Lab" class=" my-auto w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+              <label for="pendingRadio" class=" py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">With Pending Lab</label>
               <div class="relative z-0 group">
                 <input type="text" name="cnsltnWithPendingLab" value="" id="floating_email" class="block py-2.5 px-0  text-[10px] 2xl:text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                 <label for="floating_email" class="peer-focus:font-medium absolute text-[10px] 2xl:text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"></label>
@@ -756,6 +906,12 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
         </ul>
 
+
+      </div>
+
+      <div class="content-center  col-span-4" id="pendingLabDueDateDiv">
+        <label class="block  my-auto font-semibold text-gray-900 ">Pending Lab Due Date: </label>
+        <input type="date" name="pendingLabDueDate" value="" id="pendingLabDueDate" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
 
       </div>
 

@@ -20,6 +20,9 @@ if (isset($_POST['login'])) {
       $email = $userRow['email'];
       if (password_verify($password, $userpass)) {
         $_SESSION['userID'] = $userRow['idNumber'];
+        $_SESSION['username'] = $username;
+
+        
         $_SESSION['name'] = $userRow['name'];
         $_SESSION['rfid'] = "";
         $_SESSION['department'] = $userRow['department'];

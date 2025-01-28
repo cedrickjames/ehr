@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     LEFT JOIN
                         users
                     ON
-                        consultation.nurseAssisting = users.idNumber WHERE consultation.withPendingLab !='' ORDER BY
+                        consultation.nurseAssisting = users.idNumber WHERE consultation.withPendingLab !='' AND consultation.status ='done' ORDER BY
     consultation.id ASC; 
                     ";
               $result = mysqli_query($con, $sql);

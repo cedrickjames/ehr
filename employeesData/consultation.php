@@ -47,6 +47,10 @@ $ftwCompleted = $_SESSION['ftwCompleted'];
 $ftwWithPendingLab = $_SESSION['ftwWithPendingLab'];
 $immediateEmail = $_SESSION['immediateEmail'];
 
+$type="";
+$clinicRestFrom="";
+$clinicRestTo="";
+$intervention="";
 $ftwTime = date('h:i A');
 if (isset($_GET['cnsltn'])) {
   $cnsltn = $_GET['cnsltn'];
@@ -60,6 +64,8 @@ if (isset($_GET['cnsltn'])) {
     $currentDate = $row['date'];
     $nurseId = $row['nurseAssisting'];
     $ftwTime = $row['time'];
+    $type = $row['type'];
+
     $ftwCategories = $row['categories'];
     $ftwBuilding = $row['building'];
     $ftwConfinement = $row['ftwConfinement'];
@@ -70,6 +76,11 @@ if (isset($_GET['cnsltn'])) {
 
     $ftwAbsenceReason = $row['chiefComplaint'];
     $ftwDiagnosis = $row['diagnosis'];
+    $intervention = $row['intervention'];
+
+    $clinicRestFrom = $row['clinicRestFrom'];
+    $clinicRestTo = $row['clinicRestTo'];
+
     $ftwBloodChem = $row['bloodChemistry'];
     $ftwCbc = $row['cbc'];
     $ftwUrinalysis = $row['urinalysis'];
@@ -162,6 +173,7 @@ if (isset($_POST['addConsultation'])) {
 
   if($cnsltnCompleted == 1){
 $status = 'done';
+$cnsltnWithPendingLab='';
   }
   else{
 $status = 'doc';
@@ -228,7 +240,7 @@ if (isset($_POST['updateConsultation'])) {
   $cnsltnRr = $_POST['cnsltnRr'];
   // $cnsltnRemarks = $_POST['cnsltnRemarks'];
   $cnsltnOthersRemarks = $_POST['cnsltnOthersRemarks'];
-  $cnstltnmedLab = $_POST['medLab'];
+  $cnstltnmedLab = $_POST['cnsltnWithPendingLab'];
   // $cnstltnmedDis= $_POST['medDis'];
 
   
@@ -244,7 +256,7 @@ if (isset($_POST['updateConsultation'])) {
 
   if ($results) {
     echo "<script>alert('Successfull') </script>";
-    // echo "<script> location.href='index.php'; </script>";
+    echo "<script> location.href='consultation.php'; </script>";
   }
 }
 
@@ -274,8 +286,8 @@ if (isset($_POST['updateConsultation'])) {
 
         <label class=" block  my-auto font-semibold text-gray-900 ">Categories: </label>
         <select id="categoriesSelect" name="ftwCtnCategories" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option  value="counted">Counted</option>
-          <option  value="not counted">Not Counted</option>
+          <option <?php if($ftwCategories=="counted"){echo "selected";} ?> value="counted">Counted</option>
+          <option <?php if($ftwCategories=="not counted"){echo "selected";} ?> value="not counted">Not Counted</option>
 
         </select>
 
@@ -326,8 +338,8 @@ if (isset($_POST['updateConsultation'])) {
 
 
         <select id="categoriesSelect" name="cnsltnType" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option selected value="Initial">Initial</option>
-          <option value="Follow Up">Follow Up</option>
+          <option <?php if($type=="Initial"){echo "selected";} ?>  value="Initial">Initial</option>
+          <option <?php if($type=="Follow Up"){echo "selected";} ?>  value="Follow Up">Follow Up</option>
 
         </select>
 
@@ -337,10 +349,10 @@ if (isset($_POST['updateConsultation'])) {
         <label class="block  my-auto font-semibold text-gray-900 ">Building: </label>
 
         <select id="categoriesSelect" name="cnsltnBuilding" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option value="GPI 1">GPI 1</option>
-          <option  value="GPI 5">GPI 5</option>
-          <option  value="GPI 7">GPI 7</option>
-          <option  value="GPI 8">GPI 8</option>
+          <option <?php if($ftwBuilding=="GPI 1"){echo "selected";} ?> value="GPI 1">GPI 1</option>
+          <option <?php if($ftwBuilding=="GPI 5"){echo "selected";} ?> value="GPI 5">GPI 5</option>
+          <option <?php if($ftwBuilding=="GPI 7"){echo "selected";} ?> value="GPI 7">GPI 7</option>
+          <option <?php if($ftwBuilding=="GPI 8"){echo "selected";} ?> value="GPI 8">GPI 8</option>
         </select>
 
       </div>
@@ -350,10 +362,10 @@ if (isset($_POST['updateConsultation'])) {
         <label class="block  my-auto font-semibold text-gray-900 ">Medical Category: </label>
 
         <select id="categoriesSelect" name="cnsltnCategories" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option  value="common">Common</option>
-          <option  value="Long Term">Long Term</option>
-          <option  value="Maternity">Maternity</option>
-          <option  value="Work Related">Work Related</option>
+          <option <?php if($ftwCategories=="common"){echo "selected";} ?> value="common">Common</option>
+          <option <?php if($ftwCategories=="Long Term"){echo "selected";} ?> value="Long Term">Long Term</option>
+          <option <?php if($ftwCategories=="Maternity"){echo "selected";} ?> value="Maternity">Maternity</option>
+          <option <?php if($ftwCategories=="Work Related"){echo "selected";} ?> value="Work Related">Work Related</option>
         </select>
 
       </div>
@@ -364,7 +376,7 @@ if (isset($_POST['updateConsultation'])) {
 
         <label class="block  my-auto font-semibold text-gray-900 ">Chief Compliant: </label>
 
-        <input type="text" value="" name="cnsltnChiefComplaint" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        <input type="text" value="<?php echo $ftwAbsenceReason;?>" name="cnsltnChiefComplaint" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       </div>
       <div class="col-span-2">
         <label class="block  my-auto font-semibold text-gray-900 ">Diagnosis: <?php //echo $ftwDiagnosis;?></label>
@@ -378,7 +390,7 @@ if (isset($_POST['updateConsultation'])) {
           while ($list = mysqli_fetch_assoc($result)) {
             $diagnosis = $list["diagnosisName"];
           ?>
-            <option  value="<?php echo $diagnosis; ?>"><?php echo $diagnosis; ?></option>
+            <option <?php if($ftwDiagnosis==$diagnosis){echo "selected";} ?> value="<?php echo $diagnosis; ?>"><?php echo $diagnosis; ?></option>
           <?php
 
             //  echo "<option value='$diagnosis' >$diagnosis</option>";
@@ -440,11 +452,11 @@ if (isset($_POST['updateConsultation'])) {
         <label class="block  my-auto font-semibold text-gray-900 ">Intervention: </label>
 
         <select id="interventionSelect" name="cnsltnIntervention" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option selected value="Medication Only">Medication only</option>
-          <option value="Medical Consultation">Medical Consultation</option>
-          <option value="Medication and Medical Consultation">Medication and Medical Consultation</option>
-          <option value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
-          <option value="Clinic Rest Only">Clinic Rest Only</option>
+          <option <?php if($intervention =="Medication Only"){echo "selected";} ?>   value="Medication Only">Medication only</option>
+          <option <?php if($intervention =="Medical Consultation"){echo "selected";} ?>  value="Medical Consultation">Medical Consultation</option>
+          <option <?php if($intervention =="Medication and Medical Consultation"){echo "selected";} ?> value="Medication and Medical Consultation">Medication and Medical Consultation</option>
+          <option <?php if($intervention =="Medication, Clinic Rest and Medical Consultation"){echo "selected";} ?> value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
+          <option <?php if($intervention =="Clinic Rest Only"){echo "selected";} ?> value="Clinic Rest Only">Clinic Rest Only</option>
 
 
 
@@ -458,13 +470,13 @@ if (isset($_POST['updateConsultation'])) {
         <div class=" content-center flex gap-4 col-span-2">
 
           <div class="relative w-1/2">
-            <input type="time" name="cnsltnClinicRestFrom" id="fromDate" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+            <input type="time" value="<?php echo $clinicRestFrom;?>" name="cnsltnClinicRestFrom" id="fromDate" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
             <label for="fromDate" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">From</label>
           </div>
 
           <div class="relative w-1/2">
 
-            <input type="time" name="cnsltnClinicRestTo" id="toDate" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+            <input type="time" value="<?php echo $clinicRestTo;?>" name="cnsltnClinicRestTo" id="toDate" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
             <label for="toDate" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">To</label>
           </div>
 
@@ -602,36 +614,36 @@ if (isset($_POST['updateConsultation'])) {
         <div class="col-span-2">
           <label class="block  my-auto font-semibold text-gray-900 ">Blood Chemistry: </label>
           <!-- <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Blood Chemistry: </h3> -->
-          <input type="text" value="" name="cnsltnBloodChem" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+          <input type="text" value="<?php echo $ftwBloodChem; ?>" name="cnsltnBloodChem" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
         </div>
 
         <div class=" col-span-2">
           <label class="block  my-auto font-semibold text-gray-900 ">CBC: </label>
-          <input type="text" value="" name="cnsltnCbc" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+          <input type="text" value="<?php echo $ftwCbc; ?>" name="cnsltnCbc" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
         </div>
 
         <div class=" col-span-2">
           <!-- <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Urinalysis: </h3> -->
           <label class="block  my-auto font-semibold text-gray-900 ">Urinalysis: </label>
-          <input type="text" value="" name="cnsltnUrinalysis" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+          <input type="text" value="<?php echo $ftwUrinalysis; ?>" name="cnsltnUrinalysis" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
         </div>
 
         <div class=" col-span-2">
           <!-- <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Fecalysis: </h3> -->
           <label class="block  my-auto font-semibold text-gray-900 ">Fecalysis: </label>
-          <input type="text" value="" name="cnsltnFecalysis" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+          <input type="text" value="<?php echo $ftwFecalysis; ?>" name="cnsltnFecalysis" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
         </div>
 
         <div class=" col-span-2">
           <!-- <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">X-ray: </h3> -->
           <label class="block  my-auto font-semibold text-gray-900 ">X-ray: </label>
-          <input type="text" value="" name="cnsltnXray" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+          <input type="text" value="<?php echo $ftwXray; ?>" name="cnsltnXray" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
         </div>
 
         <div class=" col-span-2">
           <!-- <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Others: </h3> -->
           <label class="block  my-auto font-semibold text-gray-900 ">Others: </label>
-          <input type="text" value="" name="cnsltnOthersLab" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+          <input type="text" value="<?php echo $ftwOthersLab; ?>" name="cnsltnOthersLab" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
         </div>
 
         <div class="col-span-4">
@@ -643,27 +655,27 @@ if (isset($_POST['updateConsultation'])) {
             <div class="">
               <!-- <h3 class=" my-auto  font-semibold text-gray-900 ">BP: </h3> -->
               <label class="block  my-auto font-semibold text-gray-900 ">BP: </label>
-              <input type="text" value="" name="cnsltnBp" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+              <input type="text" value="<?php echo $ftwBp; ?>" name="cnsltnBp" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="">
               <!-- <h3 class=" my-auto  font-semibold text-gray-900 ">Temp: </h3> -->
               <label class="block  my-auto font-semibold text-gray-900 ">Temp: </label>
-              <input type="text" value="" name="cnsltnTemp" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+              <input type="text" value="<?php echo $ftwTemp; ?>" name="cnsltnTemp" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="">
               <!-- <h3 class=" my-auto  font-semibold text-gray-900 ">02 Sat: </h3> -->
               <label class="block  my-auto font-semibold text-gray-900 ">02 Sat: </label>
-              <input type="text" value="" name="cnsltn02Sat" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+              <input type="text" value="<?php echo $ftw02Sat; ?>" name="cnsltn02Sat" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="">
               <!-- <h3 class=" my-auto  font-semibold text-gray-900 ">PR: </h3> -->
               <label class="block  my-auto font-semibold text-gray-900 ">PR: </label>
-              <input type="text" value="" name="cnsltnPr" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+              <input type="text" value="<?php echo $ftwPr; ?>" name="cnsltnPr" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
             <div class="">
               <!-- <h3 class=" my-auto  font-semibold text-gray-900 ">RR: </h3> -->
               <label class="block  my-auto font-semibold text-gray-900 ">RR: </label>
-              <input type="text" value="" name="cnsltnRr" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+              <input type="text" value="<?php echo $ftwRr; ?>" name="cnsltnRr" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
             </div>
 
           </div>
@@ -696,7 +708,7 @@ if (isset($_POST['updateConsultation'])) {
       <div class="col-span-4">
         <!-- <h3 class=" my-auto  font-semibold text-gray-900 ">Others: </h3> -->
         <label class="block  my-auto font-semibold text-gray-900 ">Others: </label>
-        <input type="text" value="" name="cnsltnOthersRemarks" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        <input type="text" value="<?php echo $ftwOthersRemarks; ?>" name="cnsltnOthersRemarks" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       </div>
 
       <div class=" col-span-4 ">
@@ -706,14 +718,14 @@ if (isset($_POST['updateConsultation'])) {
         <ul class="col-span-2 items-center w-full text-[10px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  ">
           <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
             <div class="gap-2 flex items-center ps-3">
-              <input id="vue-checkbox-list" type="checkbox"  name="cnsltnCompleted" value="1" class=" w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+              <input id="vue-checkbox-list" <?php if($ftwCompleted){ echo "checked";} ?> type="checkbox"  name="cnsltnCompleted" value="1" class=" w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
               <label for="vue-checkbox-list" class="w-full py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">Completed</label>
             </div>
           </li>
 
           <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
             <div class="gap-2 flex items-center ps-3">
-              <input id="vue-checkbox-list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+              <input id="vue-checkbox-list" <?php if($ftwWithPendingLab){ echo "checked";} ?> type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
               <label for="vue-checkbox-list" class=" py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">With Pending Lab</label>
               <div class="relative z-0 group">
                 <input type="text" name="cnsltnWithPendingLab" value="" id="floating_email" class="block py-2.5 px-0  text-[10px] 2xl:text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />

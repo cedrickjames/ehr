@@ -204,8 +204,10 @@ if ($(this).val() === "Clinic Rest Only" || $(this).val() === "Medication, Clini
   $("#clinicRestTime").removeClass("hidden");
 
   $("#medsqtydiv").addClass("hidden");
-  $("#medsdiv").addClass("hidden");
+  $("#medicineDiv").addClass("hidden");
 
+  $("#medsdiv").addClass("hidden");
+  
 
 
   
@@ -214,6 +216,8 @@ if ($(this).val() === "Clinic Rest Only" || $(this).val() === "Medication, Clini
     $("#clinicRestLabel").removeClass("hidden");
   $("#clinicRestTime").removeClass("hidden");
   $("#medsqtydiv").removeClass("hidden");
+  $("#medicineDiv").removeClass("hidden");
+
   $("#medsdiv").removeClass("hidden");
   }
 
@@ -225,9 +229,51 @@ else{
   $("#clinicRestLabel").addClass("hidden");
   $("#clinicRestTime").addClass("hidden");
   $("#medsqtydiv").removeClass("hidden");
+  $("#medicineDiv").removeClass("hidden");
+
   $("#medsdiv").removeClass("hidden");
 } 
 });
+
+
+if ($("#interventionSelect").val() === "Clinic Rest Only" || $("#interventionSelect").val() === "Medication, Clinic Rest and Medical Consultation") {
+
+if($("#interventionSelect").val() === "Clinic Rest Only"){
+  $("#clinicRestLabel").removeClass("hidden");
+$("#clinicRestTime").removeClass("hidden");
+
+$("#medsqtydiv").addClass("hidden");
+$("#medicineDiv").addClass("hidden");
+
+$("#medsdiv").addClass("hidden");
+
+
+
+
+
+}else{
+  $("#clinicRestLabel").removeClass("hidden");
+$("#clinicRestTime").removeClass("hidden");
+$("#medsqtydiv").removeClass("hidden");
+$("#medicineDiv").removeClass("hidden");
+
+$("#medsdiv").removeClass("hidden");
+}
+
+  // Remove the "hidden" class from the input with id "medLab"
+
+
+}
+else{
+$("#clinicRestLabel").addClass("hidden");
+$("#clinicRestTime").addClass("hidden");
+$("#medsqtydiv").removeClass("hidden");
+$("#medicineDiv").removeClass("hidden");
+
+$("#medsdiv").removeClass("hidden");
+} 
+
+
 
 
   // Attach change event handler to remarksSelect

@@ -87,7 +87,7 @@ if (isset($_POST['submitNewPassword'])) {
           </li>
 
           <li>
-            <a data-modal-target="changePassword" data-modal-toggle="changePassword" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Change Password</a>
+            <a data-modal-target="changePassword" data-modal-toggle="changePassword" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Account Settings</a>
           </li>
 
           <li>
@@ -151,7 +151,7 @@ if (isset($_POST['submitNewPassword'])) {
         <span class="sr-only">Close modal</span>
       </button>
       <div class="px-6 py-6 lg:px-8">
-        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Change your password</h3>
+        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Account Settings</h3>
         <form class="space-y-6" action="" method="POST">
           <input type="text" class="hidden" name="userIDChangePassword" value="<?php echo $_SESSION['userID']; ?>">
           <div>

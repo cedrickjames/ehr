@@ -31,6 +31,7 @@ if (isset($_POST['registerUser'])) {
 
 
 if (isset($_POST['submitNewPassword'])) {
+  $userName = $_POST['userName'];
 
   $old_pass = $_POST['currentPass'];
   $new_pass = $_POST['newPassword'];
@@ -47,7 +48,7 @@ if (isset($_POST['submitNewPassword'])) {
       if (password_verify($old_pass, $userpass)) {
         if ($new_pass === $retype_pass) {
 
-          $sql = "UPDATE `users` SET `password`= '$hash_new_pass' where `idNumber` = '$userid'";
+          $sql = "UPDATE `users` SET `userName`='$userName',  `password`= '$hash_new_pass' where `idNumber` = '$userid'";
           $changed_pass = mysqli_query($con, $sql);
 
           if ($changed_pass) {
@@ -106,7 +107,7 @@ if (isset($_POST['submitNewPassword'])) {
           <a href="../users"   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">User Management</a>
           </li>
           <li>
-            <a data-modal-target="changePassword" data-modal-toggle="changePassword" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Change Password</a>
+            <a data-modal-target="changePassword" data-modal-toggle="changePassword" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Account Settings</a>
           </li>
           <li>
             <a href="../logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Sign out</a>
@@ -339,7 +340,7 @@ $sql = "SELECT COUNT(*) AS row_count
                     LEFT JOIN
                         users
                     ON
-                        consultation.nurseAssisting = users.idNumber WHERE consultation.withPendingLab !='' ORDER BY
+                        consultation.nurseAssisting = users.idNumber WHERE consultation.withPendingLab !='' AND consultation.status ='done' ORDER BY
     consultation.id ASC;
 
 ";
@@ -658,9 +659,16 @@ while ($row = mysqli_fetch_assoc($result)) {
         <span class="sr-only">Close modal</span>
       </button>
       <div class="px-6 py-6 lg:px-8">
-        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Change your password</h3>
+        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Account Settings</h3>
         <form class="space-y-6" action="" method="POST">
           <input type="text" class="hidden" name="userIDChangePassword" value="<?php echo $_SESSION['userID']; ?>">
+          <div>
+            <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New User Name</label>
+
+            <div>
+              <input type="text" name="userName" id="userName" value="<?php echo $_SESSION['username']; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+            </div>
+          </div>
           <div>
             <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your current password</label>
 
