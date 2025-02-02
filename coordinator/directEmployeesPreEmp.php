@@ -6,12 +6,13 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
+
 if (isset($_GET['employer'])) {
     $employer = $_GET['employer'];
   } else {
     $employer = "not found";
   }
-
+  
 
 if (isset($_POST['excelReport'])) {
     $_SESSION['month'] = $_POST['month'];
@@ -19,20 +20,20 @@ if (isset($_POST['excelReport'])) {
     $_SESSION['employer'] = $_POST['employer'];
 ?>
     <script type="text/javascript">
-        window.open('../annualPe_xls.php?month=<?php echo $_SESSION['month']; ?>&year=<?php echo $_SESSION['year']; ?>&employer=<?php echo $_SESSION['employer']; ?>', '_blank');
-        location.href = 'index.php?employer='+$employer;
+        window.open('../preemployment_xls.php?month=<?php echo $_SESSION['month']; ?>&year=<?php echo $_SESSION['year']; ?>&employer=<?php echo $_SESSION['employer'];?>', '_blank');
+        location.href='preEmp.php?employer='+$employer;
     </script>
 <?php
 }
 
-if (isset($_POST['addAnnualPe'])) {
+if (isset($_POST['addPreEmployment'])) {
     $date_received = $_POST['date_received'];
     $date_performed = $_POST['date_performed'];
     $name = $_POST['name'];
     $idNumber = $_POST['rfid'];
     $section = $_POST['section'];
     $imc = $_POST['imc'];
-    // $oeh = $_POST['oeh'];
+    $oeh = $_POST['oeh'];
     $pe = $_POST['pe'];
     $cbc = $_POST['cbc'];
     $ua = $_POST['ua'];
@@ -52,23 +53,23 @@ if (isset($_POST['addAnnualPe'])) {
     }
     $fmc = $_POST['fmc'];
 
-    $addPreEmploymentGpi = "INSERT INTO `annualphysicalexam`(`dateReceived`, `datePerformed`, `idNumber`, `name`, `section`, `IMC`,  `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`, `confirmationDate`, `FMC`) VALUES ('$date_received','$date_performed','$idNumber','$name','$section','$imc','$pe','$cbc','$ua','$fa','$cxr','$va', '$den', '$dt', '$pt', '$others', '$followupstatus', '$status', '$attendee', '$confirmationdate', '$fmc')";
+    $addPreEmploymentGpi = "INSERT INTO `preemployment`(`dateReceived`, `datePerformed`, `idNumber`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`, `confirmationDate`, `FMC`) VALUES ('$date_received','$date_performed','$idNumber','$name','$section','$imc','$oeh','$pe','$cbc','$ua','$fa','$cxr','$va', '$den', '$dt', '$pt', '$others', '$followupstatus', '$status', '$attendee', '$confirmationdate', '$fmc')";
     $resultInfo = mysqli_query($con, $addPreEmploymentGpi);
 
     if ($resultInfo) {
         echo "<script>alert('Added Successfuly!') </script>";
-        echo "<script> location.href='index.php?employer=$employer'; </script>";
+        echo "<script> location.href='preEmp.php?employer=$employer'; </script>";
     }
 }
 
-if (isset($_POST['editAnnualPe'])) {
+if (isset($_POST['editPreEmployment'])) {
     $date_received = $_POST['editDate_received'];
     $date_performed = $_POST['editDate_performed'];
     $name = $_POST['editName'];
     $idNumber = $_POST['editRfid'];
     $section = $_POST['editSection'];
     $imc = $_POST['editImc'];
-    // $oeh = $_POST['editOeh'];
+    $oeh = $_POST['editOeh'];
     $pe = $_POST['editPe'];
     $cbc = $_POST['editCbc'];
     $fa = $_POST['editFa'];
@@ -81,19 +82,22 @@ if (isset($_POST['editAnnualPe'])) {
     $others = $_POST['editOthers'];
     $followupstatus = $_POST['editFollowupstatus'];
     $status = $_POST['editStatus'];
+   
     $attendee = $_POST['editAttendee'];
     $confirmationdate = $_POST['editConfirmationdate'];
+
     if($status !="complied"){
         $confirmationdate="";
     }
+    
     $fmc = $_POST['editFmc'];
 
-    $editPreEmploymentGpi = "UPDATE `annualphysicalexam`SET `dateReceived`='$date_received' , `datePerformed` = '$date_performed', `name`= '$name', `section`= '$section', `IMC`= '$imc', `PE`= '$pe', `CBC`= '$cbc', `U_A`= '$ua', `FA`= '$fa', `CXR`= '$cxr', `VA`= '$va', `DEN`= '$den', `DT`= '$dt', `PT`= '$pt', `otherTest`= '$others', `followUpStatus`= '$followupstatus', `status`= '$status', `attendee` = '$attendee',`confirmationDate`= '$confirmationdate', `FMC`= '$fmc' WHERE `idNumber`='$idNumber'";
+    $editPreEmploymentGpi = "UPDATE `preemployment`SET `dateReceived`='$date_received' , `datePerformed` = '$date_performed', `name`= '$name', `section`= '$section', `IMC`= '$imc', `OEH`= '$oeh', `PE`= '$pe', `CBC`= '$cbc', `U_A`= '$ua', `FA`= '$fa', `CXR`= '$cxr', `VA`= '$va', `DEN`= '$den', `DT`= '$dt', `PT`= '$pt', `otherTest`= '$others', `followUpStatus`= '$followupstatus', `status`= '$status', `attendee` = '$attendee',`confirmationDate`= '$confirmationdate', `FMC`= '$fmc' WHERE `idNumber`='$idNumber'";
     $resultInfo = mysqli_query($con, $editPreEmploymentGpi);
 
     if ($resultInfo) {
         echo "<script>alert('Updated Successfuly!') </script>";
-        echo "<script> location.href='index.php?employer=$employer'; </script>";
+        echo "<script> location.href='preEmp.php?employer=$employer'; </script>";
     }
 }
 
@@ -128,35 +132,44 @@ function saveToDatabase($con, $data, $count,$employer)
 {
     // Initialize an array to collect errors
     $errorLogs = [];
+    $errorempty= [];
+    $failedData = [];
 
     foreach ($data as $row) {
         if ($count > 0) {
             $dateReceived = $row['0'];
+            $dateReceivedObj = DateTime::createFromFormat('m/d/Y', $dateReceived);
+            $dateReceivedFormatted = $dateReceivedObj ? $dateReceivedObj->format('Y-m-d') : $dateReceived;
+            
             $datePerformed = $row['1'];
+            $datePerformedObj = DateTime::createFromFormat('m/d/Y', $datePerformed);
+            $datePerformedFormatted = $datePerformedObj ? $datePerformedObj->format('Y-m-d') : $datePerformed;
+
             $idNumber = $row['2'];
             $IMC = $row['3'];
-            $PE = $row['4'];
-            $CBC = $row['5'];
-            $U_A = $row['6'];
-            $FA = $row['7'];
-            $CXR = $row['8'];
-            $VA = $row['9'];
-            $DEN = $row['10'];
-            $DT = $row['11'];
-            $PT = $row['12'];
-            $otherTest = $row['13'];
-            $followUpStatus = $row['14'];
-            $status = $row['15'];
-            $attendee = $row['16'];
-            $confirmationDate = $row['17'];
-            $FMC = $row['18'];
-         
+            $OEH = $row['4'];
+            $PE = $row['5'];
+            $CBC = $row['6'];
+            $U_A = $row['7'];
+            $FA = $row['8'];
+            $CXR = $row['9'];
+            $VA = $row['10'];
+            $DEN = $row['11'];
+            $DT = $row['12'];
+            $PT = $row['13'];
+            $otherTest = $row['14'];
+            $followUpStatus = $row['15'];
+            $status = $row['16'];
+            $attendee = $row['17'];
+            $confirmationDate = $row['18'];
+            $FMC = $row['19'];
 
             // Check if Id Number exists in db_table
             if (!isidNumberExists($con, $idNumber, $employer)) {
                 // Log error for non-existent Id Numbers
                 $errorLogs[] = "$idNumber, ";
-                continue; // Skip saving this row
+                array_push($failedData, [$dateReceivedFormatted, $datePerformedFormatted, $idNumber, $IMC, $OEH, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]); 
+                   continue; // Skip saving this row
             }
 
             // If validation passes, save to database
@@ -165,13 +178,13 @@ function saveToDatabase($con, $data, $count,$employer)
                 $name = $userRow['Name'];
                 $section = $userRow['section'];
 
-                $result1 = mysqli_query($con, "SELECT * FROM `annualphysicalexam` WHERE `idNumber` = '$idNumber'");
+                $result1 = mysqli_query($con, "SELECT * FROM `preemployment` WHERE `idNumber` = '$idNumber'");
                 $numrows = mysqli_num_rows($result1);
                 if ($numrows > 0) {
-                    $addPreEmploymentGpi = "UPDATE `annualphysicalexam` SET `dateReceived` = '$dateReceived', `datePerformed` = '$datePerformed', `name`='$name', `section`='$section', `IMC` = '$IMC', `PE` = '$PE', `CBC` ='$CBC', `U_A` = '$U_A', `FA`='$FA', `CXR` ='$CXR', `VA`='$VA', `DEN`='$DEN', `DT`='$DT', `PT` = '$PT', `otherTest` = '$otherTest', `followUpStatus` = '$followUpStatus', `status`='$status', `attendee`='$attendee', `confirmationDate`='$confirmationDate', `FMC`='$FMC' WHERE `idNumber` = '$idNumber'";
+                    $addPreEmploymentGpi = "UPDATE `preemployment` SET `dateReceived` = '$dateReceivedFormatted', `datePerformed` = '$datePerformedFormatted', `name`='$name', `section`='$section', `IMC` = '$IMC', `OEH`='$OEH', `PE` = '$PE', `CBC` ='$CBC', `U_A` = '$U_A', `FA`='$FA', `CXR` ='$CXR', `VA`='$VA', `DEN`='$DEN', `DT`='$DT', `PT` = '$PT', `otherTest` = '$otherTest', `followUpStatus` = '$followUpStatus', `status`='$status', `attendee`='$attendee', `confirmationDate`='$confirmationDate', `FMC`='$FMC' WHERE `idNumber` = '$idNumber'";
                     $resultInfo = mysqli_query($con, $addPreEmploymentGpi);
                 } else {
-                    $addPreEmploymentGpi = "INSERT INTO `annualphysicalexam`(`dateReceived`, `datePerformed`, `idNumber`, `name`, `section`, `IMC`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`,`confirmationDate`, `FMC`) VALUES ('$dateReceived','$datePerformed','$idNumber','$name','$section','$IMC','$PE','$CBC','$U_A','$FA','$CXR', '$VA', '$DEN', '$DT', '$PT', ' $otherTest', ' $followUpStatus', '$status', '$attendee','$confirmationDate', '$FMC')";
+                    $addPreEmploymentGpi = "INSERT INTO `preemployment`(`dateReceived`, `datePerformed`, `idNumber`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`,`confirmationDate`, `FMC`) VALUES ('$dateReceivedFormatted','$datePerformedFormatted','$idNumber','$name','$section','$IMC','$OEH','$PE','$CBC','$U_A','$FA','$CXR', '$VA', '$DEN', '$DT', '$PT', ' $otherTest', ' $followUpStatus', '$status', '$attendee','$confirmationDate', '$FMC')";
                     $resultInfo = mysqli_query($con, $addPreEmploymentGpi);
                 }
             }
@@ -179,17 +192,31 @@ function saveToDatabase($con, $data, $count,$employer)
             // Check if query execution was successful
             if ($resultInfo === false) {
                 $errorLogs[] = "Failed to insert data for Id Number '$idNumber': " . mysqli_error($con);
+                array_push($failedData, [$dateReceivedFormatted, $datePerformedFormatted, $idNumber, $IMC, $OEH, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]); 
+
             }
+        }
+        else{
+            $errorempty[] = "Your file is empty";
         }
         $count = 1;
     }
 
     // Return error logs array
-    return $errorLogs;
+    
+    // return $errorLogs;
+    return [
+        'errorLogs' => $errorLogs,
+        'failedData' => $failedData,
+        'errorEmpty' => $errorempty,
+    ];
 }
 
 // Main script to import Excel and process data
 if (isset($_POST['addPreEmploymentImport'])) {
+
+
+
     $fileName = $_FILES['import_file']['name'];
     $file_ext = pathinfo($fileName, PATHINFO_EXTENSION);
     $allowed_ext = ['xls', 'csv', 'xlsx'];
@@ -201,24 +228,39 @@ if (isset($_POST['addPreEmploymentImport'])) {
 
         try {
             // Save data to database and collect error logs
-            $errorLogs = saveToDatabase($con, $data, $count,$employer);
+            $result  = saveToDatabase($con, $data, $count,$employer);
+            $errorLogs = $result['errorLogs'];
+            $failedData = $result['failedData'];
+            $errorempty = $result['errorEmpty'];
 
             // Close database connection
             // mysqli_close($con);
 
             // Output success or error messages
+            // $errorLogsMessage ='';
             $error1 = '';
             if (empty($errorLogs)) {
-                echo "<script>alert('Data imported and saved successfully.!') </script>";
+                
+                
+                    echo "<script>alert('Data imported and saved successfully.!') </script>";
+
+                
             } else {
+                
+                // echo "Errors occurred during import:<br>";
+                
                 foreach ($errorLogs as $error) {
                     // echo "$error";
                     $error1 .= "$error";
                     // echo "asdasd",$error1;
 
                 }
+                // echo $error1;
                 echo "<script>alert ('Errors occurred during import: Id number/s $error1 not found in the employees list.')</script>";
-                // echo "<script> location.href='index.php?employer=$employer'; </script>";
+                $_SESSION['failedData'] = $failedData;
+                echo "<script> location.href='failedDataFromImportingPreEmp.php'; </script>";
+                // echo "<script> location.href='preEmp.php?employer=$employer'; </script>";
+
             }
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
@@ -231,30 +273,30 @@ if (isset($_POST['addPreEmploymentImport'])) {
 
 ?>
 <div class="text-[9px] 2xl:text-lg mb-5">
-    <div class="flex justify-between">
-        <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Annual P.E. Records - <?php echo $employer ; ?> Employees</span></p>
+<div class="flex justify-between">
+        <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Pre-employment Records - <?php echo $employer ; ?> Employees</span></p>
         <div class="flex items-center order-2">
-            <button type="button" data-modal-target="exportAnnualPe" data-modal-toggle="exportAnnualPe" class="lg:block text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Export</button>
+        <button type="button" data-modal-target="exportPreEmp" data-modal-toggle="exportPreEmp" class="lg:block text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Export</button>
 
-            <button type="button" data-dropdown-toggle="options" class="lg:block text-white bg-gradient-to-r from-[#00669B] to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 ">Add</button>
-            <div id="options" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                <ul class="py-2  text-gray-700 dark:text-gray-200" aria-labelledby="options">
-                    <li>
-                        <a type="button" data-modal-target="addPreEmpDirectEmployees" data-modal-toggle="addPreEmpDirectEmployees" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Add Annual P.E.</a>
-                    </li>
-                    <li>
-                        <a type="button" data-modal-target="importAnnualPe" data-modal-toggle="importAnnualPe" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Import Data</a>
-                    </li>
-                    <li>
-                        <a type="button" onclick="exportTemplate()" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Export Template</a>
-                    </li>
+        <button type="button" data-dropdown-toggle="options"class="lg:block text-white bg-gradient-to-r from-[#00669B] to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 ">Add</button>
+        <div id="options" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+            <ul class="py-2  text-gray-700 dark:text-gray-200" aria-labelledby="options">
+                <li>
+                    <a type="button" data-modal-target="addPreEmpDirectEmployees" data-modal-toggle="addPreEmpDirectEmployees" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Add Pre-Employment</a>
+                </li>
+                <li>
+                    <a type="button" data-modal-target="importPreEmployment" data-modal-toggle="importPreEmployment" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Import Data</a>
+                </li>
+                <li>
+                    <a type="button" onclick="exportTemplate()" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Export Template</a>
+                </li>
 
-                </ul>
+            </ul>
 
-            </div>
+        </div>
         </div>
         <!-- <a href="ticketForm.php" type="button" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800  rounded-lg  px-5 py-2.5 text-center me-2 mb-2">Create a Ticket</a> -->
-
+       
     </div>
 
     <div id="" class="">
@@ -271,7 +313,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
                                 <th>Name </th>
                                 <th>Section </th>
                                 <th>IMC</th>
-                                <!-- <th>OEH</th> -->
+                                <th>OEH</th>
                                 <th>PE</th>
                                 <th>CBC</th>
                                 <th>UA</th>
@@ -290,18 +332,18 @@ if (isset($_POST['addPreEmploymentImport'])) {
                         </thead>
                         <tbody>
                             <?php
-                            $ApeNo = 1;
-                            $sql = "SELECT p.*, e.employer, e.Name, e.section, e.idNumber FROM annualphysicalexam p 
+                            $preEmpNo = 1;
+                            $sql = "SELECT p.*, e.employer, e.Name, e.section, e.idNumber FROM preemployment p 
                                     JOIN employeespersonalinfo e ON e.idNumber = p.idNumber WHERE e.employer = '$employer' ORDER BY `id` ASC";
                             $result = mysqli_query($con, $sql);
                             while ($row = mysqli_fetch_assoc($result)) { ?>
                                 <tr>
-                                    <td><?php echo $ApeNo; ?></td>
+                                    <td><?php echo $preEmpNo; ?></td>
                                     <!-- <td> <button type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['idNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date_received="<?php echo $row['dateReceived']; ?>" data-date_performed="<?php echo $row['datePerformed']; ?>" data-imc="<?php echo $row['IMC']; ?>" data-oeh="<?php echo $row['OEH']; ?>" data-pe="<?php echo $row['PE']; ?>" data-cbc="<?php echo $row['CBC']; ?>" data-ua="<?php echo $row['U_A']; ?>" data-fa="<?php echo $row['FA']; ?>" data-cxr="<?php echo $row['CXR']; ?>" data-va="<?php echo $row['VA']; ?>" data-den="<?php echo $row['DEN']; ?>" data-dt="<?php echo $row['DT']; ?>" data-pt="<?php echo $row['PT']; ?>" data-others="<?php echo $row['otherTest']; ?>" data-followupstatus="<?php echo $row['followUpStatus']; ?>" data-status="<?php echo $row['status']; ?>" data-attendee="<?php echo $row['attendee']; ?>" data-confirmationdate="<?php echo $row['confirmationDate']; ?>" data-fmc="<?php echo $row['FMC']; ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button></td> -->
                                     <td>
                                         <div class="content-center flex flex-wrap justify-center gap-2">
-                                            <input type="text" class="hidden" name="rfid<?php echo $ApeNo; ?>" value="<?php echo $row['idNumber']; ?>">
-                                            <button id="dropdownMenuIconButton<?php echo $ApeNo; ?>" data-dropdown-toggle="dropdownDots<?php echo $ApeNo; ?>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900  rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 bg-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
+                                            <input type="text" class="hidden" name="rfid<?php echo $preEmpNo; ?>" value="<?php echo $row['idNumber']; ?>">
+                                            <button id="dropdownMenuIconButton<?php echo $preEmpNo; ?>" data-dropdown-toggle="dropdownDots<?php echo $preEmpNo; ?>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900  rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 bg-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
                                                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
                                                     <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
                                                 </svg>
@@ -310,10 +352,10 @@ if (isset($_POST['addPreEmploymentImport'])) {
 
                                         </div>
                                         <!-- Dropdown menu -->
-                                        <div id="dropdownDots<?php echo $ApeNo; ?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                                            <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $ApeNo; ?>">
+                                        <div id="dropdownDots<?php echo $preEmpNo; ?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                                            <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $preEmpNo; ?>">
                                                 <li>
-                                                    <a type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['idNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date_received="<?php echo $row['dateReceived']; ?>" data-date_performed="<?php echo $row['datePerformed']; ?>" data-imc="<?php echo $row['IMC']; ?>" data-oeh="<?php echo $row['OEH']; ?>" data-pe="<?php echo $row['PE']; ?>" data-cbc="<?php echo $row['CBC']; ?>" data-ua="<?php echo $row['U_A']; ?>" data-fa="<?php echo $row['FA']; ?>" data-cxr="<?php echo $row['CXR']; ?>" data-va="<?php echo $row['VA']; ?>" data-den="<?php echo $row['DEN']; ?>" data-dt="<?php echo $row['DT']; ?>" data-pt="<?php echo $row['PT']; ?>" data-others="<?php echo $row['otherTest']; ?>" data-followupstatus="<?php echo $row['followUpStatus']; ?>" data-status="<?php echo $row['status']; ?>" data-attendee="<?php echo $row['attendee']; ?>" data-confirmationdate="<?php echo $row['confirmationDate']; ?>" data-fmc="<?php echo $row['FMC']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit Annual P.E. Record</a>
+                                                    <a type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['idNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date_received="<?php echo $row['dateReceived']; ?>" data-date_performed="<?php echo $row['datePerformed']; ?>" data-imc="<?php echo $row['IMC']; ?>" data-oeh="<?php echo $row['OEH']; ?>" data-pe="<?php echo $row['PE']; ?>" data-cbc="<?php echo $row['CBC']; ?>" data-ua="<?php echo $row['U_A']; ?>" data-fa="<?php echo $row['FA']; ?>" data-cxr="<?php echo $row['CXR']; ?>" data-va="<?php echo $row['VA']; ?>" data-den="<?php echo $row['DEN']; ?>" data-dt="<?php echo $row['DT']; ?>" data-pt="<?php echo $row['PT']; ?>" data-others="<?php echo $row['otherTest']; ?>" data-followupstatus="<?php echo $row['followUpStatus']; ?>" data-status="<?php echo $row['status']; ?>" data-attendee="<?php echo $row['attendee']; ?>" data-confirmationdate="<?php echo $row['confirmationDate']; ?>" data-fmc="<?php echo $row['FMC']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit Pre-Employment Record</a>
                                                 </li>
 
                                             </ul>
@@ -325,7 +367,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
                                     <td><?php echo $row['Name'] ?></td>
                                     <td><?php echo $row['section'] ?></td>
                                     <td><?php echo $row['IMC'] ?></td>
-                                    <!-- <td><?php// echo $row['OEH'] ?></td> -->
+                                    <td><?php echo $row['OEH'] ?></td>
                                     <td><?php echo $row['PE'] ?></td>
                                     <td><?php echo $row['CBC'] ?></td>
                                     <td><?php echo $row['U_A'] ?></td>
@@ -341,7 +383,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
                                     <td><?php echo $row['confirmationDate'] ?></td>
                                     <td><?php echo $row['FMC'] ?></td>
                                 </tr>
-                            <?php $ApeNo++;
+                            <?php $preEmpNo++;
                             } ?>
                         </tbody>
                     </table>
@@ -354,13 +396,13 @@ if (isset($_POST['addPreEmploymentImport'])) {
 
 
 <div id="addPreEmpDirectEmployees" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-2xl max-h-full">
+<div class="relative p-4 w-full max-w-2xl max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 class=" font-semibold text-gray-900 dark:text-white">
-                    Add Annual P.E. Record
+                    Add Pre-Employment Record
                 </h3>
                 <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="addPreEmpDirectEmployees">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -371,13 +413,13 @@ if (isset($_POST['addPreEmploymentImport'])) {
             </div>
             <!-- Modal body -->
             <form method="POST">
-                <div class="text-[9px] 2xl:text-lg  rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full w-full p-4 ">
-                    <div class="col-span-4 gap-4 mb-4">
+            <div class="text-[9px] 2xl:text-lg  rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full w-full p-4 ">
+                <div class="col-span-4 gap-4 mb-4">
                         <label for="name" class="block mb-1  text-gray-900 dark:text-white">Name</label>
                         <select id="name" name="name" class="js-employees bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                             <option selected disabled>Search Name</option>
                             <?php
-                            $sql1 = "SELECT * FROM employeespersonalinfo e WHERE e.employer = '$employer' AND e.idNumber NOT IN (SELECT p.idNumber FROM annualphysicalexam p);";
+                            $sql1 = "SELECT * FROM employeespersonalinfo e WHERE e.employer = '$employer' AND e.idNumber NOT IN (SELECT p.idNumber FROM preemployment p);";
                             $result = mysqli_query($con, $sql1);
                             while ($list = mysqli_fetch_assoc($result)) {
                                 $idNumber = $list["idNumber"];
@@ -387,105 +429,106 @@ if (isset($_POST['addPreEmploymentImport'])) {
                                                                                                                                                                                 } ?>
                         </select>
                     </div>
-                    <div class="content-center  col-span-2">
+                    <div  class="content-center  col-span-2">
                         <label for="rfid" class="block mb-1  text-gray-900 dark:text-white">ID Number</label>
                         <input type="text" name="rfid" id="rfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " required="">
                     </div>
-                    <div class="content-center  col-span-2">
+                    <div  class="content-center  col-span-2">
                         <label for="section" class="block mb-1  text-gray-900 dark:text-white">Section</label>
                         <input type="text" name="section" id="section" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                     </div>
-                    <div class="content-center  col-span-2">
+                    <div  class="content-center  col-span-2">
                         <label for="date_received" class="block mb-1  text-gray-900 dark:text-white">Date Received</label>
-                        <input type="date" name="date_received" id="date_received" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" required="">
+                        <input type="date" name="date_received" id="date_received" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg"placeholder="" required="">
                     </div>
-                    <div class="content-center  col-span-2">
+                    <div  class="content-center  col-span-2">
                         <label for="date_performed" class="block mb-1  text-gray-900 dark:text-white">Date Performed</label>
                         <input type="date" name="date_performed" id="date_performed" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
                     </div>
-                    <div class="content-center  col-span-2">
+                    <div  class="content-center  col-span-2">
                         <label for="imc" class="block mb-1  text-gray-900 dark:text-white">IMC</label>
-                        <input type="text" name="imc" id="imc" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
+                        <input type="text" name="imc" id="imc" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg"placeholder=" " required="">
                     </div>
-                    <!-- <div class="content-center  col-span-2">
+                    <div  class="content-center  col-span-2">
                         <label for="oeh" class="block mb-1  text-gray-900 dark:text-white">OEH</label>
                         <input type="text" name="oeh" id="oeh" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
-                    </div> -->
-                    <div class="content-center  col-span-2">
+                    </div>
+                    <div  class="content-center  col-span-2">
                         <label for="pe" class="block mb-1  text-gray-900 dark:text-white">PE</label>
                         <input type="text" name="pe" id="pe" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
                     </div>
-                    <div class="content-center  col-span-2">
+                    <div  class="content-center  col-span-2">
                         <label for="cbc" class="block mb-1  text-gray-900 dark:text-white">CBC</label>
                         <input type="text" name="cbc" id="cbc" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
                     </div>
-                    <div class="content-center  col-span-2">
+                    <div  class="content-center  col-span-2">
                         <label for="ua" class="block mb-1  text-gray-900 dark:text-white">U/A</label>
                         <input type="text" name="ua" id="ua" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
                     </div>
-                    <div class="content-center  col-span-2">
+                    <div  class="content-center  col-span-2">
                         <label for="fa" class="block mb-1  text-gray-900 dark:text-white">FA</label>
                         <input type="text" name="fa" id="fa" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
                     </div>
-                    <div class="content-center  col-span-2">
+                    <div  class="content-center  col-span-2">
                         <label for="cxr" class="block mb-1  text-gray-900 dark:text-white">CXR</label>
                         <input type="text" name="cxr" id="cxr" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
                     </div>
-                    <div class="content-center  col-span-2">
+                    <div  class="content-center  col-span-2">
                         <label for="va" class="block mb-1  text-gray-900 dark:text-white">VA</label>
                         <input type="text" name="va" id="va" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
                     </div>
-                    <div class="content-center  col-span-2">
+                    <div  class="content-center  col-span-2">
                         <label for="den" class="block mb-1  text-gray-900 dark:text-white">DEN</label>
                         <input type="text" name="den" id="den" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
                     </div>
-                    <div class="content-center  col-span-2">
+                    <div  class="content-center  col-span-2">
                         <label for="dt" class="block mb-1  text-gray-900 dark:text-white">DT</label>
                         <input type="text" name="dt" id="dt" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
                     </div>
-                    <div class="content-center  col-span-2">
+                    <div  class="content-center  col-span-2">
                         <label for="pt" class="block mb-1  text-gray-900 dark:text-white">PT</label>
                         <input type="text" name="pt" id="pt" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" " required="">
                     </div>
-                    <div class="content-center  col-span-4">
+                    <div  class="content-center  col-span-2">
                         <label for="others" class="block mb-1  text-gray-900 dark:text-white">Others</label>
                         <input type="text" name="others" id="others" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" >
                     </div>
                     <div class="col-span-4">
                         <label for="followupstatus" class="block mb-1  text-gray-900 dark:text-white">Follow up status</label>
-                        <textarea rows="4" placeholder="Leave a follow up status..." name="followupstatus" id="followupstatus" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" ></textarea>
+                        <textarea name="followupstatus" id="followupstatus" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" ></textarea>
                     </div>
-                    <div class="content-center  col-span-4">
+                    <div  class="content-center  col-span-4">
                         <label for="attendee" class="block mb-1  text-gray-900 dark:text-white">Attendee</label>
                         <input type="text" name="attendee" id="attendee" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="Nurse/Doctor" >
                     </div>
+                  
                     <div class="col-span-2">
                         <label for="status" class="block mb-1  text-gray-900 dark:text-white">Status</label>
-                        <select name="status" id="status" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="">
-                            <option readonly selected value="" >Select status</option>
+                        <select name="status" id="status" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" >
+                            <option  selected value="">Select status</option>
                             <option value="pending">Pending</option>
                             <option value="complied">Complied</option>
                         </select>
 
                     </div>
-                  
                     <div id="compliancediv" class="content-center  col-span-2">
                         <label for="confirmationdate" class="block mb-1  text-gray-900 dark:text-white">Compliance Date</label>
                         <input type="date" name="confirmationdate" id="confirmationdate" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" >
                     </div>
+                    
                     <div class="col-span-4 gap-4">
                         <label for="fmc" class="block mb-1  text-gray-900 dark:text-white">FMC</label>
                         <input type="text" name="fmc" id="fmc" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" >
                     </div>
-
-                    <div class="col-span-4 justify-center flex gap-2">
-                        <button type="submit" name="addAnnualPe" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
-                            </svg>
-                            Add Annual P.E.
-                        </button>
-                    </div>
+               
+                <div class="col-span-4 justify-center flex gap-2">
+                <button type="submit" name="addPreEmployment" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    Add Pre Employment
+                </button>
+                </div>
                 </div>
             </form>
         </div>
@@ -493,16 +536,16 @@ if (isset($_POST['addPreEmploymentImport'])) {
 </div>
 
 
-<div id="importAnnualPe" tabindex="-1" aria-hidden="true" class=" hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+<div id="importPreEmployment" tabindex="-1" aria-hidden="true" class=" hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative w-full max-w-md max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-2 border-b rounded-t dark:border-gray-600">
                 <h3 class=" font-semibold text-gray-900 dark:text-white">
-                    Import Annual P.E. Record
+                    Import Pre-Employment Record
                 </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="importAnnualPe">
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="importPreEmployment">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                     </svg>
@@ -533,16 +576,16 @@ if (isset($_POST['addPreEmploymentImport'])) {
 </div>
 
 
-<div id="editAnnualPe" tabindex="-1" aria-hidden="true" class="bg-[#615eae59] hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+<div id="editPreEmployment" tabindex="-1" aria-hidden="true" class="bg-[#615eae59] hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    Edit Annual P.E. Record
+                    Edit Pre-Employment Record
                 </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="editAnnualPe">
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="editPreEmployment">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                     </svg>
@@ -554,9 +597,9 @@ if (isset($_POST['addPreEmploymentImport'])) {
                 <div class="text-[9px] 2xl:text-lg  rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full w-full p-4 ">
                     <div class="col-span-4 gap-4">
                         <label for="editName" class="block mb-1  text-gray-900 dark:text-white">Name</label>
-                        <input id="editName" name="editName" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
+                        <input id="editName" name="editName"  class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
                     </div>
-                    <div class="content-center  col-span-2">
+                    <div  class="content-center  col-span-2">
                         <label for="editRfid" class="block mb-1  text-gray-900 dark:text-white">ID Number</label>
                         <input type="text" name="editRfid" id="editRfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
                     </div>
@@ -570,85 +613,86 @@ if (isset($_POST['addPreEmploymentImport'])) {
                     </div>
                     <div class="content-center  col-span-2">
                         <label for="editDate_performed" class="block mb-1  text-gray-900 dark:text-white">Date Performed</label>
-                        <input type="date" name="editDate_performed" id="editDate_performed" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
+                        <input type="date" name="editDate_performed" id="editDate_performed" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" " >
                     </div>
                     <div class="content-center  col-span-2">
                         <label for="editImc" class="block mb-1  text-gray-900 dark:text-white">IMC</label>
-                        <input type="text" name="editImc" id="editImc" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
+                        <input type="text" name="editImc" id="editImc" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" " >
                     </div>
-                    <!-- <div class="content-center  col-span-2">
+                    <div class="content-center  col-span-2">
                         <label for="editOeh" class="block mb-1  text-gray-900 dark:text-white">OEH</label>
-                        <input type="text" name="editOeh" id="editOeh" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
-                    </div> -->
+                        <input type="text" name="editOeh" id="editOeh" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" " >
+                    </div>
                     <div class="content-center  col-span-2">
                         <label for="editPe" class="block mb-1  text-gray-900 dark:text-white">PE</label>
-                        <input type="text" name="editPe" id="editPe" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
+                        <input type="text" name="editPe" id="editPe" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" " >
                     </div>
                     <div class="content-center  col-span-2">
                         <label for="editCbc" class="block mb-1  text-gray-900 dark:text-white">CBC</label>
-                        <input type="text" name="editCbc" id="editCbc" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
+                        <input type="text" name="editCbc" id="editCbc" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" " >
                     </div>
                     <div class="content-center  col-span-2">
                         <label for="editUa" class="block mb-1  text-gray-900 dark:text-white">U/A</label>
-                        <input type="text" name="editUa" id="editUa" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
+                        <input type="text" name="editUa" id="editUa" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" " >
                     </div>
                     <div class="content-center  col-span-2">
                         <label for="editFa" class="block mb-1  text-gray-900 dark:text-white">FA</label>
-                        <input type="text" name="editFa" id="editFa" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
+                        <input type="text" name="editFa" id="editFa" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" " >
                     </div>
                     <div class="content-center  col-span-2">
                         <label for="editCxr" class="block mb-1  text-gray-900 dark:text-white">CXR</label>
-                        <input type="text" name="editCxr" id="editCxr" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
+                        <input type="text" name="editCxr" id="editCxr" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" " >
                     </div>
                     <div class="content-center  col-span-2">
                         <label for="editVa" class="block mb-1  text-gray-900 dark:text-white">VA</label>
-                        <input type="text" name="editVa" id="editVa" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
+                        <input type="text" name="editVa" id="editVa" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" " >
                     </div>
                     <div class="content-center  col-span-2">
                         <label for="editDen" class="block mb-1  text-gray-900 dark:text-white">DEN</label>
-                        <input type="text" name="editDen" id="editDen" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
+                        <input type="text" name="editDen" id="editDen" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" " >
                     </div>
                     <div class="content-center  col-span-2">
                         <label for="editDt" class="block mb-1  text-gray-900 dark:text-white">DT</label>
-                        <input type="text" name="editDt" id="editDt" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
+                        <input type="text" name="editDt" id="editDt" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" " >
                     </div>
                     <div class="content-center  col-span-2">
                         <label for="editPt" class="block mb-1  text-gray-900 dark:text-white">PT</label>
-                        <input type="text" name="editPt" id="editPt" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
+                        <input type="text" name="editPt" id="editPt" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" " >
                     </div>
-                    <div class="content-center  col-span-4">
+                    <div class="content-center  col-span-2">
                         <label for="editOthers" class="block mb-1  text-gray-900 dark:text-white">Others</label>
                         <input type="text" name="editOthers" id="editOthers" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
                     </div>
                     <div class="col-span-4">
                         <label for="editFollowupstatus" class="block mb-1  text-gray-900 dark:text-white">Follow up status</label>
-                        <textarea rows="4"  type="text" name="editFollowupstatus" id="editFollowupstatus" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=""></textarea>
+                        <textarea name="editFollowupstatus" id="editFollowupstatus" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=""></textarea>
                     </div>
-                    
                     <div class="content-center  col-span-4">
                         <label for="editAttendee" class="block mb-1  text-gray-900 dark:text-white">Attendee</label>
-                        <input type="text" name="editAttendee" id="editAttendee" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="Nurse/Doctor">
+                        <input type="text" name="editAttendee" id="editAttendee" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="Nurse/Doctor" >
                     </div>
-                    <div class="col-span-2">
+                    <div  class="col-span-2">
                         <label for="editStatus" class="block mb-1  text-gray-900 dark:text-white">Status</label>
-                        <select name="editStatus" id="editStatus" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
-                            <option value="" selected>Select status</option>
+                        <select name="editStatus" id="editStatus" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="" >
+                            <option disabled selected>Select status</option>
                             <option value="pending">Pending</option>
                             <option value="complied">Complied</option>
                         </select>
 
                     </div>
-                    <div class="content-center  col-span-2" id="editComplianceDiv">
+                   
+           
+                    <div  class="content-center  col-span-2" id="editComplianceDiv">
                         <label for="editConfirmationdate" class="block mb-1  text-gray-900 dark:text-white">Compliance Date</label>
-                        <input type="date" name="editConfirmationdate" id="editConfirmationdate" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
+                        <input type="date" name="editConfirmationdate" id="editConfirmationdate" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="" >
                     </div>
                     <div class="col-span-4 gap-4">
                         <label for="editFmc" class="block mb-1  text-gray-900 dark:text-white">FMC</label>
-                        <input type="text" name="editFmc" id="editFmc" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
+                        <input type="text" name="editFmc" id="editFmc" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="" >
                     </div>
-
-                    <div class="col-span-4 justify-center flex gap-2">
-                        <button type="submit" name="editAnnualPe" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Update Record</button>
+               
+                <div class="col-span-4 justify-center flex gap-2">
+                        <button type="submit" name="editPreEmployment" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Update Record</button>
 
                     </div>
                 </div>
@@ -656,33 +700,33 @@ if (isset($_POST['addPreEmploymentImport'])) {
         </div>
     </div>
 </div>
-<div id="exportAnnualPe" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+<div id="exportPreEmp" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative w-full max-w-md max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <button type="button" data-modal-toggle="exportAnnualPe" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white">
+            <button type="button" data-modal-toggle="exportPreEmp" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white">
                 <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                 </svg>
                 <span class="sr-only">Close modal</span>
             </button>
             <div class="px-6 py-6 lg:px-8">
-                <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Export Annual P.E.</h3>
+                <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Export Pre-Employment</h3>
                 <form class="space-y-6" action="" method="POST">
                     <div>
-                        <label for="employer" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employer</label>
+                    <label for="employer" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employer</label>
 
                         <select id="employer" name="employer" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option selected value="GPI">GPI</option>
-                            <option value="All">All</option>
-                            <option value="Maxim">Maxim</option>
-                            <option value="Powerlane">Powerlane</option>
-                            <option value="Nippi">Nippi</option>
-                            <option value="Mangreat">Mangreat</option>
-                            <option value="Otrelo">Otrelo</option>
-                            <option value="Canteen">Canteen</option>
-                            <option value="Alarm">Alarm</option>
-
+                        <option selected value="GPI">GPI</option>
+                        <option value="All">All</option>
+                        <option value="Maxim">Maxim</option>
+                        <option value="Powerlane">Powerlane</option>
+                        <option value="Nippi">Nippi</option>
+                        <option value="Mangreat">Mangreat</option>
+                        <option value="Otrelo">Otrelo</option>
+                        <option value="Canteen">Canteen</option>
+                        <option value="Alarm">Alarm</option>
+                                                                                       
                         </select>
                         <label for="month" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Month</label>
 
@@ -707,7 +751,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
                                                     $year = $dateNow2->format('Y');
                                                     echo $year; ?>" name="year" id="year" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
                     </div>
-
+                    
                     <button type="submit" name="excelReport" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Generate Excel
                     </button>
@@ -732,7 +776,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
     });
 
 
-    const editEmployee = document.getElementById('editAnnualPe');
+    const editEmployee = document.getElementById('editPreEmployment');
 
     // options with default values
     const editemployees = {
@@ -754,15 +798,13 @@ if (isset($_POST['addPreEmploymentImport'])) {
 
     function openEditEmployee(element) {
         modalEdit.toggle();
-
-
         document.getElementById("editRfid").value = element.getAttribute("data-rfid");
         document.getElementById("editName").value = element.getAttribute("data-name");
         document.getElementById("editSection").value = element.getAttribute("data-section");
         document.getElementById("editDate_received").value = element.getAttribute("data-date_received");
         document.getElementById("editDate_performed").value = element.getAttribute("data-date_performed");
         document.getElementById("editImc").value = element.getAttribute("data-imc");
-        // document.getElementById("editOeh").value = element.getAttribute("data-oeh");
+        document.getElementById("editOeh").value = element.getAttribute("data-oeh");
         document.getElementById("editPe").value = element.getAttribute("data-pe");
         document.getElementById("editCbc").value = element.getAttribute("data-cbc");
         document.getElementById("editUa").value = element.getAttribute("data-ua");
@@ -780,8 +822,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
         document.getElementById("editConfirmationdate").value = element.getAttribute("data-confirmationdate");
         document.getElementById("editFmc").value = element.getAttribute("data-fmc");
 
-
-                if ($("#editStatus").val() == "complied") {
+        if ($("#editStatus").val() == "complied") {
     $("#editComplianceDiv").removeClass("hidden");
     editconfirmationdate.required = true;
   }else{
@@ -789,7 +830,6 @@ if (isset($_POST['addPreEmploymentImport'])) {
     editconfirmationdate.removeAttribute('required');
 
   }
-
     }
 
     document.getElementById("employer").addEventListener("keydown", function(event) {
@@ -804,7 +844,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
         column2 = 'Date Performed';
         column3 = 'Id Number';
         column4 = 'IMC';
-        // column5 = 'OEH';
+        column5 = 'OEH';
         column6 = 'PE';
         column7 = 'CBC';
         column8 = 'U/A';
@@ -827,7 +867,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
                 column2,
                 column3,
                 column4,
-                // column5,
+                column5,
                 column6,
                 column7,
                 column8,
@@ -851,7 +891,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
             column2 = '';
             column3 = "";
             column4 = '';
-            // column5 = '';
+            column5 = '';
             column6 = '';
             column7 = '';
             column8 = '';
@@ -873,7 +913,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
                     column2,
                     column3,
                     column4,
-                    // column5,
+                    column5,
                     column6,
                     column7,
                     column8,
@@ -905,7 +945,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
         var encodedUri = encodeURI(csvContent);
         var link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "<?php echo $employer;?> Annual P.E. Template.csv");
+        link.setAttribute("download", "<?php echo $employer;?> Pre-Employment Template.csv");
         document.body.appendChild(link);
         /* download the data file named "Stock_Price_Report.csv" */
         link.click();

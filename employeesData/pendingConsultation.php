@@ -114,6 +114,11 @@ if (isset($_POST['updateConsultation'])) {
    
     
       }
+
+      if($cnsltnIntervention == "Dental Consultation" || $cnsltnIntervention == "Medication and Dental Consultation" || $cnsltnIntervention == "Dental Services (Oral Prophylaxis)" || $cnsltnIntervention == "Dental Services (Light Cure)" || $cnsltnIntervention == "Medication and Dental Services (Tooth Extraction)"){
+        $status = 'done';
+      }
+
   // echo $smoking;
   $sql = "UPDATE `consultation` SET  `type`='$cnsltnType',`categories`='$cnsltnCategories',`building`='$cnsltnBuilding',`chiefComplaint`='$cnsltnChiefComplaint',`diagnosis`='$cnsltnDiagnosis',`intervention`='$cnsltnIntervention',`clinicRestFrom`='$cnsltnClinicRestFrom',`clinicRestTo`='$cnsltnClinicRestTo',`meds`='$cnsltnMeds',`medsQty`='$cnsltnMedsQuantity',`bloodChemistry`='$cnsltnBloodChem',`cbc`='$cnsltnCbc',`urinalysis`='$cnsltnUrinalysis',`fecalysis`='$cnsltnFecalysis',`xray`='$cnsltnXray',`others`='$cnsltnOthersLab',`bp`='$cnsltnBp',`temp`='$cnsltnTemp',`02sat`='$cnsltn02Sat',`pr`='$cnsltnPr',`rr`='$cnsltnRr',`medicalLab`='$cnstltnmedLab',`otherRemarks`='$cnsltnOthersRemarks',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
    
@@ -308,6 +313,13 @@ if (isset($_POST['updateConsultation'])) {
           <option  <?php if ($intervention == "Clinic Rest Only") {
                     echo "selected";
                   } ?> value="Clinic Rest Only">Clinic Rest Only</option>
+                  <option <?php if($intervention =="Dental Consultation"){echo "selected";} ?> value="Dental Consultation">Dental Consultation</option>
+          <option <?php if($intervention =="Medication and Dental Consultation"){echo "selected";} ?> value="Medication and Dental Consultation">Medication and Dental Consultation</option>
+          <option <?php if($intervention =="Dental Services (Oral Prophylaxis)"){echo "selected";} ?> value="Dental Services (Oral Prophylaxis)">Dental Services (Oral Prophylaxis)</option>
+          <option <?php if($intervention =="Dental Services (Light Cure)"){echo "selected";} ?> value="Dental Services (Light Cure)">Dental Services (Light Cure)</option>
+          <option <?php if($intervention =="Medication and Dental Services (Tooth Extraction)"){echo "selected";} ?> value="Medication and Dental Services (Tooth Extraction)">Medication and Dental Services (Tooth Extraction)</option>
+
+
         </select>
       </div>
       

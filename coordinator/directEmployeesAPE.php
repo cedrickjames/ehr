@@ -20,7 +20,7 @@ if (isset($_POST['excelReport'])) {
 ?>
     <script type="text/javascript">
         window.open('../annualPe_xls.php?month=<?php echo $_SESSION['month']; ?>&year=<?php echo $_SESSION['year']; ?>&employer=<?php echo $_SESSION['employer']; ?>', '_blank');
-        location.href = 'index.php?employer='+$employer;
+        location.href = 'APE.php?employer='+$employer;
     </script>
 <?php
 }
@@ -57,7 +57,7 @@ if (isset($_POST['addAnnualPe'])) {
 
     if ($resultInfo) {
         echo "<script>alert('Added Successfuly!') </script>";
-        echo "<script> location.href='index.php?employer=$employer'; </script>";
+        echo "<script> location.href='APE.php?employer=$employer'; </script>";
     }
 }
 
@@ -93,7 +93,7 @@ if (isset($_POST['editAnnualPe'])) {
 
     if ($resultInfo) {
         echo "<script>alert('Updated Successfuly!') </script>";
-        echo "<script> location.href='index.php?employer=$employer'; </script>";
+        echo "<script> location.href='APE.php?employer=$employer'; </script>";
     }
 }
 
@@ -128,11 +128,17 @@ function saveToDatabase($con, $data, $count,$employer)
 {
     // Initialize an array to collect errors
     $errorLogs = [];
-
+    $errorempty= [];
+    $failedData = [];
     foreach ($data as $row) {
         if ($count > 0) {
             $dateReceived = $row['0'];
+            $dateReceivedObj = DateTime::createFromFormat('m/d/Y', $dateReceived);
+            $dateReceivedFormatted = $dateReceivedObj ? $dateReceivedObj->format('Y-m-d') : $dateReceived;
+            
             $datePerformed = $row['1'];
+            $datePerformedObj = DateTime::createFromFormat('m/d/Y', $datePerformed);
+            $datePerformedFormatted = $datePerformedObj ? $datePerformedObj->format('Y-m-d') : $datePerformed;
             $idNumber = $row['2'];
             $IMC = $row['3'];
             $PE = $row['4'];
@@ -156,6 +162,7 @@ function saveToDatabase($con, $data, $count,$employer)
             if (!isidNumberExists($con, $idNumber, $employer)) {
                 // Log error for non-existent Id Numbers
                 $errorLogs[] = "$idNumber, ";
+                array_push($failedData, [$dateReceivedFormatted, $datePerformedFormatted, $idNumber, $IMC, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]); 
                 continue; // Skip saving this row
             }
 
@@ -168,10 +175,10 @@ function saveToDatabase($con, $data, $count,$employer)
                 $result1 = mysqli_query($con, "SELECT * FROM `annualphysicalexam` WHERE `idNumber` = '$idNumber'");
                 $numrows = mysqli_num_rows($result1);
                 if ($numrows > 0) {
-                    $addPreEmploymentGpi = "UPDATE `annualphysicalexam` SET `dateReceived` = '$dateReceived', `datePerformed` = '$datePerformed', `name`='$name', `section`='$section', `IMC` = '$IMC', `PE` = '$PE', `CBC` ='$CBC', `U_A` = '$U_A', `FA`='$FA', `CXR` ='$CXR', `VA`='$VA', `DEN`='$DEN', `DT`='$DT', `PT` = '$PT', `otherTest` = '$otherTest', `followUpStatus` = '$followUpStatus', `status`='$status', `attendee`='$attendee', `confirmationDate`='$confirmationDate', `FMC`='$FMC' WHERE `idNumber` = '$idNumber'";
+                    $addPreEmploymentGpi = "UPDATE `annualphysicalexam` SET `dateReceived` = '$dateReceivedFormatted', `datePerformed` = '$datePerformedFormatted', `name`='$name', `section`='$section', `IMC` = '$IMC', `PE` = '$PE', `CBC` ='$CBC', `U_A` = '$U_A', `FA`='$FA', `CXR` ='$CXR', `VA`='$VA', `DEN`='$DEN', `DT`='$DT', `PT` = '$PT', `otherTest` = '$otherTest', `followUpStatus` = '$followUpStatus', `status`='$status', `attendee`='$attendee', `confirmationDate`='$confirmationDate', `FMC`='$FMC' WHERE `idNumber` = '$idNumber'";
                     $resultInfo = mysqli_query($con, $addPreEmploymentGpi);
                 } else {
-                    $addPreEmploymentGpi = "INSERT INTO `annualphysicalexam`(`dateReceived`, `datePerformed`, `idNumber`, `name`, `section`, `IMC`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`,`confirmationDate`, `FMC`) VALUES ('$dateReceived','$datePerformed','$idNumber','$name','$section','$IMC','$PE','$CBC','$U_A','$FA','$CXR', '$VA', '$DEN', '$DT', '$PT', ' $otherTest', ' $followUpStatus', '$status', '$attendee','$confirmationDate', '$FMC')";
+                    $addPreEmploymentGpi = "INSERT INTO `annualphysicalexam`(`dateReceived`, `datePerformed`, `idNumber`, `name`, `section`, `IMC`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`,`confirmationDate`, `FMC`) VALUES ('$dateReceivedFormatted','$datePerformedFormatted','$idNumber','$name','$section','$IMC','$PE','$CBC','$U_A','$FA','$CXR', '$VA', '$DEN', '$DT', '$PT', ' $otherTest', ' $followUpStatus', '$status', '$attendee','$confirmationDate', '$FMC')";
                     $resultInfo = mysqli_query($con, $addPreEmploymentGpi);
                 }
             }
@@ -179,13 +186,24 @@ function saveToDatabase($con, $data, $count,$employer)
             // Check if query execution was successful
             if ($resultInfo === false) {
                 $errorLogs[] = "Failed to insert data for Id Number '$idNumber': " . mysqli_error($con);
+                array_push($failedData, [$dateReceivedFormatted, $datePerformedFormatted, $idNumber, $IMC, $OEH, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]); 
+
             }
+        }
+        else{
+            $errorempty[] = "Your file is empty";
         }
         $count = 1;
     }
 
     // Return error logs array
-    return $errorLogs;
+    // return $errorLogs;
+    return [
+        'errorLogs' => $errorLogs,
+        'failedData' => $failedData,
+        'errorEmpty' => $errorempty,
+
+    ];
 }
 
 // Main script to import Excel and process data
@@ -201,15 +219,20 @@ if (isset($_POST['addPreEmploymentImport'])) {
 
         try {
             // Save data to database and collect error logs
-            $errorLogs = saveToDatabase($con, $data, $count,$employer);
-
+            $result = saveToDatabase($con, $data, $count,$employer);
+            $errorLogs = $result['errorLogs'];
+            $failedData = $result['failedData'];
             // Close database connection
             // mysqli_close($con);
 
             // Output success or error messages
             $error1 = '';
             if (empty($errorLogs)) {
-                echo "<script>alert('Data imported and saved successfully.!') </script>";
+           
+                
+                    echo "<script>alert('Data imported and saved successfully.!') </script>";
+
+                
             } else {
                 foreach ($errorLogs as $error) {
                     // echo "$error";
@@ -218,6 +241,8 @@ if (isset($_POST['addPreEmploymentImport'])) {
 
                 }
                 echo "<script>alert ('Errors occurred during import: Id number/s $error1 not found in the employees list.')</script>";
+                $_SESSION['failedData'] = $failedData;
+                echo "<script> location.href='failedDataFromImportingAPE.php'; </script>";
                 // echo "<script> location.href='index.php?employer=$employer'; </script>";
             }
         } catch (Exception $e) {

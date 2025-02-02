@@ -25,6 +25,8 @@ if (isset($_POST['login'])) {
         
         $_SESSION['name'] = $userRow['name'];
         $_SESSION['rfid'] = "";
+        $_SESSION['company'] = $userRow['company'];
+
         $_SESSION['department'] = $userRow['department'];
 
         $_SESSION['lastQue'] = '';
@@ -66,7 +68,9 @@ if (isset($_POST['login'])) {
           header("location:depthead");
         } else if ($level == 'hr') {
           header("location:hr");
-        } else if ($level == 'doctor') {
+        }  else if ($level == 'coordinator') {
+          header("location:coordinator");
+        }else if ($level == 'doctor') {
           header("location:doctor");
         }
       } else {

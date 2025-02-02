@@ -21,7 +21,7 @@ if (isset($_POST['excelReport'])) {
 ?>
     <script type="text/javascript">
         window.open('../preemployment_xls.php?month=<?php echo $_SESSION['month']; ?>&year=<?php echo $_SESSION['year']; ?>&employer=<?php echo $_SESSION['employer'];?>', '_blank');
-        location.href='index.php';
+        location.href='index.php?employer='+$employer;
     </script>
 <?php
 }
@@ -48,6 +48,9 @@ if (isset($_POST['addPreEmployment'])) {
     $status = $_POST['status'];
     $attendee = $_POST['attendee'];
     $confirmationdate = $_POST['confirmationdate'];
+    if($status !="complied"){
+        $confirmationdate="";
+    }
     $fmc = $_POST['fmc'];
 
     $addPreEmploymentGpi = "INSERT INTO `preemployment`(`dateReceived`, `datePerformed`, `idNumber`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`, `confirmationDate`, `FMC`) VALUES ('$date_received','$date_performed','$idNumber','$name','$section','$imc','$oeh','$pe','$cbc','$ua','$fa','$cxr','$va', '$den', '$dt', '$pt', '$others', '$followupstatus', '$status', '$attendee', '$confirmationdate', '$fmc')";
@@ -55,7 +58,7 @@ if (isset($_POST['addPreEmployment'])) {
 
     if ($resultInfo) {
         echo "<script>alert('Added Successfuly!') </script>";
-        echo "<script> location.href='index.php'; </script>";
+        echo "<script> location.href='index.php?employer=$employer'; </script>";
     }
 }
 
@@ -79,8 +82,14 @@ if (isset($_POST['editPreEmployment'])) {
     $others = $_POST['editOthers'];
     $followupstatus = $_POST['editFollowupstatus'];
     $status = $_POST['editStatus'];
+   
     $attendee = $_POST['editAttendee'];
     $confirmationdate = $_POST['editConfirmationdate'];
+
+    if($status !="complied"){
+        $confirmationdate="";
+    }
+    
     $fmc = $_POST['editFmc'];
 
     $editPreEmploymentGpi = "UPDATE `preemployment`SET `dateReceived`='$date_received' , `datePerformed` = '$date_performed', `name`= '$name', `section`= '$section', `IMC`= '$imc', `OEH`= '$oeh', `PE`= '$pe', `CBC`= '$cbc', `U_A`= '$ua', `FA`= '$fa', `CXR`= '$cxr', `VA`= '$va', `DEN`= '$den', `DT`= '$dt', `PT`= '$pt', `otherTest`= '$others', `followUpStatus`= '$followupstatus', `status`= '$status', `attendee` = '$attendee',`confirmationDate`= '$confirmationdate', `FMC`= '$fmc' WHERE `idNumber`='$idNumber'";
@@ -93,7 +102,7 @@ if (isset($_POST['editPreEmployment'])) {
 }
 
 // Function to check if Id Number exists in database and save non-existent ones in an array
-function isidNumberExists($con, $idNumber)
+function isidNumberExists($con, $idNumber,$employer)
 {
     // Escape the Id Number to prevent SQL injection (assuming $con is your mysqli connection)
     $idNumber = mysqli_real_escape_string($con, $idNumber);
@@ -119,15 +128,21 @@ function isidNumberExists($con, $idNumber)
 }
 
 // Function to save data to database
-function saveToDatabase($con, $data, $count)
+function saveToDatabase($con, $data, $count,$employer)
 {
     // Initialize an array to collect errors
     $errorLogs = [];
-
+    $failedData = [];
     foreach ($data as $row) {
         if ($count > 0) {
             $dateReceived = $row['0'];
+            $dateReceivedObj = DateTime::createFromFormat('m/d/Y', $dateReceived);
+            $dateReceivedFormatted = $dateReceivedObj ? $dateReceivedObj->format('Y-m-d') : $dateReceived;
+            
             $datePerformed = $row['1'];
+            $datePerformedObj = DateTime::createFromFormat('m/d/Y', $datePerformed);
+            $datePerformedFormatted = $datePerformedObj ? $datePerformedObj->format('Y-m-d') : $datePerformed;
+
             $idNumber = $row['2'];
             $IMC = $row['3'];
             $OEH = $row['4'];
@@ -148,9 +163,11 @@ function saveToDatabase($con, $data, $count)
             $FMC = $row['19'];
 
             // Check if Id Number exists in db_table
-            if (!isidNumberExists($con, $idNumber)) {
+            if (!isidNumberExists($con, $idNumber, $employer)) {
                 // Log error for non-existent Id Numbers
-                $errorLogs[] = "Id Number '$idNumber' not found in Employee List";
+                $errorLogs[] = "$idNumber, ";
+                array_push($failedData, [$dateReceivedFormatted, $datePerformedFormatted, $idNumber, $IMC, $OEH, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]); 
+
                 continue; // Skip saving this row
             }
 
@@ -174,13 +191,18 @@ function saveToDatabase($con, $data, $count)
             // Check if query execution was successful
             if ($resultInfo === false) {
                 $errorLogs[] = "Failed to insert data for Id Number '$idNumber': " . mysqli_error($con);
+                array_push($failedData, [$dateReceivedFormatted, $datePerformedFormatted, $idNumber, $IMC, $OEH, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]); 
+
             }
         }
         $count = 1;
     }
 
     // Return error logs array
-    return $errorLogs;
+    return [
+        'errorLogs' => $errorLogs,
+        'failedData' => $failedData
+    ];
 }
 
 // Main script to import Excel and process data
@@ -196,19 +218,33 @@ if (isset($_POST['addPreEmploymentImport'])) {
 
         try {
             // Save data to database and collect error logs
-            $errorLogs = saveToDatabase($con, $data, $count);
-
+            $result = saveToDatabase($con, $data, $count,$employer);
+            $errorLogs = $result['errorLogs'];
+            $failedData = $result['failedData'];
             // Close database connection
-            mysqli_close($con);
+            // mysqli_close($con);
 
             // Output success or error messages
+            // $errorLogsMessage ='';
+            $error1 = '';
             if (empty($errorLogs)) {
                 echo "<script>alert('Data imported and saved successfully.!') </script>";
             } else {
-                echo "Errors occurred during import:<br>";
+                
+                // echo "Errors occurred during import:<br>";
+                
                 foreach ($errorLogs as $error) {
-                    echo "$error<br>";
+                    // echo "$error";
+                    $error1 .= "$error";
+                    // echo "asdasd",$error1;
+
                 }
+                // echo $error1;
+                echo "<script>alert ('Errors occurred during import: Id number/s $error1 not found in the employees list.')</script>";
+                $_SESSION['failedData'] = $failedData;
+                echo "<script> location.href='failedDataFromImportingPreEmp.php'; </script>";
+                // echo "<script> location.href='index.php?employer=$employer'; </script>";
+
             }
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
@@ -274,6 +310,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
                                 <th>Others</th>
                                 <th>Follow up Status</th>
                                 <th>Status</th>
+                                <th>Compliance Date</th>
                                 <th>FMC</th>
                             </tr>
                         </thead>
@@ -327,6 +364,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
                                     <td><?php echo $row['otherTest'] ?></td>
                                     <td><?php echo $row['followUpStatus'] ?></td>
                                     <td><?php echo $row['status'] ?></td>
+                                    <td><?php echo $row['confirmationDate'] ?></td>
                                     <td><?php echo $row['FMC'] ?></td>
                                 </tr>
                             <?php $preEmpNo++;
@@ -381,7 +419,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
                     </div>
                     <div  class="content-center  col-span-2">
                         <label for="section" class="block mb-1  text-gray-900 dark:text-white">Section</label>
-                        <input type="text" name="section" id="section" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " required="">
+                        <input type="text" name="section" id="section" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                     </div>
                     <div  class="content-center  col-span-2">
                         <label for="date_received" class="block mb-1  text-gray-900 dark:text-white">Date Received</label>
@@ -437,32 +475,34 @@ if (isset($_POST['addPreEmploymentImport'])) {
                     </div>
                     <div  class="content-center  col-span-2">
                         <label for="others" class="block mb-1  text-gray-900 dark:text-white">Others</label>
-                        <input type="text" name="others" id="others" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" required="">
+                        <input type="text" name="others" id="others" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" >
                     </div>
-                    <div class="col-span-2">
+                    <div class="col-span-4">
                         <label for="followupstatus" class="block mb-1  text-gray-900 dark:text-white">Follow up status</label>
-                        <input type="text" name="followupstatus" id="followupstatus" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" required="">
+                        <textarea name="followupstatus" id="followupstatus" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" ></textarea>
                     </div>
+                    <div  class="content-center  col-span-4">
+                        <label for="attendee" class="block mb-1  text-gray-900 dark:text-white">Attendee</label>
+                        <input type="text" name="attendee" id="attendee" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="Nurse/Doctor" >
+                    </div>
+                  
                     <div class="col-span-2">
                         <label for="status" class="block mb-1  text-gray-900 dark:text-white">Status</label>
-                        <select name="status" id="status" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" required="">
-                            <option disabled selected>Select status</option>
+                        <select name="status" id="status" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" >
+                            <option  selected value="">Select status</option>
                             <option value="pending">Pending</option>
                             <option value="complied">Complied</option>
                         </select>
 
                     </div>
-                    <div  class="content-center  col-span-2">
-                        <label for="attendee" class="block mb-1  text-gray-900 dark:text-white">Attendee</label>
-                        <input type="text" name="attendee" id="attendee" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="Nurse/Doctor" required="">
-                    </div>
                     <div id="compliancediv" class="content-center  col-span-2">
                         <label for="confirmationdate" class="block mb-1  text-gray-900 dark:text-white">Compliance Date</label>
-                        <input type="date" name="confirmationdate" id="confirmationdate" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" required="">
+                        <input type="date" name="confirmationdate" id="confirmationdate" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" >
                     </div>
+                    
                     <div class="col-span-4 gap-4">
                         <label for="fmc" class="block mb-1  text-gray-900 dark:text-white">FMC</label>
-                        <input type="text" name="fmc" id="fmc" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" required="">
+                        <input type="text" name="fmc" id="fmc" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder="" >
                     </div>
                
                 <div class="col-span-4 justify-center flex gap-2">
@@ -607,9 +647,13 @@ if (isset($_POST['addPreEmploymentImport'])) {
                         <label for="editOthers" class="block mb-1  text-gray-900 dark:text-white">Others</label>
                         <input type="text" name="editOthers" id="editOthers" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
                     </div>
-                    <div class="col-span-2">
+                    <div class="col-span-4">
                         <label for="editFollowupstatus" class="block mb-1  text-gray-900 dark:text-white">Follow up status</label>
-                        <input type="text" name="editFollowupstatus" id="editFollowupstatus" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
+                        <textarea name="editFollowupstatus" id="editFollowupstatus" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=""></textarea>
+                    </div>
+                    <div class="content-center  col-span-4">
+                        <label for="editAttendee" class="block mb-1  text-gray-900 dark:text-white">Attendee</label>
+                        <input type="text" name="editAttendee" id="editAttendee" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="Nurse/Doctor" >
                     </div>
                     <div  class="col-span-2">
                         <label for="editStatus" class="block mb-1  text-gray-900 dark:text-white">Status</label>
@@ -620,10 +664,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
                         </select>
 
                     </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editAttendee" class="block mb-1  text-gray-900 dark:text-white">Attendee</label>
-                        <input type="text" name="editAttendee" id="editAttendee" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="Nurse/Doctor" >
-                    </div>
+                   
            
                     <div  class="content-center  col-span-2" id="editComplianceDiv">
                         <label for="editConfirmationdate" class="block mb-1  text-gray-900 dark:text-white">Compliance Date</label>

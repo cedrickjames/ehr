@@ -224,7 +224,7 @@ if (isset($_POST['updateUser'])) {
 
               <?php
 
-              $sql = "SELECT DISTINCT TRIM(department) AS department FROM users;";
+              $sql = "SELECT * FROM `department` ORDER BY `department` ASC;";
               $result = mysqli_query($con, $sql);
 
               while ($row = mysqli_fetch_assoc($result)) {

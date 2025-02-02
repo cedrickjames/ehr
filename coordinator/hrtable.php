@@ -3,7 +3,7 @@
 
 $userID = $_SESSION['userID'];
 $department =  $_SESSION['department'];
-$company = $_SESSION['company'];
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <tbody>
                             <?php
                             $ftwNo = 1;
-                            $sql = "SELECT  fittowork.*, employeespersonalinfo.Name, employeespersonalinfo.employer  FROM fittowork  INNER JOIN employeespersonalinfo ON employeespersonalinfo.idNumber = fittowork.idNumber  WHERE fittowork.approval = 'hr'  AND employeespersonalinfo.employer !='Maxim' AND employeespersonalinfo.employer !='Powerlane' AND employeespersonalinfo.employer !='Nippi' ORDER BY `id` ASC;";
+                            $sql = "SELECT  fittowork.*, employeespersonalinfo.Name, employeespersonalinfo.employer  FROM fittowork  INNER JOIN employeespersonalinfo ON employeespersonalinfo.idNumber = fittowork.idNumber  WHERE fittowork.approval = 'hr' AND employeespersonalinfo.employer='$company' ORDER BY `id` ASC;";
                             $result = mysqli_query($con, $sql);
                             while ($row = mysqli_fetch_assoc($result)) {
 

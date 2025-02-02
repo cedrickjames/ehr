@@ -570,6 +570,12 @@ $status = 'done';
 $status = 'doc';
 
   }
+  
+  if($cnsltnIntervention == "Dental Consultation" || $cnsltnIntervention == "Medication and Dental Consultation" || $cnsltnIntervention == "Dental Services (Oral Prophylaxis)" || $cnsltnIntervention == "Dental Services (Light Cure)" || $cnsltnIntervention == "Medication and Dental Services (Tooth Extraction)"){
+    $status = 'done';
+    // $cnsltnCompleted=1;
+  }
+  
   // echo $smoking;
   $sql = "INSERT INTO `consultation`(`idNumber`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `remarks`, `otherRemarks`,`statusComplete`,`withPendingLab`,`ftwApproval`, `ftwDepartment`, `ftwCategories`, `ftwConfinement`,`ftwDateOfSickLeaveFrom`, `ftwDateOfSickLeaveTo`,`ftwDays`, `ftwReasonOfAbsence`, `ftwRemarks`,`isFitToWork`,`isMedcertRequired`,`timeOfFiling`,`daysOfRest`,`reasonOfUnfitToWork`) VALUES ('$idNumber','$status','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnRemarks', '$cnsltnOthersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab', 'head', '$department','$ftwCtnCategories','$ftwCtnConfinement','$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason','$ftwCtnRemarks','$ftwCtnRemarks','$isMedcertRequired','$timeOfFiling','$ftwDaysOfRest','$ftwUnfitReason')";
   $results = mysqli_query($con, $sql);
@@ -828,6 +834,12 @@ $status = 'doc';
           <option <?php if ($intervention == "Medication and Medical Consultation") { echo "selected"; } ?> value="Medication and Medical Consultation">Medication and Medical Consultation</option>
           <option <?php if ($intervention == "Medication, Clinic Rest and Medical Consultation") { echo "selected"; } ?> value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
           <option <?php if ($intervention == "Clinic Rest Only") { echo "selected"; } ?> value="Clinic Rest Only">Clinic Rest Only</option>
+
+          <option <?php if($intervention =="Dental Consultation"){echo "selected";} ?> value="Dental Consultation">Dental Consultation</option>
+          <option <?php if($intervention =="Medication and Dental Consultation"){echo "selected";} ?> value="Medication and Dental Consultation">Medication and Dental Consultation</option>
+          <option <?php if($intervention =="Dental Services (Oral Prophylaxis)"){echo "selected";} ?> value="Dental Services (Oral Prophylaxis)">Dental Services (Oral Prophylaxis)</option>
+          <option <?php if($intervention =="Dental Services (Light Cure)"){echo "selected";} ?> value="Dental Services (Light Cure)">Dental Services (Light Cure)</option>
+          <option <?php if($intervention =="Medication and Dental Services (Tooth Extraction)"){echo "selected";} ?> value="Medication and Dental Services (Tooth Extraction)">Medication and Dental Services (Tooth Extraction)</option>
 
 
 

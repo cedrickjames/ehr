@@ -107,16 +107,16 @@ if (isset($_GET['cnsltn'])) {
 }
 
 // $ftwMeds = $_SESSION['ftwMeds'];
-if (isset($_SESSION['ftwMeds'])) {
-  $ftwMeds = $_SESSION['ftwMeds'];
-  // Your code here
-} else {
-  if (!isset($ftwMeds)) {
-    $ftwMeds = "";
-  }
+// if (isset($_SESSION['ftwMeds'])) {
+//   $ftwMeds = $_SESSION['ftwMeds'];
+//   // Your code here
+// } else {
+//   if (!isset($ftwMeds)) {
+//     $ftwMeds = "";
+//   }
 
-  // Handle the case where $_SESSION['ftwMeds'] is not set
-}
+//   // Handle the case where $_SESSION['ftwMeds'] is not set
+// }
 // echo $ftwMeds;
 
 if (isset($_POST['addConsultation'])) {
@@ -179,6 +179,11 @@ $cnsltnWithPendingLab='';
 $status = 'doc';
 
   }
+  if($cnsltnIntervention == "Dental Consultation" || $cnsltnIntervention == "Medication and Dental Consultation" || $cnsltnIntervention == "Dental Services (Oral Prophylaxis)" || $cnsltnIntervention == "Dental Services (Light Cure)" || $cnsltnIntervention == "Medication and Dental Services (Tooth Extraction)"){
+    $status = 'done';
+    // $cnsltnCompleted=1;
+  }
+
   // echo $smoking;
   $sql = "INSERT INTO `consultation`(`idNumber`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`medsQty`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `otherRemarks`,`statusComplete`,`withPendingLab`,`medicalLab`) VALUES ('$idNumber','$status','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds','$cnsltnMedsQuantity', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnOthersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab','$cnsltnWithPendingLab')";
   $results = mysqli_query($con, $sql);
@@ -247,7 +252,8 @@ if (isset($_POST['updateConsultation'])) {
   $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
   $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
 
-  
+
+
   // echo $smoking;
   $sql = "UPDATE `consultation` SET `type`='$cnsltnType',`categories`='$cnsltnCategories',`building`='$cnsltnBuilding',`chiefComplaint`='$cnsltnChiefComplaint',`diagnosis`='$cnsltnDiagnosis',`intervention`='$cnsltnIntervention',`clinicRestFrom`='$cnsltnClinicRestFrom',`clinicRestTo`='$cnsltnClinicRestTo',`meds`='$cnsltnMeds',`medsQty`='$cnsltnMedsQuantity',`bloodChemistry`='$cnsltnBloodChem',`cbc`='$cnsltnCbc',`urinalysis`='$cnsltnUrinalysis',`fecalysis`='$cnsltnFecalysis',`xray`='$cnsltnXray',`others`='$cnsltnOthersLab',`bp`='$cnsltnBp',`temp`='$cnsltnTemp',`02sat`='$cnsltn02Sat',`pr`='$cnsltnPr',`rr`='$cnsltnRr',`medicalLab`='$cnstltnmedLab',`otherRemarks`='$cnsltnOthersRemarks',`statusComplete`='$cnsltnCompleted',`withPendingLab`='  $cnsltnWithPendingLab ' WHERE `id` = '$cnsltn'";
    
@@ -457,6 +463,12 @@ if (isset($_POST['updateConsultation'])) {
           <option <?php if($intervention =="Medication and Medical Consultation"){echo "selected";} ?> value="Medication and Medical Consultation">Medication and Medical Consultation</option>
           <option <?php if($intervention =="Medication, Clinic Rest and Medical Consultation"){echo "selected";} ?> value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
           <option <?php if($intervention =="Clinic Rest Only"){echo "selected";} ?> value="Clinic Rest Only">Clinic Rest Only</option>
+          <option <?php if($intervention =="Dental Consultation"){echo "selected";} ?> value="Dental Consultation">Dental Consultation</option>
+          <option <?php if($intervention =="Medication and Dental Consultation"){echo "selected";} ?> value="Medication and Dental Consultation">Medication and Dental Consultation</option>
+          <option <?php if($intervention =="Dental Services (Oral Prophylaxis)"){echo "selected";} ?> value="Dental Services (Oral Prophylaxis)">Dental Services (Oral Prophylaxis)</option>
+          <option <?php if($intervention =="Dental Services (Light Cure)"){echo "selected";} ?> value="Dental Services (Light Cure)">Dental Services (Light Cure)</option>
+          <option <?php if($intervention =="Medication and Dental Services (Tooth Extraction)"){echo "selected";} ?> value="Medication and Dental Services (Tooth Extraction)">Medication and Dental Services (Tooth Extraction)</option>
+
 
 
 

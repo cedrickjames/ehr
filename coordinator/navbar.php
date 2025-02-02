@@ -120,29 +120,29 @@
         </a>
         <ul id="companies1" class="hidden  py-2 space-y-2">
           <li>
-            <a id="gpiside1" href="employees.php?employer=GPI" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
+            <a id="gpiside1" href="employees.php?employer=<?php echo $company; ?>" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group "><?php echo $company; ?></a>
           </li>
           <!-- <li>
-            <a id="maximside1" href="employees.php?employer=Maxim" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
+            <a id="maximside1" href="../employees/index.php?employer=Maxim" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
           </li>
           <li>
-            <a id="nippiside1" href="employees.php?employer=Nippi" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
+            <a id="nippiside1" href="../employees/index.php?employer=Nippi" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NIPPI</a>
           </li>
           <li>
-            <a id="powerlaneside1" href="employees.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+            <a id="powerlaneside1" href="../employees/index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+          </li>
+          <li>
+            <a id="otreloside1" href="../employees/index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
+          </li>
+          <li>
+            <a id="mangreatside1" href="../employees/index.php?employer=Mangreat" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
+          </li>
+          <li>
+            <a id="alarmside1" href="../employees/index.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+          </li>
+          <li>
+            <a id="canteenside1" href="../employees/index.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
           </li> -->
-          <li>
-            <a id="otreloside1" href="employees.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
-          </li>
-          <li>
-            <a id="mangreatside1" href="employees.php?employer=Mangreat" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
-          </li>
-          <li>
-            <a id="alarmside1" href="employees.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
-          </li>
-          <li>
-            <a id="canteenside1" href="employees.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
-          </li> 
         </ul>
       </li>
       <li>
@@ -165,7 +165,7 @@
         </a>
         <ul id="companies" class="hidden  py-2 space-y-2">
           <li>
-            <a id="gpiside" href="preEmp.php?employer=GPI" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
+            <a id="gpiside" href="preEmp.php?employer=<?php echo $company; ?>" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group "><?php echo $company; ?></a>
           </li>
           <!-- <li>
             <a id="maximside" href="../preEmployment/index.php?employer=Maxim" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
@@ -175,19 +175,19 @@
           </li>
           <li>
             <a id="powerlaneside" href="../preEmployment/index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
-          </li>-->
-          <li>
-            <a id="otreloside" href="preEmp.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
-            <a id="mangreatside" href="preEmp.php?employer=Mangreat" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
+            <a id="otreloside" href="../preEmployment/index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
-            <a id="alarmside" href="preEmp.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+            <a id="mangreatside" href="../preEmployment/index.php?employer=Mangreat" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
           </li>
           <li>
-            <a id="canteenside" href="preEmp.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
-          </li> 
+            <a id="alarmside" href="../preEmployment/index.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+          </li>
+          <li>
+            <a id="canteenside" href="../preEmployment/index.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
+          </li> -->
         </ul>
       </li>
       <li>
@@ -227,7 +227,7 @@
         </a>
         <ul id="agency" class="hidden  py-2 space-y-2">
           <li>
-            <a id="gpiside_" href="APE.php?employer=GPI" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
+            <a id="gpiside_" href="APE.php?employer=<?php echo $company; ?>" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group "><?php echo $company; ?></a>
           </li>
           <!-- <li>
             <a id="maximside_" href="index.php?employer=Maxim" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">MAXIM</a>
@@ -237,19 +237,19 @@
           </li>
           <li>
             <a id="powerlaneside_" href="index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
-          </li>-->
-          <li>
-            <a id="otreloside_" href="APE.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
-            <a id="mangreatside_" href="APE.php?employer=Mangreat" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
+            <a id="otreloside_" href="index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
-            <a id="alarmside_" href="APE.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+            <a id="mangreatside_" href="index.php?employer=Mangreat" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">MANGREAT</a>
           </li>
           <li>
-            <a id="canteenside_" href="APE.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
-          </li> 
+            <a id="alarmside_" href="index.php?employer=Alarm" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">ALARM</a>
+          </li>
+          <li>
+            <a id="canteenside_" href="index.php?employer=Canteen" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">CANTEEN</a>
+          </li> -->
         </ul>
       </li>
           

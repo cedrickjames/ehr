@@ -295,6 +295,13 @@ if (isset($_POST['updateConsultation'])) {
           <option  <?php if ($intervention == "Clinic Rest Only") {
                     echo "selected";
                   } ?> value="Clinic Rest Only">Clinic Rest Only</option>
+                  <option <?php if($intervention =="Dental Consultation"){echo "selected";} ?> value="Dental Consultation">Dental Consultation</option>
+          <option <?php if($intervention =="Medication and Dental Consultation"){echo "selected";} ?> value="Medication and Dental Consultation">Medication and Dental Consultation</option>
+          <option <?php if($intervention =="Dental Services (Oral Prophylaxis)"){echo "selected";} ?> value="Dental Services (Oral Prophylaxis)">Dental Services (Oral Prophylaxis)</option>
+          <option <?php if($intervention =="Dental Services (Light Cure)"){echo "selected";} ?> value="Dental Services (Light Cure)">Dental Services (Light Cure)</option>
+          <option <?php if($intervention =="Medication and Dental Services (Tooth Extraction)"){echo "selected";} ?> value="Medication and Dental Services (Tooth Extraction)">Medication and Dental Services (Tooth Extraction)</option>
+
+
         </select>
       </div>
       

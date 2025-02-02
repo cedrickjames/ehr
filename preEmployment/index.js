@@ -69,6 +69,9 @@ $(document).ready(function () {
                         {"className": "dt-center", "targets": "_all"}
                       ],
                         responsive: true,
+                        scrollCollapse: false,
+    scrollY: '50vh',
+    scrollCollapse: false
                         
                       }   );
 
