@@ -483,7 +483,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
                         <tbody>
                             <?php
                             $preEmpNo = 1;
-                            $sql = "SELECT p.*, e.Name FROM preemployment p LEFT JOIN employeespersonalinfo e  ON p.idNumber = e.idNumber WHERE p.employer = '$employer' ORDER BY  p.id ASC;";
+                            $sql = "SELECT p.*, e.Name FROM preemployment p LEFT JOIN employeespersonalinfo e  ON p.idNumber = e.idNumber WHERE e.employer = '$employer' ORDER BY  p.id ASC;";
                             $result = mysqli_query($con, $sql);
                             while ($row = mysqli_fetch_assoc($result)) { ?>
                                 <tr>
