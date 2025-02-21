@@ -17,6 +17,9 @@ $userID = $_SESSION['userID'];
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pending Fit to Work</title>
+<link rel="shortcut icon" href="../src/Logo 2.png">
+
   <script src="../src/cdn_tailwindcss.js"></script>
 
   <script src="../node_modules/flowbite/dist/flowbite.min.js"></script>
