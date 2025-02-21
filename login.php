@@ -88,7 +88,9 @@ if (isset($_POST['login'])) {
 <html lang="en">
 
 <head>
-  <title>GPI Clinic</title>
+<title>EMR Login Page</title>
+<link rel="shortcut icon" href="src/Logo 2.png">
+
   <script src="tailwindcss.js"></script>
   <script src="src/cdn_tailwindcss.js"></script>
 
