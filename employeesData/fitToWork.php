@@ -475,7 +475,7 @@ if (isset($_POST['addFTW'])) {
       // header("location: form.php");
     } catch (Exception $e) {
       $_SESSION['message'] = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
-      echo "<script>alert('Message could not be sent. Mailer Error. $account $accountpass $message ') </script>";
+      echo "<script>alert('Message could not be sent. Mailer Error.') </script>";
     }
   }
 }
