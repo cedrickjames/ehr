@@ -22,8 +22,10 @@ if (isset($_POST['addNewEmployeeManual'])) {
     $position = $_POST['position'];
     $level = $_POST['level'];
     $dateHired = $_POST['dateHired'];
+    $building = $_POST['building'];
 
-    $addEmployeeGpi = "INSERT INTO `employeespersonalinfo`(`idNumber`, `Name`, `email`, `birthday`,`age`, `sex`, `address`, `civilStatus`, `employer`, `department`, `section`, `position`, `level`, `dateHired`) VALUES ('$idNumber','$name', '$email','$birthday', '$age','$sex','$address','$civilStatus','$employer','$department','$section','$position', '$level', '$dateHired')";
+
+    $addEmployeeGpi = "INSERT INTO `employeespersonalinfo`(`idNumber`, `Name`, `email`, `birthday`,`age`, `sex`, `address`, `civilStatus`, `employer`,`building`, `department`, `section`, `position`, `level`, `dateHired`) VALUES ('$idNumber','$name', '$email','$birthday', '$age','$sex','$address','$civilStatus','$employer','$building','$department','$section','$position', '$level', '$dateHired')";
     $resultInfo = mysqli_query($con, $addEmployeeGpi);
 
     if ($resultInfo) {
@@ -119,7 +121,7 @@ if (isset($_POST['addNewEmployeesImport'])) {
             $position = $row['12'];
             $dateHired = $row['13'];
             $dateHiredObj = DateTime::createFromFormat('m/d/Y', $dateHired);
-$dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHired; // Fallback to original if parsing fails
+            $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHired; // Fallback to original if parsing fails
 
             try {
                 $addEmployeeGpi = "INSERT INTO `employeespersonalinfo`(`idNumber`, `Name`, `email`, `birthday`, `age`, `sex`, `address`, `civilStatus`, `employer`, `building`,`department`, `section`, `position`,`level`, `dateHired`) VALUES ('$idNumber','$name', '$email','$birthdayFormatted', '$age','$sexcorrespondingValue','$address','$civilcorrespondingValue','$employer','$building','$correspondingValue','$section','$position','employee', '$dateHiredFormatted')";
@@ -234,7 +236,7 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
                                         <div id="dropdownDots<?php echo $queNo; ?>" class="dropdownoption z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                                             <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $queNo; ?>">
                                                 <li>
-                                                    <a type="button" onclick="openEditEmployee(this)"  data-idnumber="<?php echo $row['idNumber'] ?>" data-name="<?php echo $row['Name'] ?>" data-email="<?php echo $row['email'] ?>" data-age="<?php echo $row['age'] ?>" data-birthday="<?php echo $row['birthday'] ?>"  data-sex="<?php echo $row['sex'] ?>" data-address="<?php echo $row['address'] ?>" data-civilstatus="<?php echo $row['civilStatus'] ?>" data-employer="<?php echo $row['employer'] ?>" data-department="<?php echo $row['department'] ?>" data-section="<?php echo $row['section'] ?>" data-position="<?php echo $row['position'] ?>" data-level="<?php echo $row['level'] ?>" data-datehired="<?php echo $row['dateHired'] ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                                    <a type="button" onclick="openEditEmployee(this)"  data-idnumber="<?php echo $row['idNumber'] ?>" data-name="<?php echo $row['Name'] ?>" data-email="<?php echo $row['email'] ?>" data-age="<?php echo $row['age'] ?>" data-birthday="<?php echo $row['birthday'] ?>"  data-sex="<?php echo $row['sex'] ?>" data-building="<?php echo $row['building'] ?>" data-address="<?php echo $row['address'] ?>" data-civilstatus="<?php echo $row['civilStatus'] ?>" data-employer="<?php echo $row['employer'] ?>" data-department="<?php echo $row['department'] ?>" data-section="<?php echo $row['section'] ?>" data-position="<?php echo $row['position'] ?>" data-level="<?php echo $row['level'] ?>" data-datehired="<?php echo $row['dateHired'] ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
                                                 </li>
                                                 <li>
                                                     <a href="../nurses/fitToWork.php?rf=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Fit To Work</a>
@@ -333,7 +335,8 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
                         <label for="address" class="block mb-1  text-gray-900 dark:text-white">Address</label>
                         <input type="text" name="address" id="address" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="" required="">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class=" col-span-2 grid gap-2 grid-cols-3">
+                    <div class="col-span-1 sm:col-span-1">
                         <label for="civilStatus" class="block mb-1  text-gray-900 dark:text-white">Civil Status</label>
                         <select id="civilStatus" name="civilStatus" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             <option selected disabled>Select Status</option>
@@ -345,10 +348,16 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
 
                         </select>
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-1 sm:col-span-1">
                         <label for="employer" class="block mb-1  text-gray-900 dark:text-white">Employer</label>
                         <input type="text" name="employer" value="<?php echo $employer; ?>" id="employer" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                     </div>
+                    <div class="col-span-1 sm:col-span-1">
+                        <label for="employer" class="block mb-1  text-gray-900 dark:text-white">Building</label>
+                        <input type="text" name="building" value="" placeholder="1" id="building" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    </div>
+                    </div>
+              
                     <div class="col-span-2 sm:col-span-1">
                         <label for="department" class="block mb-1  text-gray-900 dark:text-white">Department</label>
                         <select id="department" name="department" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
@@ -498,7 +507,7 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
 
 
 <div id="editEmployee" tabindex="-1" aria-hidden="true" class="bg-[#615eae59] hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-md max-h-full">
+    <div class="relative p-4 w-full max-w-xl max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
@@ -552,7 +561,9 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
                         <label for="editaddress" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
                         <input type="text" name="editaddress" id="editaddress" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    
+                    <div class="gap-2 col-span-2 grid grid-cols-3 ">
+                    <div class="col-span-1 sm:col-span-1">
                         <label for="editcivilStatus" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Civil Status</label>
                         <select id="editcivilStatus" name="editcivilStatus" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             <option value="single">Single</option>
@@ -562,10 +573,16 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
                             <option value="widowed">Widowed</option>
                         </select>
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
+                    <div class="col-span-1 sm:col-span-1">
                         <label for="editemployer" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employer</label>
                         <input type="text" name="editemployer" id="editemployer" value="<?php echo $employer; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="" readonly>
                     </div>
+                    <div class="col-span-1 sm:col-span-1">
+                        <label for="editbuilding" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Building</label>
+                        <input type="text" name="editbuilding"  id="editbuilding" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    </div>
+                    </div>
+
                     <div class="col-span-2 sm:col-span-1">
                         <label for="editdepartment" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Department</label>
                         <select id="editdepartment" name="editdepartment" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
@@ -656,6 +673,8 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
         document.getElementById("editage").value = element.getAttribute("data-age");
         document.getElementById("editsex").value = element.getAttribute("data-sex");
         document.getElementById("editaddress").value = element.getAttribute("data-address");
+        document.getElementById("editbuilding").value = element.getAttribute("data-building");
+
         document.getElementById("editcivilStatus").value = element.getAttribute("data-civilstatus");
         document.getElementById("editemployer").value = element.getAttribute("data-employer");
         document.getElementById("editdepartment").value = element.getAttribute("data-department");
@@ -675,19 +694,19 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
         var rows = [];
 
         column1 = 'Id Number';
-        column2 = 'Name';
-        column3 = 'Email';
-        column4 = 'Birthday';
-        column5 = 'Age';
-        column6 = 'Sex';
-        column7 = 'Address';
-        column8 = 'Civil Status';
-        column9 = 'Employer';
-        column10 = 'Building';
-        column11 = 'Department';
-        column12 = 'Section';
-        column13 = 'Position';
-        column14 = 'Date Hired';
+            column2 = 'Name';
+            column3 = 'Email';
+            column4 = 'Birthday';
+            column5 = 'Age';
+            column6 = 'Sex';
+            column7 = 'Address';
+            column8 = 'Civil Status';
+            column9 = 'Employer';
+            column10 = 'Building';
+            column11 = 'Department';
+            column12 = 'Section';
+            column13 = 'Position';
+            column14 = 'Date Hired';
 
         rows.push(
             [

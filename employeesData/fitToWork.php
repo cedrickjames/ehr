@@ -85,7 +85,7 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $ftwTime = $userRow['time'];
 
 }
-
+$ftwTime = isset($ftwTime) && !empty($ftwTime) ? $ftwTime : date('h:i A');
 if($employer=='GPI'){
   $sqluserhr = "SELECT * FROM `users` WHERE `type` = 'hr'";
   $coorHR = "HR";
@@ -317,14 +317,7 @@ if (isset($_POST['addFTW'])) {
                 <td>ID Number:</td>
                 <td>&nbsp; &nbsp;'.$idNumber.'</td>
             </tr>
-            <tr>
-                <td>Reason:</td>
-                <td>&nbsp;&nbsp;'. $ftwUnfitReason .'</td>
-            </tr>
-            <tr>
-                <td>Day/s of Rest:</td>
-                <td>&nbsp;&nbsp;'. $ftwDaysOfRest .'</td>
-            </tr>
+        
             <tr>
                 <td>Date of Absence:</td>
                 <td>&nbsp;&nbsp;' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</td>
@@ -351,6 +344,14 @@ if (isset($_POST['addFTW'])) {
             Date and Time of Filing :</td>
             <td>&nbsp;&nbsp;'.$ftwTimeEmail.' '. $ftwTime .'</td>
         </tr>
+            <tr>
+                <td>Reason For Sending Home:</td>
+                <td>&nbsp;&nbsp;'. $ftwUnfitReason .'</td>
+            </tr>
+            <tr>
+                <td>Day/s of Rest:</td>
+                <td>&nbsp;&nbsp;'. $ftwDaysOfRest .'</td>
+            </tr>
               
         </table>
       

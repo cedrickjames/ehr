@@ -40,6 +40,8 @@ if(!isset($_SESSION['connected'])){
 </div>
 
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="../node_modules/xlsx/dist/xlsx.full.min.js"></script>
+
 
 <script type="text/javascript" src="../node_modules/DataTables/datatables.min.js"></script>
     <script type="text/javascript" src="../node_modules/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js"></script>
@@ -63,6 +65,144 @@ $("#sidepms1").removeClass("bg-gray-200");
 $(".preempIcon").attr("fill", "#FFFFFF"); 
 $(".homeIcon").attr("fill", "#4d4d4d"); 
 $(".empIcon").attr("fill", "#4d4d4d"); 
+
+
+ 
+document.getElementById('proceedImportButton').addEventListener('click', () => {
+  const fileInput = document.getElementById('file_input');
+  const file = fileInput.files[0];
+
+  if (!file) {
+    alert("Please select a file to upload.");
+    return;
+}
+const reader = new FileReader();
+
+reader.onload = (event) => {
+    const data = new Uint8Array(event.target.result);
+    const workbook = XLSX.read(data, { type: 'array' });
+
+    // Assuming the first sheet contains the data
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+
+    // Convert sheet data to JSON
+    const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+    const departments = jsonData.slice(1).map(row => row[9]);
+    const uniqueDepartments = [...new Set(departments)];
+console.log(uniqueDepartments);
+document.getElementById("departmentFormat1").value=uniqueDepartments;
+
+
+
+    const sex = jsonData.slice(1).map(row => row[4]);
+    const uniqueSex = [...new Set(sex)];
+    document.getElementById("sexFormat1").value=uniqueSex;
+    const civil = jsonData.slice(1).map(row => row[6]);
+    const uniquecivil = [...new Set(civil)];
+    document.getElementById("civilFormat1").value=uniquecivil;
+    // Display or process the data
+
+
+                        var increment = 1;
+
+    uniqueDepartments.forEach(department => {
+     
+    $('#departmentDiv').append(
+  '<div class="flex justify-center border border-gray-300">'+department+'</div>' +   `<select id="department`+increment+`" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <option selected disabled>Select Department</option>
+                            <?php
+                          
+                            $sql = "SELECT * FROM `department` ORDER BY `department` ASC;";
+                            $result = mysqli_query($con, $sql);
+                            while ($row = mysqli_fetch_assoc($result)) {
+
+                            ?>
+                            <option value="<?php echo $row['department']; ?> "><?php echo $row['department']; ?> </option>
+                            <?php }?>
+
+                        </select>`
+);
+increment++;
+
+    })
+
+    var incrementSex = 1;
+    uniqueSex.forEach(sex => {
+    $('#sexDiv').append(
+  '<div class="flex justify-center border border-gray-300">'+sex+'</div>' + `<select  id="sex`+incrementSex+`" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <option selected disabled>Select Sex</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>`
+);
+incrementSex++;
+    })
+    var incrementCivil = 1;
+    uniquecivil.forEach(civil => {
+    $('#civilDiv').append(
+  '<div class="flex justify-center border border-gray-300">'+civil+'</div>' +   `<select id="civil`+incrementCivil+`" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full px-2.5 py-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <option selected disabled>Select Status</option>
+                            <option value="single">Single</option>
+                            <option value="married">Married</option>
+                            <option value="divorced">Divorced</option>
+                            <option value="annulled">Annulled</option>
+                            <option value="widowed">Widowed</option>
+
+                        </select>`
+);
+incrementCivil++;
+
+    })
+
+
+    document.getElementById("proceedButton").addEventListener("click", function() {
+      $("#addNewEmployeesImport").removeClass("hidden");
+      $("#proceedImportButton").addClass("hidden");
+
+      var uniqueDepartmentsArray = []; 
+      var uniqueSexArray = []; 
+      var uniqueCivilrray = []; 
+
+      // console.log("Number of unique departments:", uniqueDepartments.length);
+      for(var i=1; i<=uniqueDepartments.length; i++){
+        var dept = "department"+i;
+        // console.log(document.getElementById(dept).value);
+        const deptValues = document.getElementById(dept).value;
+        uniqueDepartmentsArray.push(deptValues);
+        // console.log(deptValues); 
+      }
+      for(var i=1; i<=uniqueSex.length; i++){
+        var sex = "sex"+i;
+        console.log(document.getElementById(sex).value);
+        const sexValues = document.getElementById(sex).value;
+        uniqueSexArray.push(sexValues);
+        // console.log(sexValues); 
+      }
+      for(var i=1; i<=uniquecivil.length; i++){
+        var civil = "civil"+i;
+        console.log(document.getElementById(civil).value);
+        const civilValues = document.getElementById(civil).value;
+        uniqueCivilrray.push(civilValues);
+        // console.log(civilValues); 
+      }
+      console.log(uniqueDepartmentsArray); 
+document.getElementById("departmentFormat2").value=uniqueDepartmentsArray;
+document.getElementById("sexFormat2").value=uniqueSexArray;
+document.getElementById("civilFormat2").value=uniqueCivilrray;
+
+
+
+
+    });
+
+
+    // document.getElementById('output').innerText = JSON.stringify(jsonData, null, 2);
+};
+
+reader.readAsArrayBuffer(file);
+});
+
 
 
 $(".js-employees").select2({

@@ -331,14 +331,7 @@ if (isset($_POST['updateFTW'])) {
                 <td>ID Number:</td>
                 <td>&nbsp; &nbsp;'.$idNumber.'</td>
             </tr>
-            <tr>
-                <td>Reason:</td>
-                <td>&nbsp;&nbsp;'. $ftwUnfitReason .'</td>
-            </tr>
-            <tr>
-                <td>Day/s of Rest:</td>
-                <td>&nbsp;&nbsp;'. $ftwDaysOfRest .'</td>
-            </tr>
+     
             <tr>
                 <td>Date of Absence:</td>
                 <td>&nbsp;&nbsp;' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</td>
@@ -365,6 +358,14 @@ if (isset($_POST['updateFTW'])) {
             Date and Time of Filing :</td>
             <td>&nbsp;&nbsp;'.$ftwTimeEmail.' '. $ftwTime .'</td>
         </tr>
+               <tr>
+                <td>Reason For Sending Home::</td>
+                <td>&nbsp;&nbsp;'. $ftwUnfitReason .'</td>
+            </tr>
+            <tr>
+                <td>Day/s of Rest:</td>
+                <td>&nbsp;&nbsp;'. $ftwDaysOfRest .'</td>
+            </tr>
               
         </table>
       
