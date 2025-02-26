@@ -107,7 +107,7 @@ if (isset($_POST['submitNewPassword'])) {
         </div>
         <ul class="py-2" aria-labelledby="user-menu-button">
           <li>
-            <a href="../que" target="_blank" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Queing</a>
+            <a href="../que" target="_blank" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Queuing</a>
           </li>
           <li>
             <a href="../users"  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">User Management</a>

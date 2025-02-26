@@ -109,7 +109,7 @@ if($num_rowsQue ==0){
 
             </div>
 
-        <h1 class="text-[#193F9F] text-xl font-bold text-center mb-2 uppercase ">Please Tap your ID Card!</h1>
+        <h1 class="text-[#193F9F] text-xl font-bold text-center mb-2 uppercase ">Please enter the employee's ID Number!</h1>
         <!-- <h1 class="text-gray-400 text-xl font-bold text-center mb-10">Welcome to Helpdesk System</h1> -->
 
           <!-- password input -->

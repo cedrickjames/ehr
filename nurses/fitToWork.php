@@ -100,6 +100,8 @@ $userID = $_SESSION['userID'];
   <script type="text/javascript" src="index.js"></script>
   <script>
 
+
+
 <?php
  if ($idNumber != "not found") {
 ?>
@@ -469,6 +471,19 @@ const $targetPromptModal = document.getElementById('askFirst');
 
     });
 
+    $("#proceedButtonUpdate").click(function() {
+
+      fitToWorkModal.toggle();
+      var immediateHead = document.getElementById('immediateHead');
+immediateHead.removeAttribute('required');
+
+var immediateEmail = document.getElementById('immediateEmail');
+immediateEmail.removeAttribute('required');
+
+$('#immediateHeadSection').addClass("hidden")
+
+});
+
 
     
 const $targetFitToworkModal = document.getElementById('fitToWorkModal');
@@ -494,6 +509,8 @@ const $targetFitToworkModal = document.getElementById('fitToWorkModal');
 
 
     });
+
+    // $("#ftwMeds").select2("readonly", true);
 
   //   const form = document.getElementById('myForm');
   //   const loading = document.getElementById('loading-message');
