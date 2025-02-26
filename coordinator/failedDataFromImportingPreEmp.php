@@ -18,9 +18,8 @@ $output = fopen('php://output', 'w');
 
 
 fputcsv($output, [
-    'Date Received', 'Date Performed', 'Id Number', 'IMC','OEH', 'PE', 'CBC', 'U/A', 'FA', 'CXR', 'VA', 'DEN', 'DT', 'PT', 'Other Test', 'Follow Up Status', 'Status', 'Attendee', 'Compliance Date', 'FMC'
+    'Name','Email','Birthday','Age','Sex','Address','Civil Status','Employer','Building','Department','Section','Position','Date Hired','Date Received', 'Date Performed','IMC','OEH', 'PE', 'CBC', 'U/A', 'FA', 'CXR', 'VA', 'DEN', 'DT', 'PT', 'Other Test', 'Follow Up Status', 'Status', 'Attendee', 'Compliance Date', 'FMC'
 ]);
-
 // Write the failed data rows to the CSV
 if (!empty($failedData)) {
     foreach ($failedData as $row) {

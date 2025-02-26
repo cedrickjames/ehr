@@ -100,7 +100,17 @@ $userID = $_SESSION['userID'];
   <script type="text/javascript" src="index.js"></script>
   <script>
 
+$("#fitToWorkSide").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
+  $("#sidehistory").removeClass("bg-gray-200");
+  $("#sideMyRequest").removeClass("bg-gray-200");
+  $("#sidepms").removeClass("bg-gray-200");
 
+  $("#fitToWorkSide1").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
+  $("#sidehistory1").removeClass("bg-gray-200");
+  $("#sideMyRequest1").removeClass("bg-gray-200");
+  $("#sidepms1").removeClass("bg-gray-200");
+  $(".ftwIcon").attr("fill", "#FFFFFF");
+  $(".homeIcon").attr("fill", "#4d4d4d");
 
 <?php
  if ($idNumber != "not found") {

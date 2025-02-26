@@ -67,9 +67,9 @@ if (isset($_POST['login'])) {
         } else if ($level == 'head') {
           header("location:depthead");
         } else if ($level == 'hr') {
-          header("location:hr");
+          header("location:hr/employees.php?employer=GPI");
         }  else if ($level == 'coordinator') {
-          header("location:coordinator");
+          header("location:coordinator/employees.php?employer=".$userRow['company']);
         }else if ($level == 'doctor') {
           header("location:doctor");
         }

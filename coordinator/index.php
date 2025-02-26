@@ -62,6 +62,8 @@ $("#sidepms1").removeClass("bg-gray-200");
 $(".homeIcon").attr("fill", "#FFFFFF"); 
 // $(".homeIcon").attr("fill", "#4d4d4d"); 
 
+
+
 </script>
 </body>
 </html>
