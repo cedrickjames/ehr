@@ -196,7 +196,7 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
         <div class=" p-4 rounded-lg  bg-gray-50 " id="headApproval" role="tabpanel" aria-labelledby="profile-tab">
             <form action="index.php" method="post">
                 <section class="mt-2 2xl:mt-10 overflow-auto relative">
-                    <table id="queTable" class="display text-[9px] 2xl:text-sm  " style="width:100%;">
+                    <table id="employeeTable" class="display text-[9px] 2xl:text-sm  " style="width:100%;">
                         <thead>
                             <tr>
                                 <th>No.</th>
@@ -210,7 +210,7 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
                         <tbody>
                             <?php
                             $queNo = 1;
-                            $sql = "SELECT * FROM `employeespersonalinfo` WHERE `employer` = '$employer' ORDER BY `Name` ASC; 
+                            $sql = "SELECT * FROM `employeespersonalinfo` WHERE `employer` = '$employer' ORDER BY `id` DESC; 
                     ";
                             $result = mysqli_query($con, $sql);
                             while ($row = mysqli_fetch_assoc($result)) {

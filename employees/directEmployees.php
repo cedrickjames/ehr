@@ -207,6 +207,8 @@ if (isset($_POST['addNewEmployeesImport'])) {
 
                                 <th>Employer</th>
                                 <th>Action</th>
+                                <th>Status</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -223,7 +225,7 @@ if (isset($_POST['addNewEmployeesImport'])) {
                                     <td> <?php echo $row['idNumber']; ?> </td>
 
                                     <td><?php echo $row['employer']; ?> </td>
-                                    <td>
+                                    <td class="flex justify-center">
                                         <div class="content-center flex flex-wrap justify-center gap-2">
                                             <input type="text" class="hidden" name="rfid<?php echo $queNo; ?>" value="<?php echo $row['idNumber']; ?>">
                                             <button id="dropdownMenuIconButton<?php echo $queNo; ?>" data-dropdown-toggle="dropdownDots<?php echo $queNo; ?>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900  rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 bg-white dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
@@ -248,7 +250,7 @@ if (isset($_POST['addNewEmployeesImport'])) {
                                                     <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dental Consultation</a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medicine Dispence</a>
+                                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medicine Dispense</a>
                                                 </li>
                                                 <li>
                                                     <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Pregnancy Notification</a>
@@ -260,10 +262,18 @@ if (isset($_POST['addNewEmployeesImport'])) {
                                                 <li>
                                                 <a href="../nurses/vaccination.php?rf=<?php echo $row['idNumber'] ;?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Vaccination</a>
                                             </li>
+                                         
                                             </ul>
 
                                         </div>
+                                        <?php if($row['activeStatus']){
+                      ?> <button type="button" onclick="activateDeactivate(this)" data-activate="0" data-id="<?php echo $row['id'];?>" data-name="<?php echo $row['Name'];?>" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Deactivate</button> <?php
+                    }else{
+                      ?>
+                      <button type="button" onclick="activateDeactivate(this)" data-activate="1" data-id="<?php echo $row['id'];?>" data-name="<?php echo $row['Name'];?>" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Activate</button>  <?php
+                    } ?>
                                     </td>
+                                    <td><?php if($row['activeStatus'] == 1){echo "Active";} else{ echo "Separated";};?></td>
 
                                 </tr> <?php
 
@@ -282,6 +292,38 @@ if (isset($_POST['addNewEmployeesImport'])) {
 
 
 
+
+
+
+<div id="activateDeactivate" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+            <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="activateDeactivate">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+            <div class="p-4 md:p-5 text-center">
+                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
+                <form action="" method="POST">
+                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to <span id="activateDeactivateText"> </span> <span id="nameofUser" class="font-bold"> </span>?</h3>
+                <input type="text" id="idOfUser" name="idOfUser" class="hidden">
+                <button  type="submit" name="deactivateUser" id="deactivateUser" class="hidden text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                    Yes, I'm sure
+                </button>
+                <button  type="submit" name="activateUser" id="activateUser" class="hidden text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                    Yes, I'm sure
+                </button>
+                <button data-modal-hide="activateDeactivate" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No, cancel</button>
+                </form>
+              
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <div id="addDirectEmployees" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">

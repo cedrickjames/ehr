@@ -258,8 +258,8 @@ if (isset($_POST['updateFTW'])) {
   }
 
   
-  $immediateEmail = $_POST['immediateEmail'];
-  $immediateHead = $_POST['immediateHead'];
+  // $immediateEmail = $_POST['immediateEmail'];
+  // $immediateHead = $_POST['immediateHead'];
   
 
 
@@ -317,179 +317,179 @@ if (isset($_POST['updateFTW'])) {
     $statusColorFiling = 'red';
   }
 
-    if($ftwRemarks == "Unfit to work"){
-      $subject = 'Employee Fit-to-work Status';
-      $message = '<div style="width: 1000px; font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 3px solid red; border-radius: 8px; ">
+  //   if($ftwRemarks == "Unfit to work"){
+  //     $subject = 'Employee Fit-to-work Status';
+  //     $message = '<div style="width: 1000px; font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 3px solid red; border-radius: 8px; ">
        
-      <p>Hi <strong>' . $immediateHead . '</strong> and <strong>'.$coorHR.'</strong>,</p>
-      <p>This to inform you that Ms./Mr. <span style="font-weight: bolder">' . $name . ' </span> had visited the clinic for fit-to-work confirmation and was assessed to be <span style="color: red; font-weight: bolder">&quot;UNFIT TO WORK &quot;.</span></p>
+  //     <p>Hi <strong>' . $immediateHead . '</strong> and <strong>'.$coorHR.'</strong>,</p>
+  //     <p>This to inform you that Ms./Mr. <span style="font-weight: bolder">' . $name . ' </span> had visited the clinic for fit-to-work confirmation and was assessed to be <span style="color: red; font-weight: bolder">&quot;UNFIT TO WORK &quot;.</span></p>
       
             
-           <table style=" border-spacing: 10px;">
+  //          <table style=" border-spacing: 10px;">
             
-            <tr>
-                <td>ID Number:</td>
-                <td>&nbsp; &nbsp;'.$idNumber.'</td>
-            </tr>
+  //           <tr>
+  //               <td>ID Number:</td>
+  //               <td>&nbsp; &nbsp;'.$idNumber.'</td>
+  //           </tr>
      
-            <tr>
-                <td>Date of Absence:</td>
-                <td>&nbsp;&nbsp;' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</td>
-            </tr>
-            <tr>
-                <td>No. of days absent:</td>
-                <td>&nbsp;&nbsp;' . $ftwDays . '</td>
-            </tr>
-            <tr>
-                <td> Medical Certificate:</td>
-                 <td style="color: '.$statusColorMedCert.'">&nbsp;&nbsp;'. $isMedcertRequired .'</td>
-            </tr>
-            <tr>
-                <td>Reason of Absence:</td>
-                <td> &nbsp;&nbsp;'. $ftwAbsenceReason .'</td>
-            </tr>
-             <tr>
-            <td>
-            Filing Status:</td>
-            <td style="color: '.$statusColorFiling.'">&nbsp;&nbsp;'. $timeOfFiling .'</td>
-           </tr>
-             <tr>
-            <td>
-            Date and Time of Filing :</td>
-            <td>&nbsp;&nbsp;'.$ftwTimeEmail.' '. $ftwTime .'</td>
-        </tr>
-               <tr>
-                <td>Reason For Sending Home::</td>
-                <td>&nbsp;&nbsp;'. $ftwUnfitReason .'</td>
-            </tr>
-            <tr>
-                <td>Day/s of Rest:</td>
-                <td>&nbsp;&nbsp;'. $ftwDaysOfRest .'</td>
-            </tr>
+  //           <tr>
+  //               <td>Date of Absence:</td>
+  //               <td>&nbsp;&nbsp;' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</td>
+  //           </tr>
+  //           <tr>
+  //               <td>No. of days absent:</td>
+  //               <td>&nbsp;&nbsp;' . $ftwDays . '</td>
+  //           </tr>
+  //           <tr>
+  //               <td> Medical Certificate:</td>
+  //                <td style="color: '.$statusColorMedCert.'">&nbsp;&nbsp;'. $isMedcertRequired .'</td>
+  //           </tr>
+  //           <tr>
+  //               <td>Reason of Absence:</td>
+  //               <td> &nbsp;&nbsp;'. $ftwAbsenceReason .'</td>
+  //           </tr>
+  //            <tr>
+  //           <td>
+  //           Filing Status:</td>
+  //           <td style="color: '.$statusColorFiling.'">&nbsp;&nbsp;'. $timeOfFiling .'</td>
+  //          </tr>
+  //            <tr>
+  //           <td>
+  //           Date and Time of Filing :</td>
+  //           <td>&nbsp;&nbsp;'.$ftwTimeEmail.' '. $ftwTime .'</td>
+  //       </tr>
+  //              <tr>
+  //               <td>Reason For Sending Home::</td>
+  //               <td>&nbsp;&nbsp;'. $ftwUnfitReason .'</td>
+  //           </tr>
+  //           <tr>
+  //               <td>Day/s of Rest:</td>
+  //               <td>&nbsp;&nbsp;'. $ftwDaysOfRest .'</td>
+  //           </tr>
               
-        </table>
+  //       </table>
       
-      <p>Yours truly, </p>
+  //     <p>Yours truly, </p>
       
-      <p>OH Nurse / Clinic Staff</p>
+  //     <p>OH Nurse / Clinic Staff</p>
       
-            <p style="font-size: 12px; color: #0073e6;">
-                <em>This is a generated email. Please do not reply.</em>
-            </p>
+  //           <p style="font-size: 12px; color: #0073e6;">
+  //               <em>This is a generated email. Please do not reply.</em>
+  //           </p>
             
             
-        </div>';
+  //       </div>';
 
-    }
-    else{
-      $subject = 'Employee Fit-to-work Status';
-      $message = '<div style="width: 1000px; font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 3px solid green; border-radius: 8px; ">
+  //   }
+  //   else{
+  //     $subject = 'Employee Fit-to-work Status';
+  //     $message = '<div style="width: 1000px; font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 3px solid green; border-radius: 8px; ">
        
-  <p>Hi <strong>' . $immediateHead . '</strong> and <strong>'.$coorHR.'</strong>,</p>
-  <p>This to inform you that Ms./Mr. <span style="font-weight: bolder">' . $name . ' </span> had visited the clinic for fit-to-work confirmation and was assessed to be <span style="color: green; font-weight: bolder">&quot;FIT TO WORK &quot;.</span></p>
+  // <p>Hi <strong>' . $immediateHead . '</strong> and <strong>'.$coorHR.'</strong>,</p>
+  // <p>This to inform you that Ms./Mr. <span style="font-weight: bolder">' . $name . ' </span> had visited the clinic for fit-to-work confirmation and was assessed to be <span style="color: green; font-weight: bolder">&quot;FIT TO WORK &quot;.</span></p>
   
         
-       <table style=" border-spacing: 10px;">
+  //      <table style=" border-spacing: 10px;">
         
-        <tr>
-            <td>ID Number:</td>
-            <td>&nbsp; &nbsp;'.$idNumber.'</td>
-        </tr>
-        <tr>
-            <td>Date of Absence:</td>
-            <td>&nbsp;&nbsp;' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</td>
-        </tr>
-        <tr>
-            <td>No. of days absent:</td>
-            <td>&nbsp;&nbsp;' . $ftwDays . '</td>
-        </tr>
-        <tr>
-            <td>Reason of Absence:</td>
-            <td> &nbsp;&nbsp;'. $ftwAbsenceReason .'</td>
-        </tr>
-        <tr>
-            <td>
-            Medical Certificate:</td>
-            <td style="color: '.$statusColorMedCert.'">&nbsp;&nbsp;'. $isMedcertRequired .'</td>
-        </tr>
-        <tr>
-            <td>
-            Filing Status:</td>
-            <td style="color: '.$statusColorFiling.'">&nbsp;&nbsp;'. $timeOfFiling .'</td>
-        </tr>
-         <tr>
-            <td>
-            Date and Time of Filing :</td>
-            <td>&nbsp;&nbsp;'.$ftwTimeEmail.' '. $ftwTime .'</td>
-        </tr>
+  //       <tr>
+  //           <td>ID Number:</td>
+  //           <td>&nbsp; &nbsp;'.$idNumber.'</td>
+  //       </tr>
+  //       <tr>
+  //           <td>Date of Absence:</td>
+  //           <td>&nbsp;&nbsp;' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</td>
+  //       </tr>
+  //       <tr>
+  //           <td>No. of days absent:</td>
+  //           <td>&nbsp;&nbsp;' . $ftwDays . '</td>
+  //       </tr>
+  //       <tr>
+  //           <td>Reason of Absence:</td>
+  //           <td> &nbsp;&nbsp;'. $ftwAbsenceReason .'</td>
+  //       </tr>
+  //       <tr>
+  //           <td>
+  //           Medical Certificate:</td>
+  //           <td style="color: '.$statusColorMedCert.'">&nbsp;&nbsp;'. $isMedcertRequired .'</td>
+  //       </tr>
+  //       <tr>
+  //           <td>
+  //           Filing Status:</td>
+  //           <td style="color: '.$statusColorFiling.'">&nbsp;&nbsp;'. $timeOfFiling .'</td>
+  //       </tr>
+  //        <tr>
+  //           <td>
+  //           Date and Time of Filing :</td>
+  //           <td>&nbsp;&nbsp;'.$ftwTimeEmail.' '. $ftwTime .'</td>
+  //       </tr>
          
-          <tr>
-            <td>Remarks:</td>
-            <td>&nbsp;&nbsp;'. $ftwOthersRemarks .'</td>
-        </tr>
+  //         <tr>
+  //           <td>Remarks:</td>
+  //           <td>&nbsp;&nbsp;'. $ftwOthersRemarks .'</td>
+  //       </tr>
         
-    </table>
+  //   </table>
   
-  <p>Yours truly, </p>
+  // <p>Yours truly, </p>
   
-  <p>OH Nurse / Clinic Staff</p>
+  // <p>OH Nurse / Clinic Staff</p>
   
-        <p style="font-size: 12px; color: #0073e6;">
-            <em>This is a generated email. Please do not reply.</em>
-        </p>
+  //       <p style="font-size: 12px; color: #0073e6;">
+  //           <em>This is a generated email. Please do not reply.</em>
+  //       </p>
         
         
-    </div>';
+  //   </div>';
   
-    }
-   
+  //   }
+    echo "<script>alert('Record Updated') </script>";
 
     require '../vendor/autoload.php';
 
-    $mail = new PHPMailer(true);
-    //  email the admin               
-    try {
-      //Server settings
-      $mail->isSMTP();                                      // Set mailer to use SMTP
-      $mail->Host = 'mail.glorylocal.com.ph';                       // Specify main and backup SMTP servers
-      $mail->SMTPAuth = true;                               // Enable SMTP authentication
-      $mail->Username = $account;     // Your Email/ Server Email
-      $mail->Password = $accountpass;                     // Your Password
-      $mail->SMTPOptions = array(
-        'ssl' => array(
-          'verify_peer' => false,
-          'verify_peer_name' => false,
-          'allow_self_signed' => true
-        )
-      );
-      $mail->SMTPSecure = 'none';
-      $mail->Port = 465;
+    // $mail = new PHPMailer(true);
+    // //  email the admin               
+    // try {
+    //   //Server settings
+    //   $mail->isSMTP();                                      // Set mailer to use SMTP
+    //   $mail->Host = 'mail.glorylocal.com.ph';                       // Specify main and backup SMTP servers
+    //   $mail->SMTPAuth = true;                               // Enable SMTP authentication
+    //   $mail->Username = $account;     // Your Email/ Server Email
+    //   $mail->Password = $accountpass;                     // Your Password
+    //   $mail->SMTPOptions = array(
+    //     'ssl' => array(
+    //       'verify_peer' => false,
+    //       'verify_peer_name' => false,
+    //       'allow_self_signed' => true
+    //     )
+    //   );
+    //   $mail->SMTPSecure = 'none';
+    //   $mail->Port = 465;
 
-      //Send Email
-      // $mail->setFrom('Helpdesk'); //eto ang mag front  notificationsys01@gmail.com
+    //   //Send Email
+    //   // $mail->setFrom('Helpdesk'); //eto ang mag front  notificationsys01@gmail.com
 
-      //Recipients
-      $mail->setFrom('healthbenefits@glorylocal.com.ph', 'Health Benefits');
-      $mail->addAddress($immediateEmail);
-      $mail->AddCC($nurse_email);
-      foreach ($hremail as $email) {
-        $mail->AddCC($email);
-    }
-      $mail->isHTML(true);
-      $mail->Subject = $subject;
-      $mail->Body    = $message;
-      $mail->send();
+    //   //Recipients
+    //   $mail->setFrom('healthbenefits@glorylocal.com.ph', 'Health Benefits');
+    //   $mail->addAddress($immediateEmail);
+    //   $mail->AddCC($nurse_email);
+    //   foreach ($hremail as $email) {
+    //     $mail->AddCC($email);
+    // }
+    //   $mail->isHTML(true);
+    //   $mail->Subject = $subject;
+    //   $mail->Body    = $message;
+    //   $mail->send();
 
-      $_SESSION['message'] = 'Message has been sent';
-      echo "<script>alert('Email Sent') </script>";
-      echo "<script> location.href='index.php'; </script>";
+    //   $_SESSION['message'] = 'Message has been sent';
+    //   echo "<script>alert('Email Sent') </script>";
+    //   echo "<script> location.href='index.php'; </script>";
 
 
-      // header("location: form.php");
-    } catch (Exception $e) {
-      $_SESSION['message'] = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
-      echo "<script>alert('Message could not be sent. Mailer Error.') </script>";
-    }
+    //   // header("location: form.php");
+    // } catch (Exception $e) {
+    //   $_SESSION['message'] = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+    //   echo "<script>alert('Message could not be sent. Mailer Error.') </script>";
+    // }
   }
   else{
     echo "<script>alert('There is an error with update. Please contact your developer and send this message! '$sql) </script>";
@@ -1255,10 +1255,10 @@ $status = 'doc';
 
       </div>
 
-      <div class=" gap-4  col-span-2">
+      <div class=" gap-4  col-span-2 hidden ">
         <label class="block my-auto  font-semibold text-gray-900 ">Immediate Head:</label>
 
-        <select id="immediateHead" required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" name="immediateHead" class="js-meds bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+        <select id="immediateHead"  oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" name="immediateHead" class="js-meds bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option selected disabled value="">Please select</option>
           <?php
           $sql1 = "Select * FROM `employeespersonalinfo` WHERE `level` = 'head'";
@@ -1274,10 +1274,10 @@ $status = 'doc';
         </select>
 
       </div>
-      <div class=" gap-4  col-span-2">
+      <div class=" gap-4  col-span-2 hidden">
         <label class="block my-auto  font-semibold text-gray-900 ">Email:</label>
 
-        <input type="text" required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" id="immediateEmail" name="immediateEmail" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        <input type="text"  oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" id="immediateEmail" name="immediateEmail" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
       </div>
 

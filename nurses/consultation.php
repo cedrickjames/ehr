@@ -107,6 +107,29 @@ function addSelectedValue(value, qty) {
   }
 
 
+  const $targetPromptModal = document.getElementById('askFirst');
+  const optionsPromptModal = {
+    placement: 'center-center',
+    backdrop: 'static',
+    backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
+    closable: true,
+    onHide: () => {
+    },
+    onShow: () => {
+
+    },
+    onToggle: () => {
+    }
+  };
+  const modalPrompt = new Modal($targetPromptModal, optionsPromptModal);
+
+  $("#proceedButton").click(function() {
+
+    modalPrompt.toggle();
+
+    });
+
+    
 
 
 

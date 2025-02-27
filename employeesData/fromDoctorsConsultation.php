@@ -96,6 +96,10 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $otherRemarks = $userRow['otherRemarks'];
   $finalDx = $userRow['finalDx'];
 
+  $briefMedicalHistory = $userRow['briefMedicalHistory'];
+  $physicalExams = $userRow['physicalExams'];
+
+
   $statusComplete = $userRow['statusComplete'];
   $withPendingLab = $userRow['withPendingLab'];
 
@@ -187,7 +191,8 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
     $ftwUnfitReason = $_POST['ftwUnfitReason'];
     $ftwOthersRemarks = $_POST['otherRemarks'];
 
-
+    $briefMedicalHistory = $_POST['briefMedicalHistory'];
+    $physicalExams = $_POST['physicalExam'];
 
 
 
@@ -204,7 +209,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
   $statusColorFiling='black';
 
 
-    $sql = "INSERT INTO `fittowork`( `approval`, `department`,`idNumber`,`nurseAssisting`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `isFitToWork`,`isMedcertRequired`,`daysOfRest`,`reasonOfUnfitToWork`,`remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`) VALUES ('head','$department','$idNumber','$nurseId','$cnsltnDate','$cnsltnTime','$cnsltnCategories','$cnsltnBuilding','$ftwCtnConfinement','$ftwCtnCategories', '$cnsltnMeds' , '$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason','$cnsltnDiagnosis','$cnsltnIntervention','$cnsltnClinicRestFrom','$cnsltnClinicRestTo','$cnsltnBloodChem','$cnsltnCbc','$cnsltnUrinalysis','$cnsltnFecalysis','$cnsltnXray','$cnsltnOthersLab','$cnsltnBp','$cnsltnTemp','$cnsltn02Sat','$cnsltnPr','$cnsltnRr','$remarksSelect2','$isMedcertRequired','$ftwDaysOfRest','$ftwUnfitReason','$remarksSelect2','$otherRemarks','$cnsltnCompleted','$cnsltnWithPendingLab')";
+    $sql = "INSERT INTO `fittowork`( `approval`, `department`,`idNumber`,`nurseAssisting`, `date`, `time`, `categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `isFitToWork`,`isMedcertRequired`,`daysOfRest`,`reasonOfUnfitToWork`,`remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`,`briefMedicalHistory`, `physicalExams`) VALUES ('head','$department','$idNumber','$nurseId','$cnsltnDate','$cnsltnTime','$cnsltnCategories','$cnsltnBuilding','$ftwCtnConfinement','$ftwCtnCategories', '$cnsltnMeds' , '$ftwCtnSLDateFrom','$ftwCtnSLDateTo','$ftwCtnDays','$ftwCtnAbsenceReason','$cnsltnDiagnosis','$cnsltnIntervention','$cnsltnClinicRestFrom','$cnsltnClinicRestTo','$cnsltnBloodChem','$cnsltnCbc','$cnsltnUrinalysis','$cnsltnFecalysis','$cnsltnXray','$cnsltnOthersLab','$cnsltnBp','$cnsltnTemp','$cnsltn02Sat','$cnsltnPr','$cnsltnRr','$remarksSelect2','$isMedcertRequired','$ftwDaysOfRest','$ftwUnfitReason','$remarksSelect2','$otherRemarks','$cnsltnCompleted','$cnsltnWithPendingLab','$briefMedicalHistory','$physicalExams')";
     $results = mysqli_query($con, $sql);
 
 
@@ -855,6 +860,16 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
         <h3 class=" my-auto  font-semibold text-gray-900 ">Nurse Notes: </h3>
         <input type="text" value="<?php echo $otherRemarks; ?>" name="otherRemarks" id="" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       </div>
+
+      <div class="col-span-4  gap-4">
+        <h3 class=" my-auto  font-semibold text-gray-900 ">Brief Medical History</h3>
+        <textarea  rows="3"  name="briefMedicalHistory" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="briefMedicalHistory"><?php echo $briefMedicalHistory; ?></textarea>
+      </div>
+      <div class="col-span-4  gap-4">
+        <h3 class=" my-auto  font-semibold text-gray-900 ">Physical Examination</h3>
+        <textarea  rows="3"  name="physicalExam" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="physicalExam"><?php echo $physicalExams; ?></textarea>
+      </div>
+     
       <div class="col-span-4  gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Final Dx: </h3>
         <input type="text" name="finalDx" value="<?php echo $finalDx; ?>" id="" class="  bg-gray-50 border border-gray-300 text-gray-900 w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
@@ -878,7 +893,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
         <ul class="col-span-2 items-center w-full text-[10px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  ">
           <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
             <div class="gap-2 flex items-center ps-3">
-              <input id="completeRadio" type="radio" name="cnsltnCompleted" value="Completed" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+              <input id="completeRadio" type="radio" name="cnsltnCompleted" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
               <label for="completeRadio" class="w-full py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">Completed</label>
               <div class="w-full flex gap-1">
               <input id="pendingRadio" type="radio" name="cnsltnCompleted" value="With Pending Lab" class=" my-auto w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">

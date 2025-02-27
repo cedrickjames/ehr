@@ -119,7 +119,7 @@ if (isset($_POST['hireEmployee'])) {
             $resultInfo1 = mysqli_query($con, $editEmployeeGpi);
             if ($resultInfo1) {
                 echo "<script>alert('Record was updated and added successfully in employees record!') </script>";
-                echo "<script> location.href='index.php?employer=$employer'; </script>";
+                echo "<script> location.href='preEmp.php?employer=$employer'; </script>";
             }
             
         }
@@ -1025,16 +1025,9 @@ ORDER BY p.id ASC;
                     <label for="employer" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employer</label>
 
                         <select id="employer" name="employer" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="GPI">GPI</option>
-                        <option value="All">All</option>
-                        <option value="Maxim">Maxim</option>
-                        <option value="Powerlane">Powerlane</option>
-                        <option value="Nippi">Nippi</option>
-                        <option value="Mangreat">Mangreat</option>
-                        <option value="Otrelo">Otrelo</option>
-                        <option value="Canteen">Canteen</option>
-                        <option value="Alarm">Alarm</option>
-                                                                                       
+  
+                        <option value="<?php echo $employer; ?>"><?php echo $employer; ?></option>
+                   
                         </select>
                         <label for="month" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Month</label>
 

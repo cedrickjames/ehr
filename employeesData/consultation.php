@@ -94,6 +94,23 @@ if (isset($_GET['cnsltn'])) {
     $ftwRr = $row['rr'];
     $ftwRemarks = $row['remarks'];
     $ftwOthersRemarks = $row['otherRemarks'];
+
+
+    $medicalLab = $row['medicalLab'];
+    $medicationDispense = $row['medicationDispense'];
+    $briefMedicalHistory = $row['briefMedicalHistory'];
+    $physicalExams = $row['physicalExams'];
+    $finalDx = $row['finalDx'];
+
+    
+
+
+
+
+
+
+
+    //babalikan ko to
     $ftwCompleted = $row['statusComplete'];
     $ftwWithPendingLab = $row['withPendingLab'];
     $ftwMeds = $row['meds'];
@@ -185,7 +202,7 @@ $status = 'doc';
   }
 
   // echo $smoking;
-  $sql = "INSERT INTO `consultation`(`idNumber`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`medsQty`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `otherRemarks`,`statusComplete`,`withPendingLab`,`medicalLab`) VALUES ('$idNumber','$status','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds','$cnsltnMedsQuantity', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnOthersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab','$cnsltnWithPendingLab')";
+  $sql = "INSERT INTO `consultation`(`idNumber`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`medsQty`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `otherRemarks`,`statusComplete`,`withPendingLab`,`medicalLab`) VALUES ('$idNumber','done','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds','$cnsltnMedsQuantity', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnOthersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab','$cnsltnWithPendingLab')";
   $results = mysqli_query($con, $sql);
 
   if ($results) {
@@ -193,6 +210,85 @@ $status = 'doc';
     // echo "<script> location.href='index.php'; </script>";
   }
 }
+
+
+
+if (isset($_POST['proceedToConsultation'])) {
+
+  $cnsltnDate = $_POST['cnsltnDate'];
+  $cnsltnTime = $_POST['cnsltnTime'];
+  $cnsltnType = $_POST['cnsltnType'];
+
+  $ftwCtnCategories = $_POST['ftwCtnCategories'];
+  $ftwCtnConfinement = $_POST['ftwCtnConfinement'];
+  $ftwCtnSLDateFrom = $_POST['ftwCtnSLDateFrom'];
+  $ftwCtnSLDateTo = $_POST['ftwCtnSLDateTo'];
+  $ftwCtnDays = $_POST['ftwCtnDays'];
+  $ftwCtnAbsenceReason = $_POST['ftwCtnAbsenceReason'];
+  $ftwCtnRemarks = $_POST['ftwCtnRemarks'];
+
+
+
+  $cnsltnCategories = $_POST['cnsltnCategories'];
+  $cnsltnBuilding = $_POST['cnsltnBuilding'];
+  $cnsltnChiefComplaint = $_POST['cnsltnChiefComplaint'];
+  $cnsltnDiagnosis = $_POST['cnsltnDiagnosis'];
+  $cnsltnIntervention = $_POST['cnsltnIntervention'];
+  $cnsltnClinicRestFrom = $_POST['cnsltnClinicRestFrom'];
+  $cnsltnClinicRestTo = $_POST['cnsltnClinicRestTo'];
+  if (isset($_POST['cnsltnMeds']) && !empty($_POST['cnsltnMeds'])) {
+    $cnsltnMeds = $_POST['cnsltnMeds'];
+    $cnsltnMeds = implode(', ', $cnsltnMeds);
+
+  }
+  else{
+
+  $cnsltnMeds = "";
+
+  }
+
+  $cnsltnMedsQuantity = $_POST['cnsltnMedsQuantity'];
+
+  $cnsltnBloodChem = $_POST['cnsltnBloodChem'];
+  $cnsltnCbc = $_POST['cnsltnCbc'];
+  $cnsltnUrinalysis = $_POST['cnsltnUrinalysis'];
+  $cnsltnFecalysis = $_POST['cnsltnFecalysis'];
+  $cnsltnXray = $_POST['cnsltnXray'];
+  $cnsltnOthersLab = $_POST['cnsltnOthersLab'];
+  $cnsltnBp = $_POST['cnsltnBp'];
+  $cnsltnTemp = $_POST['cnsltnTemp'];
+  $cnsltn02Sat = $_POST['cnsltn02Sat'];
+  $cnsltnPr = $_POST['cnsltnPr'];
+  $cnsltnRr = $_POST['cnsltnRr'];
+  // $cnsltnRemarks = $_POST['cnsltnRemarks'];
+  $cnsltnOthersRemarks = $_POST['cnsltnOthersRemarks'];
+  $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
+  $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
+
+  if($cnsltnCompleted == 1){
+$status = 'done';
+$cnsltnWithPendingLab='';
+  }
+  else{
+$status = 'doc';
+
+  }
+  if($cnsltnIntervention == "Dental Consultation" || $cnsltnIntervention == "Medication and Dental Consultation" || $cnsltnIntervention == "Dental Services (Oral Prophylaxis)" || $cnsltnIntervention == "Dental Services (Light Cure)" || $cnsltnIntervention == "Medication and Dental Services (Tooth Extraction)"){
+    $status = 'done';
+    // $cnsltnCompleted=1;
+  }
+
+  // echo $smoking;
+  $sql = "INSERT INTO `consultation`(`idNumber`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`medsQty`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `otherRemarks`,`statusComplete`,`withPendingLab`,`medicalLab`) VALUES ('$idNumber','doc','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds','$cnsltnMedsQuantity', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnOthersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab','$cnsltnWithPendingLab')";
+  $results = mysqli_query($con, $sql);
+
+  if ($results) {
+    echo "<script>alert('Successfull') </script>";
+    // echo "<script> location.href='index.php'; </script>";
+  }
+}
+
+
 if (isset($_POST['updateConsultation'])) {
 
   $cnsltnDate = $_POST['cnsltnDate'];
@@ -252,10 +348,21 @@ if (isset($_POST['updateConsultation'])) {
   $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
   $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
 
+if($cnsltnCompleted){
+  $cnsltnWithPendingLab = '';
+}
+
+
+
+
+
+
+
+
 
 
   // echo $smoking;
-  $sql = "UPDATE `consultation` SET `type`='$cnsltnType',`categories`='$cnsltnCategories',`building`='$cnsltnBuilding',`chiefComplaint`='$cnsltnChiefComplaint',`diagnosis`='$cnsltnDiagnosis',`intervention`='$cnsltnIntervention',`clinicRestFrom`='$cnsltnClinicRestFrom',`clinicRestTo`='$cnsltnClinicRestTo',`meds`='$cnsltnMeds',`medsQty`='$cnsltnMedsQuantity',`bloodChemistry`='$cnsltnBloodChem',`cbc`='$cnsltnCbc',`urinalysis`='$cnsltnUrinalysis',`fecalysis`='$cnsltnFecalysis',`xray`='$cnsltnXray',`others`='$cnsltnOthersLab',`bp`='$cnsltnBp',`temp`='$cnsltnTemp',`02sat`='$cnsltn02Sat',`pr`='$cnsltnPr',`rr`='$cnsltnRr',`medicalLab`='$cnstltnmedLab',`otherRemarks`='$cnsltnOthersRemarks',`statusComplete`='$cnsltnCompleted',`withPendingLab`='  $cnsltnWithPendingLab ' WHERE `id` = '$cnsltn'";
+  $sql = "UPDATE `consultation` SET `type`='$cnsltnType',`categories`='$cnsltnCategories',`building`='$cnsltnBuilding',`chiefComplaint`='$cnsltnChiefComplaint',`diagnosis`='$cnsltnDiagnosis',`intervention`='$cnsltnIntervention',`clinicRestFrom`='$cnsltnClinicRestFrom',`clinicRestTo`='$cnsltnClinicRestTo',`meds`='$cnsltnMeds',`medsQty`='$cnsltnMedsQuantity',`bloodChemistry`='$cnsltnBloodChem',`cbc`='$cnsltnCbc',`urinalysis`='$cnsltnUrinalysis',`fecalysis`='$cnsltnFecalysis',`xray`='$cnsltnXray',`others`='$cnsltnOthersLab',`bp`='$cnsltnBp',`temp`='$cnsltnTemp',`02sat`='$cnsltn02Sat',`pr`='$cnsltnPr',`rr`='$cnsltnRr',`medicalLab`='$cnstltnmedLab',`otherRemarks`='$cnsltnOthersRemarks',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$cnsltn'";
    
   
    $results = mysqli_query($con, $sql);
@@ -408,6 +515,29 @@ if (isset($_POST['updateConsultation'])) {
 
 
 
+        <div id="askFirst" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="askFirst">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+            <div class="p-4 md:p-5 text-center">
+                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
+                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Record or Proceed to consultation?</h3>
+              <div class="col-span-4 justify-center flex gap-2">
+              <button type="submit" id="addConsultation" name="addConsultation" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Record</button>
+              <button type="submit" name="proceedToConsultation" id="submitWithoutValidation" class="w-64 text-white bg-gradient-to-r from-[#9b0066]  to-[#ca9ac1] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300  shadow-lg shadow-pink-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Proceed to Consultation</button>
+              </div>
+                 
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -723,6 +853,38 @@ if (isset($_POST['updateConsultation'])) {
         <input type="text" value="<?php echo $ftwOthersRemarks; ?>" name="cnsltnOthersRemarks" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       </div>
 
+      <?php
+      if (isset($_GET['cnsltn'])) { ?>
+      
+      
+      <div id="forLab" class="col-span-4   gap-4">
+        <h3 class=" my-auto  font-semibold text-gray-900 ">For Medical Laboratory: </h3>
+        <input type="text" value="<?php echo $medicalLab; ?>" name="forLab" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      </div>
+
+      <div id="forMed" class="col-span-4   gap-4">
+        <h3 class=" my-auto  font-semibold text-gray-900 ">For Medication Dispense: </h3>
+        <input type="text" value="<?php echo $medicationDispense;?>" name="forMed" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      </div>
+
+
+      <div class="col-span-4  gap-4">
+        <h3 class=" my-auto  font-semibold text-gray-900 ">Brief Medical History</h3>
+        <textarea  rows="3"   name="briefMedicalHistory" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="briefMedicalHistory"><?php echo $briefMedicalHistory; ?></textarea>
+      </div>
+      <div class="col-span-4  gap-4">
+        <h3 class=" my-auto  font-semibold text-gray-900 ">Physical Examination</h3>
+        <textarea  rows="3"  name="physicalExam" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="physicalExam"><?php echo $physicalExams; ?></textarea>
+      </div>
+     
+      <div class="col-span-4  gap-4">
+        <h3 class=" my-auto  font-semibold text-gray-900 ">Final Dx: </h3>
+        <input type="text" name="finalDx" value="<?php echo $finalDx; ?>" id="" class="  bg-gray-50 border border-gray-300 text-gray-900 w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      </div>
+    <?php
+    }
+      ?>
+
       <div class=" col-span-4 ">
         <label class="block  my-auto font-semibold text-gray-900 ">Status: </label>
 
@@ -753,7 +915,7 @@ if (isset($_POST['updateConsultation'])) {
       <div class="col-span-4 justify-center flex">
       <?php
         if (!isset($_GET['cnsltn'])) { ?>
-            <button type="submit" name="addConsultation" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[10px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Proceed</button>
+            <button type="button" name="" id="proceedButton" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[10px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Proceed</button>
         <?php
         } else {
         ?>
@@ -768,6 +930,9 @@ if (isset($_POST['updateConsultation'])) {
     </div>
   </form>
 </div>
+
+
+
 
 
 <script>

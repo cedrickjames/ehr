@@ -15,7 +15,7 @@ if (isset($_POST['registerUser'])) {
   $email = $_POST['userEmail'];
   $userDepartment = $_POST['userDepartment'];
   $userType = $_POST['userType'];
-  $password = '12345'; // default password
+  // $password = '12345'; // default password
   // $password = password_hash($password, PASSWORD_DEFAULT);
   $password = password_hash($idnumber, PASSWORD_DEFAULT);
 
@@ -64,6 +64,7 @@ if(isset($_POST['activateUser'])){
 if (isset($_POST['updateUser'])) {
   $id = $_POST['sqlid'];
   $idnumber = $_POST['userEmployeeId'];
+  $password = password_hash($idnumber, PASSWORD_DEFAULT);
 
   $name = $_POST['userFullName'];
   $email = $_POST['userEmail'];
@@ -74,7 +75,7 @@ if (isset($_POST['updateUser'])) {
 
   //change default udername and password to employee id
 
-  $sql = "UPDATE `users` SET `idNumber`='$idnumber',`name`='$name',`type`='$userType',`department`='$userDepartment',`company`='$company',`email`='$email' WHERE `id` = '$id'";
+  $sql = "UPDATE `users` SET `idNumber`='$idnumber',`userName` ='$idnumber',`password`='$password',`name`='$name',`type`='$userType',`department`='$userDepartment',`company`='$company',`email`='$email' WHERE `id` = '$id'";
   $results = mysqli_query($con, $sql);
 
   if ($results) {
@@ -297,7 +298,7 @@ if (isset($_POST['updateUser'])) {
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                 </svg>
                 <form action="" method="POST">
-                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to <span id="activateDeactivate"> <span id="nameofUser" class="font-bold"> </span>?</h3>
+                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to <span id="activateDeactivateText"> </span> <span id="nameofUser" class="font-bold"> </span>?</h3>
                 <input type="text" id="idOfUser" name="idOfUser" class="hidden">
                 <button  type="submit" name="deactivateUser" id="deactivateUser" class="hidden text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                     Yes, I'm sure
@@ -369,13 +370,21 @@ const $targetAddUserModal = document.getElementById('registerModal');
     if(element.getAttribute("data-activate")== "1"){
       $("#deactivateUser").addClass("hidden");
       $("#activateUser").removeClass("hidden");
+
+      $('#activateDeactivateText').text("activate");
     }
     else{
       $("#activateUser").addClass("hidden");
       $("#deactivateUser").removeClass("hidden");
+
+      $('#activateDeactivateText').text("deactivate");
     }
   document.getElementById("idOfUser").value = element.getAttribute("data-id");
     $('#nameofUser').text(element.getAttribute("data-name"));
+
+
+
+
   modaldeactivate.toggle();
 }
   

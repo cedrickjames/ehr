@@ -75,7 +75,14 @@ if (isset($_POST['submitDoctorsConsultation'])) {
   $finalDx = $_POST['finalDx'];
   $timeOfFiling = $_POST['timeOfFiling'];
 
+  $briefMedicalHistory = $_POST['briefMedicalHistory'];
+  $physicalExam = $_POST['physicalExam'];
+
+
+
   
+
+
   if (isset($_POST['ftwRemarks']) && !empty($_POST['ftwRemarks'])) {
     $remarksSelect = $_POST['ftwRemarks']; //
   }else{
@@ -122,7 +129,7 @@ if (isset($_POST['submitDoctorsConsultation'])) {
   //   $sql = "UPDATE `consultation` SET `status` = 'nurse2', `remarks` = '$remarksSelect', `finalDx`='$finalDx' WHERE `id` = '$dcnsltn'";
   //   $results = mysqli_query($con, $sql);
   // }
-  $sql = "UPDATE `consultation` SET `status` = 'nurse2', `remarks` = '$remarksSelect', `finalDx`='$finalDx', `medicalLab` = '$medlab',`medicationDispense`='$forMed',`isFitToWork`='$ftwRemarks',`isMedcertRequired`='$isMedcertRequired',`timeOfFiling`='$timeOfFiling',`daysOfRest`='$ftwDaysOfRest',`reasonOfUnfitToWork`='$ftwUnfitReason',`ftwRemarks`='$ftwRemarks' WHERE `id` = '$dcnsltn'";
+  $sql = "UPDATE `consultation` SET `status` = 'nurse2', `remarks` = '$remarksSelect', `finalDx`='$finalDx', `medicalLab` = '$medlab',`medicationDispense`='$forMed',`isFitToWork`='$ftwRemarks',`isMedcertRequired`='$isMedcertRequired',`timeOfFiling`='$timeOfFiling',`daysOfRest`='$ftwDaysOfRest',`reasonOfUnfitToWork`='$ftwUnfitReason',`ftwRemarks`='$ftwRemarks', `briefMedicalHistory`='$briefMedicalHistory', `physicalExams`='$physicalExam' WHERE `id` = '$dcnsltn'";
   $results = mysqli_query($con, $sql);
   if ($results) {
     echo "<script>alert('Record Updated Successfuly!') </script>";
@@ -238,7 +245,7 @@ if (isset($_POST['submitDoctorsConsultation'])) {
 
       <div class="col-span-2">
         <h3 class=" my-auto w-full font-semibold text-gray-900 ">Chief Compliant: </h3>
-        <input type="text" value="<?php echo $chiefComplaint; ?>" id="" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
+        <input type="text" value="<?php echo $chiefComplaint; ?>" id="chiefCompliant" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
       </div>
       <!-- <div class="col-span-2">
             <h3 class=" my-auto  font-semibold text-gray-900 ">Diagnosis: </h3>
@@ -469,9 +476,19 @@ if (isset($_POST['submitDoctorsConsultation'])) {
         <h3 class=" my-auto  font-semibold text-gray-900 ">Nurse Notes: </h3>
         <input type="text" value="<?php echo $otherRemarks; ?>" id="" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
       </div>
+
+      <div class="col-span-4  gap-4">
+        <h3 class=" my-auto  font-semibold text-gray-900 ">Brief Medical History</h3>
+        <textarea  rows="3" name="briefMedicalHistory" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="briefMedicalHistory"></textarea>
+      </div>
+      <div class="col-span-4  gap-4">
+        <h3 class=" my-auto  font-semibold text-gray-900 ">Physical Examination</h3>
+        <textarea  rows="3" name="physicalExam" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="physicalExam"></textarea>
+      </div>
+
       <div class="col-span-4  gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Final Dx: </h3>
-        <input type="text" name="finalDx" id="" class="  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " required>
+        <input type="text" name="finalDx" id="finalDx" class="  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " required>
       </div>
       <div class="col-span-4 flex gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Medical Certificate: </h3>
@@ -479,7 +496,7 @@ if (isset($_POST['submitDoctorsConsultation'])) {
 <?php
 if($medcertID== NULL || $medcertID==''){
 ?>
-<button onclick="modalmedcert.toggle();" id="generateMedcert" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+<button onclick="openModalMedCert();" id="generateMedcert" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
           Generate
         </button>
 <?php
@@ -591,7 +608,16 @@ const $tagetmedcertModal = document.getElementById('medcert');
   };
   const modalmedcert = new Modal($tagetmedcertModal, optionsmedcertModal);
 
+function openModalMedCert(){
+  var chiefCompliant = document.getElementById("chiefCompliant").value;
+  document.getElementById("dueTo").value=chiefCompliant;
+  
+  var finalDx = document.getElementById("finalDx").value;
+  document.getElementById("diagnosis").value=finalDx;
 
+
+  modalmedcert.toggle();
+}
   
 
   
