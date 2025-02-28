@@ -78,6 +78,9 @@ if (isset($_POST['submitDoctorsConsultation'])) {
   $briefMedicalHistory = $_POST['briefMedicalHistory'];
   $physicalExam = $_POST['physicalExam'];
 
+  $management = $_POST['management'];
+
+
 
 
   
@@ -129,7 +132,7 @@ if (isset($_POST['submitDoctorsConsultation'])) {
   //   $sql = "UPDATE `consultation` SET `status` = 'nurse2', `remarks` = '$remarksSelect', `finalDx`='$finalDx' WHERE `id` = '$dcnsltn'";
   //   $results = mysqli_query($con, $sql);
   // }
-  $sql = "UPDATE `consultation` SET `status` = 'nurse2', `remarks` = '$remarksSelect', `finalDx`='$finalDx', `medicalLab` = '$medlab',`medicationDispense`='$forMed',`isFitToWork`='$ftwRemarks',`isMedcertRequired`='$isMedcertRequired',`timeOfFiling`='$timeOfFiling',`daysOfRest`='$ftwDaysOfRest',`reasonOfUnfitToWork`='$ftwUnfitReason',`ftwRemarks`='$ftwRemarks', `briefMedicalHistory`='$briefMedicalHistory', `physicalExams`='$physicalExam' WHERE `id` = '$dcnsltn'";
+  $sql = "UPDATE `consultation` SET `status` = 'nurse2', `remarks` = '$remarksSelect', `finalDx`='$finalDx', `medicalLab` = '$medlab',`medicationDispense`='$forMed',`isFitToWork`='$ftwRemarks',`isMedcertRequired`='$isMedcertRequired',`timeOfFiling`='$timeOfFiling',`daysOfRest`='$ftwDaysOfRest',`reasonOfUnfitToWork`='$ftwUnfitReason',`ftwRemarks`='$ftwRemarks', `briefMedicalHistory`='$briefMedicalHistory', `physicalExams`='$physicalExam',`docManagement`='$management' WHERE `id` = '$dcnsltn'";
   $results = mysqli_query($con, $sql);
   if ($results) {
     echo "<script>alert('Record Updated Successfuly!') </script>";
@@ -479,13 +482,16 @@ if (isset($_POST['submitDoctorsConsultation'])) {
 
       <div class="col-span-4  gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Brief Medical History</h3>
-        <textarea  rows="3" name="briefMedicalHistory" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="briefMedicalHistory"></textarea>
+        <textarea  rows="2" name="briefMedicalHistory" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="briefMedicalHistory"></textarea>
       </div>
       <div class="col-span-4  gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Physical Examination</h3>
-        <textarea  rows="3" name="physicalExam" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="physicalExam"></textarea>
+        <textarea  rows="2" name="physicalExam" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="physicalExam"></textarea>
       </div>
-
+      <div class="col-span-4  gap-4">
+        <h3 class=" my-auto  font-semibold text-gray-900 ">Management</h3>
+        <textarea  rows="3" name="management" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="physicalExam"></textarea>
+      </div>
       <div class="col-span-4  gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Final Dx: </h3>
         <input type="text" name="finalDx" id="finalDx" class="  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " required>

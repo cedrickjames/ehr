@@ -276,6 +276,7 @@ if (isset($_POST['addFTW'])) {
     $ftwWithPendingLab='';
   }
 
+
   
   
   $statusColorMedCert='black';
@@ -489,6 +490,12 @@ if (isset($_POST['addFTW'])) {
       $_SESSION['message'] = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
       echo "<script>alert('Message could not be sent. Mailer Error.') </script>";
     }
+
+  }
+  else{
+    echo "<script>alert('PROBLEM WITH DATABASE. PLEASE CONTACT YOUR ADMINISTRATOR.') </script>";
+    echo "<script> location.href='index.php'; </script>";
+
   }
 }
 
@@ -579,7 +586,7 @@ $status = 'doc';
 
   if ($results) {
     echo "<script>alert('Successfull') </script>";
-    // echo "<script> location.href='index.php'; </script>";
+    echo "<script> location.href='index.php'; </script>";
   }
 
   $_SESSION['ftwTime'] = $_POST['ftwTime'];
@@ -813,7 +820,7 @@ if (isset($_POST['updateFTW'])) {
 
 
         <label class=" block my-auto font-semibold text-gray-900 ">Days</label>
-        <input type="number" required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" value="<?php echo $ftwDays ?>" id="ftwDays" name="ftwDays" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        <input type="number" step="any" required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" value="<?php echo $ftwDays ?>" id="ftwDays" name="ftwDays" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
       </div>
 
@@ -1291,14 +1298,44 @@ if (isset($_POST['updateFTW'])) {
 <input type="text" id="ftwUnfitReason"  value="<?php echo $ftwUnfitReason; ?>" name="ftwUnfitReason" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
 
+                <div class=" col-span-4  gap-4">
 
-      <div class="col-span-4 gap-4">
+<h3 class="my-auto mb-4 font-semibold text-gray-900 ">Status:</h3>
+<ul class="col-span-2 items-center w-full text-[10px] 2xl:text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  ">
+  <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
+    <div class="gap-2 flex items-center ps-3">
+      <input id="completedCheckbox" type="radio" name="ftwCompleted"  <?php if ($ftwCompleted == 1) {
+                                                              echo "checked";
+                                                            }; ?> value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+      <label for="completedCheckbox" class="w-full py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">Completed</label>
+      <div class="w-full flex gap-1">
+      <input  id="withPendingCheckBox"  type="radio" <?php if ($ftwWithPendingLab != "") {
+                                                              echo "checked";
+                                                            }; ?> name="ftwCompleted" value="0" class=" my-auto w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+      <label for="withPendingCheckBox" class=" py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">With Pending Lab</label>
+      <div class="relative z-0 group">
+        <input type="text" name="ftwWithPendingLab" value="<?php echo $_SESSION['ftwWithPendingLab']; ?>" id="floating_email" class="block py-2.5 px-0  text-[10px] 2xl:text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+        <label for="floating_email" class="peer-focus:font-medium absolute text-[10px] 2xl:text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"></label>
+      </div>
+      </div>
+   
+    </div>
+  </li>
+
+
+</ul>
+
+
+</div>
+
+
+      <!-- <div class="col-span-4 gap-4">
 
         <label class="block my-auto  font-semibold text-gray-900 ">Status</label>
         <ul class="col-span-2 items-center w-full  text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex  ">
           <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
             <div class="gap-2 flex items-center ps-3">
-              <input id="completedCheckbox" type="checkbox" <?php if ($ftwCompleted == 1) {
+              <input id="completedCheckbox" type="radio" <?php if ($ftwCompleted == 1) {
                                                               echo "checked";
                                                             }; ?> name="ftwCompleted" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">
               <label for="completedCheckbox" class="w-full py-3 ms-2  text-gray-900 ">Completed</label>
@@ -1307,7 +1344,7 @@ if (isset($_POST['updateFTW'])) {
 
           <li class="px-2 w-full border-b border-gray-200 sm:border-b-0 sm:border-r ">
             <div class="gap-2 flex items-center ps-3">
-              <input id="withPendingCheckBox" type="checkbox" <?php if ($ftwWithPendingLab != "") {
+              <input id="withPendingCheckBox" type="radio" <?php if ($ftwWithPendingLab != "") {
                                                               echo "checked";
                                                             }; ?> value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">
               <label for="withPendingCheckBox" class=" py-3 ms-2  text-gray-900 ">With Pending Lab</label>
@@ -1321,7 +1358,7 @@ if (isset($_POST['updateFTW'])) {
 
         </ul>
 
-      </div>
+      </div> -->
       <div class="content-center  col-span-4" id="pendingLabDueDateDiv">
         <label class="block  my-auto font-semibold text-gray-900 ">Pending Lab Due Date: </label>
         <input type="date" name="pendingLabDueDate" value="<?php echo $currentDate; ?>" id="pendingLabDueDate" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">

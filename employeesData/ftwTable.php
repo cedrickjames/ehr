@@ -86,6 +86,8 @@ if (isset($_POST['updateFTW2'])) {
                             <th>Action</th>
                             <th>Date</th>
                             <th>Time</th>
+                            <th>Employer</th>
+
                             <th>Bldg Transaction</th>
                             <th>Name</th>
                             <th>Reason of Absence</th>
@@ -104,7 +106,7 @@ if (isset($_POST['updateFTW2'])) {
                     <tbody>
                         <?php
                         $ftwNo = 1;
-                        $sql = "SELECT f.*, e.Name, f.building AS building_transaction FROM `fittowork`f LEFT JOIN `employeespersonalinfo` e ON e.idNumber = f.idNumber ORDER BY `id` ASC;";
+                        $sql = "SELECT f.*, e.Name,e.employer, f.building AS building_transaction FROM `fittowork`f LEFT JOIN `employeespersonalinfo` e ON e.idNumber = f.idNumber ORDER BY `id` ASC;";
                         $result = mysqli_query($con, $sql);
                         while ($row = mysqli_fetch_assoc($result)) {
 
@@ -119,10 +121,13 @@ if (isset($_POST['updateFTW2'])) {
                             <tr>
                                 <td> <?php echo $ftwNo; ?> </td>
                                 <td>
-                                    <button type="button" onclick="showEditModal(this)" data-id="<?php echo $row['id']; ?>" data-name="<?php echo $row['Name']; ?>" data-date="<?php echo $row['date']; ?>" data-time="<?php echo $row['time']; ?>" data-category="<?php echo $row['categories']; ?>" data-building="<?php echo $row['building_transaction']; ?>" data-reasonofabsence="<?php echo $row['reasonOfAbsence']; ?>" data-diagnosis="<?php echo $row['diagnosis']; ?>" data-medicalcategory="<?php echo $row['medicalCategory']; ?>" data-medicine="<?php echo $row['medicine']; ?>" data-confinementtype="<?php echo $row['confinementType']; ?>" data-fromdateofsickleave="<?php echo $row['fromDateOfSickLeave']; ?>" data-todateofsickleave="<?php echo $row['toDateOfSickLeave']; ?>" data-sldays="<?php echo $row['days']; ?>" data-bloodchemistry="<?php echo $row['bloodChemistry']; ?>" data-cbc="<?php echo $row['cbc']; ?>" data-urinalysis="<?php echo $row['urinalysis']; ?>" data-fecalysis="<?php echo $row['fecalysis']; ?>" data-xray="<?php echo $row['xray']; ?>" data-others="<?php echo $row['others']; ?>" data-bp="<?php echo $row['bp']; ?>" data-temp="<?php echo $row['temp']; ?>" data-02sat="<?php echo $row['02sat']; ?>" data-pr="<?php echo $row['pr']; ?>" data-rr="<?php echo $row['rr']; ?>" data-othersremarks="<?php echo $row['otherRemarks']; ?>" data-remarks="<?php echo $row['remarks']; ?>" data-statuscomplete="<?php echo $row['statusComplete']; ?>" data-withpendinglab="<?php echo $row['withPendingLab']; ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Edit</button>
+                                    
+                                <button type="button" onclick="showData(<?php echo $row['id']; ?>, '<?php echo $row['idNumber']; ?>')"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Edit</button>
+                                <!-- <button type="button" onclick="showEditModal(this)" data-id="<?php echo $row['id']; ?>" data-name="<?php echo $row['Name']; ?>" data-date="<?php echo $row['date']; ?>" data-time="<?php echo $row['time']; ?>" data-category="<?php echo $row['categories']; ?>" data-building="<?php echo $row['building_transaction']; ?>" data-reasonofabsence="<?php echo $row['reasonOfAbsence']; ?>" data-diagnosis="<?php echo $row['diagnosis']; ?>" data-medicalcategory="<?php echo $row['medicalCategory']; ?>" data-medicine="<?php echo $row['medicine']; ?>" data-confinementtype="<?php echo $row['confinementType']; ?>" data-fromdateofsickleave="<?php echo $row['fromDateOfSickLeave']; ?>" data-todateofsickleave="<?php echo $row['toDateOfSickLeave']; ?>" data-sldays="<?php echo $row['days']; ?>" data-bloodchemistry="<?php echo $row['bloodChemistry']; ?>" data-cbc="<?php echo $row['cbc']; ?>" data-urinalysis="<?php echo $row['urinalysis']; ?>" data-fecalysis="<?php echo $row['fecalysis']; ?>" data-xray="<?php echo $row['xray']; ?>" data-others="<?php echo $row['others']; ?>" data-bp="<?php echo $row['bp']; ?>" data-temp="<?php echo $row['temp']; ?>" data-02sat="<?php echo $row['02sat']; ?>" data-pr="<?php echo $row['pr']; ?>" data-rr="<?php echo $row['rr']; ?>" data-othersremarks="<?php echo $row['otherRemarks']; ?>" data-remarks="<?php echo $row['remarks']; ?>" data-statuscomplete="<?php echo $row['statusComplete']; ?>" data-withpendinglab="<?php echo $row['withPendingLab']; ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Edit</button> -->
                                 </td>
                                 <td> <?php echo $row['date']; ?> </td>
                                 <td> <?php echo $row['time']; ?> </td>
+                                <td> <?php echo $row['employer']; ?> </td>
                                 <td> <?php echo $row['building_transaction']; ?> </td>
                                 <td> <?php echo $row['Name']; ?> </td>
                                 <td> <?php echo $row['reasonOfAbsence']; ?> </td>
@@ -339,7 +344,7 @@ if (isset($_POST['updateFTW2'])) {
 
 
                         <label class=" block my-auto font-semibold text-gray-900 ">Days</label>
-                        <input type="number" name="ftwDays" id="ftwDays" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        <input type="number" name="ftwDays" step="any" id="ftwDays" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
                     </div>
 
@@ -375,7 +380,7 @@ if (isset($_POST['updateFTW2'])) {
                         <div class="col-span-4">
 
                             <label class="block  my-auto font-semibold text-gray-900 ">Medicine (Add medicine below): </label>
-                            <select name="ftwMeds[]" id="ftwMeds" multiple="multiple" class="form-control js-meds w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                            <select name="ftwMeds[]" id="ftwMedsEdit" multiple="multiple" class="form-control js-meds w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
                                 <!-- <option></option> -->
                             </select>
@@ -386,7 +391,7 @@ if (isset($_POST['updateFTW2'])) {
                                 <div id="medsdiv" class="col-span-2">
                                     <label class="block  my-auto font-semibold text-gray-900 ">What's your medicine? </label>
 
-                                    <input type="text" id="nameOfMedicine" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                                    <input type="text" id="nameOfMedicineEdit" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
                                 </div>
 
@@ -395,13 +400,13 @@ if (isset($_POST['updateFTW2'])) {
                                         <label class="block  my-auto font-semibold text-gray-900 ">Choose quantity:</label>
                                         <div class="flex relative ">
                                             <div class="relative flex items-center max-w-[8rem]">
-                                                <button type="button" id="decrement-button" data-input-counter-decrement="quantityMeds" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                                <button type="button" id="decrement-button" data-input-counter-decrement="quantityMedsEdit" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                                     <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
                                                     </svg>
                                                 </button>
-                                                <input type="text" name="cnsltnMedsQuantity" id="quantityMeds" data-input-counter data-input-counter-min="1" data-input-counter-max="50" aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" value="1" />
-                                                <button type="button" id="increment-button" data-input-counter-increment="quantityMeds" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                                <input type="text" name="cnsltnMedsQuantity" id="quantityMedsEdit" data-input-counter data-input-counter-min="1" data-input-counter-max="50" aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" value="1" />
+                                                <button type="button" id="increment-button" data-input-counter-increment="quantityMedsEdit" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                                     <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
                                                     </svg>
@@ -409,7 +414,7 @@ if (isset($_POST['updateFTW2'])) {
 
                                             </div>
 
-                                            <button type="button" id="addmedsbtn" onclick="addSelectedValue(document.getElementById('nameOfMedicine').value, document.getElementById('quantityMeds').value)" class="ml-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  p-2 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Add to list
+                                            <button type="button" id="addmedsbtn" onclick="addSelectedValueEdit(document.getElementById('nameOfMedicineEdit').value, document.getElementById('quantityMedsEdit').value)" class="ml-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  p-2 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Add to list
                                             </button>
                                         </div>
 
@@ -546,6 +551,22 @@ if (isset($_POST['updateFTW2'])) {
 
 
 <script>
+
+function showData(consultId, idNumber) {
+
+var currentUrl = window.location.href; // Get the current URL
+var url = new URL(currentUrl);
+var rfParam = idNumber;
+if (rfParam) {
+    // Construct the new URL by appending the consultId
+
+    window.location.href = "fitToWork.php?rf=" + rfParam + '&ftw=' + consultId; // Navigate to the new URL
+} else {
+    console.error('The "rf" parameter is not present in the current URL.');
+}
+
+}
+
     const editFittowork = document.getElementById('editFittowork');
     const FittoworkModal = {
         backdropClasses: 'bg-gray-900/50 dark:bg-gray-900/80 relative inset-0 z-40',
@@ -647,19 +668,19 @@ if (isset($_POST['updateFTW2'])) {
     }
 </script>
 <script>
-    function showData(element) {
-        var id = element.getAttribute("data-id");
-        var rf = element.getAttribute("data-rfid");
-        var currentUrl = window.location.href; // Get the current URL
-        var url = new URL(currentUrl);
-        var rfParam = url.searchParams.get('rf');
-        if (rfParam) {
-            // Construct the new URL by appending the consultId
+    // function showData(element) {
+    //     var id = element.getAttribute("data-id");
+    //     var rf = element.getAttribute("data-rfid");
+    //     var currentUrl = window.location.href; // Get the current URL
+    //     var url = new URL(currentUrl);
+    //     var rfParam = url.searchParams.get('rf');
+    //     if (rfParam) {
+    //         // Construct the new URL by appending the consultId
 
-            window.location.href = "fitToWork.php?rf=" + rf + '&ftw=' + id; // Navigate to the new URL
-        } else {
-            console.error('The "rf" parameter is not present in the current URL.');
-        }
+    //         window.location.href = "fitToWork.php?rf=" + rf + '&ftw=' + id; // Navigate to the new URL
+    //     } else {
+    //         console.error('The "rf" parameter is not present in the current URL.');
+    //     }
 
-    }
+    // }
 </script>

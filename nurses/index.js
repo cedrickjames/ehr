@@ -14,7 +14,7 @@ $(document).ready(function () {
     }   );
     
     $('#ftwMainTable').DataTable(  {
-      "pageLength": 3000,
+      "pageLength": 10,
       "columnDefs": [
         { "width": "1%", "targets": 0, },
         {"className": "dt-center", "targets": "_all"}

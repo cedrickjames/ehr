@@ -26,6 +26,9 @@ if($num_rowsQue ==0){
 
     $addQue = "INSERT INTO `queing`(`idNumber`, `status`,`date`,`time`) VALUES ('$cardNumber','waiting','$currentDate','$queTime')";
     $resultInfo = mysqli_query($con, $addQue);
+    echo "<script> location.href='index.php'; </script>";
+
+
 
 }
 
@@ -48,6 +51,9 @@ if($num_rowsQue ==0){
     $currentDate = date('Y-m-d');
     $addQue = "INSERT INTO `queing`(`idNumber`, `status`,`date`,`time`) VALUES ('$cardNumber','waiting','$currentDate','$queTime')";
     $resultInfo = mysqli_query($con, $addQue);
+
+    echo "<script> location.href='index.php'; </script>";
+
   }
 
 

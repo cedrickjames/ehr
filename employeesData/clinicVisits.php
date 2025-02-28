@@ -17,6 +17,7 @@ if (isset($_GET['rf'])) {
                     <thead>
                         <tr>
 
+                            <th>No</th>
                             <th>Date</th>
                             <th>Time</th>
                             <th>Type</th>
@@ -24,7 +25,7 @@ if (isset($_GET['rf'])) {
                             <th>Status</th>
                             <th>Medical Category</th>
                             <th>Chief Complaint</th>
-                            <th>Diagnosis</th>
+                            <th>Nurse Diagnosis</th>
                             <th>Intervention</th>
                             <th>Clinic Rest From</th>
                             <th>Clinic Rest To</th>
@@ -33,6 +34,11 @@ if (isset($_GET['rf'])) {
                             <th>Others</th>
                             <th>Remarks</th>
                             <th>Pending Lab</th>
+                            <th>Brief Medical History</th>
+                            <th>Physical Examination</th>
+                            <th>Doctor's Management</th>
+                            <th>Final Diagnosis</th>
+
 
                             <!-- <th>Days Late</th> -->
                             <!-- <th>Assigned to</th> -->
@@ -40,13 +46,14 @@ if (isset($_GET['rf'])) {
                     </thead>
                     <tbody>
                         <?php
-                        $sql = "SELECT * FROM `consultation` WHERE `idNumber` = '$idNumber' ORDER BY `id` ASC";
+                        $sql = "SELECT * FROM `consultation` WHERE `idNumber` = '$idNumber' ORDER BY `id` DESC";
                         $result = mysqli_query($con, $sql);
-                        while ($row = mysqli_fetch_assoc($result)) {
+                        $increment=1;
 
+                        while ($row = mysqli_fetch_assoc($result)) {
                         ?>
                             <tr>
-
+                                <td> <?php echo $increment++; ?> </td>
                                 <td> <?php echo $row['date']; ?> </td>
                                 <td> <?php echo $row['time']; ?> </td>
                                 <td> <?php echo $row['type']; ?> </td>
@@ -67,9 +74,14 @@ if (isset($_GET['rf'])) {
                                 <td> <?php echo $row['otherRemarks']; ?> </td>
                                 <td> <?php echo $row['remarks']; ?> </td>
                                 <td> <?php echo $row['withPendingLab']; ?> </td>
+                                <td> <?php echo $row['briefMedicalHistory']; ?> </td>
+                                <td> <?php echo $row['physicalExams']; ?> </td>
+                                <td> <?php echo $row['docManagement']; ?> </td>
+                                <td> <?php echo $row['finalDx']; ?> </td>
+
 
                             </tr>
-                        <?php } ?>
+                        <?php  } ?>
                     </tbody>
                 </table>
             </section>

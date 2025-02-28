@@ -137,6 +137,8 @@ if ($('#withPendingCheckBox').is(':checked')) {
       pendingLabDueDate.removeAttribute('required');
     }
     
+
+    
   $('#withPendingCheckBox').change(function () {
     if ($(this).is(':checked')) {
       // Code to execute when the checkbox is checked
@@ -152,6 +154,16 @@ if ($('#withPendingCheckBox').is(':checked')) {
       var pendingLabDueDate = document.getElementById('pendingLabDueDate');
       pendingLabDueDate.removeAttribute('required');
     }
+  });
+
+  $('#completedCheckbox').change(function () {
+    if ($(this).is(':checked')) {
+
+      $("#pendingLabDueDateDiv").addClass("hidden");
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.removeAttribute('required');
+
+    } 
   });
 });
 

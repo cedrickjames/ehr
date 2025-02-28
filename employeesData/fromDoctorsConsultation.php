@@ -424,14 +424,8 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
     $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
     $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
 
-    if($cnsltnCompleted == 1){
-      $status = 'done';
-      $cnsltnWithPendingLab='';
-        }
-        else{
-      $status = 'done';
-      
-        }
+    $status = 'done';
+
 
 
     if (isset($_POST['cnsltnCompleted'])) {
@@ -440,7 +434,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
       $results = mysqli_query($con, $sql);
       if ($results) {
         echo "<script>alert('Record Updated!' ) </script>";
-        // echo "<script> location.href='fromDoctor.php'; </script>";
+        echo "<script> location.href='fromDoctor.php'; </script>";
       }
     } else {
       echo "<script>alert('Please select status') </script>";
@@ -896,10 +890,10 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
               <input id="completeRadio" type="radio" name="cnsltnCompleted" value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
               <label for="completeRadio" class="w-full py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">Completed</label>
               <div class="w-full flex gap-1">
-              <input id="pendingRadio" type="radio" name="cnsltnCompleted" value="With Pending Lab" class=" my-auto w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+              <input id="pendingRadio" type="radio" <?php if($withPendingLab){echo "checked";} ?> name="cnsltnCompleted" value="With Pending Lab" class=" my-auto w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
               <label for="pendingRadio" class=" py-3 ms-2 text-[10px] 2xl:text-sm font-medium text-gray-900 ">With Pending Lab</label>
               <div class="relative z-0 group">
-                <input type="text" name="cnsltnWithPendingLab" value="" id="floating_email" class="block py-2.5 px-0  text-[10px] 2xl:text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+                <input type="text" name="cnsltnWithPendingLab" value="<?php echo $withPendingLab; ?>" id="floating_email" class="block py-2.5 px-0  text-[10px] 2xl:text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                 <label for="floating_email" class="peer-focus:font-medium absolute text-[10px] 2xl:text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"></label>
               </div>
               </div>

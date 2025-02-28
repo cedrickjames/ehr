@@ -88,6 +88,24 @@ $(".consultationIcon").attr("fill", "#FFFFFF");
 $(".homeIcon").attr("fill", "#4d4d4d"); 
 
 
+
+$("#cnsltnCompletedChecked").change(function() {
+  
+  if ($(this).is(':checked')) {
+$("#withPendingLabCheck").prop('checked', false);
+  }
+
+})
+$("#withPendingLabCheck").change(function() {
+  if ($(this).is(':checked')) {
+$("#cnsltnCompletedChecked").prop('checked', false);
+  }
+
+})
+
+
+
+
 $(".js-diagnosis").select2({
   tags: true
 });
@@ -331,6 +349,12 @@ if ($(this).val() === "addMedicineButton") {
 
 
 });
+
+
+
+
+
+
 
 function addDiagnosis(){
 var diagnosis = document.getElementById("diagnosis").value;
