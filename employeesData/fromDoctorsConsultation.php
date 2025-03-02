@@ -662,7 +662,16 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
         </div>
       </div>
-      <div class="col-span-4 <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "hidden"; } ?>"  >
+<!-- <div id="fitToWorkSection" class="col-span-4 grid grid-col-4">
+
+</div> -->
+    
+      <div style="
+    background-color: #e18d8d69;
+" class="p-4 col-span-4 <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "hidden"; } ?>"  >
+      <div id="ftwdiv1" class=" flex gap-4  col-span-4">
+        <hr style="width:100%; height: 2px;  margin-bottom: 0px;     background-color: #969696; ">
+      </div>
       <div class="col-span-4 " >
         <label class="block  my-auto  font-semibold text-gray-900 ">Fit to Work or Unfit to Work: </label>
         <select <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> id="remarksSelect" name="ftwRemarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
@@ -743,9 +752,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 <label class=" block my-auto font-semibold text-gray-900 ">Reason</label>
 <input <?php if($isFitToWork=="" || $isFitToWork==NULL ){ echo "disabled"; } ?> value="<?php echo $ftwUnfitReason; ?>" type="text"  name="ftwUnfitReason" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                 </div>
-                <div id="ftwdiv1" class=" flex gap-4  col-span-4">
-        <hr style="width:100%; height: 2px;  margin-bottom: 0px;     background-color: #969696; ">
-      </div>
+
 
       <div id="ftwdiv2" class=" col-span-4">
 
@@ -799,8 +806,9 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
       <div id="ftwdiv7" class="col-span-4">
 
         <h3 class="my-auto  font-semibold text-gray-900 ">Immediate Head: </h3>
-        <select id="immediateHead" name="immediateHead" class="js-meds bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+        <select required id="immediateHead" name="immediateHead" class="js-meds bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <!-- <option selected disabled value="">Please select</option> -->
+          <option selected disabled value="">Please select</option>
           <?php
           $sql1 = "Select * FROM `employeespersonalinfo` WHERE `level` = 'head'";
           $result = mysqli_query($con, $sql1);
