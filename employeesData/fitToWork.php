@@ -124,6 +124,10 @@ if (isset($_GET['ftw'])) {
     $ftwMedCategory = $row['medicalCategory'];
     $ftwSLDateFrom = $row['fromDateOfSickLeave'];
     $ftwSLDateTo = $row['toDateOfSickLeave'];
+
+    $ftwSLDateFrom = date("Y-m-d", strtotime($ftwSLDateFrom));
+    $ftwSLDateTo = date("Y-m-d", strtotime($ftwSLDateTo));
+
     $ftwDays = $row['days'];
 
     $ftwAbsenceReason = $row['reasonOfAbsence'];
