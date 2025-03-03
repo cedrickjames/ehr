@@ -284,10 +284,10 @@ if (isset($_POST['addFTW'])) {
 
 
   // echo $smoking;
-  $sql = "INSERT INTO `fittowork`( `approval`, `department`,`idNumber`, `nurseAssisting`,`date`, `time`, `timeOfFiling`,`categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `isFitToWork`,`isMedcertRequired`,`daysOfRest`,`reasonOfUnfitToWork`,`remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`,`pendingLabDueDate`) VALUES ('head','$department','$idNumber','$nurseId','$ftwDate','$ftwTime','$timeOfFiling','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$cnsltnIntervention','$cnsltnClinicRestFrom','$cnsltnClinicRestTo','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$isMedcertRequired','$ftwDaysOfRest','$ftwUnfitReason','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab','$pendingLabDueDate')";
-  $results = mysqli_query($con, $sql);
+  // $sql = "INSERT INTO `fittowork`( `approval`, `department`,`idNumber`, `nurseAssisting`,`date`, `time`, `timeOfFiling`,`categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `isFitToWork`,`isMedcertRequired`,`daysOfRest`,`reasonOfUnfitToWork`,`remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`,`pendingLabDueDate`) VALUES ('head','$department','$idNumber','$nurseId','$ftwDate','$ftwTime','$timeOfFiling','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$cnsltnIntervention','$cnsltnClinicRestFrom','$cnsltnClinicRestTo','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$isMedcertRequired','$ftwDaysOfRest','$ftwUnfitReason','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab','$pendingLabDueDate')";
+  // $results = mysqli_query($con, $sql);
 
-  if ($results) {
+  
     $sql2 = "Select * FROM `sender`";
     $result2 = mysqli_query($con, $sql2);
     while ($list = mysqli_fetch_assoc($result2)) {
@@ -481,22 +481,49 @@ if (isset($_POST['addFTW'])) {
       $mail->send();
 
       $_SESSION['message'] = 'Message has been sent';
-      echo "<script>alert('Email Sent') </script>";
-      echo "<script> location.href='index.php'; </script>";
+
+      $sql = "INSERT INTO `fittowork`( `approval`, `department`,`idNumber`, `nurseAssisting`,`date`, `time`, `timeOfFiling`,`categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `isFitToWork`,`isMedcertRequired`,`daysOfRest`,`reasonOfUnfitToWork`,`remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`,`pendingLabDueDate`,`emailsent`) VALUES ('head','$department','$idNumber','$nurseId','$ftwDate','$ftwTime','$timeOfFiling','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$cnsltnIntervention','$cnsltnClinicRestFrom','$cnsltnClinicRestTo','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$isMedcertRequired','$ftwDaysOfRest','$ftwUnfitReason','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab','$pendingLabDueDate',1)";
+      $results = mysqli_query($con, $sql);
+
+      if($results){
+
+        echo "<script>alert('Fit-to-Work was successfully recorded and sent to the respective personnels.') </script>";
+        echo "<script> location.href='index.php'; </script>";
+      }
+      else{
+        echo "<script>alert('OOOPPSSS. There are problem with the SQL. But, I assure you that the email has been sent. Please contact your administrator and send this alert message.') </script>";
+        echo "<script> location.href='index.php'; </script>";
+      }
+
 
 
       // header("location: form.php");
     } catch (Exception $e) {
       $_SESSION['message'] = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
-      echo "<script>alert('Message could not be sent. Mailer Error.') </script>";
+
+      $sql = "INSERT INTO `fittowork`( `approval`, `department`,`idNumber`, `nurseAssisting`,`date`, `time`, `timeOfFiling`,`categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `isFitToWork`,`isMedcertRequired`,`daysOfRest`,`reasonOfUnfitToWork`,`remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`,`pendingLabDueDate`,`emailsent`) VALUES ('head','$department','$idNumber','$nurseId','$ftwDate','$ftwTime','$timeOfFiling','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$cnsltnIntervention','$cnsltnClinicRestFrom','$cnsltnClinicRestTo','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$isMedcertRequired','$ftwDaysOfRest','$ftwUnfitReason','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab','$pendingLabDueDate',0)";
+      $results = mysqli_query($con, $sql);
+
+      if($results){
+
+        echo "<script>alert('Message could not be sent but the Fit-To-Work has been successfully recorded. Please contact your administrator.') </script>";
+        echo "<script> location.href='index.php'; </script>";
+      }
+      else{
+        echo "<script>alert('OOOPPSSS. There are problem with the SQL and sending the email. Please contact your administrator.') </script>";
+        echo "<script> location.href='index.php'; </script>";
+      }
+
+     
+      // echo "<script>alert('Message could not be sent. Mailer Error.') </script>";
     }
 
-  }
-  else{
-    echo "<script>alert('PROBLEM WITH DATABASE. PLEASE CONTACT YOUR ADMINISTRATOR.') </script>";
-    echo "<script> location.href='index.php'; </script>";
 
-  }
+  // else{
+  //   echo "<script>alert('PROBLEM WITH DATABASE. PLEASE CONTACT YOUR ADMINISTRATOR.') </script>";
+  //   echo "<script> location.href='index.php'; </script>";
+
+  // }
 }
 
 
