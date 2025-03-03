@@ -67,7 +67,7 @@ if (isset($_GET['rf'])) {
   $idNumber = "not found";
 }
 $nurseId = $_SESSION['userID'];
-
+$nurse_email = "nurse@glory.com.ph";
 $sqluserinfo = "SELECT employeespersonalinfo.idNumber, employeespersonalinfo.*, queing.*, users.email
 FROM queing
 
@@ -80,7 +80,7 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $department = $userRow['department'];
   $name = $userRow['Name'];
   $section = $userRow['section'];
-  $nurse_email = $userRow['email'];
+  // $nurse_email = $userRow['email'];
   $employer = $userRow['employer'];
   $ftwTime = $userRow['time'];
 
@@ -683,12 +683,24 @@ if (isset($_POST['updateFTW'])) {
   }
 
 
-
-  $ftwMeds = $_POST['ftwMeds'];
-
-  if ($ftwMeds != "") {
+  if (isset($_POST['ftwMeds']) && !empty($_POST['ftwMeds'])) {
+    $ftwMeds = $_POST['ftwMeds'];
     $ftwMeds = implode(', ', $ftwMeds);
+
+
   }
+  else{
+    $ftwMeds = "";
+
+
+  }
+
+
+  // $ftwMeds = $_POST['ftwMeds'];
+
+  // if ($ftwMeds != "") {
+  //   $ftwMeds = implode(', ', $ftwMeds);
+  // }
 
   $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab', `timeOfFiling` = '$timeOfFiling', `isMedcertRequired` = '$isMedcertRequired', `daysOfRest` = '$ftwDaysOfRest', `reasonOfUnfitToWork` = '$ftwUnfitReason' WHERE `id`= '$ftw';";
   $results = mysqli_query($con, $sql);

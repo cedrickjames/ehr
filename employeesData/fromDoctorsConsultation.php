@@ -15,6 +15,8 @@ if (isset($_GET['rf'])) {
   $idNumber = "not found";
 }
 $nurseId = $_SESSION['userID'];
+$nurse_email = "nurse@glory.com.ph";
+
 $sqluserinfo = "SELECT employeespersonalinfo.idNumber, employeespersonalinfo.*, queing.*, users.email
 FROM queing
 INNER JOIN employeespersonalinfo ON employeespersonalinfo.idNumber = queing.idNumber 
