@@ -815,12 +815,12 @@ if (isset($_POST['updateFTW'])) {
         <label class="block w-full my-auto font-semibold text-gray-900 ">Date of Sick Leave</label>
         <div class="flex gap-2 w-full">
           <div class="relative w-1/2">
-            <input type="date" name="ftwSLDateFrom" id="ftwSLDateFrom" value="<?php echo $currentDate; ?>" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+            <input type="date" name="ftwSLDateFrom" id="ftwSLDateFrom" value="<?php echo $ftwSLDateFrom; ?>" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
             <label for="ftwSLDateFrom" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">From</label>
 
           </div>
           <div class="relative w-1/2">
-            <input type="date" name="ftwSLDateTo" id="ftwSLDateTo" value="<?php echo $currentDate; ?>" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+            <input type="date" name="ftwSLDateTo" id="ftwSLDateTo" value="<?php echo $ftwSLDateTo; ?>" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
             <label for="ftwSLDateTo" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">To</label>
           </div>
         </div>
