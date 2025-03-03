@@ -83,6 +83,7 @@ if (isset($_POST['updateFTW2'])) {
                     <thead>
                         <tr>
                             <th>No.</th>
+                            <th>Email Sent</th>
                             <th>Action</th>
                             <th>Date</th>
                             <th>Time</th>
@@ -120,6 +121,25 @@ if (isset($_POST['updateFTW2'])) {
 
                             <tr>
                                 <td> <?php echo $ftwNo; ?> </td>
+                                <td>
+                                <?php if ($row['emailsent']){
+                                    ?>
+                                    <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
+                Sent
+            </span>
+                                    <?php
+                                }
+                                else{
+                                    ?>
+<span class="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+                <span class="w-2 h-2 me-1 bg-red-500 rounded-full"></span>
+                email failed
+            </span>
+                                    <?php
+                                } ?>    
+                                 </td>
+
                                 <td>
                                     
                                 <button type="button" onclick="showData(<?php echo $row['id']; ?>, '<?php echo $row['idNumber']; ?>')"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Edit</button>

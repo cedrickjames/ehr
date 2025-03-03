@@ -808,7 +808,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
       <div id="ftwdiv7" class="col-span-4">
 
         <h3 class="my-auto  font-semibold text-gray-900 ">Immediate Head: </h3>
-        <select required id="immediateHead" name="immediateHead" class="js-meds bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+        <select <?php if($isFitToWork!="" || $isFitToWork!=NULL ){ echo "required"; } ?> id="immediateHead" name="immediateHead" class="js-meds bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <!-- <option selected disabled value="">Please select</option> -->
           <option selected disabled value="">Please select</option>
           <?php
