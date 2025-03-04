@@ -34,6 +34,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } 
 
 
+if(isset($_POST['deleteOnQueue'])){
+  $id = $_POST['queueId'];
+  $sql = "DELETE FROM `queing` WHERE `id`='$id';";
+  $results = mysqli_query($con, $sql);
+ 
+  if ($results) {
+    echo "<script>alert('Deleted');</script>";
+  } else {
+    echo "<script>alert('There is a problem with deleting queue. Please contact your administrator.');</script>";
+  }
+}
+
+
 ?>
 
 <div class="text-[9px] 2xl:text-lg mb-5">
@@ -48,11 +61,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <thead>
                         <tr>
                             <th >No.</th>
+                            <th >Date</th>
+                            <th >Time</th>
                             <th >Status</th>
                             <th >Name</th>
                             <th >Employer</th>
                             <th >Action</th>
                             <th >Nurse</th>
+                            <th >Delete Qeue</th>
+
 
                            
                             
@@ -64,8 +81,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <?php
                         $queNo = 1;
                         $sql="SELECT 
+                        queing.id AS queing_id,
                         queing.*, 
-                        employeespersonalinfo.idNumber, 
+                        employeespersonalinfo.idNumber AS emp_idNumber, 
                         employeespersonalinfo.*, 
                         COALESCE(users.name, '') AS nurse_assisting_name
                     FROM 
@@ -85,6 +103,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           
                 ?> <tr style="background-color: <?php if($row['status'] == 'processing'){echo "#d9ffdd";} ?>"> 
                     <td> <?php echo $queNo;?> </td>
+                    <td> <?php 
+                     
+                      echo date("F j, Y", strtotime($row['date']));
+                      
+                      ?> </td>
+                    <td> <?php echo $row['time'];?> </td>
                     <td> <?php if ($row['status'] == 'waiting'){ echo "Waiting";} 
                     else if($row['status'] == 'processing')
                     {echo "On Going";}?> </td>
@@ -199,7 +223,7 @@ Done
                 <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                 </svg>
-                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you?</h3>
+                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure?</h3>
                 <button data-modal-hide="doneConfirmation" name="doneAssist_<?php echo $queNo;?>" type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                     Yes, I'm sure
                 </button>
@@ -246,6 +270,10 @@ Done
 </div>
  </td>
  <td> <?php echo $row['nurse_assisting_name'];?> </td>
+
+ <td>
+ <button type="button" onclick="deleteQueue('<?php echo $row['queing_id'];?>','<?php echo $row['Name'];?>','<?php echo $row['idNumber'];?>')" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Delete</button>
+ </td>
                 </tr> <?php
 
                 $queNo++;
@@ -260,3 +288,65 @@ Done
                     </div>
 
         </div>
+
+
+        <div id="deleteQueue" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+            <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="deleteQueue">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+            <div class="p-4 md:p-5 text-center">
+                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
+                <form method="POST" action="">
+                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete <span id="QueueName" class="font-bold"></span> (<span id="QueueIdNumber" class="font-bold"> </span>) from Queue?</h3>
+                <input type="text" class="hidden" name="queueId" id="queueId">
+                <button data-modal-hide="deleteQueue" type="submit" name="deleteOnQueue" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                    Yes, I'm sure
+                </button>
+                <button data-modal-hide="deleteQueue" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No, cancel</button>
+
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+const $targetDeleteQueue = document.getElementById('deleteQueue');
+  const deleteQueu = {
+    placement: 'center-center',
+    backdrop: 'static',
+    backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
+    closable: true,
+    onHide: () => {
+    },
+    onShow: () => {
+
+    },
+    onToggle: () => {
+    }
+  };
+  const deleteQueueModal = new Modal($targetDeleteQueue, deleteQueu);
+
+
+  function deleteQueue(id, name, idNumber){
+    document.getElementById("queueId").value= id;
+    document.getElementById("QueueName").textContent = name;
+    document.getElementById("QueueIdNumber").textContent = idNumber;
+
+  deleteQueueModal.toggle();
+  }
+
+</script>
+
+
