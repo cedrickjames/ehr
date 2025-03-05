@@ -104,7 +104,7 @@ function checkUpcomingConsultation() {
                             if (permission === "granted") {
                                 new Notification("New Consultation", {
                                     body: "You have " + count + " new consultation(s).",
-                                    icon: "http://192.168.5.214/src/Logo 2.png"
+                                    icon: "http://192.168.5.214/src/Logo 2.png",
                                     data: {
                                         url: "https://192.168.5.214/emr/doctor/index.php"
                                     }
