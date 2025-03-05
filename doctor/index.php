@@ -59,6 +59,92 @@ $("#sidepms1").removeClass("bg-gray-200");
 $(".homeIcon").attr("fill", "#FFFFFF"); 
 // $(".homeIcon").attr("fill", "#4d4d4d"); 
 
+// Check if browser supports notifications
+
+
+
+
+
+
+function updateUpcomingConsultation(){
+  var upcomingConsultation = new XMLHttpRequest();
+    upcomingConsultation.open("POST", "updateUpcomingConsultation.php", true);
+    upcomingConsultation.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    upcomingConsultation.onreadystatechange = function() {
+      if (upcomingConsultation.readyState === XMLHttpRequest.DONE) {
+        if (upcomingConsultation.status === 200) {
+          
+          location.href='index.php';
+          // Update was successful
+          // console.log(upcomingConsultation);
+          // alert("Medcert Generated")
+
+
+
+        } else {
+          console.log("Error: " + upcomingConsultation.status);
+        }
+      }
+    };
+
+    upcomingConsultation.send();
+}
+function checkUpcomingConsultation() {
+    var upcomingConsultation = new XMLHttpRequest();
+    upcomingConsultation.open("POST", "upcomingConsultation.php", true);
+    upcomingConsultation.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    upcomingConsultation.onreadystatechange = function() {
+        if (upcomingConsultation.readyState === XMLHttpRequest.DONE) {
+            if (upcomingConsultation.status === 200) {
+                let count = parseInt(upcomingConsultation.responseText);
+                if (count >= 1) {
+                    if ("Notification" in window) {
+                        Notification.requestPermission().then(permission => {
+                            if (permission === "granted") {
+                                new Notification("New Consultation", {
+                                    body: "You have " + count + " new consultation(s).",
+                                    icon: "http://192.168.5.214/src/Logo 2.png"
+                                });
+                                notification.onclick = function() {
+                              window.open("http://192.168.5.214/emr/doctor/index.php", "_blank"); // Opens in a new tab
+                          };
+
+                                // Ensure alert still shows, regardless of notification status
+                                setTimeout(() => {
+                                    alert("You have " + count + " new consultation(s).");
+                                }, 1000);
+                            // updateUpcomingConsultation(); // Ensure this function is defined
+
+                                
+                            } else {
+                                // Permission denied, fallback to alert
+                                alert("You have " + count + " new consultation(s).");
+
+                            }
+                        });
+                    } else {
+                        console.log("This browser does not support notifications.");
+                        alert("You have " + count + " new consultation(s).");
+                    }
+                    
+                    updateUpcomingConsultation();
+                }
+            } else {
+                console.log("Error: " + upcomingConsultation.status);
+            }
+        }
+    };
+
+    upcomingConsultation.send();
+}
+
+// Run the function every 5 seconds
+setInterval(checkUpcomingConsultation, 5000);
+
+
+    // console.log("abnkkbsnplako")
+
 
 
 
@@ -140,6 +226,9 @@ drawer.show();
 // sidebar=0;/
     
 }
+
+
+
 
 
 </script>
