@@ -68,9 +68,9 @@ if ("Notification" in window) {
         if (permission === "granted") {
             let notification = new Notification("Hello!", {
                 body: "This is your notification message.",
-                icon: "https://example.com/icon.png",
+                icon: "http://192.168.5.214/emr/src/Logo 2.png",
                 data: {
-                    url: "https://example.com"
+                    url: "https://192.168.5.214/emr/doctor/index.php"
                 }
             });
 

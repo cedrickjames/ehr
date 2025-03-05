@@ -74,7 +74,7 @@ function updateUpcomingConsultation(){
       if (upcomingConsultation.readyState === XMLHttpRequest.DONE) {
         if (upcomingConsultation.status === 200) {
           
-          location.href='index.php';
+        //   location.href='index.php';
           // Update was successful
           // console.log(upcomingConsultation);
           // alert("Medcert Generated")
@@ -89,6 +89,9 @@ function updateUpcomingConsultation(){
 
     upcomingConsultation.send();
 }
+
+
+
 function checkUpcomingConsultation() {
     var upcomingConsultation = new XMLHttpRequest();
     upcomingConsultation.open("POST", "upcomingConsultation.php", true);
@@ -102,21 +105,27 @@ function checkUpcomingConsultation() {
                     if ("Notification" in window) {
                         Notification.requestPermission().then(permission => {
                             if (permission === "granted") {
-                                new Notification("New Consultation", {
-                                    body: "You have " + count + " new consultation(s).",
-                                    icon: "http://192.168.5.214/src/Logo 2.png",
-                                    data: {
-                                        url: "https://192.168.5.214/emr/doctor/index.php"
-                                    }
-                                });
+
+                              let notification = new Notification("Hello!", {
+                body: "You have " + count + " new consultation(s).",
+                icon: "http://192.168.5.214/emr/src/Logo 2.png",
+                data: {
+                    url: "https://192.168.5.214/emr/doctor/index.php"
+                }
+            });
+
+            console.log("Opening URL:", notification.data.url);
                                 notification.onclick = function(event) {
-                event.preventDefault(); // Prevent default behavior
+                event.preventDefault(); // Prevent default behavior...
+                
                 window.open(notification.data.url, "_blank"); // Open URL in a new tab
             };
 
                                 // Ensure alert still shows, regardless of notification status
                                 setTimeout(() => {
-                                    alert("You have " + count + " new consultation(s).");
+                                    if (confirm("You have " + count + " new consultation(s). Click OK to proceed.")) {
+    window.location.href = "index.php"; // Replace with your desired URL
+                                            }
                                 }, 5000);
                             // updateUpcomingConsultation(); // Ensure this function is defined
 
@@ -129,10 +138,11 @@ function checkUpcomingConsultation() {
                         });
                     } else {
                         console.log("This browser does not support notifications.");
-                        alert("You have " + count + " new consultation(s).");
+                        alert("You have " + count + " new consultation(ssss).");
                     }
                     
                     updateUpcomingConsultation();
+                    // location.href='index.php';
                 }
             } else {
                 console.log("Error: " + upcomingConsultation.status);
