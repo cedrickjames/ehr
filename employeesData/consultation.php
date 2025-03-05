@@ -55,7 +55,17 @@ $ftwTime = date('h:i A');
 if (isset($_GET['cnsltn'])) {
   $cnsltn = $_GET['cnsltn'];
 
-  $sqlcnslt = "SELECT * FROM `consultation` WHERE `idNumber` = '$idNumber' and `id` = '$cnsltn' ORDER BY `id` ASC;";
+  
+$sqlcnslt = "SELECT consultation.*, employeespersonalinfo.Name, medicalcertificate.id as medcertID, medicalcertificate.idNumber as medcertRfid, medicalcertificate.consultationId, medicalcertificate.date as medcertDate, medicalcertificate.treatedOn, medicalcertificate.dueTo, medicalcertificate.diagnosis as medcertDiag, medicalcertificate.remarks as medcertRemarks
+FROM consultation
+INNER JOIN employeespersonalinfo ON consultation.idNumber = employeespersonalinfo.idNumber LEFT JOIN
+                        medicalcertificate
+                    ON
+                        consultation.id = medicalcertificate.consultationId WHERE  consultation.idNumber = '$idNumber' and  consultation.id  = '$cnsltn'  ;";
+
+
+
+  // $sqlcnslt = "SELECT * FROM `consultation` WHERE `idNumber` = '$idNumber' and `id` = '$cnsltn' ORDER BY `id` ASC;";
  
   $resultcnslt = mysqli_query($con, $sqlcnslt);
   while ($row = mysqli_fetch_assoc($resultcnslt)) {
@@ -102,7 +112,7 @@ if (isset($_GET['cnsltn'])) {
     $physicalExams = $row['physicalExams'];
     $finalDx = $row['finalDx'];
 
-    
+    $consultationId = $row['consultationId'];
 
 
 
@@ -878,6 +888,19 @@ if($cnsltnCompleted){
         <h3 class=" my-auto  font-semibold text-gray-900 ">Final Dx: </h3>
         <input type="text" name="finalDx" value="<?php echo $finalDx; ?>" id="" class="  bg-gray-50 border border-gray-300 text-gray-900 w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       </div>
+      <div class="col-span-4  gap-4">
+
+
+<?php
+if ($consultationId != "") {
+
+  echo "<h3 class='my-auto  font-semibold text-gray-900 '>Medical Certificate: </h3> <a href='../medicalCertificate.php?rf=$idNumber&mdcrtid=$consultationId' target='_blank'  class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>View Medcert</a>";
+} else {
+?>
+<?php
+} ?>
+
+</div>
     <?php
     }
       ?>
