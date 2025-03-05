@@ -125,6 +125,10 @@ INNER JOIN employeespersonalinfo ON consultation.idNumber = employeespersonalinf
     $ftwWithPendingLab = $row['withPendingLab'];
     $ftwMeds = $row['meds'];
 
+    
+
+  $pendingLabDueDate = $row['pendingLabDueDate'];
+
     // $immediateEmail = $row['date'];
 
 
@@ -198,9 +202,14 @@ if (isset($_POST['addConsultation'])) {
   $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
   $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
 
+
+  $pendingLabDueDate = $_POST['pendingLabDueDate'];
+  
+
   if($cnsltnCompleted == 1){
 $status = 'done';
 $cnsltnWithPendingLab='';
+$pendingLabDueDate = '';
   }
   else{
 $status = 'doc';
@@ -212,7 +221,7 @@ $status = 'doc';
   }
 
   // echo $smoking;
-  $sql = "INSERT INTO `consultation`(`idNumber`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`medsQty`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `otherRemarks`,`statusComplete`,`withPendingLab`,`medicalLab`,`seenByDoc`) VALUES ('$idNumber','done','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds','$cnsltnMedsQuantity', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnOthersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab','$cnsltnWithPendingLab',0)";
+  $sql = "INSERT INTO `consultation`(`idNumber`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`medsQty`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `otherRemarks`,`statusComplete`,`withPendingLab`,`pendingLabDueDate`,`medicalLab`,`seenByDoc`) VALUES ('$idNumber','done','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds','$cnsltnMedsQuantity', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnOthersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab','$pendingLabDueDate','$cnsltnWithPendingLab',0)";
   $results = mysqli_query($con, $sql);
 
   if ($results) {
@@ -275,9 +284,14 @@ if (isset($_POST['proceedToConsultation'])) {
   $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
   $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
 
+  
+  $pendingLabDueDate = $_POST['pendingLabDueDate'];
+  
+
   if($cnsltnCompleted == 1){
 $status = 'done';
 $cnsltnWithPendingLab='';
+$pendingLabDueDate = '';
   }
   else{
 $status = 'doc';
@@ -289,7 +303,7 @@ $status = 'doc';
   }
 
   // echo $smoking;
-  $sql = "INSERT INTO `consultation`(`idNumber`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`medsQty`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `otherRemarks`,`statusComplete`,`withPendingLab`,`medicalLab`,`seenByDoc`) VALUES ('$idNumber','doc','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds','$cnsltnMedsQuantity', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnOthersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab','$cnsltnWithPendingLab',0)";
+  $sql = "INSERT INTO `consultation`(`idNumber`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`medsQty`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `otherRemarks`,`statusComplete`,`withPendingLab`,`pendingLabDueDate`,`medicalLab`,`seenByDoc`) VALUES ('$idNumber','doc','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds','$cnsltnMedsQuantity', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnOthersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab','$pendingLabDueDate','$cnsltnWithPendingLab',0)";
   $results = mysqli_query($con, $sql);
 
   if ($results) {
@@ -930,6 +944,11 @@ if ($consultationId != "") {
           </li>
 
         </ul>
+
+      </div>
+      <div class="content-center  col-span-4" id="pendingLabDueDateDiv">
+        <label class="block  my-auto font-semibold text-gray-900 ">Pending Lab Due Date: </label>
+        <input type="date" name="pendingLabDueDate" value="<?php echo $pendingLabDueDate;?>" id="pendingLabDueDate" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
 
       </div>
       <div class="col-span-4 justify-center flex">

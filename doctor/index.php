@@ -105,10 +105,14 @@ function checkUpcomingConsultation() {
                                 new Notification("New Consultation", {
                                     body: "You have " + count + " new consultation(s).",
                                     icon: "http://192.168.5.214/src/Logo 2.png"
+                                    data: {
+                                        url: "https://192.168.5.214/emr/doctor/index.php"
+                                    }
                                 });
-                                notification.onclick = function() {
-                              window.open("http://192.168.5.214/emr/doctor/index.php", "_blank"); // Opens in a new tab
-                          };
+                                notification.onclick = function(event) {
+                event.preventDefault(); // Prevent default behavior
+                window.open(notification.data.url, "_blank"); // Open URL in a new tab
+            };
 
                                 // Ensure alert still shows, regardless of notification status
                                 setTimeout(() => {

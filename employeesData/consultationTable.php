@@ -33,7 +33,7 @@
                     <tbody>
                         <?php
                         $cnsltnNo = 1;
-                        $sql = "SELECT * FROM `consultation` WHERE `idNumber` = '$idNumber'  ORDER BY `id` ASC; 
+                        $sql = "SELECT * FROM `consultation` WHERE `idNumber` = '$idNumber' AND `status` = 'done'  ORDER BY `id` ASC; 
                     ";
                         $result = mysqli_query($con, $sql);
                         while ($row = mysqli_fetch_assoc($result)) {

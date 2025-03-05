@@ -89,17 +89,61 @@ $(".homeIcon").attr("fill", "#4d4d4d");
 
 
 
+$(document).ready(function () {
+
+if ($('#withPendingLabCheck').is(':checked')) {
+      // Code to execute when the checkbox is checked
+      $("#pendingLabDueDateDiv").removeClass("hidden");
+
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.required = true;
+
+      
+      // alert('Checkbox is checked!');
+
+
+    } else {
+      // Code to execute when the checkbox is unchecked
+      $("#pendingLabDueDateDiv").addClass("hidden");
+
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.removeAttribute('required');
+    }
+    
+
+    
+
+
+});
+
+
+
+
 $("#cnsltnCompletedChecked").change(function() {
   
   if ($(this).is(':checked')) {
 $("#withPendingLabCheck").prop('checked', false);
+
+$("#pendingLabDueDateDiv").addClass("hidden");
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.removeAttribute('required');
+
   }
 
 })
 $("#withPendingLabCheck").change(function() {
   if ($(this).is(':checked')) {
 $("#cnsltnCompletedChecked").prop('checked', false);
+$("#pendingLabDueDateDiv").removeClass("hidden");
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.required = true;
   }
+  else {
+      // Code to execute when the checkbox is unchecked
+      $("#pendingLabDueDateDiv").addClass("hidden");
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.removeAttribute('required');
+    }
 
 })
 

@@ -99,6 +99,52 @@ $(".medcertIcon").attr("fill", "#FFFFFF");
 $(".proceedIcon").attr("fill", "#FFFFFF"); 
 
 $(document).ready(function() {
+  
+
+  $("#completeRadio").change(function() {
+  
+  if ($(this).is(':checked')) {
+$("#pendingRadio").prop('checked', false);
+
+$("#pendingLabDueDateDiv").addClass("hidden");
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.removeAttribute('required');
+
+  }
+
+})
+$("#pendingRadio").change(function() {
+  if ($(this).is(':checked')) {
+$("#completeRadio").prop('checked', false);
+$("#pendingLabDueDateDiv").removeClass("hidden");
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.required = true;
+  }
+  else {
+      // Code to execute when the checkbox is unchecked
+      $("#pendingLabDueDateDiv").addClass("hidden");
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.removeAttribute('required');
+    }
+
+})
+
+if ($("#pendingRadio").is(':checked')) {
+  console.log("hide")
+
+$("#pendingLabDueDateDiv").removeClass("hidden");
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.required = true;
+  }
+  else {
+      // Code to execute when the checkbox is unchecked
+      $("#pendingLabDueDateDiv").addClass("hidden");
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.removeAttribute('required');
+    }
+
+
+
   if ($("#remarksSelect2").val() === "For Medical Laboratory") {
             // Remove the "hidden" class from the input with id "medLab"
             $("#medLab").removeClass("hidden");
@@ -211,44 +257,44 @@ else{
 });
 
 
-$(document).ready(function () {
+// $(document).ready(function () {
 
-if ($('#withPendingCheckBox').is(':checked')) {
-      // Code to execute when the checkbox is checked
-      $("#pendingLabDueDateDiv").removeClass("hidden");
+// if ($('#withPendingCheckBox').is(':checked')) {
+//       // Code to execute when the checkbox is checked
+//       $("#pendingLabDueDateDiv").removeClass("hidden");
 
-      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
-      pendingLabDueDate.required = true;
+//       var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+//       pendingLabDueDate.required = true;
 
       
-      // alert('Checkbox is checked!');
+//       // alert('Checkbox is checked!');
 
 
-    } else {
-      // Code to execute when the checkbox is unchecked
-      $("#pendingLabDueDateDiv").addClass("hidden");
+//     } else {
+//       // Code to execute when the checkbox is unchecked
+//       $("#pendingLabDueDateDiv").addClass("hidden");
 
-      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
-      pendingLabDueDate.removeAttribute('required');
-    }
+//       var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+//       pendingLabDueDate.removeAttribute('required');
+//     }
     
-  $('#withPendingCheckBox').change(function () {
-    if ($(this).is(':checked')) {
-      // Code to execute when the checkbox is checked
-      $("#pendingLabDueDateDiv").removeClass("hidden");
-      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
-      pendingLabDueDate.required = true;
-      // alert('Checkbox is checked!');
+//   $('#withPendingCheckBox').change(function () {
+//     if ($(this).is(':checked')) {
+//       // Code to execute when the checkbox is checked
+//       $("#pendingLabDueDateDiv").removeClass("hidden");
+//       var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+//       pendingLabDueDate.required = true;
+//       // alert('Checkbox is checked!');
 
 
-    } else {
-      // Code to execute when the checkbox is unchecked
-      $("#pendingLabDueDateDiv").addClass("hidden");
-      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
-      pendingLabDueDate.removeAttribute('required');
-    }
-  });
-});
+//     } else {
+//       // Code to execute when the checkbox is unchecked
+//       $("#pendingLabDueDateDiv").addClass("hidden");
+//       var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+//       pendingLabDueDate.removeAttribute('required');
+//     }
+//   });
+// });
 
 // $(document).ready(function() {
 //   var selectedRemarksValue = $('#remarksSelect2').find('option:selected').val();

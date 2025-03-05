@@ -76,6 +76,88 @@ $(".js-meds").select2({
 
 
 
+
+$(document).ready(function () {
+
+if ($('#withPendingLab').is(':checked')) {
+      // Code to execute when the checkbox is checked
+      $("#pendingLabDueDateDiv").removeClass("hidden");
+
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.required = true;
+
+      
+      // alert('Checkbox is checked!');
+
+
+    } else {
+      // Code to execute when the checkbox is unchecked
+      $("#pendingLabDueDateDiv").addClass("hidden");
+
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.removeAttribute('required');
+    }
+    
+
+    
+  // $('#withPendingLab').change(function () {
+  //   if ($(this).is(':checked')) {
+  //     // Code to execute when the checkbox is checked
+  //     $("#pendingLabDueDateDiv").removeClass("hidden");
+  //     var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+  //     pendingLabDueDate.required = true;
+  //     // alert('Checkbox is checked!');
+
+
+  //   } else {
+  //     // Code to execute when the checkbox is unchecked
+  //     $("#pendingLabDueDateDiv").addClass("hidden");
+  //     var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+  //     pendingLabDueDate.removeAttribute('required');
+  //   }
+  // });
+
+  // $('#completedId').change(function () {
+  //   if ($(this).is(':checked')) {
+
+  //     $("#pendingLabDueDateDiv").addClass("hidden");
+  //     var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+  //     pendingLabDueDate.removeAttribute('required');
+
+  //   } 
+  // });
+});
+
+
+
+$("#completedId").change(function() {
+  
+  if ($(this).is(':checked')) {
+$("#withPendingLab").prop('checked', false);
+
+$("#pendingLabDueDateDiv").addClass("hidden");
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.removeAttribute('required');
+
+  }
+
+})
+$("#withPendingLab").change(function() {
+  if ($(this).is(':checked')) {
+$("#completedId").prop('checked', false);
+$("#pendingLabDueDateDiv").removeClass("hidden");
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.required = true;
+  }
+  else {
+      // Code to execute when the checkbox is unchecked
+      $("#pendingLabDueDateDiv").addClass("hidden");
+      var pendingLabDueDate = document.getElementById('pendingLabDueDate');
+      pendingLabDueDate.removeAttribute('required');
+    }
+
+})
+
 const $tagertDiagnosisModal = document.getElementById('addDiagnosis');
 
 const optionsDiagnosisModal = {

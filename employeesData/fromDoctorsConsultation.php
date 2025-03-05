@@ -139,7 +139,18 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
     $medDis = $_POST['forMed'];
     $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
     $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
-    $sql = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `medicalLab` = '$medLab', `medicationDispense`= '$medDis', `otherRemarks` = '$otherRemarks', `withPendingLab` = '$cnsltnWithPendingLab', `statusComplete`='$cnsltnCompleted' WHERE `id` = '$dcnsltn'";
+
+    if($cnsltnWithPendingLab!="" || $cnsltnWithPendingLab != NULL){
+      $pendingLabDueDate = $_POST['pendingLabDueDate'];
+  
+    }
+    else{
+    $pendingLabDueDate = "";
+  
+    }
+
+
+    $sql = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `medicalLab` = '$medLab', `medicationDispense`= '$medDis', `otherRemarks` = '$otherRemarks', `withPendingLab` = '$cnsltnWithPendingLab', `statusComplete`='$cnsltnCompleted', `pendingLabDueDate` = '$pendingLabDueDate' WHERE `id` = '$dcnsltn'";
     $results = mysqli_query($con, $sql);
 
 
@@ -429,9 +440,18 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
     $status = 'done';
 
 
+    if($cnsltnWithPendingLab!="" || $cnsltnWithPendingLab != NULL){
+      $pendingLabDueDate = $_POST['pendingLabDueDate'];
+  
+    }
+    else{
+    $pendingLabDueDate = "";
+  
+    }
+
 
     if (isset($_POST['cnsltnCompleted'])) {
-      $sql = "UPDATE `consultation` SET `status` = '$status', `remarks`='$remarksSelect2', `otherRemarks` = '$otherRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
+      $sql = "UPDATE `consultation` SET `status` = '$status', `remarks`='$remarksSelect2', `otherRemarks` = '$otherRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab', `pendingLabDueDate` = '$pendingLabDueDate' WHERE `id` = '$dcnsltn'";
       // echo $sql;
       $results = mysqli_query($con, $sql);
       if ($results) {

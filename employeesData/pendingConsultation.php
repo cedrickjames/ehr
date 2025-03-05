@@ -49,6 +49,8 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
 
   $statusComplete = $userRow['statusComplete'];
   $withPendingLab = $userRow['withPendingLab'];
+  $pendingLabDueDate = $userRow['pendingLabDueDate'];
+
 
   $havemedCert = $userRow['havemedCert'];
 
@@ -104,14 +106,17 @@ if (isset($_POST['updateConsultation'])) {
   
   $cnsltnCompleted = isset($_POST['cnsltnCompleted']) ? $_POST['cnsltnCompleted'] : "0";
   $cnsltnWithPendingLab = $_POST['cnsltnWithPendingLab'];
+  $pendingLabDueDate = $_POST['pendingLabDueDate'];
 
   if($cnsltnCompleted==1){
     $cnstltnmedLab = $cnsltnWithPendingLab;
   
     $cnsltnWithPendingLab='';
+
   }
   else{
-   
+    $pendingLabDueDate = $_POST['pendingLabDueDate'];
+    $cnstltnmedLab="";
     
       }
 
@@ -120,14 +125,14 @@ if (isset($_POST['updateConsultation'])) {
       }
 
   // echo $smoking;
-  $sql = "UPDATE `consultation` SET  `type`='$cnsltnType',`categories`='$cnsltnCategories',`building`='$cnsltnBuilding',`chiefComplaint`='$cnsltnChiefComplaint',`diagnosis`='$cnsltnDiagnosis',`intervention`='$cnsltnIntervention',`clinicRestFrom`='$cnsltnClinicRestFrom',`clinicRestTo`='$cnsltnClinicRestTo',`meds`='$cnsltnMeds',`medsQty`='$cnsltnMedsQuantity',`bloodChemistry`='$cnsltnBloodChem',`cbc`='$cnsltnCbc',`urinalysis`='$cnsltnUrinalysis',`fecalysis`='$cnsltnFecalysis',`xray`='$cnsltnXray',`others`='$cnsltnOthersLab',`bp`='$cnsltnBp',`temp`='$cnsltnTemp',`02sat`='$cnsltn02Sat',`pr`='$cnsltnPr',`rr`='$cnsltnRr',`medicalLab`='$cnstltnmedLab',`otherRemarks`='$cnsltnOthersRemarks',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab' WHERE `id` = '$dcnsltn'";
+  $sql = "UPDATE `consultation` SET  `type`='$cnsltnType',`categories`='$cnsltnCategories',`building`='$cnsltnBuilding',`chiefComplaint`='$cnsltnChiefComplaint',`diagnosis`='$cnsltnDiagnosis',`intervention`='$cnsltnIntervention',`clinicRestFrom`='$cnsltnClinicRestFrom',`clinicRestTo`='$cnsltnClinicRestTo',`meds`='$cnsltnMeds',`medsQty`='$cnsltnMedsQuantity',`bloodChemistry`='$cnsltnBloodChem',`cbc`='$cnsltnCbc',`urinalysis`='$cnsltnUrinalysis',`fecalysis`='$cnsltnFecalysis',`xray`='$cnsltnXray',`others`='$cnsltnOthersLab',`bp`='$cnsltnBp',`temp`='$cnsltnTemp',`02sat`='$cnsltn02Sat',`pr`='$cnsltnPr',`rr`='$cnsltnRr',`medicalLab`='$cnstltnmedLab',`otherRemarks`='$cnsltnOthersRemarks',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab',`completedLab`='$cnstltnmedLab',`pendingLabDueDate`='$pendingLabDueDate' WHERE `id` = '$dcnsltn'";
    
   
    $results = mysqli_query($con, $sql);
 
   if ($results) {
     echo "<script>alert('Successfull') </script>";
-    // echo "<script> location.href='pending.php' ;</script>";
+    echo "<script> location.href='pending.php' ;</script>";
   }
 }
 
@@ -620,6 +625,11 @@ if (isset($_POST['updateConsultation'])) {
           </li>
 
         </ul>
+
+      </div>
+      <div class="content-center  col-span-4" id="pendingLabDueDateDiv">
+        <label class="block  my-auto font-semibold text-gray-900 ">Pending Lab Due Date: </label>
+        <input type="date" name="pendingLabDueDate" value="<?php echo $pendingLabDueDate;?>" id="pendingLabDueDate" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
 
       </div>
       
