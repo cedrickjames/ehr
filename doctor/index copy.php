@@ -60,7 +60,20 @@ $(".homeIcon").attr("fill", "#FFFFFF");
 // $(".homeIcon").attr("fill", "#4d4d4d"); 
 
 // Check if browser supports notifications
-
+// Check if browser supports notifications
+if ("Notification" in window) {
+    // Request permission
+    Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+            new Notification("Hello!", {
+                body: "This is your notification message.",
+                icon: "https://example.com/icon.png"
+            });
+        }
+    });
+} else {
+    console.log("This browser does not support notifications.");
+}
 
 
 
