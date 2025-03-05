@@ -3,8 +3,28 @@ session_start();
 include("includes/connect.php");
 
 if (isset($_SESSION['connected'])) {
-
+  echo $_SESSION['level'];
+if($_SESSION['level']=="doctor"){
+  header("location: doctor");
+}
+else if($_SESSION['level']=="nurse"){
   header("location: nurses");
+
+}
+else if($_SESSION['level']=="head"){
+  header("location: depthead");
+
+}
+  
+else if($_SESSION['level']=="hr"){
+  header("location:hr/employees.php?employer=GPI");
+
+}
+else if($_SESSION['level']=="coordinator"){
+  header("location:coordinator/employees.php?employer=".$_SESSION['company']);
+
+}
+
 }
 
 if (isset($_POST['login'])) {
@@ -20,6 +40,8 @@ if (isset($_POST['login'])) {
       $email = $userRow['email'];
       if (password_verify($password, $userpass)) {
         $_SESSION['userID'] = $userRow['idNumber'];
+        $_SESSION['level'] = $userRow['type'];
+
         $_SESSION['username'] = $username;
 
         
