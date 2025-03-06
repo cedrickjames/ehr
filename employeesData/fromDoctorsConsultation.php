@@ -272,14 +272,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
                 <td>ID Number:</td>
                 <td>&nbsp; &nbsp;'.$idNumber.'</td>
             </tr>
-            <tr>
-                <td>Reason:</td>
-                <td>&nbsp;&nbsp;'. $ftwUnfitReason .'</td>
-            </tr>
-            <tr>
-                <td>Day/s of Rest:</td>
-                <td>&nbsp;&nbsp;'. $ftwDaysOfRest .'</td>
-            </tr>
+            
             <tr>
                 <td>Date of Absence:</td>
                 <td>&nbsp;&nbsp;' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</td>
@@ -306,6 +299,14 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
             Date and Time of Filing :</td>
             <td>&nbsp;&nbsp;'.$ftwTimeEmail.' '. $cnsltnTime .'</td>
         </tr>
+        <tr>
+                <td>Reason of Sending Home:</td>
+                <td>&nbsp;&nbsp;'. $ftwUnfitReason .'</td>
+            </tr>
+            <tr>
+                <td>Day/s of Rest:</td>
+                <td>&nbsp;&nbsp;'. $ftwDaysOfRest .'</td>
+            </tr>
               
         </table>
       
