@@ -216,7 +216,7 @@ if (isset($_POST['addFTW'])) {
   $ftwSLDateFrom = date("F j, Y", strtotime($ftwSLDateFrom));
   $ftwSLDateTo = date("F j, Y", strtotime($ftwSLDateTo));
 
-  $ftwTimeEmail = date("F j, Y", strtotime($ftwTime));
+  $ftwTimeEmail = date("F j, Y", strtotime($ftwDate));
 
 
   $ftwDays = $_POST['ftwDays'];

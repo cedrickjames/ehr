@@ -185,7 +185,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
     $ftwSLDateFrom = date("F j, Y", strtotime($ftwCtnSLDateFrom));
     $ftwSLDateTo = date("F j, Y", strtotime($ftwCtnSLDateTo));
   
-    $ftwTimeEmail = date("F j, Y", strtotime($cnsltnTime));
+    $ftwTimeEmail = date("F j, Y", strtotime($cnsltnDate));
   
 
     $cnsltnCategories = $_POST['ftwCtnCategories'];
