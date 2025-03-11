@@ -1074,7 +1074,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
       <div id="ftwdiv8" class=" col-span-4">
 
         <h3 class="my-auto  font-semibold text-gray-900 "> Email: </h3>
-        <select  oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" name="immediateEmail[]" id="immediateEmail" multiple="multiple" class="js-meds form-control  w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        <select <?php if($isFitToWork!="" || $isFitToWork!=NULL ){ echo "required"; } ?>  oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" name="immediateEmail[]" id="immediateEmail" multiple="multiple" class="js-meds form-control  w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
         </select>
         <!-- <input type='text' id='immediateEmail' name='immediateEmail' value='' class='  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 '> -->
       
