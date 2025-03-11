@@ -73,7 +73,9 @@ if($num_rowsQue ==0){
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>GPI Clinic</title>
+<title>Queuing</title>
+  <link rel="shortcut icon" href="../src/Logo 2.png">
+
 <script src="tailwindcss.js"></script>
 <script src="../src/cdn_tailwindcss.js"></script>
 

@@ -27,7 +27,7 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $department = $userRow['department'];
   $name = $userRow['Name'];
   $section = $userRow['section'];
-  $nurse_email = $userRow['email'];
+  // $nurse_email = $userRow['email'];
   $employer = $userRow['employer'];
   $ftwTime = $userRow['time'];
 }
@@ -124,6 +124,8 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
 if (isset($_POST['submitFromDoctorsConsultation'])) {
 
 
+  
+
 
   if (isset($_POST['ftwRemarks']) && !empty($_POST['ftwRemarks'])) {
     $remarksSelect2 = $_POST['ftwRemarks'];
@@ -134,6 +136,18 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
 
   if ($remarksSelect2 != "" || $remarksSelect2 != NULL) {
+
+    $cnsltnDiagnosis = $_POST['cnsltnDiagnosis'];
+
+    if (isset($_POST['cnsltnMeds']) && !empty($_POST['cnsltnMeds'])) {
+      $cnsltnMeds = $_POST['cnsltnMeds'];
+      $cnsltnMeds = implode(', ', $cnsltnMeds);
+    }
+    else{
+      $cnsltnMeds="";
+    }
+
+
     $otherRemarks = $_POST['otherRemarks'];
     $medLab = $_POST['forLab'];
     $medDis = $_POST['forMed'];
@@ -150,7 +164,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
     }
 
 
-    $sql = "UPDATE `consultation` SET `status` = 'done', `remarks`='$remarksSelect2', `medicalLab` = '$medLab', `medicationDispense`= '$medDis', `otherRemarks` = '$otherRemarks', `withPendingLab` = '$cnsltnWithPendingLab', `statusComplete`='$cnsltnCompleted', `pendingLabDueDate` = '$pendingLabDueDate' WHERE `id` = '$dcnsltn'";
+    $sql = "UPDATE `consultation` SET `status` = 'done', `meds`='$cnsltnMeds',`diagnosis`='$cnsltnDiagnosis', `remarks`='$remarksSelect2', `medicalLab` = '$medLab', `medicationDispense`= '$medDis', `otherRemarks` = '$otherRemarks', `withPendingLab` = '$cnsltnWithPendingLab', `statusComplete`='$cnsltnCompleted', `pendingLabDueDate` = '$pendingLabDueDate' WHERE `id` = '$dcnsltn'";
     $results = mysqli_query($con, $sql);
 
 
@@ -198,7 +212,18 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
     $immediateEmail = $_POST['immediateEmail'];
     $immediateHead = $_POST['immediateHead'];
+    $immediateHead = implode(', ', $immediateHead);
+
+    // $cnsltnMeds = $_POST['cnsltnMeds'];
+    
+  if (isset($_POST['cnsltnMeds']) && !empty($_POST['cnsltnMeds'])) {
     $cnsltnMeds = $_POST['cnsltnMeds'];
+    $cnsltnMeds = implode(', ', $cnsltnMeds);
+  }
+  else{
+    $cnsltnMeds="";
+  }
+
     $isMedcertRequired = $_POST['medicalCertificate'];
     $ftwDaysOfRest = $_POST['ftwDaysOfRest'];
     $ftwUnfitReason = $_POST['ftwUnfitReason'];
@@ -410,7 +435,10 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
         //Recipients
         $mail->setFrom('healthbenefits@glorylocal.com.ph', 'Health Benefits');
-        $mail->addAddress($immediateEmail);
+        foreach ($immediateEmail as $emailHead) {
+          $mail->addAddress($emailHead);
+      }
+        // $mail->addAddress($immediateEmail);
         $mail->AddCC($nurse_email);
         foreach ($hremail as $email) {
           $mail->AddCC($email);
@@ -432,6 +460,18 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
       }
     }
   } else {
+
+    $cnsltnDiagnosis = $_POST['cnsltnDiagnosis'];
+
+    if (isset($_POST['cnsltnMeds']) && !empty($_POST['cnsltnMeds'])) {
+      $cnsltnMeds = $_POST['cnsltnMeds'];
+      $cnsltnMeds = implode(', ', $cnsltnMeds);
+    }
+    else{
+      $cnsltnMeds="";
+    }
+
+
     $otherRemarks = $_POST['otherRemarks'];
     $medLab = $_POST['forLab'];
     $medDis = $_POST['forMed'];
@@ -452,7 +492,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
 
 
     if (isset($_POST['cnsltnCompleted'])) {
-      $sql = "UPDATE `consultation` SET `status` = '$status', `remarks`='$remarksSelect2', `otherRemarks` = '$otherRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab', `pendingLabDueDate` = '$pendingLabDueDate' WHERE `id` = '$dcnsltn'";
+      $sql = "UPDATE `consultation` SET `status` = '$status', `remarks`='$remarksSelect2', `meds`='$cnsltnMeds',`diagnosis`='$cnsltnDiagnosis', `otherRemarks` = '$otherRemarks', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab', `pendingLabDueDate` = '$pendingLabDueDate' WHERE `id` = '$dcnsltn'";
       // echo $sql;
       $results = mysqli_query($con, $sql);
       if ($results) {
@@ -563,7 +603,57 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
       </div>
       <div class=" gap-4 col-span-2">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Diagnosis: </h3>
-        <input type="text" value="<?php echo $diagnosis; ?>" name="cnsltnDiagnosis" id="" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        <select    id="ftwDiagnosiOption" name="cnsltnDiagnosis" class="js-diagnosis bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option selected disabled value="">Select Diagnosis</option>
+          <option value="addDiagnosisButton">Add Diagnosis</option>
+          <?php
+          $sql1 = "Select * FROM `diagnosis`";
+          $result = mysqli_query($con, $sql1);
+          while ($list = mysqli_fetch_assoc($result)) {
+            $ftwDiagnosis = $list["diagnosisName"];
+          ?>
+            <option <?php if ($diagnosis == $ftwDiagnosis) {
+                      echo "selected";
+                    } ?> value="<?php echo $ftwDiagnosis; ?>"><?php echo $ftwDiagnosis; ?></option>
+          <?php
+
+            //  echo "<option value='$diagnosis' >$diagnosis</option>";
+
+          }
+          ?>
+        </select>
+
+
+        <div id="addDiagnosis" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+          <div class="relative w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <!-- Modal header -->
+              <div class="items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <label class="block text-xl font-semibold text-gray-900 dark:text-white">
+                  Add Diagnosis
+                </label>
+                <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="addDiagnosis">
+                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                  </svg>
+                  <span class="sr-only">Close modal</span>
+                </button>
+              </div>
+              <!-- Modal body -->
+              <div class="p-4 md:p-5">
+                <form class="space-y-4" action="#">
+                  <div>
+                    <input type="text" name="diagnosis" id="diagnosis" class="mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" />
+                  </div>
+                  <button type="button" onclick="addDiagnosis()" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- <input type="text" value="<?php echo $diagnosis; ?>" name="cnsltnDiagnosis" id="" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
 
       </div>
       <div id="interventionId" class="col-span-4  gap-4">
@@ -585,6 +675,22 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
                     echo "selected";
                   } ?> value="Clinic Rest Only">Clinic Rest Only</option>
 
+<option <?php if ($intervention == "Dental Consultation") {
+                    echo "selected";
+                  } ?> value="Dental Consultation">Dental Consultation</option>
+          <option <?php if ($intervention == "Medication and Dental Consultation") {
+                    echo "selected";
+                  } ?> value="Medication and Dental Consultation">Medication and Dental Consultation</option>
+          <option <?php if ($intervention == "Dental Services (Oral Prophylaxis)") {
+                    echo "selected";
+                  } ?>  value="Dental Services (Oral Prophylaxis)">Dental Services (Oral Prophylaxis)</option>
+          <option <?php if ($intervention == "Dental Services (Light Cure)") {
+                    echo "selected";
+                  } ?> value="Dental Services (Light Cure)">Dental Services (Light Cure)</option>
+          <option <?php if ($intervention == "Medication and Dental Services (Tooth Extraction)") {
+                    echo "selected";
+                  } ?> value="Medication and Dental Services (Tooth Extraction)">Medication and Dental Services (Tooth Extraction)</option>
+
 
 
 
@@ -592,7 +698,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
         </select>
       </div>
 
-      <div id="clinicRestTime" class=" col-span-2">
+      <div id="clinicRestTime" class=" col-span-4">
         <label class="block  my-auto font-semibold text-gray-900 ">Clinic Rest: </label>
         <div class=" content-center flex gap-4 col-span-2">
 
@@ -610,10 +716,129 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
         </div>
 
       </div>
-      <div class="col-span-2">
+      <!-- <div class="col-span-2">
         <h3 class=" my-auto font-semibold text-gray-900 ">Meds</h3>
         <input type="text" name="cnsltnMeds" value="<?php echo $meds; ?>" id="" class="w-full bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
 
+      </div> -->
+      <div  class="grid grid-cols-4 col-span-4" id="medicineDivs">
+        <div class="col-span-4">
+
+          <label class="block  my-auto font-semibold text-gray-900 ">Medicine (Add medicine below): </label>
+          <select name="cnsltnMeds[]" id="ftwMeds" multiple="multiple" class="js-meds form-control  w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+
+            <?php
+            // echo $ftwMeds;
+            // Split the string into an array using the comma as the delimiter
+            if ($meds != "") {
+              $medicines = explode(", ", $meds);
+
+              $options = "";
+              foreach ($medicines as $medicine) {
+                // Add the whitespace before the value to match the desired output
+                $options .= '<option selected value="' . $medicine . '" >' . $medicine . '</option>' . PHP_EOL;
+              }
+
+              echo $options;
+            }
+
+            ?>
+
+
+          </select>
+          <!-- <input type="text"  name="cnsltnMeds"  disabled value="<?php echo $ftwAbsenceReason ?>" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
+        </div>
+
+        <div id="medicineDiv" class="grid grid-cols-4 gap-1 col-span-4 mt-2">
+          <div id="medicineDiv1" class="grid grid-cols-4 gap-1 col-span-4">
+            <div id="medsdiv" class="col-span-2">
+              <label class="block  my-auto font-semibold text-gray-900 ">What's your medicine? </label>
+
+              <select id="nameOfMedicine" class="js-meds bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option selected disabled>Select Medicine</option>
+          <option value="addMedicineButton">Add Medicine</option>
+          <?php
+          $sql1 = "Select * FROM `medicine`";
+          $result = mysqli_query($con, $sql1);
+          while ($list = mysqli_fetch_assoc($result)) {
+            $medicine = $list["medicineName"];
+          ?>
+            <option  value=<?php echo $medicine; ?>><?php echo $medicine; ?></option>
+          <?php
+
+            //  echo "<option value='$diagnosis' >$diagnosis</option>";
+
+          }
+          ?>
+
+        </select>
+        <div id="addMedicine" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+          <div class="relative w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <!-- Modal header -->
+              <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                  Add Medicine
+                </h3>
+                <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="addMedicine">
+                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                  </svg>
+                  <span class="sr-only">Close modal</span>
+                </button>
+              </div>
+              <!-- Modal body -->
+              <div class="p-4 md:p-5">
+                <form class="space-y-4" action="#">
+                  <div>
+
+                    <input type="text" name="medicine" id="medicine" class="mb-4 bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" />
+                  </div>
+
+
+                  <button type="button" onclick="addMedicine()" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add</button>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+            </div>
+
+            <div id="medsqtydiv" class=" col-span-2">
+              <div class="w-full">
+                <label class="block  my-auto font-semibold text-gray-900 ">Choose quantity:</label>
+                <div class="flex relative ">
+                  <div class="relative flex items-center max-w-[8rem]">
+                    <button type="button" id="decrement-button" data-input-counter-decrement="quantityMeds" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                      <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
+                      </svg>
+                    </button>
+                    <input type="text" name="cnsltnMedsQuantity" id="quantityMeds" data-input-counter data-input-counter-min="1" data-input-counter-max="50" aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" value="1" />
+                    <button type="button" id="increment-button" data-input-counter-increment="quantityMeds" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                      <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+                      </svg>
+                    </button>
+
+                  </div>
+
+                  <button type="button" id="addmedsbtn" onclick="addSelectedValue(document.getElementById('nameOfMedicine').value, document.getElementById('quantityMeds').value)" class="ml-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  p-2 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Add to list
+                  </button>
+                </div>
+
+
+              </div>
+              <!-- <input type="number"  name="cnsltnMedsQuantity" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
+
+
+            </div>
+          </div>
+
+        </div>
       </div>
 
 
@@ -829,9 +1054,9 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
       <div id="ftwdiv7" class="col-span-4">
 
         <h3 class="my-auto  font-semibold text-gray-900 ">Immediate Head: </h3>
-        <select <?php if($isFitToWork!="" || $isFitToWork!=NULL ){ echo "required"; } ?> id="immediateHead" name="immediateHead" class="js-meds bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+        <select <?php if($isFitToWork!="" || $isFitToWork!=NULL ){ echo "required"; } ?> multiple="multiple" id="immediateHead" name="immediateHead[]" class="js-meds bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <!-- <option selected disabled value="">Please select</option> -->
-          <option selected disabled value="">Please select</option>
+          <!-- <option selected disabled value="">Please select</option> -->
           <?php
           $sql1 = "Select * FROM `employeespersonalinfo` WHERE `level` = 'head'";
           $result = mysqli_query($con, $sql1);
@@ -849,7 +1074,9 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
       <div id="ftwdiv8" class=" col-span-4">
 
         <h3 class="my-auto  font-semibold text-gray-900 "> Email: </h3>
-        <input type='text' id='immediateEmail' name='immediateEmail' value='' class='  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 '>
+        <select  required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" name="immediateEmail[]" id="immediateEmail" multiple="multiple" class="js-meds form-control  w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        </select>
+        <!-- <input type='text' id='immediateEmail' name='immediateEmail' value='' class='  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 '> -->
       
 
       </div>

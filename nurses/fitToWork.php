@@ -319,9 +319,21 @@ $("#medicineDivs").removeClass("hidden");
 
   $(document).ready(function() {
     $('#immediateHead').change(function() {
-      var selectedEmail = $(this).find('option:selected').data('email');
-      $('#immediateEmail').val(selectedEmail);
+    var selectedOptions = $(this).find('option:selected'); // Get all selected options
+    var emailSelect = $('#immediateEmail');
+
+    // Clear existing emails to re-sync with selected heads
+    emailSelect.empty();
+
+    selectedOptions.each(function() {
+        var selectedEmail = $(this).data('email');
+        emailSelect.append($('<option>', {
+            value: selectedEmail,
+            text: selectedEmail,
+            selected: true
+        }));
     });
+});
 
     $("#categoriesSelect").change(function() {
       if ($(this).val() === "counted") {

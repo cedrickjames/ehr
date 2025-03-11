@@ -34,6 +34,9 @@ font-size: 10px;
 #select2-ftwMeds-results{
   display: none;
 }
+#select2-immediateEmail-results{
+  display: none;
+}
 
 #loading-message {
   display: flex;

@@ -124,7 +124,7 @@ if (isset($_GET['ftw'])) {
     $ftwMedCategory = $row['medicalCategory'];
     $ftwSLDateFrom = $row['fromDateOfSickLeave'];
     $ftwSLDateTo = $row['toDateOfSickLeave'];
-
+    $intervention = $row['intervention'];;
     $ftwSLDateFrom = date("Y-m-d", strtotime($ftwSLDateFrom));
     $ftwSLDateTo = date("Y-m-d", strtotime($ftwSLDateTo));
 
@@ -169,6 +169,7 @@ if (isset($_GET['ftw'])) {
   $ftwSLDateFrom = "";
   $ftwSLDateTo = "";
   $ftwDays = "";
+  $intervention = "";
 
   $ftwAbsenceReason = "";
   $ftwDiagnosis = "";
@@ -260,7 +261,7 @@ if (isset($_POST['addFTW'])) {
   
   $immediateEmail = $_POST['immediateEmail'];
   $immediateHead = $_POST['immediateHead'];
-  
+  $immediateHead = implode(', ', $immediateHead);
 
 
 
@@ -474,7 +475,10 @@ if (isset($_POST['addFTW'])) {
 
       //Recipients
       $mail->setFrom('healthbenefits@glorylocal.com.ph', 'Health Benefits');
-      $mail->addAddress($immediateEmail);
+      foreach ($immediateEmail as $emailHead) {
+        $mail->addAddress($emailHead);
+    }
+      // $mail->addAddress($immediateEmail);
       $mail->AddCC($nurse_email);
       foreach ($hremail as $email) {
         $mail->AddCC($email);
@@ -936,18 +940,39 @@ if (isset($_POST['updateFTW'])) {
       <div class="col-span-2">
         <label class="block  my-auto font-semibold text-gray-900 ">Intervention: </label>
 
-        <select id="interventionSelect" name="cnsltnIntervention" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option  value="Medication Only">Medication only</option>
-          <option selected value="Medical Consultation">Medical Consultation</option>
-          <option value="Medication and Medical Consultation">Medication and Medical Consultation</option>
-          <option value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
-          <option value="Clinic Rest Only">Clinic Rest Only</option>
+        <select id="interventionSelect" name="cnsltnIntervention" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option <?php if ($intervention == "Medication Only") {
+                    echo "selected";
+                  } ?> value="Medication Only">Medication only</option>
+          <option <?php if ($intervention == "Medical Consultation") {
+                    echo "selected";
+                  } ?> value="Medical Consultation">Medical Consultation</option>
+          <option <?php if ($intervention == "Medication and Medical Consultation") {
+                    echo "selected";
+                  } ?> value="Medication and Medical Consultation">Medication and Medical Consultation</option>
+          <option <?php if ($intervention == "Medication, Clinic Rest and Medical Consultation") {
+                    echo "selected";
+                  } ?> value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
+          <option <?php if ($intervention == "Clinic Rest Only") {
+                    echo "selected";
+                  } ?> value="Clinic Rest Only">Clinic Rest Only</option>
 
-          <option value="Dental Consultation">Dental Consultation</option>
-          <option value="Medication and Dental Consultation">Medication and Dental Consultation</option>
-          <option value="Dental Services (Oral Prophylaxis)">Dental Services (Oral Prophylaxis)</option>
-          <option value="Dental Services (Light Cure)">Dental Services (Light Cure)</option>
-          <option value="Medication and Dental Services (Tooth Extraction)">Medication and Dental Services (Tooth Extraction)</option>
+<option <?php if ($intervention == "Dental Consultation") {
+                    echo "selected";
+                  } ?> value="Dental Consultation">Dental Consultation</option>
+          <option <?php if ($intervention == "Medication and Dental Consultation") {
+                    echo "selected";
+                  } ?> value="Medication and Dental Consultation">Medication and Dental Consultation</option>
+          <option <?php if ($intervention == "Dental Services (Oral Prophylaxis)") {
+                    echo "selected";
+                  } ?>  value="Dental Services (Oral Prophylaxis)">Dental Services (Oral Prophylaxis)</option>
+          <option <?php if ($intervention == "Dental Services (Light Cure)") {
+                    echo "selected";
+                  } ?> value="Dental Services (Light Cure)">Dental Services (Light Cure)</option>
+          <option <?php if ($intervention == "Medication and Dental Services (Tooth Extraction)") {
+                    echo "selected";
+                  } ?> value="Medication and Dental Services (Tooth Extraction)">Medication and Dental Services (Tooth Extraction)</option>
+
 
 
 
@@ -1411,8 +1436,8 @@ if (isset($_POST['updateFTW'])) {
       <div class=" gap-4  col-span-2">
         <label class="block my-auto  font-semibold text-gray-900 ">Immediate Head:</label>
 
-        <select id="immediateHead" required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" name="immediateHead" class="js-meds bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option selected disabled value="">Please select</option>
+        <select id="immediateHead" required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" multiple="multiple" name="immediateHead[]" class="js-meds bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <!-- <option selected disabled value="">Please select</option> -->
           <?php
           $sql1 = "Select * FROM `employeespersonalinfo` WHERE `level` = 'head'";
           $result = mysqli_query($con, $sql1);
@@ -1429,8 +1454,10 @@ if (isset($_POST['updateFTW'])) {
       </div>
       <div class=" gap-4  col-span-2">
         <label class="block my-auto  font-semibold text-gray-900 ">Email:</label>
+        <select  required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" name="immediateEmail[]" id="immediateEmail" multiple="multiple" class="js-meds form-control  w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
 
-        <input type="text" required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" id="immediateEmail" name="immediateEmail" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        </select>
+        <!-- <input type="text" required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" multiple id="immediateEmail" name="immediateEmail[]" class="js-meds  bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
 
       </div>
 

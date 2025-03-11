@@ -19,6 +19,9 @@ if(!isset($_SESSION['connected'])){
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>From Doctor</title>
+  <link rel="shortcut icon" href="../src/Logo 2.png">
+
   <script src="../src/cdn_tailwindcss.js"></script>
 
   <script src="../node_modules/flowbite/dist/flowbite.min.js"></script>
@@ -82,6 +85,12 @@ if(!isset($_SESSION['connected'])){
     $(".js-meds").select2({
       tags: true
     });
+
+    
+  $(".js-diagnosis").select2({
+    tags: true
+  });
+
 
 
 $("#fromDoctorsSide").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
@@ -202,7 +211,7 @@ $("#clinicRestTime").removeClass("hidden");
 $("#medsqtydiv").removeClass("hidden");
 $("#medsdiv").removeClass("hidden");
 }
-$("#interventionId").removeClass("col-span-2");
+$("#interventionId").removeClass("col-span-4");
 $("#interventionId").addClass("col-span-4");
   // Remove the "hidden" class from the input with id "medLab"
 
@@ -210,7 +219,7 @@ $("#interventionId").addClass("col-span-4");
 }
 else{
   $("#interventionId").removeClass("col-span-4");
-  $("#interventionId").addClass("col-span-2");
+  $("#interventionId").addClass("col-span-4");
 
 $("#clinicRestLabel").addClass("hidden");
 $("#clinicRestTime").addClass("hidden");
@@ -235,7 +244,7 @@ if ($(this).val() === "Clinic Rest Only" || $(this).val() === "Medication, Clini
   $("#medsdiv").removeClass("hidden");
   }
 
-  $("#interventionId").removeClass("col-span-2");
+  $("#interventionId").removeClass("col-span-4");
 $("#interventionId").addClass("col-span-4");
     // Remove the "hidden" class from the input with id "medLab"
 
@@ -243,7 +252,7 @@ $("#interventionId").addClass("col-span-4");
 }
 else{
   $("#interventionId").removeClass("col-span-4");
-  $("#interventionId").addClass("col-span-2");
+  $("#interventionId").addClass("col-span-4");
 
   
   $("#clinicRestLabel").addClass("hidden");
@@ -255,6 +264,16 @@ else{
 
 
 });
+
+function addSelectedValue(value, qty) {
+    console.log(value);
+    $('#ftwMeds').append($('<option>', {
+      value: value + "(" + qty + ")",
+      text: value + "(" + qty + ")",
+      selected: true
+    }));
+  }
+
 
 
 // $(document).ready(function () {
@@ -360,6 +379,65 @@ else{
 //     });
 
 
+const $tagertDiagnosisModal = document.getElementById('addDiagnosis');
+  const optionsDiagnosisModal = {
+    placement: 'center-center',
+    backdrop: 'static',
+    backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
+    closable: true,
+    onHide: () => {
+    },
+    onShow: () => {
+
+    },
+    onToggle: () => {
+    }
+  };
+  const modalDiagnosis = new Modal($tagertDiagnosisModal, optionsDiagnosisModal);
+  $(document).ready(function() {
+    // Attach change event handler to remarksSelect
+    $("#ftwDiagnosiOption").change(function() {
+      // Check if the selected option is the one you want
+      if ($(this).val() === "addDiagnosisButton") {
+        // Remove the "hidden" class from the input with id "medLab"
+        modalDiagnosis.toggle();
+      }
+    });
+  });
+
+  function addDiagnosis() {
+    var diagnosis = document.getElementById("diagnosis").value;
+    var addDiagnosis = new XMLHttpRequest();
+    addDiagnosis.open("POST", "addDiagnosis.php", true);
+    addDiagnosis.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    addDiagnosis.onreadystatechange = function() {
+      if (addDiagnosis.readyState === XMLHttpRequest.DONE) {
+        if (addDiagnosis.status === 200) {
+          // Update was successful
+          modalDiagnosis.toggle();
+          alert("Added Successfuly!")
+        } else {
+          console.log("Error: " + addDiagnosis.status);
+        }
+      }
+    };
+
+    // Construct the data to be updated
+    var data = "addedDiagnosis=" + encodeURIComponent(diagnosis);
+    var optionValue = $("#diagnosis").val();
+
+    $("#ftwDiagnosiOption").append($('<option>', {
+      value: optionValue,
+      text: optionValue
+    }));
+    // data += "&computername="+ encodeURIComponent(result);
+
+    // Add any other parameters needed for the update
+    addDiagnosis.send(data);
+  }
+
+
+
 $(document).ready(function() {
       if ($('#remarksSelect').val() != "Unfit to work") {
             // Remove the "hidden" class from the input with id "medLab"
@@ -395,13 +473,22 @@ $(document).ready(function() {
 
     })
     $(document).ready(function() {
-      var selectedEmail = $('#immediateHead').find('option:selected').data('email');
-      $('#immediateEmail').val(selectedEmail);
+      $('#immediateHead').change(function() {
+    var selectedOptions = $(this).find('option:selected'); // Get all selected options
+    var emailSelect = $('#immediateEmail');
 
-        $('#immediateHead').change(function() {
-            var selectedEmail = $(this).find('option:selected').data('email');
-            $('#immediateEmail').val(selectedEmail);
-        });
+    // Clear existing emails to re-sync with selected heads
+    emailSelect.empty();
+
+    selectedOptions.each(function() {
+        var selectedEmail = $(this).data('email');
+        emailSelect.append($('<option>', {
+            value: selectedEmail,
+            text: selectedEmail,
+            selected: true
+        }));
+    });
+});
     });
     
 
