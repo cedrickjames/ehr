@@ -326,7 +326,7 @@ if (isset($_POST['addFTW'])) {
       $message = '<div style="width: 1000px; font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 3px solid red; border-radius: 8px; ">
        
       <p>Hi <strong>' . $immediateHead . '</strong> and <strong>'.$coorHR.'</strong>,</p>
-      <p>Please be informed that Ms./Mr. <span style="font-weight: bolder">' . $name . ' </span> visited the clinic for fit-to-work confirmation and was assessed to be <span style="color: red; font-weight: bolder">&quot;UNFIT TO WORK &quot;.</span></p>
+      <p>This is to inform you that Ms./Mr. <span style="font-weight: bolder">' . $name . ' </span> visited the clinic for fit-to-work confirmation and was assessed to be <span style="color: red; font-weight: bolder">&quot;UNFIT TO WORK &quot;.</span></p>
       
             
            <table style=" border-spacing: 10px;">
@@ -373,7 +373,7 @@ if (isset($_POST['addFTW'])) {
               
         </table>
       
-      <p>Yours truly, </p>
+      <p>Verified by: </p>
       
       <p>OH Nurse / Clinic Staff</p>
       
@@ -391,7 +391,7 @@ if (isset($_POST['addFTW'])) {
       $message = '<div style="width: 1000px; font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 3px solid green; border-radius: 8px; ">
        
   <p>Hi <strong>' . $immediateHead . '</strong> and <strong>'.$coorHR.'</strong>,</p>
-  <p>Please be informed that Ms./Mr. <span style="font-weight: bolder">' . $name . ' </span> visited the clinic for fit-to-work confirmation and was assessed to be <span style="color: green; font-weight: bolder">&quot;FIT TO WORK &quot;.</span></p>
+  <p>This is to inform you that Ms./Mr. <span style="font-weight: bolder">' . $name . ' </span> visited the clinic for fit-to-work confirmation and was assessed to be <span style="color: green; font-weight: bolder">&quot;FIT TO WORK &quot;.</span></p>
   
         
        <table style=" border-spacing: 10px;">
@@ -435,7 +435,7 @@ if (isset($_POST['addFTW'])) {
         
     </table>
   
-  <p>Yours truly, </p>
+  <p>Verified by: </p>
   
   <p>OH Nurse / Clinic Staff</p>
   
