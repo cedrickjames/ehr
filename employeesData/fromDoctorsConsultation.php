@@ -1058,7 +1058,7 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
           <!-- <option selected disabled value="">Please select</option> -->
           <!-- <option selected disabled value="">Please select</option> -->
           <?php
-          $sql1 = "Select * FROM `employeespersonalinfo` WHERE `level` = 'head'";
+          $sql1 = "Select * FROM `employeespersonalinfo` WHERE `level` = 'head' AND `department` = '$department'";
           $result = mysqli_query($con, $sql1);
           while ($list = mysqli_fetch_assoc($result)) {
             $immediateName = $list["Name"];

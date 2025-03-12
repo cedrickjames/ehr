@@ -1439,7 +1439,7 @@ if (isset($_POST['updateFTW'])) {
         <select id="immediateHead" required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" multiple="multiple" name="immediateHead[]" class="js-meds bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <!-- <option selected disabled value="">Please select</option> -->
           <?php
-          $sql1 = "Select * FROM `employeespersonalinfo` WHERE `level` = 'head'";
+          $sql1 = "Select * FROM `employeespersonalinfo` WHERE `level` = 'head' AND `department` = '$department'";
           $result = mysqli_query($con, $sql1);
           while ($list = mysqli_fetch_assoc($result)) {
             $immediateName = $list["Name"];
