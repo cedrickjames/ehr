@@ -160,8 +160,12 @@ incrementCivil++;
 
 
     document.getElementById("proceedButton").addEventListener("click", function() {
+console.log("asdasd");
+$("#addPreEmploymentImport").removeClass("hidden");
+      
       $("#addNewEmployeesImport").removeClass("hidden");
       $("#proceedImportButton").addClass("hidden");
+
 
       var uniqueDepartmentsArray = []; 
       var uniqueSexArray = []; 

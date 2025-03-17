@@ -117,7 +117,7 @@ if (isset($_POST['updateFTW2'])) {
                             <tr>
                                 <td> <?php echo $cnsltnNo; ?> </td>
                                 <td>
-                                    <a type="button" href="../nurses/consultation.php?rf=<?php echo $row['idNumber']; ?>&cnsltn=<?php echo $row['id'];?>" class="lg:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Show</a>
+                                    <a type="button" href="consultation.php?rf=<?php echo $row['idNumber']; ?>&cnsltn=<?php echo $row['id'];?>" class="lg:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Show</a>
                                 </td>
                                 <td> <?php echo $row['Name'] ?> </td>
 
