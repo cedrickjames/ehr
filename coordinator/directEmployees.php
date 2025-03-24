@@ -6,6 +6,31 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
+function detectDateFormat($dateString) {
+    // Define possible formats
+    $formats = [
+        'd-M-y',  // Example: 25-Oct-02
+        'm/d/Y',  // Example: 2/21/2025
+        'Y-m-d',  // Example: 2025-03-24
+        'd/m/Y',  // Example: 21/02/2025
+        'm-d-Y',  // Example: 02-21-2025
+    ];
+ 
+    foreach ($formats as $format) {
+        $date = DateTime::createFromFormat($format, $dateString);
+        if ($date !== false) { // Ensure $date is not false
+            $errors = date_get_last_errors();
+            if (!$errors || ($errors['warning_count'] == 0 && $errors['error_count'] == 0)) {
+                return $format;
+            }
+        }
+    }
+ 
+    return 'Unknown Format';
+}
+
+
+
 if (isset($_POST['addNewEmployeeManual'])) {
     $idNumber = $_POST['idNumber'];
     $name = $_POST['name'];

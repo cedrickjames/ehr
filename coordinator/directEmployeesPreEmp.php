@@ -6,6 +6,29 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
+function detectDateFormat($dateString) {
+    // Define possible formats
+    $formats = [
+        'd-M-y',  // Example: 25-Oct-02
+        'm/d/Y',  // Example: 2/21/2025
+        'Y-m-d',  // Example: 2025-03-24
+        'd/m/Y',  // Example: 21/02/2025
+        'm-d-Y',  // Example: 02-21-2025
+    ];
+ 
+    foreach ($formats as $format) {
+        $date = DateTime::createFromFormat($format, $dateString);
+        if ($date !== false) { // Ensure $date is not false
+            $errors = date_get_last_errors();
+            if (!$errors || ($errors['warning_count'] == 0 && $errors['error_count'] == 0)) {
+                return $format;
+            }
+        }
+    }
+ 
+    return 'Unknown Format';
+}
+
 
 if (isset($_GET['employer'])) {
     $employer = $_GET['employer'];
@@ -208,7 +231,7 @@ function saveToDatabase($con, $data, $count,$employer,$format1,$format2,$sexform
             $name = $row['0'];
             $email = $row['1'];
             $birthday = $row['2'];
-            $birthdayObj = DateTime::createFromFormat('m/d/Y', $birthday);
+            $birthdayObj = DateTime::createFromFormat(detectDateFormat($birthday), $birthday);
     $birthdayFormatted = $birthdayObj ? $birthdayObj->format('Y-m-d') : $birthday;
             $age = $row['3'];
             $sex = $row['4'];
@@ -228,15 +251,15 @@ function saveToDatabase($con, $data, $count,$employer,$format1,$format2,$sexform
             $section = $row['10'];
             $position = $row['11'];
             $dateHired = $row['12'];
-            $dateHiredObj = DateTime::createFromFormat('m/d/Y', $dateHired);
+            $dateHiredObj = DateTime::createFromFormat(detectDateFormat($dateHired), $dateHired);
 $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHired;
 
             $dateReceived = $row['13'];
-            $dateReceivedObj = DateTime::createFromFormat('m/d/Y', $dateReceived);
+            $dateReceivedObj = DateTime::createFromFormat(detectDateFormat($dateReceived), $dateReceived);
             $dateReceivedFormatted = $dateReceivedObj ? $dateReceivedObj->format('Y-m-d') : $dateReceived;
             
             $datePerformed = $row['14'];
-            $datePerformedObj = DateTime::createFromFormat('m/d/Y', $datePerformed);
+            $datePerformedObj = DateTime::createFromFormat(detectDateFormat($datePerformed), $datePerformed);
             $datePerformedFormatted = $datePerformedObj ? $datePerformedObj->format('Y-m-d') : $datePerformed;
 
             // $idNumber = $row['2'];
