@@ -171,6 +171,33 @@ if (isset($_POST['addNewEmployeesImport'])) {
     
 
 }
+
+
+if(isset($_POST['deactivateUser'])){
+    $id = $_POST['idOfUser'];
+    $sql = "UPDATE `employeespersonalinfo` SET `activeStatus` = 0 WHERE `id` = '$id'";
+    $results = mysqli_query($con, $sql);
+   
+    if ($results) {
+      echo "<script>alert('Deactivation successful.');</script>";
+    } else {
+      echo "<script>alert('There is a problem with deactivation. Please contact your administrator.');</script>";
+    }
+  }
+  if(isset($_POST['activateUser'])){
+    $id = $_POST['idOfUser'];
+    $sql = "UPDATE `employeespersonalinfo` SET `activeStatus` = 1 WHERE `id` = '$id'";
+    $results = mysqli_query($con, $sql);
+   
+    if ($results) {
+      echo "<script>alert('Employee activated');</script>";
+    } else {
+      echo "<script>alert('There is a problem with activation. Please contact your administrator.');</script>";
+    }
+  }
+
+  
+
 ?>
 <div class="text-[9px] 2xl:text-lg mb-5">
     <div class="flex justify-between">
