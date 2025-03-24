@@ -18,11 +18,32 @@ if(isset($_POST['deleteFitToWorkRecord'])){
     }
   }
 
+  
+if (isset($_POST['exportIndividualFitToWork'])) {
+
+  
+?>
+    <script type="text/javascript">
+       
+        window.open('../fittowork_xls_individual.php?employeeid=<?php echo $idNumber; ?>', '_blank');
+        location.href='../nurses/fitToWork.php?rf=<?php echo $idNumber; ?>';
+    </script>
+<?php
+exit;
+}
+
+
+
 
 ?>
 <div class="text-[9px] 2xl:text-lg mb-5">
-    <p class="mb-2"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Fit to Work History</span></p>
-
+<div class="flex justify-between">
+<form id="excelReport" class="flex justify-between w-full" action="" method="POST">
+        <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Fit To Work History</span></p>
+        <button type="submit" name="exportIndividualFitToWork"  class="lg:block text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Export</button>
+</form>
+        
+    </div>
     <div id="" class="">
         <div class=" p-4 rounded-lg  bg-gray-50 " id="headApproval" role="tabpanel" aria-labelledby="profile-tab">
             <section class="mt-2 2xl:mt-10">

@@ -250,7 +250,7 @@ Done
       <li>
         <a href="../nurses/consultation.php?rf=<?php echo $row['idNumber'] ;?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Consultation</a>
       </li>
-      <li>
+      <!-- <li>
         <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dental Consultation</a>
       </li>
       <li>
@@ -258,7 +258,7 @@ Done
       </li>
       <li>
         <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Pregnancy Notification</a>
-      </li>
+      </li> -->
       <li>
         <a href="../nurses/medicalRecord.php?rf=<?php echo $row['idNumber'] ;?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Record</a>
       </li>
