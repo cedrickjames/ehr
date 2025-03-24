@@ -110,6 +110,8 @@ INNER JOIN employeespersonalinfo ON consultation.idNumber = employeespersonalinf
     $medicationDispense = $row['medicationDispense'];
     $briefMedicalHistory = $row['briefMedicalHistory'];
     $physicalExams = $row['physicalExams'];
+    $docManagement = $row['docManagement'];
+
     $finalDx = $row['finalDx'];
 
     $consultationId = $row['consultationId'];
@@ -349,6 +351,13 @@ if (isset($_POST['updateConsultation'])) {
 
   }
 
+  $forLab = $_POST['forLab'];
+  $forMed = $_POST['forMed'];
+  $briefMedicalHistory = $_POST['briefMedicalHistory'];
+  $physicalExam = $_POST['physicalExam'];
+  $finalDx = $_POST['finalDx'];
+  $docManagement = $_POST['docManagement'];
+
 
   $cnsltnMedsQuantity = $_POST['cnsltnMedsQuantity'];
 
@@ -383,7 +392,7 @@ if($cnsltnCompleted){
 
 
   // echo $smoking;
-  $sql = "UPDATE `consultation` SET `type`='$cnsltnType',`categories`='$cnsltnCategories',`building`='$cnsltnBuilding',`chiefComplaint`='$cnsltnChiefComplaint',`diagnosis`='$cnsltnDiagnosis',`intervention`='$cnsltnIntervention',`clinicRestFrom`='$cnsltnClinicRestFrom',`clinicRestTo`='$cnsltnClinicRestTo',`meds`='$cnsltnMeds',`medsQty`='$cnsltnMedsQuantity',`bloodChemistry`='$cnsltnBloodChem',`cbc`='$cnsltnCbc',`urinalysis`='$cnsltnUrinalysis',`fecalysis`='$cnsltnFecalysis',`xray`='$cnsltnXray',`others`='$cnsltnOthersLab',`bp`='$cnsltnBp',`temp`='$cnsltnTemp',`02sat`='$cnsltn02Sat',`pr`='$cnsltnPr',`rr`='$cnsltnRr',`medicalLab`='$cnstltnmedLab',`otherRemarks`='$cnsltnOthersRemarks',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab',`completedLab`='$completedLab' WHERE `id` = '$cnsltn'";
+  $sql = "UPDATE `consultation` SET `type`='$cnsltnType',`categories`='$cnsltnCategories',`building`='$cnsltnBuilding',`chiefComplaint`='$cnsltnChiefComplaint',`diagnosis`='$cnsltnDiagnosis',`intervention`='$cnsltnIntervention',`clinicRestFrom`='$cnsltnClinicRestFrom',`clinicRestTo`='$cnsltnClinicRestTo',`meds`='$cnsltnMeds',`medsQty`='$cnsltnMedsQuantity',`bloodChemistry`='$cnsltnBloodChem',`cbc`='$cnsltnCbc',`urinalysis`='$cnsltnUrinalysis',`fecalysis`='$cnsltnFecalysis',`xray`='$cnsltnXray',`others`='$cnsltnOthersLab',`bp`='$cnsltnBp',`temp`='$cnsltnTemp',`02sat`='$cnsltn02Sat',`pr`='$cnsltnPr',`rr`='$cnsltnRr',`medicalLab`='$cnstltnmedLab',`otherRemarks`='$cnsltnOthersRemarks',`statusComplete`='$cnsltnCompleted',`withPendingLab`='$cnsltnWithPendingLab',`completedLab`='$completedLab', `medicalLab`='$forLab',`medicationDispense`='$forMed',`briefMedicalHistory`='$briefMedicalHistory',`physicalExams`='$physicalExam',`docManagement`='$docManagement',`finalDx`='$finalDx' WHERE `id` = '$cnsltn'";
    
   
    $results = mysqli_query($con, $sql);
@@ -896,6 +905,10 @@ if($cnsltnCompleted){
       <div class="col-span-4  gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Physical Examination</h3>
         <textarea  rows="3"  name="physicalExam" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="physicalExam"><?php echo $physicalExams; ?></textarea>
+      </div>
+      <div class="col-span-4  gap-4">
+        <h3 class=" my-auto  font-semibold text-gray-900 ">Doctor's Management</h3>
+        <textarea  rows="3"  name="docManagement" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="docManagement"><?php echo $docManagement; ?></textarea>
       </div>
      
       <div class="col-span-4  gap-4">

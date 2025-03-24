@@ -167,11 +167,11 @@ $userID = $_SESSION['userID'];
               <path fill="#4d4d4d" class="consultationIcon" d="M 572.886719 676.941406 L 566.160156 609.84375 L 543.925781 609.84375 L 552.878906 699.308594 L 699.308594 699.308594 L 699.308594 676.941406 L 572.886719 676.941406 " fill-opacity="1" fill-rule="nonzero" />
             </g>
           </svg>
-          <span class="flex-1 ml-3 font-semibold whitespace-nowrap">Completed Consultation</span>
+          <span class="flex-1 ml-3 font-semibold whitespace-nowrap">Clinic Visit</span>
         </a>
         <ul id="dropdown-example" class=" py-2 space-y-2">
-          <li id="fromDoctorsSide">
-            <a href="fromDoctor.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">Nurse's Pending ( 
+          <li id="fromDoctorsSide1">
+            <a href="fromDoctor.php" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">From Doctor ( 
               <?php
 
                         $sql = "SELECT COUNT(*) AS row_count

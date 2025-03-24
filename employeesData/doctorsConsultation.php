@@ -42,6 +42,14 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $isMedcertRequired = $userRow['isMedcertRequired'];
   $timeOfFiling = $userRow['timeOfFiling'];
 
+  $medicalLab = $userRow['medicalLab'];
+  $medicationDispense = $userRow['medicationDispense'];
+  $briefMedicalHistory = $userRow['briefMedicalHistory'];
+  $finalDx = $userRow['finalDx'];
+  $physicalExams = $userRow['physicalExams'];
+  $docManagement = $userRow['docManagement'];
+
+
 
 
 
@@ -468,12 +476,12 @@ if (isset($_POST['submitDoctorsConsultation'])) {
 
       <div id="forLab" class="col-span-4   gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">For Medical Laboratory: </h3>
-        <input type="text" name="forLab" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        <input type="text" name="forLab" value="<?php echo $medicalLab; ?>" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       </div>
 
       <div id="forMed" class="col-span-4   gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">For Medication Dispense: </h3>
-        <input type="text" name="forMed" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        <input type="text" name="forMed" value="<?php echo $medicationDispense; ?>" class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       </div>
       <div class="col-span-4  gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Nurse Notes: </h3>
@@ -482,19 +490,19 @@ if (isset($_POST['submitDoctorsConsultation'])) {
 
       <div class="col-span-4  gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Brief Medical History</h3>
-        <textarea  rows="2" name="briefMedicalHistory" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="briefMedicalHistory"></textarea>
+        <textarea  rows="2" name="briefMedicalHistory" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="briefMedicalHistory"><?php echo $briefMedicalHistory; ?></textarea>
       </div>
       <div class="col-span-4  gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Physical Examination</h3>
-        <textarea  rows="2" name="physicalExam" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="physicalExam"></textarea>
+        <textarea  rows="2" name="physicalExam" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="physicalExam"><?php echo $physicalExams; ?></textarea>
       </div>
       <div class="col-span-4  gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Management</h3>
-        <textarea  rows="3" name="management" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="physicalExam"></textarea>
+        <textarea  rows="3" name="management" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="physicalExam"><?php echo $docManagement; ?></textarea>
       </div>
       <div class="col-span-4  gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Final Dx: </h3>
-        <input type="text" name="finalDx" id="finalDx" class="  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " required>
+        <input type="text" value="<?php echo $finalDx; ?>" name="finalDx" id="finalDx" class="  bg-gray-50 border border-gray-300 text-gray-900 text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " required>
       </div>
       <div class="col-span-4 flex gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Medical Certificate: </h3>

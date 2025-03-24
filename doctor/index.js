@@ -9,6 +9,18 @@ $(document).ready(function () {
       
       
     }   );
+    $('#ftwMainTable').DataTable(  {
+      "pageLength": 3000,
+    "columnDefs": [
+      { "width": "1%", "targets": 0, },
+      {"className": "dt-center", "targets": "_all"}
+    ],
+      responsive: true,
+             scrollCollapse: false,
+             
+    scrollY: '50vh'
+      
+    }   );
       
     $('#sickLeave').DataTable(  {
         "columnDefs": [
@@ -74,4 +86,32 @@ $(document).ready(function () {
                           responsive: true,
                           
                         }   );
+
+
+                        $('#medicalRecordTable').DataTable(  {
+                          "pageLength": 3000,
+                          "columnDefs": [
+                            { "width": "1%", "targets": 0, },
+                            {"className": "dt-center", "targets": "_all"}
+                          ],
+                            responsive: true,
+                             scrollCollapse: false,
+                        scrollY: '50vh'
+                            
+                          }   );
+
+                          $('#fromDocQueTable').DataTable(  {
+                            "pageLength": 3000,
+                            "columnDefs": [
+                              { "width": "1%", "targets": 0, },
+                              {"className": "dt-center", "targets": "_all"}
+                            ],
+                              responsive: true,
+                               scrollCollapse: false,
+                          scrollY: '50vh'
+                              
+                            }   );
+
+                          
+                    
 });

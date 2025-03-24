@@ -163,8 +163,23 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
   
     }
 
+    $briefMedicalHistory = $_POST['briefMedicalHistory'];
+    $physicalExam = $_POST['physicalExam'];
+    $management = $_POST['management'];
 
+    
+
+    if($_SESSION['level']!="doctor"){
+      
     $sql = "UPDATE `consultation` SET `status` = 'done', `meds`='$cnsltnMeds',`diagnosis`='$cnsltnDiagnosis', `remarks`='$remarksSelect2', `medicalLab` = '$medLab', `medicationDispense`= '$medDis', `otherRemarks` = '$otherRemarks', `withPendingLab` = '$cnsltnWithPendingLab', `statusComplete`='$cnsltnCompleted', `pendingLabDueDate` = '$pendingLabDueDate' WHERE `id` = '$dcnsltn'";
+    }
+    else{
+      $sql = "UPDATE `consultation` SET `status` = 'done', `meds`='$cnsltnMeds',`diagnosis`='$cnsltnDiagnosis', `remarks`='$remarksSelect2', `medicalLab` = '$medLab', `medicationDispense`= '$medDis',`briefMedicalHistory`='$briefMedicalHistory',`physicalExams`='$physicalExam',`docManagement`='$management', `otherRemarks` = '$otherRemarks', `withPendingLab` = '$cnsltnWithPendingLab', `statusComplete`='$cnsltnCompleted', `pendingLabDueDate` = '$pendingLabDueDate' WHERE `id` = '$dcnsltn'";
+    }
+
+
+
+
     $results = mysqli_query($con, $sql);
 
 
