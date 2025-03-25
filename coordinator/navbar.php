@@ -46,16 +46,16 @@ if (isset($_POST['submitNewPassword'])) {
   <div class="w-screen flex flex-wrap items-center justify-between mx-auto px-4 2xl:px-auto p-1 2xl:p-4">
     <div class="flex">
     <span id="sidebarButton" type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation" class="block lg:hidden mx-10 ">
-        <i class="fa-solid fa-bars fa-lg"></i>
+        <!-- <i class="fa-solid fa-bars fa-lg"></i> -->
 
         </span> 
         <span id="sidebarButton" type="button" onclick="shows()" class="hidden lg:block mx-4 2xl:mx-10  ">
-        <i class="fa-solid fa-bars fa-lg"></i>
+        <!-- <i class="fa-solid fa-bars fa-lg"></i> -->
 
         </span> 
   <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
       <img src="../src/Logo 1.png" class="h-8" alt="Flowbite Logo" />
-      <span class="self-center  font-semibold whitespace-nowrap   text-[#193F9F]">Electronic Medical Record</span>
+      <span class="self-center  font-semibold whitespace-nowrap   text-[#193F9F]">Employees Medical Record</span>
   </a>
     </div>
   

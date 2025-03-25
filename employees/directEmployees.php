@@ -289,6 +289,12 @@ if(isset($_POST['deactivateUser'])){
                                                 <li>
                                                 <a href="../nurses/vaccination.php?rf=<?php echo $row['idNumber'] ;?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Vaccination</a>
                                             </li>
+                                            <li>
+                                                    <a href="../preemployment_xls_individual.php?employeeid=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Download Pre-Emp</a>
+                                                </li>
+                                                <li>
+                                                    <a href="../annualPe_xls_individual.php?employeeid=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Download APE</a>
+                                                </li>
                                          
                                             </ul>
 

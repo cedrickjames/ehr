@@ -77,7 +77,7 @@ if (isset($_POST['submitNewPassword'])) {
   <div class="w-screen flex flex-wrap items-center justify-between mx-auto px-4 2xl:px-auto p-1 2xl:p-4">
     <div class="flex">
       <span id="sidebarButton" type="button" data-drawer-target="drawer-sidebar" data-drawer-show="drawer-sidebar" aria-controls="drawer-sidebar" class="block lg:hidden mx-10 ">
-        <i class="fa-solid fa-bars fa-lg"></i>
+        <!-- <i class="fa-solid fa-bars fa-lg"></i>  -->
 
       </span>
       <!-- <span id="sidebarButton" type="button" onclick="shows()" class="hidden lg:block mx-4 2xl:mx-10  ">

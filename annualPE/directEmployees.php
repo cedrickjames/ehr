@@ -377,7 +377,7 @@ if (isset($_POST['addPreEmploymentImport'])) {
                         <select id="name" name="name" class="js-employees bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                             <option selected disabled>Search Name</option>
                             <?php
-                            $sql1 = "SELECT * FROM employeespersonalinfo e WHERE e.employer = '$employer' AND e.idNumber NOT IN (SELECT p.idNumber FROM annualphysicalexam p);";
+                            $sql1 = "SELECT * FROM employeespersonalinfo e WHERE e.employer = '$employer'";
                             $result = mysqli_query($con, $sql1);
                             while ($list = mysqli_fetch_assoc($result)) {
                                 $idNumber = $list["idNumber"];
