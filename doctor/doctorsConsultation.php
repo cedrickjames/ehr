@@ -31,7 +31,7 @@ if(!isset($_SESSION['connected'])){
 <body class="bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
   <?php require_once 'navbar.php'; ?>
 
-  <div style=" background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));" class="  h-full ml-56 2xl:ml-80 flex  left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
+  <div style=" background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));" class="  h-full ml-56 2xl:ml-[22rem] flex  left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
     <div class="mb-5 grid grid-cols-1 sm:grid-cols-11 gap-4 w-full ">
       <div class="overflow-y-auto h-screen relative  sm:col-span-6 ">
         <?php require_once '../employeesData/employeesPersonalData.php'; ?>

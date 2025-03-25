@@ -36,7 +36,7 @@ if ($employer == "All") {
             <font color="blue">GLORY (PHILIPPINES), INC.</font>
         </b>
         <br>
-        <b>Electronic Medical Record</b>
+        <b>Employees Medical Record</b>
         <br>
         <h3> <b> HLP(<?php echo $employer ?>) Record for the Month of <?php echo $month ?></b></h3>
 

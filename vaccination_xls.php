@@ -45,7 +45,7 @@ else{
             <font color="blue">GLORY (PHILIPPINES), INC.</font>
         </b>
         <br>
-        <b>Electronic Medical Record</b>
+        <b>Employees Medical Record</b>
         <br>
         <h3> <b> <?php echo $type ?> Vaccination Record for the Month of <?php echo $month ?></b></h3>
 

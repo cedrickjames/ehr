@@ -32,7 +32,7 @@ LEFT JOIN `employeespersonalinfo` e ON e.idNumber = f.idNumber WHERE MONTH(f.dat
             <font color="blue">GLORY (PHILIPPINES), INC.</font>
         </b>
         <br>
-        <b>Electronic Medical Record</b>
+        <b>Employees Medical Record</b>
         <br>
         <h3> <b> "Fit to work" for the Month of <?php echo $month ?></b></h3>
 

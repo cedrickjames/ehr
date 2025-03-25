@@ -1,28 +1,18 @@
 <?php
-$month = $_GET['month'];
-$year = $_GET['year'];
-$employer = $_GET['employer'];
+$employeeid = $_GET['employeeid'];
 
 header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
-header("Content-Disposition: attachment; filename=Pre-Employment(".$employer.") Record for the Month of " . $month . ".xls");  //File name extension was wrong
+header("Content-Disposition: attachment; filename=Pre-Employment Record of " . $employeeid . ".xls");  //File name extension was wrong
 header("Expires: 0");
 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Cache-Control: private", false);
-$monthNumber = date('m', strtotime($month));
 
 include("includes/connect.php");
 
 $con->next_result();
-if($employer == "All"){
-    $sql = "SELECT p.*, e.employer, e.Name, e.section, e.idNumber FROM preemployment p 
-    JOIN employeespersonalinfo e ON e.idNumber = p.idNumber WHERE MONTH(p.dateReceived) = '$monthNumber'
-    AND YEAR(p.dateReceived) = '$year' ORDER BY `id` ASC";
-}
-else{
-    $sql = "SELECT p.*, e.employer, e.Name, e.section, e.idNumber FROM preemployment p 
-    JOIN employeespersonalinfo e ON e.idNumber = p.idNumber WHERE e.employer = '$employer' AND MONTH(p.dateReceived) = '$monthNumber'
-    AND YEAR(p.dateReceived) = '$year' ORDER BY `id` ASC";
-}
+
+$sql = "SELECT p.*, e.employer, e.Name, e.section, e.idNumber FROM preemployment p 
+    JOIN employeespersonalinfo e ON e.idNumber = p.idNumber WHERE p.idNumber = '$employeeid' ORDER BY `id` ASC";
 
 ?>
 
@@ -40,7 +30,7 @@ else{
         <br>
         <b>Employees Medical Record</b>
         <br>
-        <h3> <b> Pre-Employment(<?php echo $employer ?>) Record for the Month of <?php echo $month ?></b></h3>
+        <h3> <b> Pre-Employment Record of <?php echo $employeeid ?></b></h3>
 
         <br>
     </center>
