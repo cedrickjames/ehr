@@ -37,7 +37,7 @@ $userID = $_SESSION['userID'];
 <body class="h-screen bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
   <?php require_once 'navbar.php'; ?>
 
-  <div style=" background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));" class="h-full ml-56 2xl:ml-[22rem] flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
+  <div  id="mainContent" style=" background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));" class="h-full ml-56 2xl:ml-[22rem] flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
     <div class="m-2 ">
 
     <?php
@@ -203,6 +203,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
+    
+
+
+
 
     const $targetEl = document.getElementById('sidebar');
 
@@ -234,41 +238,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     console.log("Screen width: " + screenWidth);
     console.log("Screen height: " + screenHeight);
-    var sidebar = 0;
+    
+var sidebar=0;
+    
 
-
-
-    function shows() {
-      if (show) {
-        drawer.hide();
-        show = false;
-      } else {
-        drawer.show();
-        show = true;
-      }
-      // var sidebar=0;
-      if (sidebar == 0) {
-        document.getElementById("mainContent").style.width = "100%";
-        document.getElementById("mainContent").style.marginLeft = "0px";
-        // document.getElementById("sidebar").style.opacity= ""; 
-        // document.getElementById("sidebar").style.transition = "all .1s";
-
+    function shows(){
+        // if(show){
+        //     drawer.hide();
+        //     show = false;
+        // }
+        // else{
+        //     drawer.show();
+        //     show = true;
+        // }
+        if(sidebar==0 || sidebar == undefined){
+            console.log("asdas0d00");
+        document.getElementById("mainContent").style.width="100%";  
+        document.getElementById("mainContent").style.marginLeft= "0px"; 
+    
+        $("#drawer-sidebar").removeClass("lg:block");
+        
         document.getElementById("mainContent").style.transition = "all .3s";
-
-
-
-
-
-
-        sidebar = 1;
-      } else {
-        document.getElementById("mainContent").style.width = "calc(100% - 288px)";
-        document.getElementById("mainContent").style.marginLeft = "288px";
-
-        sidebar = 0;
-      }
-
-
+    
+        
+        sidebar=1;
+        }
+        else{
+        $("#drawer-sidebar").addClass("lg:block");
+    
+            console.log(sidebar);
+    
+          document.getElementById("mainContent").style.width="calc(100% - 22rem)";  
+        document.getElementById("mainContent").style.marginLeft= "22rem";  
+        
+        sidebar=0;
+        }
+        
+    
     }
 
     if (screenWidth <= 1132) {

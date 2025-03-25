@@ -39,7 +39,7 @@ if(!isset($_SESSION['connected'])){
 </head>
 <body  class="h-screen bg-no-repeat bg-cover bg-[url('../src/Background.png')]">
 <?php require_once 'navbar.php';?>
-<div style= " background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));"class="h-full  ml-56 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
+<div id="mainContent" style= " background: linear-gradient(-45deg, #a6d0ff, rgba(255, 255, 255, 0.63), rgba(255, 255, 255, 0));"class="h-full  ml-56 2xl:ml-80 flex   left-10 right-5  flex-col  px-2   pt-2 2xl:pt-6 pb-14 z-50 ">
  
 <?php
     if ($idNumber == "not found") {
@@ -88,6 +88,47 @@ $(".consultationIcon").attr("fill", "#FFFFFF");
 $(".homeIcon").attr("fill", "#4d4d4d"); 
 
 
+
+
+var sidebar=0;
+    
+
+    function shows(){
+        // if(show){
+        //     drawer.hide();
+        //     show = false;
+        // }
+        // else{
+        //     drawer.show();
+        //     show = true;
+        // }
+        if(sidebar==0 || sidebar == undefined){
+            console.log("asdas0d00");
+        document.getElementById("mainContent").style.width="100%";  
+        document.getElementById("mainContent").style.marginLeft= "0px"; 
+    
+        $("#drawer-sidebar").removeClass("lg:block");
+        
+        document.getElementById("mainContent").style.transition = "all .3s";
+    
+        
+        sidebar=1;
+        }
+        else{
+        $("#drawer-sidebar").addClass("lg:block");
+    
+            console.log(sidebar);
+    
+          document.getElementById("mainContent").style.width="calc(100% - 22rem)";  
+        document.getElementById("mainContent").style.marginLeft= "22rem";  
+        
+        sidebar=0;
+        }
+        
+    
+    }
+
+    
 
 $(document).ready(function () {
 
