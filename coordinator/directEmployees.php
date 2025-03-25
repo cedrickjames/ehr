@@ -261,6 +261,11 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
                                                 <li>
                                                     <a type="button" onclick="openEditEmployee(this)"  data-idnumber="<?php echo $row['idNumber'] ?>" data-name="<?php echo $row['Name'] ?>" data-email="<?php echo $row['email'] ?>" data-age="<?php echo $row['age'] ?>" data-birthday="<?php echo $row['birthday'] ?>"  data-sex="<?php echo $row['sex'] ?>" data-address="<?php echo $row['address'] ?>" data-civilstatus="<?php echo $row['civilStatus'] ?>" data-employer="<?php echo $row['employer'] ?>" data-department="<?php echo $row['department'] ?>" data-section="<?php echo $row['section'] ?>" data-position="<?php echo $row['position'] ?>" data-level="<?php echo $row['level'] ?>" data-datehired="<?php echo $row['dateHired'] ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
                                                 </li>
+                                                <li> <a href="../fittowork_xls_individual.php?employeeid=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Download Fit-to-Work</a></li>
+                                                <li> <a href="../consultation_xls_individual.php?employeeid=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Download Consultation</a></li>
+                                                <li> <a href="../preemployment_xls_individual.php?employeeid=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Download Pre-Emp</a></li>
+                                                <li> <a href="../annualPe_xls_individual.php?employeeid=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Download APE</a></li>
+
                                             
                                             </ul>
 
