@@ -59,6 +59,55 @@ $("#sidepms1").removeClass("bg-gray-200");
 $(".homeIcon").attr("fill", "#FFFFFF"); 
 // $(".homeIcon").attr("fill", "#4d4d4d"); 
 
+
+
+
+function activateDeactivate(element){
+    if(element.getAttribute("data-activate")== "1"){
+      $("#deactivateUser").addClass("hidden");
+      $("#separationDate").addClass("hidden");
+      $("#activateUser").removeClass("hidden");
+    }
+    else{
+      $("#activateUser").addClass("hidden");
+      $("#separationDate").removeClass("hidden");
+      $("#deactivateUser").removeClass("hidden");
+    }
+  document.getElementById("idOfUser").value = element.getAttribute("data-id");
+    $('#nameofUser').text(element.getAttribute("data-name"));
+
+    if(element.getAttribute("data-activate") == '1'){
+
+    $('#activateDeactivateText').text("activate");
+
+    }
+    else{
+    $('#activateDeactivateText').text("deactivate");
+
+    }
+
+
+  modaldeactivate.toggle();
+}
+  
+const $targetDeactivateUser = document.getElementById('activateDeactivate');
+  const deactivateModal = {
+    placement: 'center-center',
+    backdrop: 'static',
+    backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
+    closable: true,
+    onHide: () => {
+    },
+    onShow: () => {
+
+    },
+    onToggle: () => {
+    }
+  };
+  const modaldeactivate = new Modal($targetDeactivateUser, deactivateModal);
+
+  
+
 </script>
 </body>
 </html>

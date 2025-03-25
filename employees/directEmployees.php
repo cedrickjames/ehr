@@ -190,7 +190,7 @@ if(isset($_POST['deactivateUser'])){
   }
   if(isset($_POST['activateUser'])){
     $id = $_POST['idOfUser'];
-    $sql = "UPDATE `employeespersonalinfo` SET `activeStatus` = 1 WHERE `id` = '$id'";
+    $sql = "UPDATE `employeespersonalinfo` SET `activeStatus` = 1, `dateOfSeparation`='' WHERE `id` = '$id'";
     $results = mysqli_query($con, $sql);
    
     if ($results) {
