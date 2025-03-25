@@ -116,10 +116,12 @@ if (isset($_GET['employer'])) {
     function activateDeactivate(element){
     if(element.getAttribute("data-activate")== "1"){
       $("#deactivateUser").addClass("hidden");
+      $("#separationDate").addClass("hidden");
       $("#activateUser").removeClass("hidden");
     }
     else{
       $("#activateUser").addClass("hidden");
+      $("#separationDate").removeClass("hidden");
       $("#deactivateUser").removeClass("hidden");
     }
   document.getElementById("idOfUser").value = element.getAttribute("data-id");

@@ -175,7 +175,11 @@ if (isset($_POST['addNewEmployeesImport'])) {
 
 if(isset($_POST['deactivateUser'])){
     $id = $_POST['idOfUser'];
-    $sql = "UPDATE `employeespersonalinfo` SET `activeStatus` = 0 WHERE `id` = '$id'";
+    $separationDate = $_POST['separationDate'];
+
+    
+
+    $sql = "UPDATE `employeespersonalinfo` SET `activeStatus` = 0, `dateOfSeparation`='$separationDate' WHERE `id` = '$id'";
     $results = mysqli_query($con, $sql);
    
     if ($results) {
@@ -235,6 +239,8 @@ if(isset($_POST['deactivateUser'])){
                                 <th>Employer</th>
                                 <th>Action</th>
                                 <th>Status</th>
+                                <th>Date of Separation</th>
+
 
                             </tr>
                         </thead>
@@ -307,6 +313,7 @@ if(isset($_POST['deactivateUser'])){
                     } ?>
                                     </td>
                                     <td><?php if($row['activeStatus'] == 1){echo "Active";} else{ echo "Separated";};?></td>
+                                    <td><?php echo $row['dateOfSeparation']; ?></td>
 
                                 </tr> <?php
 
@@ -342,11 +349,17 @@ if(isset($_POST['deactivateUser'])){
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                 </svg>
                 <form action="" method="POST">
+                    <div class="" id="separationDate">
+                    <label class="block  my-auto font-semibold text-gray-900 ">Date of Separation: </label>
+                    <input type="date" name="separationDate"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+                    </div>
+                
                 <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to <span id="activateDeactivateText"> </span> <span id="nameofUser" class="font-bold"> </span>?</h3>
                 <input type="text" id="idOfUser" name="idOfUser" class="hidden">
                 <button  type="submit" name="deactivateUser" id="deactivateUser" class="hidden text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                     Yes, I'm sure
                 </button>
+                
                 <button  type="submit" name="activateUser" id="activateUser" class="hidden text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                     Yes, I'm sure
                 </button>
