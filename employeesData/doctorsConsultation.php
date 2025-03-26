@@ -81,13 +81,23 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
 if (isset($_POST['submitDoctorsConsultation'])) {
 
   $finalDx = $_POST['finalDx'];
+  $finalDx = str_replace("'", "&apos;", $finalDx);
+  $finalDx = str_replace('"', '&quot;', $finalDx);
+
   $timeOfFiling = $_POST['timeOfFiling'];
 
   $briefMedicalHistory = $_POST['briefMedicalHistory'];
+  $briefMedicalHistory = str_replace("'", "&apos;", $briefMedicalHistory);
+  $briefMedicalHistory = str_replace('"', '&quot;', $briefMedicalHistory);
+  
   $physicalExam = $_POST['physicalExam'];
+  $physicalExam = str_replace("'", "&apos;", $physicalExam);
+  $physicalExam = str_replace('"', '&quot;', $physicalExam);
 
   $management = $_POST['management'];
 
+  $management = str_replace("'", "&apos;", $management);
+  $management = str_replace('"', '&quot;', $management);
 
 
 
@@ -96,15 +106,24 @@ if (isset($_POST['submitDoctorsConsultation'])) {
 
   if (isset($_POST['ftwRemarks']) && !empty($_POST['ftwRemarks'])) {
     $remarksSelect = $_POST['ftwRemarks']; //
+    $remarksSelect = str_replace("'", "&apos;", $remarksSelect);
+    $remarksSelect = str_replace('"', '&quot;', $remarksSelect);
+    
   }else{
     $remarksSelect='';
   }
   $medlab = $_POST['forLab']; 
-  $forMed = $_POST['forMed'];
+  $medlab = str_replace("'", "&apos;", $medlab);
+  $medlab = str_replace('"', '&quot;', $medlab);
 
+  $forMed = $_POST['forMed'];
+  $forMed = str_replace("'", "&apos;", $forMed);
+  $forMed = str_replace('"', '&quot;', $forMed);
 
   if (isset($_POST['ftwRemarks']) && !empty($_POST['ftwRemarks'])) {
     $ftwRemarks = $_POST['ftwRemarks']; //
+    $ftwRemarks = str_replace("'", "&apos;", $ftwRemarks);
+    $ftwRemarks = str_replace('"', '&quot;', $ftwRemarks);
   }else{
     $ftwRemarks='';
   }
@@ -125,6 +144,8 @@ if (isset($_POST['submitDoctorsConsultation'])) {
  
  if (isset($_POST['ftwUnfitReason']) && !empty($_POST['ftwUnfitReason'])) {
   $ftwUnfitReason = $_POST['ftwUnfitReason']; //
+  $ftwUnfitReason = str_replace("'", "&apos;", $ftwUnfitReason);
+  $ftwUnfitReason = str_replace('"', '&quot;', $ftwUnfitReason);
 }else{
   $ftwUnfitReason='';
 }
