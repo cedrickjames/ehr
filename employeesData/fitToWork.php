@@ -220,8 +220,14 @@ if (isset($_POST['addFTW'])) {
 
 
   $ftwDays = $_POST['ftwDays'];
+
   $ftwAbsenceReason = $_POST['ftwAbsenceReason'];
+  $ftwAbsenceReason = str_replace("'", "&apos;", $ftwAbsenceReason);
+  $ftwAbsenceReason = str_replace('"', '&quot;', $ftwAbsenceReason);
+
   $ftwDiagnosis = $_POST['ftwDiagnosis'];
+  $ftwDiagnosis = str_replace("'", "&apos;", $ftwDiagnosis);
+  $ftwDiagnosis = str_replace('"', '&quot;', $ftwDiagnosis);
 
 
   $cnsltnIntervention = $_POST['cnsltnIntervention'];
@@ -234,7 +240,11 @@ if (isset($_POST['addFTW'])) {
   $ftwUrinalysis = $_POST['ftwUrinalysis'];
   $ftwFecalysis = $_POST['ftwFecalysis'];
   $ftwXray = $_POST['ftwXray'];
+
   $ftwOthersLab = $_POST['ftwOthersLab'];
+  $ftwOthersLab = str_replace("'", "&apos;", $ftwOthersLab);
+  $ftwOthersLab = str_replace('"', '&quot;', $ftwOthersLab);
+
   $ftwBp = $_POST['ftwBp'];
   $ftwTemp = $_POST['ftwTemp'];
   $ftw02Sat = $_POST['ftw02Sat'];
@@ -244,7 +254,11 @@ if (isset($_POST['addFTW'])) {
   $isMedcertRequired = $_POST['medicalCertificate'];
   $ftwDaysOfRest = $_POST['ftwDaysOfRest'];
  $ftwUnfitReason = $_POST['ftwUnfitReason'];
+
   $ftwOthersRemarks = $_POST['ftwOthersRemarks'];
+  $ftwOthersRemarks = str_replace("'", "&apos;", $ftwOthersRemarks);
+  $ftwOthersRemarks = str_replace('"', '&quot;', $ftwOthersRemarks);
+
   $ftwCompleted = isset($_POST['ftwCompleted']) ? $_POST['ftwCompleted'] : "0";
 
   $ftwWithPendingLab = $_POST['ftwWithPendingLab'];
@@ -268,6 +282,9 @@ if (isset($_POST['addFTW'])) {
   if (isset($_POST['ftwMeds']) && !empty($_POST['ftwMeds'])) {
     $ftwMeds = $_POST['ftwMeds'];
     $ftwMeds = implode(', ', $ftwMeds);
+    $ftwMeds = str_replace("'", "&apos;", $ftwMeds);
+    $ftwMeds = str_replace('"', '&quot;', $ftwMeds);
+    
   }
   else{
     $ftwMeds="";
@@ -548,12 +565,21 @@ if (isset($_POST['proceedToConsultation'])) {
   $ftwCtnSLDateTo = $_POST['ftwSLDateTo'];
   $ftwCtnDays = $_POST['ftwDays'];
   $ftwCtnAbsenceReason = $_POST['ftwAbsenceReason'];
+  $ftwCtnAbsenceReason = str_replace("'", "&apos;", $ftwCtnAbsenceReason);
+  $ftwCtnAbsenceReason = str_replace('"', '&quot;', $ftwCtnAbsenceReason);
+
+
   $ftwCtnRemarks = $_POST['ftwRemarks'];
+  $ftwCtnRemarks = str_replace("'", "&apos;", $ftwCtnRemarks);
+  $ftwCtnRemarks = str_replace('"', '&quot;', $ftwCtnRemarks);
 
 
   $isMedcertRequired = $_POST['medicalCertificate'];
   $ftwDaysOfRest = $_POST['ftwDaysOfRest'];
  $ftwUnfitReason = $_POST['ftwUnfitReason'];
+ $ftwUnfitReason = str_replace("'", "&apos;", $ftwUnfitReason);
+ $ftwUnfitReason = str_replace('"', '&quot;', $ftwUnfitReason);
+
 
  $timeOfFiling = $_POST['timeOfFiling'];
 //  $ftwMedCategory = $_POST['ftwMedCategory'];
@@ -561,7 +587,13 @@ if (isset($_POST['proceedToConsultation'])) {
   $cnsltnCategories = $_POST['ftwMedCategory'];
   $cnsltnBuilding = $_POST['ftwBuilding'];
   $cnsltnChiefComplaint = $_POST['ftwAbsenceReason'];
+  $cnsltnChiefComplaint = str_replace("'", "&apos;", $cnsltnChiefComplaint);
+  $cnsltnChiefComplaint = str_replace('"', '&quot;', $cnsltnChiefComplaint);
+
   $cnsltnDiagnosis = $_POST['ftwDiagnosis'];
+  $cnsltnDiagnosis = str_replace("'", "&apos;", $cnsltnDiagnosis);
+  $cnsltnDiagnosis = str_replace('"', '&quot;', $cnsltnDiagnosis);
+
   $cnsltnIntervention = $_POST['cnsltnIntervention']; // siguro mag lagay muna ng modal before proceeding para dito sa intervention, clinic rest and meds
   $cnsltnClinicRestFrom = $_POST['cnsltnClinicRestFrom'];
   $cnsltnClinicRestTo = $_POST['cnsltnClinicRestTo'];
@@ -570,7 +602,8 @@ if (isset($_POST['proceedToConsultation'])) {
   if (isset($_POST['ftwMeds']) && !empty($_POST['ftwMeds'])) {
     $cnsltnMeds = $_POST['ftwMeds'];
     $cnsltnMeds = implode(', ', $cnsltnMeds);
-
+    $cnsltnMeds = str_replace("'", "&apos;", $cnsltnMeds);
+    $cnsltnMeds = str_replace('"', '&quot;', $cnsltnMeds);
   }
   else{
 

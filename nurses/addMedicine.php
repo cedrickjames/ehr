@@ -2,7 +2,8 @@
 include ("../includes/connect.php");
 
     $addedMedicine = $_POST['addedMedicine'];
-
+    $addedMedicine = str_replace("'", "&apos;", $addedMedicine);
+    $addedMedicine = str_replace('"', '&quot;', $addedMedicine);
     // $computername = $_POST['computername'];
     // echo $computername;
 

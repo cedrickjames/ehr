@@ -2,7 +2,8 @@
 include ("../includes/connect.php");
 
     $addVaccine = $_POST['addedVaccine'];
-
+    $addVaccine = str_replace("'", "&apos;", $addVaccine);
+    $addVaccine = str_replace('"', '&quot;', $addVaccine);
     // $computername = $_POST['computername'];
     // echo $computername;
 

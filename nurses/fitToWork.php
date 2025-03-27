@@ -398,8 +398,21 @@ if ($(this).val() === "addMedicineButton") {
       if (addDiagnosis.readyState === XMLHttpRequest.DONE) {
         if (addDiagnosis.status === 200) {
           // Update was successful
-          modalDiagnosis.toggle();
-          alert("Added Successfuly!")
+          try {
+                    var response = JSON.parse(addDiagnosis.responseText);
+                    if (response.success) {
+                        // Update was successful
+                        modalDiagnosis.toggle();
+                        alert("Diagnosis added successfully!");
+                    } else {
+                        // Display the SQL error
+                        console.log("Error: " + response.error);
+                        alert("Error: " + response.error);
+                    }
+                } catch (e) {
+                    console.log("Error parsing JSON response: " + e.message);
+                    alert("Error parsing response from server.");
+                }
         } else {
           console.log("Error: " + addDiagnosis.status);
         }
