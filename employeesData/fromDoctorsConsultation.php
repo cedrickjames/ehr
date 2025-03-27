@@ -97,7 +97,9 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   $remarks = $userRow['remarks'];
   $otherRemarks = $userRow['otherRemarks'];
   $finalDx = $userRow['finalDx'];
+  $docManagement = $userRow['docManagement'];
 
+  
   $briefMedicalHistory = $userRow['briefMedicalHistory'];
   $physicalExams = $userRow['physicalExams'];
 
@@ -1136,7 +1138,10 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
         <h3 class=" my-auto  font-semibold text-gray-900 ">Physical Examination</h3>
         <textarea  rows="3"  name="physicalExam" class="block p-2.5 w-full text-[12px] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="physicalExam"><?php echo $physicalExams; ?></textarea>
       </div>
-     
+      <div class="col-span-4  gap-4">
+        <h3 class=" my-auto  font-semibold text-gray-900 ">Doctor's Management: </h3>
+        <input type="text" name="finalDx" value="<?php echo $docManagement; ?>" id="" class="  bg-gray-50 border border-gray-300 text-gray-900 w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      </div>
       <div class="col-span-4  gap-4">
         <h3 class=" my-auto  font-semibold text-gray-900 ">Final Dx: </h3>
         <input type="text" name="finalDx" value="<?php echo $finalDx; ?>" id="" class="  bg-gray-50 border border-gray-300 text-gray-900 w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">

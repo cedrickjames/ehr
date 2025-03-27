@@ -41,6 +41,8 @@ while ($userRow = mysqli_fetch_assoc($resultInfo)) {
   // echo $remarks;
   $otherRemarks = $userRow['otherRemarks'];
   $finalDx = $userRow['finalDx'];
+  $docManagement = $userRow['docManagement'];
+
 
 
   $medicalLab = $userRow['medicalLab'];
@@ -592,6 +594,10 @@ if (isset($_POST['updateConsultation'])) {
       <div class="col-span-4  gap-4">
         <h3 class="  block my-auto  font-semibold text-gray-900 ">Others: </h3>
         <input type="text" value="<?php echo $otherRemarks; ?>" name="cnsltnOthersRemarks"  class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      </div>
+      <div class="col-span-4  gap-4">
+        <h3 class="  block my-auto  font-semibold text-gray-900 ">Doctor's Management: </h3>
+        <input disabled type="text" name="finalDx" value="<?php echo $docManagement; ?>"  class="  bg-gray-50 border border-gray-300 text-gray-900  w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
       </div>
       <div class="col-span-4  gap-4">
         <h3 class="  block my-auto  font-semibold text-gray-900 ">Final Dx: </h3>
