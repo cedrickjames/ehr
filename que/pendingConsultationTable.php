@@ -44,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <th>No.</th>
                 <th>Date</th>
                 <th>Name</th>
+                <th>Due Date</th>
                 <th>Action</th>
                 <th>Nurse</th>
 
@@ -84,6 +85,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   
                   ?> </td>
                   <td> <?php echo $row['Name']; ?> </td>
+                  <td>
+                  <?php 
+                  $dueDate = new DateTime($row['pendingLabDueDate']);
+                  $dueDate = $dueDate->format('F d, Y');
+                  echo $dueDate;
+                  
+                  ?> 
+                  <!-- <?php echo $row['pendingLabDueDate']; ?> </td> -->
+
+                  
                   <td>
                     <div class="content-center flex flex-wrap justify-center gap-2">
                       <input type="text" class="hidden" name="rfid<?php echo $queNo; ?>" value="<?php echo $row['idNumber']; ?>">
