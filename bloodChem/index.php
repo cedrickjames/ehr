@@ -52,6 +52,14 @@ if (!isset($_SESSION['connected'])) {
   <script src="../node_modules/select2/dist/js/select2.min.js"></script>
   <script type="text/javascript" src="index.js"></script>
   <script>
+
+
+$(".js-employees").select2({
+      tags: true
+    });
+
+
+    
      <?php
     $sidebar1;
 
