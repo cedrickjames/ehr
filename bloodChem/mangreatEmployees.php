@@ -570,7 +570,7 @@ if (isset($_POST['addBloodChemImport'])) {
                             <input type="text" name="hlpsgpt" id="hlpsgpt" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
                         <div class="col-span-2">
-                            <label for="hlpsgdt" class="block my-auto   text-gray-900 ">SGDT: </label>
+                            <label for="hlpsgdt" class="block my-auto   text-gray-900 ">SGOT: </label>
                             <input type="text" name="hlpsgdt" id="hlpsgdt" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
                         <div class="col-span-2">

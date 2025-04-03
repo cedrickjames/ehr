@@ -76,6 +76,8 @@ if (isset($_POST['addBloodChem'])) {
     $hdl = $_POST['hlphdl'];
     $ldl = $_POST['hlpldl'];
     $bun = $_POST['hlpbun'];
+    $hlpcreatinine = $_POST['hlpcreatinine'];
+
     $bua = $_POST['hlpbua'];
     $sgpt = $_POST['hlpsgpt'];
     $sgdt = $_POST['hlpsgdt'];
@@ -97,7 +99,7 @@ if (isset($_POST['addBloodChem'])) {
         $Meds = implode(', ', $Meds);
     }
 
-    $addBloodChem = "INSERT INTO `bloodchem`(`idNumber`, `date`, `time` ,`building`, `type`, `diagnosis`, `intervention`, `medications`, `followupdate`, `FBS`, `cholesterol`, `triglycerides`, `HDL`, `LDL`, `BUN`, `BUA`, `SGPT`, `SGDT`, `HBA1C`, `potassium`, `sodium`, `FT3`, `FT4`, `TSH`, `others` ,`remarks`) VALUES ('$idNumber','$date','$time','$building','$type','$diagnosis','$intervention','$Meds','$followupdate','$fbs','$cholesterol','$triglycerides', '$hdl', '$ldl', '$bun', '$bua', '$sgpt', '$sgdt', '$hbaic', '$hlpK', '$hlpNa', '$FT3', '$FT4', '$TSH', '$others', '$remarks')";
+    $addBloodChem = "INSERT INTO `bloodchem`(`idNumber`, `date`, `time` ,`building`, `type`, `diagnosis`, `intervention`, `medications`, `followupdate`, `FBS`, `cholesterol`, `triglycerides`, `HDL`, `LDL`, `BUN`, `creatinine`, `BUA`, `SGPT`, `SGDT`, `HBA1C`, `potassium`, `sodium`, `FT3`, `FT4`, `TSH`, `others` ,`remarks`) VALUES ('$idNumber','$date','$time','$building','$type','$diagnosis','$intervention','$Meds','$followupdate','$fbs','$cholesterol','$triglycerides', '$hdl', '$ldl', '$bun','$hlpcreatinine', '$bua', '$sgpt', '$sgdt', '$hbaic', '$hlpK', '$hlpNa', '$FT3', '$FT4', '$TSH', '$others', '$remarks')";
     $resultInfo = mysqli_query($con, $addBloodChem);
 
     if ($resultInfo) {
@@ -148,6 +150,8 @@ if (isset($_POST['editBloodChem'])) {
     $hdl = $_POST['edithdl'];
     $ldl = $_POST['editldl'];
     $bun = $_POST['editbun'];
+    $editcreatinine = $_POST['editcreatinine'];
+
     $bua = $_POST['editbua'];
     $sgpt = $_POST['editsgpt'];
     $sgdt = $_POST['editsgdt'];
@@ -186,7 +190,7 @@ if (isset($_POST['editBloodChem'])) {
     
 
 
-    $editBloodChem = "UPDATE `bloodchem` SET `date`='$date' , `time` = '$time', `building`= '$building', `type`= '$type', `diagnosis`= '$diagnosis', `intervention`= '$intervention', `medications`= '$Meds', `followupdate`= '$followupdate', `FBS`= '$fbs', `cholesterol`= '$cholesterol', `triglycerides`= '$triglycerides', `HDL`= '$hdl', `LDL`= '$ldl', `BUN`= '$bun', `BUA`= '$bua', `SGPT`= '$sgpt', `SGDT`= '$sgdt', `HBA1C`= '$hbaic',`potassium`='$editK',`sodium`='$editNa',`FT3`='$editFT3',`FT4`='$editFT4',`TSH`='$editTSH', `others` = '$others',`remarks`= '$remarks' WHERE `id`='$id'";
+    $editBloodChem = "UPDATE `bloodchem` SET `date`='$date' , `time` = '$time', `building`= '$building', `type`= '$type', `diagnosis`= '$diagnosis', `intervention`= '$intervention', `medications`= '$Meds', `followupdate`= '$followupdate', `FBS`= '$fbs', `cholesterol`= '$cholesterol', `triglycerides`= '$triglycerides', `HDL`= '$hdl', `LDL`= '$ldl', `BUN`= '$bun',`creatinine`= '$editcreatinine', `BUA`= '$bua', `SGPT`= '$sgpt', `SGDT`= '$sgdt', `HBA1C`= '$hbaic',`potassium`='$editK',`sodium`='$editNa',`FT3`='$editFT3',`FT4`='$editFT4',`TSH`='$editTSH', `others` = '$others',`remarks`= '$remarks' WHERE `id`='$id'";
     $resultInfo = mysqli_query($con, $editBloodChem);
 
     if ($resultInfo) {
@@ -402,7 +406,7 @@ if (isset($_POST['addBloodChemImport'])) {
                                         <div id="dropdownDots<?php echo $ApeNo; ?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                                             <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $ApeNo; ?>">
                                                 <li>
-                                                    <a type="button" onclick="openEditEmployee(this)" data-id="<?php echo $row['id'] ?>" data-rfid="<?php echo $row['idNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date="<?php echo $row['date']; ?>" data-time="<?php echo $row['time']; ?>" data-building="<?php echo $row['building']; ?>" data-type="<?php echo $row['type']; ?>" data-diagnosis="<?php echo $row['diagnosis']; ?>" data-intervention="<?php echo $row['intervention']; ?>" data-medications="<?php echo $row['medications']; ?>" data-followupdate="<?php echo $row['followupdate']; ?>" data-FBS="<?php echo $row['FBS']; ?>" data-cholesterol="<?php echo $row['cholesterol']; ?>" data-triglycerides="<?php echo $row['triglycerides']; ?>" data-HDL="<?php echo $row['HDL']; ?>" data-LDL="<?php echo $row['LDL']; ?>" data-BUN="<?php echo $row['BUN']; ?>" data-BUA="<?php echo $row['BUA']; ?>" data-SGPT="<?php echo $row['SGPT']; ?>" data-SGDT="<?php echo $row['SGDT']; ?>" data-HBA1C="<?php echo $row['HBA1C']; ?>" data-potassium="<?php echo $row['potassium']; ?>" data-sodium="<?php echo $row['sodium']; ?>" data-FT3="<?php echo $row['FT3']; ?>" data-FT4="<?php echo $row['FT4']; ?>" data-TSH="<?php echo $row['TSH']; ?>"  data-others="<?php echo $row['others']; ?>" data-remarks="<?php echo $row['remarks']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit HLP Record</a>
+                                                    <a type="button" onclick="openEditEmployee(this)" data-id="<?php echo $row['id'] ?>" data-rfid="<?php echo $row['idNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date="<?php echo $row['date']; ?>" data-time="<?php echo $row['time']; ?>" data-building="<?php echo $row['building']; ?>" data-type="<?php echo $row['type']; ?>" data-diagnosis="<?php echo $row['diagnosis']; ?>" data-intervention="<?php echo $row['intervention']; ?>" data-medications="<?php echo $row['medications']; ?>" data-followupdate="<?php echo $row['followupdate']; ?>" data-FBS="<?php echo $row['FBS']; ?>" data-cholesterol="<?php echo $row['cholesterol']; ?>" data-triglycerides="<?php echo $row['triglycerides']; ?>" data-HDL="<?php echo $row['HDL']; ?>" data-LDL="<?php echo $row['LDL']; ?>" data-BUN="<?php echo $row['BUN']; ?>" data-creatinine="<?php echo $row['creatinine']; ?>" data-BUA="<?php echo $row['BUA']; ?>" data-SGPT="<?php echo $row['SGPT']; ?>" data-SGDT="<?php echo $row['SGDT']; ?>" data-HBA1C="<?php echo $row['HBA1C']; ?>" data-potassium="<?php echo $row['potassium']; ?>" data-sodium="<?php echo $row['sodium']; ?>" data-FT3="<?php echo $row['FT3']; ?>" data-FT4="<?php echo $row['FT4']; ?>" data-TSH="<?php echo $row['TSH']; ?>"  data-others="<?php echo $row['others']; ?>" data-remarks="<?php echo $row['remarks']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit HLP Record</a>
                                                 </li>
 
                                             </ul>
@@ -437,6 +441,9 @@ if (isset($_POST['addBloodChemImport'])) {
                                         if ($row['BUN'] != "") {
                                             echo "BUN: " . $row['BUN'] . " ";
                                         }
+                                        if ($row['creatinine'] != "") {
+                                            echo "Crea: " . $row['creatinine'] . " ";
+                                        }
                                         if ($row['BUA'] != "") {
                                             echo "BUA: " . $row['BUA'] . " ";
                                         }
@@ -444,10 +451,25 @@ if (isset($_POST['addBloodChemImport'])) {
                                             echo "SGPT: " . $row['SGPT'] . " ";
                                         }
                                         if ($row['SGDT'] != "") {
-                                            echo "SGDT: " . $row['SGDT'] . " ";
+                                            echo "SGOT: " . $row['SGDT'] . " ";
                                         }
                                         if ($row['HBA1C'] != "") {
                                             echo "HBA1C: " . $row['HBA1C'] . " ";
+                                        }
+                                        if ($row['potassium'] != "") {
+                                            echo "K: " . $row['potassium'] . " ";
+                                        }
+                                        if ($row['sodium'] != "") {
+                                            echo "Na: " . $row['sodium'] . " ";
+                                        }
+                                        if ($row['FT3'] != "") {
+                                            echo "FT3: " . $row['FT3'] . " ";
+                                        }
+                                        if ($row['FT4'] != "") {
+                                            echo "FT4: " . $row['FT4'] . " ";
+                                        }
+                                        if ($row['TSH'] != "") {
+                                            echo "TSH: " . $row['TSH'] . " ";
                                         }
                                         if ($row['others'] != "") {
                                             echo "others: " . $row['others'] . " ";
@@ -674,6 +696,10 @@ if (isset($_POST['addBloodChemImport'])) {
                             <input type="text" name="hlpbun" id="hlpbun" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
                         <div class="col-span-2">
+                            <label for="hlpcreatinine" class="block my-auto   text-gray-900 ">Creatinine: </label>
+                            <input type="text" name="hlpcreatinine" id="hlpcreatinine" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        </div>
+                        <div class="col-span-2">
                             <label for="hlpbua" class="block my-auto   text-gray-900 ">BUA: </label>
                             <input type="text" name="hlpbua" id="hlpbua" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
@@ -682,7 +708,7 @@ if (isset($_POST['addBloodChemImport'])) {
                             <input type="text" name="hlpsgpt" id="hlpsgpt" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
                         <div class="col-span-2">
-                            <label for="hlpsgdt" class="block my-auto   text-gray-900 ">SGDT: </label>
+                            <label for="hlpsgdt" class="block my-auto   text-gray-900 ">SGOT: </label>
                             <input type="text" name="hlpsgdt" id="hlpsgdt" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
                         <div class="col-span-2">
@@ -1035,6 +1061,10 @@ if (isset($_POST['addBloodChemImport'])) {
                             <input type="text" name="editbun" id="editbun" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                         </div>
                         <div class="col-span-2">
+                            <label for="editcreatinine" class="block my-auto   text-gray-900 ">Creatinine: </label>
+                            <input type="text" name="editcreatinine" id="editcreatinine" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        </div>
+                        <div class="col-span-2">
                             <label for="editbua" class="block my-auto  font-semibold text-gray-900 ">BUA: </label>
                             <input type="text" name="editbua" id="editbua" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                         </div>
@@ -1043,7 +1073,7 @@ if (isset($_POST['addBloodChemImport'])) {
                             <input type="text" name="editsgpt" id="editsgpt" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                         </div>
                         <div class="col-span-2">
-                            <label for="editsgdt" class="block my-auto  font-semibold text-gray-900 ">SGDT: </label>
+                            <label for="editsgdt" class="block my-auto  font-semibold text-gray-900 ">SGOT: </label>
                             <input type="text" name="editsgdt" id="editsgdt" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                         </div>
                         <div class="col-span-2">
@@ -1213,6 +1243,8 @@ if (isset($_POST['addBloodChemImport'])) {
         document.getElementById("edithdl").value = element.getAttribute("data-HDL");
         document.getElementById("editldl").value = element.getAttribute("data-LDL");
         document.getElementById("editbun").value = element.getAttribute("data-BUN");
+        document.getElementById("editcreatinine").value = element.getAttribute("data-creatinine");
+
         document.getElementById("editbua").value = element.getAttribute("data-BUA");
         document.getElementById("editsgpt").value = element.getAttribute("data-SGPT");
         document.getElementById("editsgdt").value = element.getAttribute("data-SGDT");
