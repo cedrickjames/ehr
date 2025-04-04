@@ -559,23 +559,75 @@ if (isset($_POST['addBloodChemImport'])) {
                         </select>
 
                     </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editdiagnosis" class="block  my-auto   text-gray-900 ">Diagnosis: </label>
-                        <select id="editdiagnosis" name="editdiagnosis" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
-                            <option selected>Select Diagnosis</option>
-                            <?php
-                            $sql1 = "Select * FROM `diagnosis`";
-                            $result = mysqli_query($con, $sql1);
-                            while ($list = mysqli_fetch_assoc($result)) {
-                                $diagnosis = $list["diagnosisName"];
-                            ?>
-                                <option><?php echo $diagnosis; ?></option>
-                            <?php
 
-                            }
-                            ?>
-                        </select>
-                    </div>
+
+
+
+
+
+
+
+                    <div id="diagnosisDiv"  class="relative gap-4 col-span-2">
+        <label  class="block  my-auto  font-semibold text-gray-900 ">Diagnosis: </label>
+        <!-- <input type="text"  name="ftwDiagnosis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
+        <select  required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" id="ftwDiagnosiOption" name="editdiagnosis" class="js-diagnosis bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option selected disabled value="">Select Diagnosis</option>
+          <option value="addDiagnosisButton">Add Diagnosis</option>
+          <?php
+          $sql1 = "Select * FROM `diagnosis`";
+          $result = mysqli_query($con, $sql1);
+          while ($list = mysqli_fetch_assoc($result)) {
+            $diagnosis = $list["diagnosisName"];
+          ?>
+            <option  value="<?php echo $diagnosis; ?>"><?php echo $diagnosis; ?></option>
+          <?php
+
+            //  echo "<option value='$diagnosis' >$diagnosis</option>";
+
+          }
+          ?>
+        </select>
+ 
+
+
+
+
+        <div id="addDiagnosis" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+          <div class="relative w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <!-- Modal header -->
+              <div class="items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <label class="block text-xl font-semibold text-gray-900 dark:text-white">
+                  Add Diagnosis
+                </label>
+                <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="addDiagnosis">
+                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                  </svg>
+                  <span class="sr-only">Close modal</span>
+                </button>
+              </div>
+              <!-- Modal body -->
+              <div class="p-4 md:p-5">
+                <form class="space-y-4" action="#">
+                  <div>
+                    <input type="text" name="diagnosis" id="diagnosis" class="mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" />
+                  </div>
+                  <button type="button" onclick="addDiagnosis()" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+  
+
+
+
+      </div>
+
+
                     <div class="content-center  col-span-2">
                         <label for="editintervention" class="block  my-auto  text-gray-900 ">Intervention</label>
 
@@ -623,6 +675,40 @@ if (isset($_POST['addBloodChemImport'])) {
           ?>
 
         </select>
+
+        <div id="addMedicine" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+          <div class="relative w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <!-- Modal header -->
+              <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                  Add Medicine
+                </h3>
+                <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="addMedicine">
+                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                  </svg>
+                  <span class="sr-only">Close modal</span>
+                </button>
+              </div>
+              <!-- Modal body -->
+              <div class="p-4 md:p-5">
+                <form class="space-y-4" action="#">
+                  <div>
+
+                    <input type="text" name="medicine" id="medicine" class="mb-4 bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" />
+                  </div>
+
+
+                  <button type="button" onclick="addMedicine()" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add</button>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
                                     <!-- <input type="text" id="nameOfMedicine" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg"> -->
 
                                 </div>
@@ -667,72 +753,130 @@ if (isset($_POST['addBloodChemImport'])) {
                     <div class="col-span-4">
                         <h3 class="block my-auto w-full  text-gray-900 ">Laboratory: </h3>
                     </div>
+                    <?php
+                    
+                        $sql = "SELECT * FROM `hlpreference`;";
+                       $result = mysqli_query($con,$sql);
+
+                       $testReference=[];
+                            while($row = mysqli_fetch_assoc($result)){
+                                $testName = $row['test'];
+                                $unit = $row['unit'];
+                                $minimum = $row['referenceMinimum'];
+                                $maximum = $row['referenceMaximum'];
+
+                                $testReference[] = [
+                                    'testName' => $testName,'unit' => $unit,'minimum' => $minimum,'maximum' => $maximum
+                                ];
+
+                            }
+                       
+                       
+                    ?>
                     <div class="ml-4 grid grid-cols-4  col-span-4 gap-1">
+                    <input type="text" class="hidden" id="hlpfbsmin" value="<?php if (isset($testReference[0])) { $test = $testReference[0];     echo $test['minimum'];} ?>">
+                    <input type="text" class="hidden" id="hlpcholesterolmin" value="<?php if (isset($testReference[1])) { $test = $testReference[1];     echo $test['minimum'];} ?>">
+                    <input type="text" class="hidden" id="hlptriglyceridesmin" value="<?php if (isset($testReference[2])) { $test = $testReference[2];     echo $test['minimum'];} ?>">
+                    <input type="text" class="hidden" id="hlphdlmin" value="<?php if (isset($testReference[3])) { $test = $testReference[3];     echo $test['minimum'];} ?>">
+                    <input type="text" class="hidden" id="hlpldlmin" value="<?php if (isset($testReference[4])) { $test = $testReference[4];     echo $test['minimum'];} ?>">
+                    <input type="text" class="hidden" id="hlpbunmin" value="<?php if (isset($testReference[5])) { $test = $testReference[5];     echo $test['minimum'];} ?>">
+                    <input type="text" class="hidden" id="hlpcreatininemin" value="<?php if (isset($testReference[6])) { $test = $testReference[6];     echo $test['minimum'];} ?>">
+                    <input type="text" class="hidden" id="hlpbuamin" value="<?php if (isset($testReference[7])) { $test = $testReference[7];     echo $test['minimum'];} ?>">
+                    <input type="text" class="hidden" id="hlpsgdtmin" value="<?php if (isset($testReference[8])) { $test = $testReference[8];     echo $test['minimum'];} ?>">
+                    <input type="text" class="hidden" id="hlpsgptmin" value="<?php if (isset($testReference[9])) { $test = $testReference[9];     echo $test['minimum'];} ?>">
+                    <input type="text" class="hidden" id="hlphbaicmin" value="<?php if (isset($testReference[10])) { $test = $testReference[10];     echo $test['minimum'];} ?>">
+                    <input type="text" class="hidden" id="hlpKmin" value="<?php if (isset($testReference[11])) { $test = $testReference[11];     echo $test['minimum'];} ?>">
+                    <input type="text" class="hidden" id="hlpNamin" value="<?php if (isset($testReference[12])) { $test = $testReference[12];     echo $test['minimum'];} ?>">
+                    <input type="text" class="hidden" id="FT3min" value="<?php if (isset($testReference[13])) { $test = $testReference[13];     echo $test['minimum'];} ?>">
+                    <input type="text" class="hidden" id="FT4min" value="<?php if (isset($testReference[14])) { $test = $testReference[14];     echo $test['minimum'];} ?>">
+                    <input type="text" class="hidden" id="TSHmin" value="<?php if (isset($testReference[15])) { $test = $testReference[15];     echo $test['minimum'];} ?>">
+
+
+                    <input type="text" class="hidden" id="hlpfbsmax" value="<?php if (isset($testReference[0])) { $test = $testReference[0];  echo $test['maximum'];} ?>">
+                    <input type="text" class="hidden" id="hlpcholesterolmax" value="<?php if (isset($testReference[1])) { $test = $testReference[1];     echo $test['maximum'];} ?>">
+                    <input type="text" class="hidden" id="hlptriglyceridesmax" value="<?php if (isset($testReference[2])) { $test = $testReference[2];     echo $test['maximum'];} ?>">
+                    <input type="text" class="hidden" id="hlphdlmax" value="<?php if (isset($testReference[3])) { $test = $testReference[3];     echo $test['maximum'];} ?>">
+                    <input type="text" class="hidden" id="hlpldlmax" value="<?php if (isset($testReference[4])) { $test = $testReference[4];     echo $test['maximum'];} ?>">
+                    <input type="text" class="hidden" id="hlpbunmax" value="<?php if (isset($testReference[5])) { $test = $testReference[5];     echo $test['maximum'];} ?>">
+                    <input type="text" class="hidden" id="hlpcreatininemax" value="<?php if (isset($testReference[6])) { $test = $testReference[6];     echo $test['maximum'];} ?>">
+                    <input type="text" class="hidden" id="hlpbuamax" value="<?php if (isset($testReference[7])) { $test = $testReference[7];     echo $test['maximum'];} ?>">
+                    <input type="text" class="hidden" id="hlpsgdtmax" value="<?php if (isset($testReference[8])) { $test = $testReference[8];     echo $test['maximum'];} ?>">
+                    <input type="text" class="hidden" id="hlpsgptmax" value="<?php if (isset($testReference[9])) { $test = $testReference[9];     echo $test['maximum'];} ?>">
+                    <input type="text" class="hidden" id="hlphbaicmax" value="<?php if (isset($testReference[10])) { $test = $testReference[10];     echo $test['maximum'];} ?>">
+                    <input type="text" class="hidden" id="hlpKmax" value="<?php if (isset($testReference[11])) { $test = $testReference[11];     echo $test['maximum'];} ?>">
+                    <input type="text" class="hidden" id="hlpNamax" value="<?php if (isset($testReference[12])) { $test = $testReference[12];     echo $test['maximum'];} ?>">
+                    <input type="text" class="hidden" id="FT3max" value="<?php if (isset($testReference[13])) { $test = $testReference[13];     echo $test['maximum'];} ?>">
+                    <input type="text" class="hidden" id="FT4max" value="<?php if (isset($testReference[14])) { $test = $testReference[14];     echo $test['maximum'];} ?>">
+                    <input type="text" class="hidden" id="TSHmax" value="<?php if (isset($testReference[15])) { $test = $testReference[15];     echo $test['maximum'];} ?>">
+                    
                         <div class="col-span-2">
-                            <label for="hlpfbs" class="block my-auto   text-gray-900 ">FBS: </label>
+                            <label for="hlpfbs" class="block my-auto   text-gray-900 ">FBS: <span class="text-gray-400 text-sm"><?php if (isset($testReference[0])) { $test = $testReference[0];     echo $test['minimum'] . "-";    echo $test['maximum'];} ?> </span>   
+                            </label>
+                            
                             <input type="text" value="" name="hlpfbs" id="hlpfbs" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
 
                         <div class="col-span-2">
-                            <label for="hlpcholesterol" class="block my-auto   text-gray-900 ">Cholesterol: </label>
+                            <label for="hlpcholesterol" class="block my-auto   text-gray-900 ">Cholesterol: <span class="text-gray-400 text-sm"><?php if (isset($testReference[1])) { $test = $testReference[1];     echo $test['minimum'] . "-";    echo $test['maximum'];} ?></span></label>
                             <input type="text" name="hlpcholesterol" id="hlpcholesterol" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
 
                         <div class="col-span-2">
-                            <label for="hlptriglycerides" class="block my-auto   text-gray-900 ">Triglycerides: </label>
+                            <label for="hlptriglycerides" class="block my-auto   text-gray-900 ">Triglycerides: <span class="text-gray-400 text-sm"><?php if (isset($testReference[2])) { $test = $testReference[2];     echo $test['minimum'] . "-";    echo $test['maximum'];} ?></span></label>
                             <input type="text" name="hlptriglycerides" id="hlptriglycerides" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
 
                         <div class="col-span-2">
-                            <label for="hlphdl" class="block my-auto   text-gray-900 ">HDL: </label>
+                            <label for="hlphdl" class="block my-auto   text-gray-900 ">HDL: <span class="text-gray-400 text-sm"><?php if (isset($testReference[3])) { $test = $testReference[3];     echo $test['minimum'] . "-";    echo $test['maximum'];} ?></span></label>
                             <input type="text" name="hlphdl" id="hlphdl" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
                         <div class="col-span-2">
-                            <label for="hlpldl" class="block my-auto   text-gray-900 ">LDL: </label>
+                            <label for="hlpldl" class="block my-auto   text-gray-900 ">LDL: <span class="text-gray-400 text-sm"><?php if (isset($testReference[4])) { $test = $testReference[4];     echo $test['minimum'] . "-";    echo $test['maximum'];} ?></span></label>
                             <input type="text" name="hlpldl" id="hlpldl" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
                         <div class="col-span-2">
-                            <label for="hlpbun" class="block my-auto   text-gray-900 ">BUN: </label>
+                            <label for="hlpbun" class="block my-auto   text-gray-900 ">BUN: <span class="text-gray-400 text-sm"><?php if (isset($testReference[5])) { $test = $testReference[5];     echo $test['minimum'] . "-";    echo $test['maximum'];} ?></span></label>
                             <input type="text" name="hlpbun" id="hlpbun" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
                         <div class="col-span-2">
-                            <label for="hlpcreatinine" class="block my-auto   text-gray-900 ">Creatinine: </label>
+                            <label for="hlpcreatinine" class="block my-auto   text-gray-900 ">Creatinine: <span class="text-gray-400 text-sm"><?php if (isset($testReference[6])) { $test = $testReference[6];     echo $test['minimum'] . "-";    echo $test['maximum'];} ?></span></label>
                             <input type="text" name="hlpcreatinine" id="hlpcreatinine" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
                         <div class="col-span-2">
-                            <label for="hlpbua" class="block my-auto   text-gray-900 ">BUA: </label>
+                            <label for="hlpbua" class="block my-auto   text-gray-900 ">BUA: <span class="text-gray-400 text-sm"><?php if (isset($testReference[7])) { $test = $testReference[7];     echo $test['minimum'] . "-";    echo $test['maximum'];} ?></span></label>
                             <input type="text" name="hlpbua" id="hlpbua" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
+                   
                         <div class="col-span-2">
-                            <label for="hlpsgpt" class="block my-auto  text-gray-900 ">SGPT: </label>
-                            <input type="text" name="hlpsgpt" id="hlpsgpt" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
-                        </div>
-                        <div class="col-span-2">
-                            <label for="hlpsgdt" class="block my-auto   text-gray-900 ">SGOT: </label>
+                            <label for="hlpsgdt" class="block my-auto   text-gray-900 ">SGOT: <span class="text-gray-400 text-sm"><?php if (isset($testReference[8])) { $test = $testReference[8];     echo $test['minimum'] . "-";    echo $test['maximum'];} ?></span></label>
                             <input type="text" name="hlpsgdt" id="hlpsgdt" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
                         <div class="col-span-2">
-                            <label for="hlphbaic" class="block my-auto   text-gray-900 ">HBAIC: </label>
+                            <label for="hlpsgpt" class="block my-auto  text-gray-900 ">SGPT: <span class="text-gray-400 text-sm"><?php if (isset($testReference[9])) { $test = $testReference[9];     echo $test['minimum'] . "-";    echo $test['maximum'];} ?></span></label>
+                            <input type="text" name="hlpsgpt" id="hlpsgpt" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="hlphbaic" class="block my-auto   text-gray-900 ">HBA1C: <span class="text-gray-400 text-sm"><?php if (isset($testReference[10])) { $test = $testReference[10];     echo $test['minimum'] . "-";    echo $test['maximum'];} ?></span></label>
                             <input type="text" name="hlphbaic" id="hlphbaic" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
                         <div class="col-span-2">
-                            <label for="hlpK" class="block my-auto  text-gray-900 ">Potassium (K): </label>
+                            <label for="hlpK" class="block my-auto  text-gray-900 ">Potassium (K): <span class="text-gray-400 text-sm"><?php if (isset($testReference[11])) { $test = $testReference[11];     echo $test['minimum'] . "-";    echo $test['maximum'];} ?></span></label>
                             <input type="text" name="hlpK" id="hlpK" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
                         <div class="col-span-2">
-                            <label for="hlpNa" class="block my-auto  text-gray-900 ">Sodium (Na): </label>
+                            <label for="hlpNa" class="block my-auto  text-gray-900 ">Sodium (Na): <span class="text-gray-400 text-sm"><?php if (isset($testReference[12])) { $test = $testReference[12];     echo $test['minimum'] . "-";    echo $test['maximum'];} ?></span></label>
                             <input type="text" name="hlpNa" id="hlpNa" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
                         <div class="col-span-2">
-                            <label for="FT3" class="block my-auto  text-gray-900 ">FT3: </label>
+                            <label for="FT3" class="block my-auto  text-gray-900 ">FT3: <span class="text-gray-400 text-sm"><?php if (isset($testReference[13])) { $test = $testReference[13];     echo $test['minimum'] . "-";    echo $test['maximum'];} ?></span></label>
                             <input type="text" name="FT3" id="FT3" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
                         <div class="col-span-2">
-                            <label for="FT4" class="block my-auto  text-gray-900 ">FT4: </label>
+                            <label for="FT4" class="block my-auto  text-gray-900 ">FT4: <span class="text-gray-400 text-sm"><?php if (isset($testReference[14])) { $test = $testReference[14];     echo $test['minimum'] . "-";    echo $test['maximum'];} ?></span></label>
                             <input type="text" name="FT4" id="FT4" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
                         <div class="col-span-2">
-                            <label for="TSH" class="block my-auto  text-gray-900 ">TSH: </label>
+                            <label for="TSH" class="block my-auto  text-gray-900 ">TSH: <span class="text-gray-400 text-sm"><?php if (isset($testReference[15])) { $test = $testReference[15];     echo $test['minimum'] . "-";    echo $test['maximum'];} ?></span></label>
                             <input type="text" name="TSH" id="TSH" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
                         </div>
                         <div class="col-span-2">
@@ -1068,16 +1212,17 @@ if (isset($_POST['addBloodChemImport'])) {
                             <label for="editbua" class="block my-auto  font-semibold text-gray-900 ">BUA: </label>
                             <input type="text" name="editbua" id="editbua" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                         </div>
-                        <div class="col-span-2">
-                            <label for="editsgpt" class="block my-auto  font-semibold text-gray-900 ">SGPT: </label>
-                            <input type="text" name="editsgpt" id="editsgpt" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        </div>
+                      
                         <div class="col-span-2">
                             <label for="editsgdt" class="block my-auto  font-semibold text-gray-900 ">SGOT: </label>
                             <input type="text" name="editsgdt" id="editsgdt" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                         </div>
                         <div class="col-span-2">
-                            <label for="edithbaic" class="block my-auto  font-semibold text-gray-900 ">HBAIC: </label>
+                            <label for="editsgpt" class="block my-auto  font-semibold text-gray-900 ">SGPT: </label>
+                            <input type="text" name="editsgpt" id="editsgpt" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="edithbaic" class="block my-auto  font-semibold text-gray-900 ">HBA1C: </label>
                             <input type="text" name="edithbaic" id="edithbaic" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                         </div>
                         <div class="col-span-2">
@@ -1177,7 +1322,290 @@ if (isset($_POST['addBloodChemImport'])) {
 
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 <script>
+
+
     $(document).ready(function() {
+        const hlpfbsmin = parseFloat(document.getElementById('hlpfbsmin').value);
+        const hlpfbsmax = parseFloat(document.getElementById('hlpfbsmax').value);
+
+        const hlpcholesterolmin = parseFloat(document.getElementById('hlpcholesterolmin').value);
+        const hlpcholesterolmax = parseFloat(document.getElementById('hlpcholesterolmax').value);
+
+        const hlptriglyceridesmin = parseFloat(document.getElementById('hlptriglyceridesmin').value);
+        const hlptriglyceridesmax = parseFloat(document.getElementById('hlptriglyceridesmax').value);
+
+        const hlphdlmin = parseFloat(document.getElementById('hlphdlmin').value);
+        const hlphdlmax = parseFloat(document.getElementById('hlphdlmax').value);
+
+        const hlpldlmin = parseFloat(document.getElementById('hlpldlmin').value);
+        const hlpldlmax = parseFloat(document.getElementById('hlpldlmax').value);
+
+        const hlpbunmin = parseFloat(document.getElementById('hlpbunmin').value);
+        const hlpbunmax = parseFloat(document.getElementById('hlpbunmax').value);
+
+        const hlpcreatininemin = parseFloat(document.getElementById('hlpcreatininemin').value);
+        const hlpcreatininemax = parseFloat(document.getElementById('hlpcreatininemax').value);
+
+        const hlpbuamin = parseFloat(document.getElementById('hlpbuamin').value);
+        const hlpbuamax = parseFloat(document.getElementById('hlpbuamax').value);
+
+        const hlpsgdtmin = parseFloat(document.getElementById('hlpsgdtmin').value);
+        const hlpsgdtmax = parseFloat(document.getElementById('hlpsgdtmax').value);
+
+        const hlpsgptmin = parseFloat(document.getElementById('hlpsgptmin').value);
+        const hlpsgptmax = parseFloat(document.getElementById('hlpsgptmax').value);
+
+        const hlphbaicmin = parseFloat(document.getElementById('hlphbaicmin').value);
+        const hlphbaicmax = parseFloat(document.getElementById('hlphbaicmax').value);
+
+        const hlpKmin = parseFloat(document.getElementById('hlpKmin').value);
+        const hlpKmax = parseFloat(document.getElementById('hlpKmax').value);
+
+        const hlpNamin = parseFloat(document.getElementById('hlpNamin').value);
+        const hlpNamax = parseFloat(document.getElementById('hlpNamax').value);
+
+        const FT3min = parseFloat(document.getElementById('FT3min').value);
+        const FT3max = parseFloat(document.getElementById('FT3max').value);
+
+        const FT4min = parseFloat(document.getElementById('FT4min').value);
+        const FT4max = parseFloat(document.getElementById('FT4max').value);
+
+        const TSHmin = parseFloat(document.getElementById('TSHmin').value);
+        const TSHmax = parseFloat(document.getElementById('TSHmax').value);
+
+
+
+
+        $('#hlpfbs').on('input', function() {
+            const value = $(this).val();
+            if(value != ""){
+                if (value < hlpfbsmin || value > hlpfbsmax) {
+                $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                } else {
+                $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                }
+            }
+            else{
+             $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+            }
+        });
+
+        
+        $('#hlpcholesterol').on('input', function() {
+            const value = $(this).val();
+            if(value != ""){
+                if (value < hlpcholesterolmin || value > hlpcholesterolmax) {
+                $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                } else {
+                $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                }
+            }
+            else{
+             $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+            }
+        });
+        
+        $('#hlptriglycerides').on('input', function() {
+            const value = $(this).val();
+            if(value != ""){
+                if (value < hlptriglyceridesmin || value > hlptriglyceridesmax) {
+                $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                } else {
+                $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                }
+            }
+            else{
+             $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+            }
+        });
+        
+        $('#hlphdl').on('input', function() {
+            const value = $(this).val();
+            if(value != ""){
+                if (value < hlphdlmin || value > hlphdlmax) {
+                $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                } else {
+                $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                }
+            }
+            else{
+             $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+            }
+        });
+        
+        $('#hlpldl').on('input', function() {
+            const value = $(this).val();
+            if(value != ""){
+                if (value < hlpldlmin || value > hlpldlmax) {
+                $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                } else {
+                $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                }
+            }
+            else{
+             $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+            }
+        });
+        
+        $('#hlpbun').on('input', function() {
+            const value = $(this).val();
+            if(value != ""){
+                if (value < hlpbunmin || value > hlpbunmax) {
+                $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                } else {
+                $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                }
+            }
+            else{
+             $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+            }
+        });
+        
+        $('#hlpcreatinine').on('input', function() {
+            const value = $(this).val();
+            if(value != ""){
+                if (value < hlpcreatininemin || value > hlpcreatininemax) {
+                $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                } else {
+                $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                }
+            }
+            else{
+             $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+            }
+        });
+        
+        $('#hlpbua').on('input', function() {
+            const value = $(this).val();
+            if(value != ""){
+                if (value < hlpbuamin || value > hlpbuamax) {
+                $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                } else {
+                $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                }
+            }
+            else{
+             $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+            }
+        });
+        
+        $('#hlpsgdt').on('input', function() {
+            const value = $(this).val();
+            if(value != ""){
+                if (value < hlpsgdtmin || value > hlpsgdtmax) {
+                $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                } else {
+                $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                }
+            }
+            else{
+             $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+            }
+        });
+        
+        $('#hlpsgpt').on('input', function() {
+            const value = $(this).val();
+            if(value != ""){
+                if (value < hlpsgptmin || value > hlpsgptmax) {
+                $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                } else {
+                $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                }
+            }
+            else{
+             $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+            }
+        });
+        
+        $('#hlphbaic').on('input', function() {
+            const value = $(this).val();
+            if(value != ""){
+                if (value < hlphbaicmin || value > hlphbaicmax) {
+                $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                } else {
+                $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                }
+            }
+            else{
+             $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+            }
+        });
+        
+        $('#hlpK').on('input', function() {
+            const value = $(this).val();
+            if(value != ""){
+                if (value < hlpKmin || value > hlpKmax) {
+                $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                } else {
+                $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                }
+            }
+            else{
+             $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+            }
+        });
+        
+        $('#hlpNa').on('input', function() {
+            const value = $(this).val();
+            if(value != ""){
+                if (value < hlpNamin || value > hlpNamax) {
+                $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                } else {
+                $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                }
+            }
+            else{
+             $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+            }
+        });
+        
+        $('#FT3').on('input', function() {
+            const value = $(this).val();
+            if(value != ""){
+                if (value < FT3min || value > FT3max) {
+                $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                } else {
+                $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                }
+            }
+            else{
+             $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+            }
+        });
+        
+        $('#FT4').on('input', function() {
+            const value = $(this).val();
+            if(value != ""){
+                if (value < FT4min || value > FT4max) {
+                $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                } else {
+                $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                }
+            }
+            else{
+             $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+            }
+        });
+        
+        $('#TSH').on('input', function() {
+            const value = $(this).val();
+            if(value != ""){
+                if (value < TSHmin || value > TSHmax) {
+                $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                } else {
+                $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+                }
+            }
+            else{
+             $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
+            }
+        });
+
+
+
+
+
+
         $('#hlpname').change(function() {
             var selectedRfid = $(this).find('option:selected').data('hlprfid');
             $('#hlprfid').val(selectedRfid);

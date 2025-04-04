@@ -54,6 +54,167 @@ if (!isset($_SESSION['connected'])) {
   <script>
 
 
+$(".js-diagnosis").select2({
+    tags: true
+  });
+  $(".js-meds").select2({
+    tags: true
+  });
+
+const $tagertDiagnosisModal = document.getElementById('addDiagnosis');
+  const optionsDiagnosisModal = {
+    placement: 'center-center',
+    backdrop: 'static',
+    backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
+    closable: true,
+    onHide: () => {
+    },
+    onShow: () => {
+
+    },
+    onToggle: () => {
+    }
+  };
+  const modalDiagnosis = new Modal($tagertDiagnosisModal, optionsDiagnosisModal);
+  $(document).ready(function() {
+    // Attach change event handler to remarksSelect
+    $("#ftwDiagnosiOption").change(function() {
+      // Check if the selected option is the one you want
+      if ($(this).val() === "addDiagnosisButton") {
+        // Remove the "hidden" class from the input with id "medLab"
+        console.log("ced")
+        modalDiagnosis.toggle();
+      }
+    });
+  });
+
+  function addDiagnosis() {
+    var diagnosis = document.getElementById("diagnosis").value;
+    var addDiagnosis = new XMLHttpRequest();
+    addDiagnosis.open("POST", "addDiagnosis.php", true);
+    addDiagnosis.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    addDiagnosis.onreadystatechange = function() {
+      if (addDiagnosis.readyState === XMLHttpRequest.DONE) {
+        if (addDiagnosis.status === 200) {
+          // Update was successful
+          try {
+                    var response = JSON.parse(addDiagnosis.responseText);
+                    if (response.success) {
+                        // Update was successful
+                        modalDiagnosis.toggle();
+                        alert("Diagnosis added successfully!");
+                    } else {
+                        // Display the SQL error
+                        console.log("Error: " + response.error);
+                        alert("Error: " + response.error);
+                    }
+                } catch (e) {
+                    console.log("Error parsing JSON response: " + e.message);
+                    alert("Error parsing response from server.");
+                }
+        } else {
+          console.log("Error: " + addDiagnosis.status);
+        }
+      }
+    };
+
+    // Construct the data to be updated
+    var data = "addedDiagnosis=" + encodeURIComponent(diagnosis);
+    var optionValue = $("#diagnosis").val();
+
+    $("#ftwDiagnosiOption").append($('<option>', {
+      value: optionValue,
+      text: optionValue
+    }));
+    // data += "&computername="+ encodeURIComponent(result);
+
+    // Add any other parameters needed for the update
+    addDiagnosis.send(data);
+  }
+
+
+
+
+  
+  const $tagertMedicineModal = document.getElementById('addMedicine');
+
+const optionsMedicineModal = {
+placement: 'center-center',
+backdrop: 'static',
+backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
+closable: true,
+onHide: () => {
+console.log('modal is hidden');
+},
+onShow: () => {
+console.log('modal is shown');
+
+},
+onToggle: () => {
+console.log('modal has been toggled');
+
+}
+};
+const modalMedicine = new Modal($tagertMedicineModal, optionsMedicineModal);
+
+
+function addMedicine(){
+var medicine = document.getElementById("medicine").value;
+console.log(medicine);
+
+var addMedicine = new XMLHttpRequest();
+addMedicine.open("POST", "addMedicine.php", true);
+addMedicine.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+addMedicine.onreadystatechange = function() {
+  if (addMedicine.readyState === XMLHttpRequest.DONE) {
+      if (addMedicine.status === 200) {
+          // Update was successful
+          console.log(addMedicine);
+
+      
+      } else {
+          console.log("Error: " + addMedicine.status);
+      }
+  }
+};
+
+// Construct the data to be updated
+var data = "addedMedicine=" + encodeURIComponent(medicine);
+
+var optionValue = $("#medicine").val();
+
+$("#nameOfMedicine").append($('<option>', {
+                  value: optionValue,
+                  text: optionValue
+              }));
+// data += "&computername="+ encodeURIComponent(result);
+
+// Add any other parameters needed for the update
+
+addMedicine.send(data);
+modalMedicine.toggle();
+
+}
+
+
+$("#nameOfMedicine").change(function() {
+
+
+// Check if the selected option is the one you want
+if ($(this).val() === "addMedicineButton") {
+  // Remove the "hidden" class from the input with id "medLab"
+  modalMedicine.toggle();
+  // console.log("kasjhdkas");
+
+} 
+});
+
+
+
+
+
+
+
 $(".js-employees").select2({
       tags: true
     });
