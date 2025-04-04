@@ -368,6 +368,96 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
     ];
 }
 
+
+
+
+function saveToDatabaseEmployed($con, $data, $count)
+{
+    // Initialize an array to collect errors
+    $errorLogs = [];
+    $failedData = [];
+    $count1 = 0;
+    foreach ($data as $row) {
+        if ($count > 0) {
+
+            $databaseid = $row['0'];
+            $idNumber = $row['1'];
+            $name = $row['2'];
+            $dateHired = $row['3'];
+
+            $email = $row['4'];
+            $birthday = $row['5'];
+            $age = $row['6'];
+            $sex = $row['7'];
+            $address = $row['8'];
+            $civilStatus = $row['9'];
+            $employer = $row['10'];
+            $building = $row['11'];
+            $department = $row['12'];
+            $section = $row['13'];
+            $position = $row['14'];
+            $level = $row['15'];
+
+
+            $dateHiredObj = DateTime::createFromFormat(detectDateFormat($dateHired), $dateHired);
+            $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHired;
+
+            $birthdayObj = DateTime::createFromFormat(detectDateFormat($birthday), $birthday);
+            $birthdayFormatted = $birthdayObj ? $birthdayObj->format('Y-m-d') : $birthday;
+
+
+            try {
+
+                $query = "SELECT COUNT(*) AS count FROM employeespersonalinfo WHERE idNumber = '$idNumber' AND `employer` ='$employer'";
+                $result = mysqli_query($con, $query);
+                if ($result === false) {
+                    die("Query failed: " . mysqli_error($con));
+                }
+                $row = mysqli_fetch_assoc($result);
+                $count = (int)$row['count'];
+            
+                if($count>0){
+                    // echo "<script>alert('Id Number is already registered!') </script>";
+                array_push($failedData, [$databaseid, $idNumber, $name, $dateHired, $email, $birthday, $age, $sex, $address, $civilStatus, $employer, $building, $department, $section, $position, $level]);
+                }
+                else{
+                    $addEmployeeGpi = "INSERT INTO `employeespersonalinfo`(`idNumber`, `Name`, `email`, `birthday`,`age`, `sex`, `address`, `civilStatus`, `employer`,`building`, `department`, `section`, `position`, `level`, `dateHired`) VALUES ('$idNumber','$name', '$email','$birthdayFormatted', '$age','$sex','$address','$civilStatus','$employer','$building','$department','$section','$position', '$level', '$dateHiredFormatted')";
+                    $resultInfo = mysqli_query($con, $addEmployeeGpi);
+                
+                    if ($resultInfo) {
+                
+                        $editEmployeeGpi = "UPDATE `preemployment` SET  `idNumber` = '$idNumber', `name`= '$name', `email`='$email', `birthday`='$birthdayFormatted',`age`= '$age', `sex`= '$sex', `address`= '$address', `civilStatus`= '$civilStatus', `employer`= '$employer', `department`= '$department', `section`= '$section', `position`= '$position', `level`= '$level', `dateHired` = '$dateHiredFormatted' WHERE `id`= '$databaseid';";
+                        $resultInfo1 = mysqli_query($con, $editEmployeeGpi);
+                       
+                        $count1++;
+                    }
+                }
+
+            
+           
+            } catch (mysqli_sql_exception $e) {
+                // Catch the exception and get the error message
+                $error = $e->getMessage();
+                // Display the error in an alert
+
+
+                echo "<script>alert('Error: " . addslashes($error) . "');</script>";
+               array_push($failedData, [$databaseid,$idNumber, $name, $dateHired, $email, $birthday, $age, $sex, $address, $civilStatus, $employer, $building, $department, $section, $position, $level]);
+  
+            }
+        }
+        $count = 1;
+    }
+
+    // Return error logs array
+    return [
+        'count1' => $count1,
+        'errorLogs' => $errorLogs,
+        'failedData' => $failedData
+    ];
+}
+
+
 // Main script to import Excel and process data
 if (isset($_POST['addPreEmploymentImport'])) {
 
@@ -438,19 +528,54 @@ if (isset($_POST['addPreEmploymentImport'])) {
             echo 'Error: ' . $e->getMessage();
         }
     } else {
-        echo "<script>alert('Invalid file format. Allowed formats: xls, csv, xlsx');</script>";
+        echo "<script>alert('Invalid file format. Allowed formats: csv');</script>";
     }
 }
 
+if (isset($_POST['addImportEmployed'])) {
+
+    $fileName = $_FILES['import_file_employed']['name'];
+    $file_ext = pathinfo($fileName, PATHINFO_EXTENSION);
+    $allowed_ext = ['csv'];
+
+    if (in_array($file_ext, $allowed_ext)) {
+        $count = 0;
+        $inputFileNamePath = $_FILES['import_file_employed']['tmp_name'];
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileNamePath);
+        $data = $spreadsheet->getActiveSheet()->toArray();
+        $highestRow = $spreadsheet->getActiveSheet()->getHighestRow();
+
+        try {
+            // Save data to database and collect error logs
+            $result = saveToDatabaseEmployed($con, $data, $count);
+            $errorLogs = $result['errorLogs'];
+            $failedData = $result['failedData'];
+            $count1 = $result['count1'];
+
+            $unsuccessfullcount =  $highestRow - $count1 - 1;
+            echo "<script>alert('There are $count1 successfully imported and $unsuccessfullcount unsuccessful!');</script>";
+    $_SESSION['failedData'] = $failedData;
+    echo "<script> location.href='failedDataFromimportingEmployed.php'; </script>";
+
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    } else {
+        echo "<script>alert('Invalid file format. Allowed format: csv');</script>";
+    }
+
+
+}
 
 ?>
 <div class="text-[9px] 2xl:text-lg mb-5">
 <div class="flex justify-between">
         <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Pre-employment Records - <?php echo $employer ; ?> Employees</span></p>
         <div class="flex items-center order-2">
-        <button type="button" data-modal-target="exportPreEmp" data-modal-toggle="exportPreEmp" class="lg:block text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Export</button>
+        <button type="button" data-modal-target="exportPreEmp" data-modal-toggle="exportPreEmp" class="lg:block text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Download Data</button>
 
-        <button type="button" data-dropdown-toggle="options"class="lg:block text-white bg-gradient-to-r from-[#00669B] to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 ">Add</button>
+        <button type="button" data-dropdown-toggle="options"class="lg:block text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2 ">Add Pre Employment</button>
+        <button type="button" data-dropdown-toggle="options2"class="lg:block text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2 ">Hire Employees</button>
         <div id="options" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
             <ul class="py-2  text-gray-700 dark:text-gray-200" aria-labelledby="options">
                 <li>
@@ -466,11 +591,26 @@ if (isset($_POST['addPreEmploymentImport'])) {
             </ul>
 
         </div>
+
+        
+        <div id="options2" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+            <ul class="py-2  text-gray-700 dark:text-gray-200" aria-labelledby="options2">
+                <li>
+                    <a type="button" onclick="downloadUnemployed()" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">1. Download Unemployed</a>
+                </li>
+                <li>
+                    <a type="button" data-modal-target="importEmployed" data-modal-toggle="importEmployed"  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">2. Import Employed Employees</a>
+                </li>
+
+            </ul>
+
+        </div>
         </div>
         <!-- <a href="ticketForm.php" type="button" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800  rounded-lg  px-5 py-2.5 text-center me-2 mb-2">Create a Ticket</a> -->
        
     </div>
 
+    
     <div id="" class="">
         <div class=" p-4 rounded-lg  bg-gray-50 " id="headApproval" role="tabpanel" aria-labelledby="profile-tab">
             <form action="index.php" method="post">
@@ -905,6 +1045,52 @@ ORDER BY p.id ASC;
         </div>
     </div>
 </div>
+
+
+
+
+<div id="importEmployed" tabindex="-1" aria-hidden="true" class=" hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative w-full max-w-md max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-2 border-b rounded-t dark:border-gray-600">
+                <h3 class=" font-semibold text-gray-900 dark:text-white">
+                    Import Employed
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="importEmployed">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form method="POST" class="px-4 md:px-5 py-2 text-[8pt]" enctype="multipart/form-data">
+                <div class="grid gap-2 mb-4 grid-cols-2">
+                    <div class="col-span-2">
+
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file (.CSV ONLY)</label>
+                        <input type="file" accept=".csv" name="import_file_employed" class="block w-full  text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input">
+
+
+                    </div>
+
+
+                </div>
+                <button id="addImportEmployed" name="addImportEmployed" type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Import Data
+                    <svg class="me-1 -ms-1 w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+</svg>
+                </button>
+     
+
+            </form>
+        </div>
+    </div>
+</div>
+
 
 
 <div id="editPreEmployment" tabindex="-1" aria-hidden="true" class="bg-[#615eae59] hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -1510,4 +1696,116 @@ const editEmployee1 = document.getElementById('editEmployee');
 
 
     
+
+    
+
+    function downloadUnemployed() {
+       
+       var rows = [];
+       column0 = 'Database ID';
+       column1 = 'Id Number';
+       column2 = 'Name';
+       column3 = 'Date Hired';
+       column4 = 'Email';
+       column5 = 'Birthday';
+       column6 = 'Age';
+       column7 = 'Sex';
+       column8 = 'Address';
+       column9 = 'Civil Status';
+       column10 = 'Employer';
+       column11 = 'Building';
+       column12 = 'Department';
+       column13 = 'Section';
+       column14 = 'Position';
+       column15 = 'Level';
+   
+   
+   
+   rows.push(
+       [
+       column0,
+       column1,
+       column2,
+       column3, 
+       column4,
+       column5,
+       column6,
+       column7,
+       column8,
+       column9,
+       column10,
+       column11,
+       column12,
+       column13,
+       column14,
+       column15,
+       ]
+   );
+   
+   <?php
+   $sql = "SELECT * FROM preemployment WHERE idNumber = '' and employer = '$employer'";
+   $result = mysqli_query($con, $sql);
+   
+   while ($row = mysqli_fetch_assoc($result)) { ?>
+   
+   
+   
+       column0 ="<?php echo $row['id']; ?>";
+       column1 = '';
+       column2 = "<?php echo $row['name']; ?>";
+       column3 = '';
+       column4 = "<?php echo $row['email']; ?>"
+       column5 = "<?php echo $row['birthday']; ?>"
+       column6 = "<?php echo $row['age']; ?>"
+       column7 = "<?php echo $row['sex']; ?>"
+       column8 = "<?php echo $row['address']; ?>"
+       column9 = "<?php echo $row['civilStatus']; ?>"
+       column10 = "<?php echo $row['employer']; ?>"
+       column11 = "<?php echo $row['building']; ?>"
+       column12 = "<?php echo $row['department']; ?>"
+       column13 = "<?php echo $row['section']; ?>"
+       column14 = "<?php echo $row['position']; ?>"
+       column15 = "<?php echo $row['level']; ?>"
+       rows.push(
+           [
+               column0,
+               column1,
+               column2,
+               column3,
+               column4,
+               column5,
+               column6,
+               column7,
+               column8,
+               column9,
+               column10,
+               column11,
+               column12,
+               column13,
+               column14,
+               column15,
+               
+           ]
+       );
+   
+       <?php }?>
+   csvContent = "data:text/csv;charset=utf-8,";
+   /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
+   rows.forEach(function(rowArray) {
+       row = rowArray.join('","');
+       row = '"' + row + '"';
+       csvContent += row + "\r\n";
+   });
+   
+   /* create a hidden <a> DOM node and set its download attribute */
+   var encodedUri = encodeURI(csvContent);
+   var link = document.createElement("a");
+   link.setAttribute("href", encodedUri);
+   link.setAttribute("download", "<?php echo $employer;?> Unemployed Data.csv");
+   document.body.appendChild(link);
+   /* download the data file named "Stock_Price_Report.csv" */
+   link.click();
+   }
+
+   
 </script>
