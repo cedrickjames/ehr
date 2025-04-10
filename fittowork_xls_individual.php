@@ -64,6 +64,8 @@ LEFT JOIN `employeespersonalinfo` e ON e.idNumber = f.idNumber WHERE f.idNumber 
                     <th colspan="5">Vital Signs</th>
                     <th rowspan="2">Remarks</th>
                     <th rowspan="2">Other Remarks</th>
+                    <th rowspan="2">Medical Certificate</th>
+                    <th rowspan="2">Time of Filing</th>
                     <th rowspan="2">Status</th>
                 </tr>
                 <tr>
@@ -119,6 +121,10 @@ LEFT JOIN `employeespersonalinfo` e ON e.idNumber = f.idNumber WHERE f.idNumber 
                     $rr =  $row['rr'];
                     $remarks = $row['remarks'];
                     $other_remarks =  $row['otherRemarks'];
+
+                    $isMedcertRequired =  $row['isMedcertRequired'];
+                    $timeOfFiling =  $row['timeOfFiling'];
+
                     $statusComplete =  $row['statusComplete'];
                     $wPendingLab = $row['withPendingLab'];
 
@@ -160,6 +166,8 @@ LEFT JOIN `employeespersonalinfo` e ON e.idNumber = f.idNumber WHERE f.idNumber 
                                                     <td>$rr</td>
                                                     <td>$remarks</td>
                                                     <td>$other_remarks</td>
+                                                          <td>$isMedcertRequired</td>
+                                                    <td>$timeOfFiling</td>
                                                      <td>$status</td>
 
                                     </tr>";

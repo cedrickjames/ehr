@@ -7,6 +7,10 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 
+$nurseId = $_SESSION['userID'];
+
+
+
 if (isset($_GET['employer'])) {
     $employer = $_GET['employer'];
   } else {
@@ -107,6 +111,191 @@ if (isset($_POST['addBloodChem'])) {
         echo "<script> location.href='index.php?employer=$employer'; </script>";
     }
 }
+
+
+
+
+if (isset($_POST['proceedToConsultation'])) {
+
+
+    $idNumber = $_POST['hlprfid'];
+    $date = $_POST['hlpdate'];
+    $time = $_POST['hlptime'];
+    $building = $_POST['hlpbuilding_transaction'];
+    $type = $_POST['hlptype'];
+
+
+    if (isset($_POST['hlpdiagnosis']) && !empty($_POST['hlpdiagnosis'])) {
+    $diagnosis = $_POST['hlpdiagnosis'];
+    $diagnosis = str_replace("'", "&apos;", $diagnosis);
+    $diagnosis = str_replace('"', '&quot;', $diagnosis);
+    }
+    else{
+
+    $diagnosis = "";
+
+    }
+      
+
+    if (isset($_POST['hlpintervention']) && !empty($_POST['hlpintervention'])) {
+    $intervention = $_POST['hlpintervention'];
+
+    }
+    else{
+
+    $intervention = "";
+
+    }
+
+    if (isset($_POST['hlpftwMeds']) && !empty($_POST['hlpftwMeds'])) {
+    $Meds = $_POST['hlpftwMeds'];
+    $Meds = implode(', ', $Meds);
+    $Meds = str_replace("'", "&apos;", $Meds);
+    $Meds = str_replace('"', '&quot;', $Meds);
+    }
+    else{
+
+    $Meds = "";
+
+    }
+
+    
+    $followupdate = $_POST['hlpfollowupdate'];
+    $fbs = $_POST['hlpfbs'];
+    $cholesterol = $_POST['hlpcholesterol'];
+    $triglycerides = $_POST['hlptriglycerides'];
+    $hdl = $_POST['hlphdl'];
+    $ldl = $_POST['hlpldl'];
+    $bun = $_POST['hlpbun'];
+    $hlpcreatinine = $_POST['hlpcreatinine'];
+
+    $bua = $_POST['hlpbua'];
+    $sgpt = $_POST['hlpsgpt'];
+    $sgdt = $_POST['hlpsgdt'];
+    $hbaic = $_POST['hlphbaic'];
+    $hlpK = $_POST['hlpK'];
+    $hlpNa = $_POST['hlpNa'];
+    $FT3 = $_POST['FT3'];
+    $FT4 = $_POST['FT4'];
+    $TSH = $_POST['TSH'];
+
+    $others = $_POST['hlpothers'];
+    $remarks = $_POST['hlpremarks'];
+
+
+
+
+    // if ($Meds != "") {
+
+    //     $Meds = implode(', ', $Meds);
+    // }
+
+    $addBloodChem = "INSERT INTO `bloodchem`(`idNumber`, `date`, `time` ,`building`, `type`, `diagnosis`, `intervention`, `medications`, `followupdate`, `FBS`, `cholesterol`, `triglycerides`, `HDL`, `LDL`, `BUN`, `creatinine`, `BUA`, `SGPT`, `SGDT`, `HBA1C`, `potassium`, `sodium`, `FT3`, `FT4`, `TSH`, `others` ,`remarks`) VALUES ('$idNumber','$date','$time','$building','$type','$diagnosis','$intervention','$Meds','$followupdate','$fbs','$cholesterol','$triglycerides', '$hdl', '$ldl', '$bun','$hlpcreatinine', '$bua', '$sgpt', '$sgdt', '$hbaic', '$hlpK', '$hlpNa', '$FT3', '$FT4', '$TSH', '$others', '$remarks')";
+    $resultInfo = mysqli_query($con, $addBloodChem);
+
+    // if ($resultInfo) {
+    //     echo "<script>alert('Added Successfuly!') </script>";
+    //     echo "<script> location.href='index.php?employer=$employer'; </script>";
+    // }
+
+
+    $cnsltnDate = $_POST['hlpdate'];
+    $cnsltnTime = $_POST['hlptime'];
+    $cnsltnType = $_POST['hlptype'];
+  
+  
+  
+    $cnsltnCategories = $_POST['cnsltnCategories'];
+    $cnsltnBuilding = $_POST['hlpbuilding_transaction'];
+    $cnsltnChiefComplaint = $_POST['cnsltnChiefComplaint'];
+
+    
+    if (isset($_POST['hlpdiagnosis']) && !empty($_POST['hlpdiagnosis'])) {
+        $cnsltnDiagnosis = $_POST['hlpdiagnosis'];
+        $cnsltnDiagnosis = str_replace("'", "&apos;", $cnsltnDiagnosis);
+        $cnsltnDiagnosis = str_replace('"', '&quot;', $cnsltnDiagnosis);
+        }
+        else{
+    
+        $cnsltnDiagnosis = "";
+    
+        }
+
+
+
+    if (isset($_POST['hlpintervention']) && !empty($_POST['hlpintervention'])) {
+        $cnsltnIntervention = $_POST['hlpintervention'];
+    
+        }
+        else{
+    
+        $cnsltnIntervention = "";
+    
+        }
+
+
+    $cnsltnClinicRestFrom = $_POST['cnsltnClinicRestFrom'];
+    $cnsltnClinicRestTo = $_POST['cnsltnClinicRestTo'];
+
+    
+    if (isset($_POST['hlpftwMeds']) && !empty($_POST['hlpftwMeds'])) {
+      $cnsltnMeds = $_POST['hlpftwMeds'];
+      $cnsltnMeds = implode(', ', $cnsltnMeds);
+  
+    }
+    else{
+  
+    $cnsltnMeds = "";
+  
+    }
+  
+    $cnsltnMedsQuantity = $_POST['cnsltnMedsQuantity'];
+  
+    $cnsltnBloodChem = $_POST['cnsltnBloodChem'];
+    $cnsltnCbc = $_POST['cnsltnCbc'];
+    $cnsltnUrinalysis = $_POST['cnsltnUrinalysis'];
+    $cnsltnFecalysis = $_POST['cnsltnFecalysis'];
+    $cnsltnXray = $_POST['cnsltnXray'];
+    $cnsltnOthersLab = $_POST['cnsltnOthersLab'];
+    $cnsltnBp = $_POST['cnsltnBp'];
+    $cnsltnTemp = $_POST['cnsltnTemp'];
+    $cnsltn02Sat = $_POST['cnsltn02Sat'];
+    $cnsltnPr = $_POST['cnsltnPr'];
+    $cnsltnRr = $_POST['cnsltnRr'];
+    // $cnsltnRemarks = $_POST['cnsltnRemarks'];
+    $cnsltnOthersRemarks = $_POST['hlpremarks'];
+    $cnsltnCompleted = "0";
+    $cnsltnWithPendingLab = "";
+  
+    
+    $pendingLabDueDate = "";
+    
+  
+    if($cnsltnCompleted == 1){
+  $status = 'done';
+  $cnsltnWithPendingLab='';
+  $pendingLabDueDate = '';
+    }
+    else{
+  $status = 'doc';
+  
+    }
+    if($cnsltnIntervention == "Dental Consultation" || $cnsltnIntervention == "Medication and Dental Consultation" || $cnsltnIntervention == "Dental Services (Oral Prophylaxis)" || $cnsltnIntervention == "Dental Services (Light Cure)" || $cnsltnIntervention == "Medication and Dental Services (Tooth Extraction)"){
+      $status = 'done';
+      // $cnsltnCompleted=1;
+    }
+  
+    // echo $smoking;
+    $sql = "INSERT INTO `consultation`(`idNumber`, `status`, `nurseAssisting`, `date`, `time`, `type`, `categories`, `building`, `chiefComplaint`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `meds`,`medsQty`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `otherRemarks`,`statusComplete`,`withPendingLab`,`pendingLabDueDate`,`medicalLab`,`seenByDoc`) VALUES ('$idNumber','doc','$nurseId','$cnsltnDate', '$cnsltnTime', '$cnsltnType', '$cnsltnCategories', '$cnsltnBuilding', '$cnsltnChiefComplaint', '$cnsltnDiagnosis', '$cnsltnIntervention', '$cnsltnClinicRestFrom', '$cnsltnClinicRestTo', '$cnsltnMeds','$cnsltnMedsQuantity', '$cnsltnBloodChem', '$cnsltnCbc', '$cnsltnUrinalysis', '$cnsltnFecalysis', '$cnsltnXray', '$cnsltnOthersLab', '$cnsltnBp', '$cnsltnTemp', '$cnsltn02Sat', '$cnsltnPr', '$cnsltnRr', '$cnsltnOthersRemarks','$cnsltnCompleted','$cnsltnWithPendingLab','$pendingLabDueDate','$cnsltnWithPendingLab',0)";
+    $results = mysqli_query($con, $sql);
+  
+    if ($results) {
+      echo "<script>alert('Successfully proceeded to consultation') </script>";
+    //   echo "<script> location.href='index.php?employer=$employer'; </script>";
+    }
+  }
+
+
 
 if (isset($_POST['editBloodChem'])) {
     $id = $_POST['editid'];
@@ -490,8 +679,8 @@ if (isset($_POST['addBloodChemImport'])) {
 </div>
 
 
-<div id="addBloodChem" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-2xl max-h-full">
+<div id="addBloodChem" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full  bg-gray-900/50 dark:bg-gray-900/80 ">
+    <div class="relative p-4 w-full max-w-6xl max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
@@ -508,8 +697,9 @@ if (isset($_POST['addBloodChemImport'])) {
             </div>
             <!-- Modal body -->
             <form method="POST">
-                <div class="text-[9px] 2xl:text-lg  rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full w-full p-4 ">
-                    <div class="col-span-4 gap-4 mb-4">
+                <div class="grid grid-cols-2 gap-2 p-2">
+                <div class="text-[9px] 2xl:text-lg  border border-gray-300 rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full w-full p-4 border-">
+                <div class="col-span-4 gap-4 mb-4">
                         <label for="hlpname" class="block mb-1  text-gray-900 dark:text-white">Name</label>
                         <select id="hlpname" name="hlpname" class="js-employees bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                             <option selected disabled>Search Name</option>
@@ -570,7 +760,7 @@ if (isset($_POST['addBloodChemImport'])) {
                     <div id="diagnosisDiv"  class="relative gap-4 col-span-2">
         <label  class="block  my-auto  font-semibold text-gray-900 ">Diagnosis: </label>
         <!-- <input type="text"  name="ftwDiagnosis" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
-        <select  required oninvalid="fitToWorkModal.hide(); modalPrompt.hide();" id="ftwDiagnosiOption" name="editdiagnosis" class="js-diagnosis bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+        <select  required oninvalid="modalPrompt.hide();" id="ftwDiagnosiOption" name="hlpdiagnosis" class="js-diagnosis bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
           <option selected disabled value="">Select Diagnosis</option>
           <option value="addDiagnosisButton">Add Diagnosis</option>
           <?php
@@ -629,31 +819,54 @@ if (isset($_POST['addBloodChemImport'])) {
 
 
                     <div class="content-center  col-span-2">
-                        <label for="editintervention" class="block  my-auto  text-gray-900 ">Intervention</label>
+                        <label for="hlpintervention" class="block  my-auto  text-gray-900 ">Intervention</label>
 
-                        <select id="editintervention" name="editintervention" value="" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
-                            <option selected value="">Select Intervention</option>
-                            <option value="Medication Only">Medication only</option>
-                            <option value="Medical Consultation">Medical Consultation</option>
-                            <option value="Medication and Medical Consultation">Medication and Medical Consultation</option>
-                            <option value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
-                            <option value="Clinic Rest Only">Clinic Rest Only</option>
+                        <select id="interventionSelect" name="hlpintervention" value="" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        <option    value="Medication Only">Medication only</option>
+                                <option  value="Medical Consultation">Medical Consultation</option>
+                                <option  value="Medication and Medical Consultation">Medication and Medical Consultation</option>
+                                <option  value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
+                                <option  value="Clinic Rest Only">Clinic Rest Only</option>
+                                <option  value="Dental Consultation">Dental Consultation</option>
+                                <option  value="Medication and Dental Consultation">Medication and Dental Consultation</option>
+                                <option  value="Dental Services (Oral Prophylaxis)">Dental Services (Oral Prophylaxis)</option>
+                                <option  value="Dental Services (Light Cure)">Dental Services (Light Cure)</option>
+                                <option  value="Medication and Dental Services (Tooth Extraction)">Medication and Dental Services (Tooth Extraction)</option>
 
 
 
                         </select>
                     </div>
+                    
+                    <div id="clinicRestTime" class="hidden col-span-4">
+        <label class="block  my-auto font-semibold text-gray-900 ">Clinic Rest: </label>
+        <div class=" content-center flex gap-4 col-span-2">
+
+          <div class="relative w-1/2">
+            <input type="time" value="" name="cnsltnClinicRestFrom" id="fromDate" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+            <label for="fromDate" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">From</label>
+          </div>
+
+          <div class="relative w-1/2">
+
+            <input type="time" value="" name="cnsltnClinicRestTo" id="toDate" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+            <label for="toDate" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">To</label>
+          </div>
+
+        </div>
+      </div>
                     <div class="grid grid-cols-4 col-span-4" id="medicineDivs">
+          
+                        <div id="medicineDiv" class="grid grid-cols-4 gap-1 col-span-4 mt-2">
                         <div class="col-span-4">
 
-                            <label for="hlpftwMeds" class="block  my-auto  text-gray-900 ">Medicine (Add medicine below): </label>
-                            <select name="hlpftwMeds[]" id="hlpftwMeds" multiple="multiple" class="p-2 js-meds border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+<label for="hlpftwMeds" class="block  my-auto  text-gray-900 ">Medicine (Add medicine below): </label>
+<select name="hlpftwMeds[]" id="hlpftwMeds" multiple="multiple" class="p-2 js-meds border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
 
 
-                            </select>
+</select>
 
-                        </div>
-                        <div id="medicineDiv" class="grid grid-cols-4 gap-1 col-span-4 mt-2">
+</div>
                             <div id="medicineDiv1" class="grid grid-cols-4 gap-1 col-span-4">
                                 <div id="medsdiv" class="col-span-2">
                                     <label for="nameOfMedicine" class="block  my-auto text-gray-900 ">What's your medicine? </label>
@@ -749,7 +962,13 @@ if (isset($_POST['addBloodChemImport'])) {
                     <div class="content-center  col-span-2">
                         <label for="hlpremarks" class="block mb-1  text-gray-900 dark:text-white">Remarks</label>
                         <input type="text" name="hlpremarks" id="hlpremarks" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg" placeholder=" ">
-                    </div>
+                    </div> 
+            </div>
+                
+
+               
+                <div class="text-[9px] 2xl:text-lg border border-gray-300 rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full w-full p-4 ">
+                    
                     <div class="col-span-4">
                         <h3 class="block my-auto w-full  text-gray-900 ">Laboratory: </h3>
                     </div>
@@ -885,18 +1104,195 @@ if (isset($_POST['addBloodChemImport'])) {
                         </div>
                     </div>
                     <div class="col-span-4 justify-center flex gap-2">
-                        <button type="submit" name="addBloodChem" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+
+          <button type="button"  name="proceedButton" id="proceedButton" class="w-full text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Proceed</button>
+
+                        <!-- <button type="submit" name="addBloodChem" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
                             </svg>
                             Add HLP
                         </button>
+                        <button type="submit" name="addBloodChem" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                            </svg>
+                            Proceed to Consultation
+                        </button> -->
                     </div>
                 </div>
+
+                <div id="askFirst" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="askFirst">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+            <div class="p-4 md:p-5 text-center">
+                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
+                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Record or Proceed to consultation?</h3>
+              <div class="col-span-4 justify-center flex gap-2">
+              <button type="submit" id="addBloodChem" name="addBloodChem" class="w-64 text-white bg-gradient-to-r from-[#00669B]  to-[#9AC1CA] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300  shadow-lg shadow-teal-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Record</button>
+              <button type="button"  id="proceedToConsultation" class="w-64 text-white bg-gradient-to-r from-[#9b0066]  to-[#ca9ac1] hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300  shadow-lg shadow-pink-500/50  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2">Proceed to Consultation</button>
+              </div>
+                 
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div id="proceedToConsultationModal" tabindex="-1" aria-hidden="true" class=" hidden fixed overflow-y-auto overflow-x-hidden  top-0 right-0 left-0 z-[100] justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-gray-900 bg-opacity-50 dark:bg-opacity-80">
+    <div class="relative p-4 w-full max-w-4xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    Proceed to Consultation
+                </h3>
+                <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="proceedToConsultationModal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+
+            
+                <div class="text-[9px] 2xl:text-lg  rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full p-4 ">
+
+                <div class="col-span-4">
+        <label class="block  my-auto font-semibold text-gray-900 ">Medical Category: </label>
+
+        <select id="categoriesSelect" name="cnsltnCategories" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option selected value="common">Common</option>
+          <option  value="Long Term">Long Term</option>
+          <option  value="Maternity">Maternity</option>
+          <option  value="Work Related">Work Related</option>
+        </select>
+
+      </div>
+      
+      <div class="col-span-2">
+
+        <label class="block  my-auto font-semibold text-gray-900 ">Chief Compliant: </label>
+
+        <input type="text" value="Findings in Blood Chem" name="cnsltnChiefComplaint" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+      </div>
+
+                <div class="col-span-4">
+        <h3 class=" my-auto w-full font-semibold text-gray-900 ">Laboratory: </h3>
+      </div>
+      <div class="ml-4 grid grid-cols-4 col-span-4 gap-1">
+
+        <div class="col-span-2">
+          <label class="block  my-auto font-semibold text-gray-900 ">Blood Chemistry: </label>
+          <!-- <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Blood Chemistry: </h3> -->
+          <input type="text" value="" name="cnsltnBloodChem" id="cnsltnBloodChem" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        </div>
+
+        <div class=" col-span-2">
+          <label class="block  my-auto font-semibold text-gray-900 ">CBC: </label>
+          <input type="text" value="" name="cnsltnCbc" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        </div>
+
+        <div class=" col-span-2">
+          <!-- <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Urinalysis: </h3> -->
+          <label class="block  my-auto font-semibold text-gray-900 ">Urinalysis: </label>
+          <input type="text" value="" name="cnsltnUrinalysis" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        </div>
+
+        <div class=" col-span-2">
+          <!-- <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Fecalysis: </h3> -->
+          <label class="block  my-auto font-semibold text-gray-900 ">Fecalysis: </label>
+          <input type="text" value="" name="cnsltnFecalysis" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        </div>
+
+        <div class=" col-span-2">
+          <!-- <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">X-ray: </h3> -->
+          <label class="block  my-auto font-semibold text-gray-900 ">X-ray: </label>
+          <input type="text" value="" name="cnsltnXray" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        </div>
+
+        <div class=" col-span-2">
+          <!-- <h3 class="w-1/4 my-auto  font-semibold text-gray-900 ">Others: </h3> -->
+          <label class="block  my-auto font-semibold text-gray-900 ">Others: </label>
+          <input type="text" value="" name="cnsltnOthersLab" class=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+        </div>
+
+        <div class="col-span-4">
+          <h3 class=" my-auto w-full font-semibold text-gray-900 ">Vital Signs: </h3>
+        </div>
+        <div class=" col-span-4">
+
+          <div class="grid grid-cols-3 gap-1">
+            <div class="">
+              <!-- <h3 class=" my-auto  font-semibold text-gray-900 ">BP: </h3> -->
+              <label class="block  my-auto font-semibold text-gray-900 ">BP: </label>
+              <input type="text" value="" name="cnsltnBp" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+            </div>
+            <div class="">
+              <!-- <h3 class=" my-auto  font-semibold text-gray-900 ">Temp: </h3> -->
+              <label class="block  my-auto font-semibold text-gray-900 ">Temp: </label>
+              <input type="text" value="" name="cnsltnTemp" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+            </div>
+            <div class="">
+              <!-- <h3 class=" my-auto  font-semibold text-gray-900 ">02 Sat: </h3> -->
+              <label class="block  my-auto font-semibold text-gray-900 ">02 Sat: </label>
+              <input type="text" value="" name="cnsltn02Sat" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+            </div>
+            <div class="">
+              <!-- <h3 class=" my-auto  font-semibold text-gray-900 ">PR: </h3> -->
+              <label class="block  my-auto font-semibold text-gray-900 ">PR: </label>
+              <input type="text" value="" name="cnsltnPr" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+            </div>
+            <div class="">
+              <!-- <h3 class=" my-auto  font-semibold text-gray-900 ">RR: </h3> -->
+              <label class="block  my-auto font-semibold text-gray-900 ">RR: </label>
+              <input type="text" value="" name="cnsltnRr" class="  bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+                </div>
+                <button type="submit"  name="proceedToConsultation" id="proceedToConsultation1" class="w-full text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Proceed</button>
+             
+                
+            </div>
+            </div>
+            </div>
+
+            
+
+                </div>
+
+
+   
+
+
+
+
+
             </form>
         </div>
     </div>
 </div>
+
+
+
+
 
 
 <div id="importBloodChem" tabindex="-1" aria-hidden="true" class=" hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -1089,16 +1485,19 @@ if (isset($_POST['addBloodChemImport'])) {
                         <label for="editintervention" class="block  my-auto  font-semibold text-gray-900 ">Intervention</label>
 
                         <select id="editintervention" name="editintervention" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                            <option selected value="Medication Only">Medication only</option>
-                            <option value="Medical Consultation">Medical Consultation</option>
-                            <option value="Medication and Medical Consultation">Medication and Medical Consultation</option>
-                            <option value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
-                            <option value="Clinic Rest Only">Clinic Rest Only</option>
-
-
-
+                                <option    value="Medication Only">Medication only</option>
+                                <option  value="Medical Consultation">Medical Consultation</option>
+                                <option  value="Medication and Medical Consultation">Medication and Medical Consultation</option>
+                                <option  value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
+                                <option  value="Clinic Rest Only">Clinic Rest Only</option>
+                                <option  value="Dental Consultation">Dental Consultation</option>
+                                <option  value="Medication and Dental Consultation">Medication and Dental Consultation</option>
+                                <option  value="Dental Services (Oral Prophylaxis)">Dental Services (Oral Prophylaxis)</option>
+                                <option  value="Dental Services (Light Cure)">Dental Services (Light Cure)</option>
+                                <option  value="Medication and Dental Services (Tooth Extraction)">Medication and Dental Services (Tooth Extraction)</option>
                         </select>
                     </div>
+
                     <div class="grid grid-cols-4 col-span-4" id="medicineDivs">
                         <div class="col-span-4">
 
@@ -1324,6 +1723,75 @@ if (isset($_POST['addBloodChemImport'])) {
 <script>
 
 
+$("#interventionSelect").change(function() {
+
+if ($(this).val() === "Clinic Rest Only" || $(this).val() === "Medication, Clinic Rest and Medical Consultation") {
+
+  if($(this).val() === "Clinic Rest Only"){
+    $("#clinicRestLabel").removeClass("hidden");
+  $("#clinicRestTime").removeClass("hidden");
+
+  $("#medsqtydiv").addClass("hidden");
+  $("#medicineDiv").addClass("hidden");
+
+  $("#medsdiv").addClass("hidden");
+  
+
+
+  
+
+  }else{
+    $("#clinicRestLabel").removeClass("hidden");
+  $("#clinicRestTime").removeClass("hidden");
+  $("#medsqtydiv").removeClass("hidden");
+  $("#medicineDiv").removeClass("hidden");
+
+  $("#medsdiv").removeClass("hidden");
+  }
+
+    // Remove the "hidden" class from the input with id "medLab"
+
+
+}
+else{
+  $("#clinicRestLabel").addClass("hidden");
+  $("#clinicRestTime").addClass("hidden");
+  $("#medsqtydiv").removeClass("hidden");
+  $("#medicineDiv").removeClass("hidden");
+
+  $("#medsdiv").removeClass("hidden");
+} 
+});
+
+
+
+
+
+const $targetPromptModal = document.getElementById('askFirst');
+  const optionsPromptModal = {
+    placement: 'center-center',
+    backdrop: 'static',
+    backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
+    closable: true,
+    onHide: () => {
+    },
+    onShow: () => {
+
+    },
+    onToggle: () => {
+    }
+  };
+  const modalPrompt = new Modal($targetPromptModal, optionsPromptModal);
+
+  $("#proceedButton").click(function() {
+
+    modalPrompt.toggle();
+
+    });
+
+
+    
+
     $(document).ready(function() {
         const hlpfbsmin = parseFloat(document.getElementById('hlpfbsmin').value);
         const hlpfbsmax = parseFloat(document.getElementById('hlpfbsmax').value);
@@ -1374,18 +1842,57 @@ if (isset($_POST['addBloodChemImport'])) {
         const TSHmax = parseFloat(document.getElementById('TSHmax').value);
 
 
+   
+        var findings = ['','','','','','','','','','','','','','','',''];
+
+        
+const $targetFitToworkModal = document.getElementById('proceedToConsultationModal');
+  const optionsFitToWorkModal = {
+    placement: 'center-center',
+    backdrop: 'static',
+    backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
+    closable: true,
+    onHide: () => {
+    },
+    onShow: () => {
+
+    },
+    onToggle: () => {
+    }
+  };
+  const proceedToConsultationModal = new Modal($targetFitToworkModal, optionsFitToWorkModal);
+  $("#proceedToConsultation").click(function() {
+
+    $('#cnsltnBloodChem').val(findings);
+    var filteredFindings = findings.filter(function(element) {
+    return element !== '';
+}).join(' ');
+
+$('#cnsltnBloodChem').val(filteredFindings);
+
+    // modalPrompt.toggle();
+    proceedToConsultationModal.toggle();
+
+});
+
 
 
         $('#hlpfbs').on('input', function() {
             const value = $(this).val();
+            const valueWithFindings = "FBS: "+value;
             if(value != ""){
                 if (value < hlpfbsmin || value > hlpfbsmax) {
+
+                    findings.splice(0, 1, valueWithFindings);
+
                 $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 } else {
+                    findings.splice(0, 1, '');
                 $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 }
             }
             else{
+                findings.splice(0, 1, '');
              $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
             }
         });
@@ -1393,210 +1900,307 @@ if (isset($_POST['addBloodChemImport'])) {
         
         $('#hlpcholesterol').on('input', function() {
             const value = $(this).val();
+            const valueWithFindings1 = "Cholesterol: "+value;
             if(value != ""){
                 if (value < hlpcholesterolmin || value > hlpcholesterolmax) {
+                    findings.splice(1, 1, valueWithFindings1);
                 $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 } else {
+                    findings.splice(1, 1, '');
                 $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 }
             }
             else{
+                findings.splice(1, 1, '');
              $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
             }
         });
         
         $('#hlptriglycerides').on('input', function() {
             const value = $(this).val();
+            const valueWithFindings2 = "Triglycerides: "+value;
             if(value != ""){
                 if (value < hlptriglyceridesmin || value > hlptriglyceridesmax) {
+                    findings.splice(2, 1, valueWithFindings2);
                 $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 } else {
+                    findings.splice(2, 1, '');
                 $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 }
             }
             else{
+                findings.splice(2, 1, '');
              $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
             }
         });
         
         $('#hlphdl').on('input', function() {
             const value = $(this).val();
+            const valueWithFindings3 = "HDL: "+value;
             if(value != ""){
                 if (value < hlphdlmin || value > hlphdlmax) {
+                    findings.splice(3, 1, valueWithFindings3);
                 $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 } else {
+                    findings.splice(3, 1, '');
                 $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 }
             }
             else{
+                findings.splice(3, 1, '');
              $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
             }
         });
         
         $('#hlpldl').on('input', function() {
             const value = $(this).val();
+            const valueWithFindings4 = "LDL: "+value;
             if(value != ""){
                 if (value < hlpldlmin || value > hlpldlmax) {
+                    findings.splice(4, 1, valueWithFindings4);
                 $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 } else {
+                    findings.splice(4, 1, '');
                 $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 }
             }
             else{
+                findings.splice(4, 1, '');
+
              $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
             }
         });
         
         $('#hlpbun').on('input', function() {
             const value = $(this).val();
+            const valueWithFindings5 = "BUN: "+value;
             if(value != ""){
                 if (value < hlpbunmin || value > hlpbunmax) {
+                    findings.splice(5, 1, valueWithFindings5);
                 $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 } else {
+                    findings.splice(5, 1, '');
+
                 $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 }
             }
             else{
+                findings.splice(5, 1, '');
+
              $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
             }
         });
         
         $('#hlpcreatinine').on('input', function() {
             const value = $(this).val();
+            const valueWithFindings6 = "Creatinine: "+value;
             if(value != ""){
                 if (value < hlpcreatininemin || value > hlpcreatininemax) {
+                    findings.splice(6, 1, valueWithFindings6);
+
                 $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 } else {
+                    findings.splice(6, 1, '');
                 $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 }
             }
             else{
+                findings.splice(6, 1, '');
              $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
             }
         });
         
         $('#hlpbua').on('input', function() {
             const value = $(this).val();
+            const valueWithFindings7 = "BUA: "+value;
+
             if(value != ""){
                 if (value < hlpbuamin || value > hlpbuamax) {
+                    findings.splice(7, 1, valueWithFindings7);
                 $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 } else {
+                    findings.splice(7, 1, '');
                 $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 }
             }
             else{
+                findings.splice(7, 1, '');
              $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
             }
         });
         
         $('#hlpsgdt').on('input', function() {
             const value = $(this).val();
+            const valueWithFindings8 = "SGOT: "+value;
+
             if(value != ""){
                 if (value < hlpsgdtmin || value > hlpsgdtmax) {
+                    findings.splice(8, 1, valueWithFindings8);
+
                 $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 } else {
+                findings.splice(8, 1, '');
+
                 $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 }
             }
             else{
+                findings.splice(8, 1, '');
+
              $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
             }
         });
         
         $('#hlpsgpt').on('input', function() {
             const value = $(this).val();
+            const valueWithFindings9 = "SGPT: "+value;
+
             if(value != ""){
                 if (value < hlpsgptmin || value > hlpsgptmax) {
+                    findings.splice(9, 1, valueWithFindings9);
+
                 $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 } else {
+                findings.splice(9, 1, '');
+
                 $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 }
             }
             else{
+                findings.splice(9, 1, '');
+
              $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
             }
         });
         
         $('#hlphbaic').on('input', function() {
             const value = $(this).val();
+            const valueWithFindings10 = "HBA1C: "+value;
+
             if(value != ""){
                 if (value < hlphbaicmin || value > hlphbaicmax) {
+                    findings.splice(10, 1, valueWithFindings10);
+
                 $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 } else {
+                findings.splice(10, 1, '');
+
                 $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 }
             }
             else{
+                findings.splice(10, 1, '');
+
              $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
             }
         });
         
         $('#hlpK').on('input', function() {
             const value = $(this).val();
+            const valueWithFindings11 = "Potassium: "+value;
+
             if(value != ""){
                 if (value < hlpKmin || value > hlpKmax) {
+                    findings.splice(11, 1, valueWithFindings11);
+
                 $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 } else {
+                findings.splice(11, 1, '');
+
                 $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 }
             }
             else{
+                findings.splice(11, 1, '');
+
              $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
             }
         });
         
         $('#hlpNa').on('input', function() {
             const value = $(this).val();
+            const valueWithFindings12 = "Sodium: "+value;
+
             if(value != ""){
                 if (value < hlpNamin || value > hlpNamax) {
+                    findings.splice(12, 1, valueWithFindings12);
+
                 $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 } else {
+                findings.splice(12, 1, '');
+
                 $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 }
             }
             else{
+                findings.splice(12, 1, '');
+
              $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
             }
         });
         
         $('#FT3').on('input', function() {
             const value = $(this).val();
+            const valueWithFindings13 = "FT3: "+value;
+
             if(value != ""){
                 if (value < FT3min || value > FT3max) {
+                    findings.splice(13, 1, valueWithFindings13);
+
                 $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 } else {
+                findings.splice(13, 1, '');
+
                 $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 }
             }
             else{
+                findings.splice(13, 1, '');
+
              $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
             }
         });
         
         $('#FT4').on('input', function() {
             const value = $(this).val();
+            const valueWithFindings14 = "FT4: "+value;
+
             if(value != ""){
                 if (value < FT4min || value > FT4max) {
+                    findings.splice(14, 1, valueWithFindings14);
+
                 $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 } else {
+                findings.splice(14, 1, '');
+
                 $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 }
             }
             else{
+                findings.splice(14, 1, '');
+
              $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
             }
         });
         
         $('#TSH').on('input', function() {
             const value = $(this).val();
+            const valueWithFindings15 = "TSH: "+value;
+
             if(value != ""){
                 if (value < TSHmin || value > TSHmax) {
+                    findings.splice(15, 1, valueWithFindings15);
+
                 $(this).addClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 } else {
+                findings.splice(15, 1, '');
+
                 $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
                 }
             }
             else{
+                findings.splice(15, 1, '');
+
              $(this).removeClass('bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500');
             }
         });
