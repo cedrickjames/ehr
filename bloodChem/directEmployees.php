@@ -551,7 +551,7 @@ if (isset($_POST['addBloodChemImport'])) {
         <div class=" p-4 rounded-lg  bg-gray-50 " id="headApproval" role="tabpanel" aria-labelledby="profile-tab">
             <form action="index.php" method="post">
                 <section class="mt-2 2xl:mt-10">
-                    <table id="queTable" class="display text-[9px] 2xl:text-sm" style="width:100%">
+                    <table id="bloodChemTable" class="display text-[9px] 2xl:text-sm" style="width:100%">
                         <thead>
                             <tr>
                                 <th>No.</th>
