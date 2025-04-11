@@ -679,6 +679,374 @@ if (isset($_POST['addBloodChemImport'])) {
 </div>
 
 
+
+
+
+
+
+<div id="importBloodChem" tabindex="-1" aria-hidden="true" class=" hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative w-full max-w-md max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-2 border-b rounded-t dark:border-gray-600">
+                <h3 class=" font-semibold text-gray-900 dark:text-white">
+                    Import HLP Record
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="importBloodChem">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form method="POST" class="px-4 md:px-5 py-2 text-[8pt]" enctype="multipart/form-data">
+                <div class="grid gap-2 mb-4 grid-cols-2">
+                    <div class="col-span-2">
+
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
+                        <input type="file" name="import_file" class="block w-full  text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input">
+
+                    </div>
+
+
+                </div>
+                <button type="submit" name="addBloodChemImport" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    Import Data
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="exportModal" tabindex="-1" aria-hidden="true" class=" hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class=" font-semibold text-gray-900 dark:text-white">
+                    Export HLP Record
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="exportModal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form method="POST" class="px-4 md:px-5 py-2 text-[8pt]" enctype="multipart/form-data">
+                <div class="grid gap-2 mb-4 grid-cols-2">
+                    <div class="col-span-2">
+                        <label for="employer" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employer</label>
+
+                        <select id="employer" name="employer" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                            <option selected value="GPI">GPI</option>
+                            <option value="All">All</option>
+                            <option value="Maxim">Maxim</option>
+                            <option value="Powerlane">Powerlane</option>
+                            <option value="Nippi">Nippi</option>
+                            <option value="Mangreat">Mangreat</option>
+                            <option value="Otrelo">Otrelo</option>
+                            <option value="Canteen">Canteen</option>
+                            <option value="Alarm">Alarm</option>
+
+                        </select>
+                        <label for="month" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Month</label>
+
+                        <select id="month" name="month" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                            <?php
+                            $date = new DateTime('01-01-2023');
+                            $dateNow = new DateTime();
+                            $monthNow = $dateNow->format('F');
+
+                            for ($i = 1; $i <= 12; $i++) {
+                                $month = $date->format('F');
+                            ?> <option <?php if ($monthNow == $month) {
+                                            echo "selected";
+                                        } ?> value="<?php echo $month; ?>"><?php echo $month; ?></option> <?php
+                                                                                                            $date->modify('next month');
+                                                                                                        }
+                                                                                                            ?>
+                        </select>
+                        <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Year</label>
+                        <input type="number" value="<?php $dateNow2 = new DateTime();
+                                                    $year = $dateNow2->format('Y');
+                                                    echo $year; ?>" name="year" id="year" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+                    </div>
+
+
+                </div>
+
+                <button type="submit" name="excelReport" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Generate Excel
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div id="editBloodChem" tabindex="-1" aria-hidden="true" class="bg-[#615eae59] hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    Edit HLP Record
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="editBloodChem">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form method="POST">
+                <div class="text-[9px] 2xl:text-lg  rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full w-full p-4 ">
+                    <input type="text" name="editid" id="editid" class="hidden">
+                    <div class="col-span-4 gap-4">
+                        <label for="editname" class="block mb-1 font-semibold  text-gray-900 dark:text-white">Name</label>
+                        <input type="text" name="editname" id="editname" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
+                    </div>
+                    <div class="content-center  col-span-2">
+                        <label for="editrfid" class="block mb-1 font-semibold  text-gray-900 dark:text-white">ID Number</label>
+                        <input type="text" name="editrfid" id="editrfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
+                    </div>
+                    <div class="content-center  col-span-2">
+                        <label for="editsection" class="block mb-1 font-semibold  text-gray-900 dark:text-white">Section</label>
+                        <input type="text" name="editsection" id="editsection" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
+                    </div>
+                    <div class="content-center  col-span-2">
+                        <label for="editdate" class="block mb-1 font-semibold text-gray-900 dark:text-white">Date</label>
+                        <input type="date" name="editdate" id="editdate" value="<?php echo date('Y-m-d'); ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
+                    </div>
+                    <div class="content-center  col-span-2">
+                        <label for="edittime" class="block mb-1 font-semibold text-gray-900 dark:text-white">Time</label>
+                        <input type="text" name="edittime" id="edittime" value="<?php echo date('h:i A'); ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
+                    </div>
+                    <div class="content-center  col-span-2">
+                        <label for="edittype" class="block mb-1 font-semibold text-gray-900 dark:text-white">Type</label>
+                        <select name="edittype" id="edittype" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        <option selected value="">Select Type</option>
+
+                            <option value="Initial">Initial</option>
+                            <option value="Follow up">Follow up</option>
+                        </select>
+
+                    </div>
+                    <div class="content-center  col-span-2">
+                        <label for="editbuilding_transaction" class="block mb-1 font-semibold text-gray-900 dark:text-white">Building</label>
+                        <select name="editbuilding_transaction" id="editbuilding_transaction" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        <option selected value="">Select Building</option>
+                            <option value="Gpi 1">GPI 1</option>
+                            <option value="Gpi 4">GPI 4</option>
+                            <option value="Gpi 5">GPI 5</option>
+                        </select>
+
+                    </div>
+                    <div class="content-center  col-span-2">
+                        <label for="editdiagnosis" class="block  my-auto  font-semibold text-gray-900 ">Diagnosis: </label>
+                        <select id="editdiagnosis" name="editdiagnosis" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+
+                            <?php
+                            $sql1 = "Select * FROM `diagnosis`";
+                            $result = mysqli_query($con, $sql1);
+                            while ($list = mysqli_fetch_assoc($result)) {
+                                $diagnosis = $list["diagnosisName"];
+                            ?>
+                                <option><?php echo $diagnosis; ?></option>
+                            <?php
+
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="content-center  col-span-2">
+                        <label for="editintervention" class="block  my-auto  font-semibold text-gray-900 ">Intervention</label>
+
+                        <select id="editintervention" name="editintervention" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                                <option    value="Medication Only">Medication only</option>
+                                <option  value="Medical Consultation">Medical Consultation</option>
+                                <option  value="Medication and Medical Consultation">Medication and Medical Consultation</option>
+                                <option  value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
+                                <option  value="Clinic Rest Only">Clinic Rest Only</option>
+                                <option  value="Dental Consultation">Dental Consultation</option>
+                                <option  value="Medication and Dental Consultation">Medication and Dental Consultation</option>
+                                <option  value="Dental Services (Oral Prophylaxis)">Dental Services (Oral Prophylaxis)</option>
+                                <option  value="Dental Services (Light Cure)">Dental Services (Light Cure)</option>
+                                <option  value="Medication and Dental Services (Tooth Extraction)">Medication and Dental Services (Tooth Extraction)</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-4 col-span-4" id="medicineDivs">
+                        <div class="col-span-4">
+
+                            <label for="editftwMeds" class="block  my-auto font-semibold text-gray-900 ">Medicine (Add medicine below): </label>
+                            <select name="editftwMeds[]" id="editftwMeds" multiple="multiple" class="form-control js-meds w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+
+
+                            </select>
+
+                        </div>
+                        <div id="medicineDiv" class="grid grid-cols-4 gap-1 col-span-4 mt-2">
+                            <div id="medicineDiv1" class="grid grid-cols-4 gap-1 col-span-4">
+                                <div id="medsdiv" class="col-span-2">
+                                    <label for="nameOfMedicine1" class="block  my-auto font-semibold text-gray-900 ">What's your medicine? </label>
+
+                                    <!-- <input type="text" id="nameOfMedicine1" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
+                                    <select id="nameOfMedicine1" class="js-meds bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option selected disabled>Select Medicine</option>
+          <option value="addMedicineButton">Add Medicine</option>
+          <?php
+          $sql1 = "Select * FROM `medicine`";
+          $result = mysqli_query($con, $sql1);
+          while ($list = mysqli_fetch_assoc($result)) {
+            $medicine = $list["medicineName"];
+          ?>
+            <option  value=<?php echo $medicine; ?>><?php echo $medicine; ?></option>
+          <?php
+
+            //  echo "<option value='$diagnosis' >$diagnosis</option>";
+
+          }
+          ?>
+
+        </select>
+
+                                </div>
+
+                                <div id="medsqtydiv" class=" col-span-2">
+                                    <div class="w-full">
+                                        <label class="block  my-auto font-semibold text-gray-900 ">Choose quantity:</label>
+                                        <div class="flex relative ">
+                                            <div class="relative flex items-center max-w-[8rem]">
+                                                <button type="button" id="decrement-button-edit" data-input-counter-decrement="quantityMeds1" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                                    <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
+                                                    </svg>
+                                                </button>
+                                                <input type="text" name="cnsltnMedsQuantity" id="quantityMeds1" data-input-counter data-input-counter-min="1" data-input-counter-max="50" aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" value="1" />
+                                                <button type="button" id="increment-button-edit" data-input-counter-increment="quantityMeds1" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                                    <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+                                                    </svg>
+                                                </button>
+
+                                            </div>
+
+                                            <button type="button" id="editaddmedsbtn" onclick="addSelectedValue1(document.getElementById('nameOfMedicine1').value, document.getElementById('quantityMeds1').value)" class="ml-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  p-2 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Add to list
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="content-center  col-span-2">
+                        <label for="editfollowupdate" class="block mb-1 font-semibold text-gray-900 dark:text-white">Follow-up Date</label>
+                        <input type="date" name="editfollowupdate" id="editfollowupdate" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
+                    </div>
+                    <div class="content-center  col-span-2">
+                        <label for="editremarks" class="block mb-1 font-semibold text-gray-900 dark:text-white">Remarks</label>
+                        <input type="text" name="editremarks" id="editremarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
+                    </div>
+                    <div class="col-span-4">
+                        <h3 class=" my-auto w-full font-semibold text-gray-900 ">Laboratory: </h3>
+                    </div>
+                    <div class="ml-4 grid grid-cols-4  col-span-4 gap-1">
+                        <div class="col-span-2">
+                            <label for="editfbs" class="block my-auto  font-semibold text-gray-900 ">FBS: </label>
+                            <input type="text" value="" name="editfbs" id="editfbs" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="editcholesterol" class="block my-auto  font-semibold text-gray-900 ">Cholesterol: </label>
+                            <input type="text" name="editcholesterol" id="editcholesterol" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="edittriglycerides" class="block my-auto  font-semibold text-gray-900 ">Triglycerides: </label>
+                            <input type="text" name="edittriglycerides" id="edittriglycerides" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+
+                        <div class="col-span-2">
+                            <label for="edithdl" class="block my-auto  font-semibold text-gray-900 ">HDL: </label>
+                            <input type="text" name="edithdl" id="edithdl" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="editldl" class="block my-auto  font-semibold text-gray-900 ">LDL: </label>
+                            <input type="text" name="editldl" id="editldl" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="editbun" class="block my-auto  font-semibold text-gray-900 ">BUN: </label>
+                            <input type="text" name="editbun" id="editbun" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="editcreatinine" class="block my-auto   text-gray-900 ">Creatinine: </label>
+                            <input type="text" name="editcreatinine" id="editcreatinine" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="editbua" class="block my-auto  font-semibold text-gray-900 ">BUA: </label>
+                            <input type="text" name="editbua" id="editbua" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                      
+                        <div class="col-span-2">
+                            <label for="editsgdt" class="block my-auto  font-semibold text-gray-900 ">SGOT: </label>
+                            <input type="text" name="editsgdt" id="editsgdt" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="editsgpt" class="block my-auto  font-semibold text-gray-900 ">SGPT: </label>
+                            <input type="text" name="editsgpt" id="editsgpt" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="edithbaic" class="block my-auto  font-semibold text-gray-900 ">HBA1C: </label>
+                            <input type="text" name="edithbaic" id="edithbaic" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="editK" class="block my-auto  font-semibold text-gray-900 ">Potassium (K): </label>
+                            <input type="text" name="editK" id="editK" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="editNa" class="block my-auto  font-semibold text-gray-900 ">Sodium (Na): </label>
+                            <input type="text" name="editNa" id="editNa" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div> <div class="col-span-2">
+                            <label for="editFT3" class="block my-auto  font-semibold text-gray-900 ">FT3: </label>
+                            <input type="text" name="editFT3" id="editFT3" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div> <div class="col-span-2">
+                            <label for="editFT4" class="block my-auto  font-semibold text-gray-900 ">FT4: </label>
+                            <input type="text" name="editFT4" id="editFT4" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div> <div class="col-span-2">
+                            <label for="editTSH" class="block my-auto  font-semibold text-gray-900 ">TSH: </label>
+                            <input type="text" name="editTSH" id="editTSH" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div> <div class="col-span-2">
+                            <label for="editothers" class="block my-auto  font-semibold text-gray-900 ">Others: </label>
+                            <input type="text" name="editothers" id="editothers" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
+                        </div>
+                        <div class="col-span-4 justify-center flex gap-2">
+                            <button type="submit" name="editBloodChem" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+
+                                Update Record
+                            </button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+        </div>
+
+        
 <div id="addBloodChemModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full  bg-gray-900/50 dark:bg-gray-900/80 ">
     <div class="relative p-4 w-full max-w-6xl max-h-full">
         <!-- Modal content -->
@@ -1290,371 +1658,6 @@ if (isset($_POST['addBloodChemImport'])) {
     </div>
 </div>
 
-
-
-
-
-
-<div id="importBloodChem" tabindex="-1" aria-hidden="true" class=" hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative w-full max-w-md max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-2 border-b rounded-t dark:border-gray-600">
-                <h3 class=" font-semibold text-gray-900 dark:text-white">
-                    Import HLP Record
-                </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="importBloodChem">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-            </div>
-            <!-- Modal body -->
-            <form method="POST" class="px-4 md:px-5 py-2 text-[8pt]" enctype="multipart/form-data">
-                <div class="grid gap-2 mb-4 grid-cols-2">
-                    <div class="col-span-2">
-
-                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
-                        <input type="file" name="import_file" class="block w-full  text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input">
-
-                    </div>
-
-
-                </div>
-                <button type="submit" name="addBloodChemImport" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
-                    </svg>
-                    Import Data
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
-<div id="exportModal" tabindex="-1" aria-hidden="true" class=" hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class=" font-semibold text-gray-900 dark:text-white">
-                    Export HLP Record
-                </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="exportModal">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-            </div>
-            <!-- Modal body -->
-            <form method="POST" class="px-4 md:px-5 py-2 text-[8pt]" enctype="multipart/form-data">
-                <div class="grid gap-2 mb-4 grid-cols-2">
-                    <div class="col-span-2">
-                        <label for="employer" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employer</label>
-
-                        <select id="employer" name="employer" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-                            <option selected value="GPI">GPI</option>
-                            <option value="All">All</option>
-                            <option value="Maxim">Maxim</option>
-                            <option value="Powerlane">Powerlane</option>
-                            <option value="Nippi">Nippi</option>
-                            <option value="Mangreat">Mangreat</option>
-                            <option value="Otrelo">Otrelo</option>
-                            <option value="Canteen">Canteen</option>
-                            <option value="Alarm">Alarm</option>
-
-                        </select>
-                        <label for="month" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Month</label>
-
-                        <select id="month" name="month" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-                            <?php
-                            $date = new DateTime('01-01-2023');
-                            $dateNow = new DateTime();
-                            $monthNow = $dateNow->format('F');
-
-                            for ($i = 1; $i <= 12; $i++) {
-                                $month = $date->format('F');
-                            ?> <option <?php if ($monthNow == $month) {
-                                            echo "selected";
-                                        } ?> value="<?php echo $month; ?>"><?php echo $month; ?></option> <?php
-                                                                                                            $date->modify('next month');
-                                                                                                        }
-                                                                                                            ?>
-                        </select>
-                        <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Year</label>
-                        <input type="number" value="<?php $dateNow2 = new DateTime();
-                                                    $year = $dateNow2->format('Y');
-                                                    echo $year; ?>" name="year" id="year" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
-                    </div>
-
-
-                </div>
-
-                <button type="submit" name="excelReport" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Generate Excel
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-<div id="editBloodChem" tabindex="-1" aria-hidden="true" class="bg-[#615eae59] hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    Edit HLP Record
-                </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="editBloodChem">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-            </div>
-            <!-- Modal body -->
-            <form method="POST">
-                <div class="text-[9px] 2xl:text-lg  rounded-lg bg-white/50 grid grid-cols-4 gap-1 w-full w-full p-4 ">
-                    <input type="text" name="editid" id="editid" class="hidden">
-                    <div class="col-span-4 gap-4">
-                        <label for="editname" class="block mb-1 font-semibold  text-gray-900 dark:text-white">Name</label>
-                        <input type="text" name="editname" id="editname" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editrfid" class="block mb-1 font-semibold  text-gray-900 dark:text-white">ID Number</label>
-                        <input type="text" name="editrfid" id="editrfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editsection" class="block mb-1 font-semibold  text-gray-900 dark:text-white">Section</label>
-                        <input type="text" name="editsection" id="editsection" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editdate" class="block mb-1 font-semibold text-gray-900 dark:text-white">Date</label>
-                        <input type="date" name="editdate" id="editdate" value="<?php echo date('Y-m-d'); ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="edittime" class="block mb-1 font-semibold text-gray-900 dark:text-white">Time</label>
-                        <input type="text" name="edittime" id="edittime" value="<?php echo date('h:i A'); ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="edittype" class="block mb-1 font-semibold text-gray-900 dark:text-white">Type</label>
-                        <select name="edittype" id="edittype" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        <option selected value="">Select Type</option>
-
-                            <option value="Initial">Initial</option>
-                            <option value="Follow up">Follow up</option>
-                        </select>
-
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editbuilding_transaction" class="block mb-1 font-semibold text-gray-900 dark:text-white">Building</label>
-                        <select name="editbuilding_transaction" id="editbuilding_transaction" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        <option selected value="">Select Building</option>
-                            <option value="Gpi 1">GPI 1</option>
-                            <option value="Gpi 4">GPI 4</option>
-                            <option value="Gpi 5">GPI 5</option>
-                        </select>
-
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editdiagnosis" class="block  my-auto  font-semibold text-gray-900 ">Diagnosis: </label>
-                        <select id="editdiagnosis" name="editdiagnosis" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-
-                            <?php
-                            $sql1 = "Select * FROM `diagnosis`";
-                            $result = mysqli_query($con, $sql1);
-                            while ($list = mysqli_fetch_assoc($result)) {
-                                $diagnosis = $list["diagnosisName"];
-                            ?>
-                                <option><?php echo $diagnosis; ?></option>
-                            <?php
-
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editintervention" class="block  my-auto  font-semibold text-gray-900 ">Intervention</label>
-
-                        <select id="editintervention" name="editintervention" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                                <option    value="Medication Only">Medication only</option>
-                                <option  value="Medical Consultation">Medical Consultation</option>
-                                <option  value="Medication and Medical Consultation">Medication and Medical Consultation</option>
-                                <option  value="Medication, Clinic Rest and Medical Consultation">Medication, Clinic Rest and Medical Consultation</option>
-                                <option  value="Clinic Rest Only">Clinic Rest Only</option>
-                                <option  value="Dental Consultation">Dental Consultation</option>
-                                <option  value="Medication and Dental Consultation">Medication and Dental Consultation</option>
-                                <option  value="Dental Services (Oral Prophylaxis)">Dental Services (Oral Prophylaxis)</option>
-                                <option  value="Dental Services (Light Cure)">Dental Services (Light Cure)</option>
-                                <option  value="Medication and Dental Services (Tooth Extraction)">Medication and Dental Services (Tooth Extraction)</option>
-                        </select>
-                    </div>
-
-                    <div class="grid grid-cols-4 col-span-4" id="medicineDivs">
-                        <div class="col-span-4">
-
-                            <label for="editftwMeds" class="block  my-auto font-semibold text-gray-900 ">Medicine (Add medicine below): </label>
-                            <select name="editftwMeds[]" id="editftwMeds" multiple="multiple" class="form-control js-meds w-full bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-
-
-                            </select>
-
-                        </div>
-                        <div id="medicineDiv" class="grid grid-cols-4 gap-1 col-span-4 mt-2">
-                            <div id="medicineDiv1" class="grid grid-cols-4 gap-1 col-span-4">
-                                <div id="medsdiv" class="col-span-2">
-                                    <label for="nameOfMedicine1" class="block  my-auto font-semibold text-gray-900 ">What's your medicine? </label>
-
-                                    <!-- <input type="text" id="nameOfMedicine1" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 "> -->
-                                    <select id="nameOfMedicine1" class="js-meds bg-gray-50 border border-gray-300 text-gray-900 text-[10px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-          <option selected disabled>Select Medicine</option>
-          <option value="addMedicineButton">Add Medicine</option>
-          <?php
-          $sql1 = "Select * FROM `medicine`";
-          $result = mysqli_query($con, $sql1);
-          while ($list = mysqli_fetch_assoc($result)) {
-            $medicine = $list["medicineName"];
-          ?>
-            <option  value=<?php echo $medicine; ?>><?php echo $medicine; ?></option>
-          <?php
-
-            //  echo "<option value='$diagnosis' >$diagnosis</option>";
-
-          }
-          ?>
-
-        </select>
-
-                                </div>
-
-                                <div id="medsqtydiv" class=" col-span-2">
-                                    <div class="w-full">
-                                        <label class="block  my-auto font-semibold text-gray-900 ">Choose quantity:</label>
-                                        <div class="flex relative ">
-                                            <div class="relative flex items-center max-w-[8rem]">
-                                                <button type="button" id="decrement-button-edit" data-input-counter-decrement="quantityMeds1" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
-                                                    <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
-                                                    </svg>
-                                                </button>
-                                                <input type="text" name="cnsltnMedsQuantity" id="quantityMeds1" data-input-counter data-input-counter-min="1" data-input-counter-max="50" aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" value="1" />
-                                                <button type="button" id="increment-button-edit" data-input-counter-increment="quantityMeds1" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
-                                                    <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
-                                                    </svg>
-                                                </button>
-
-                                            </div>
-
-                                            <button type="button" id="editaddmedsbtn" onclick="addSelectedValue1(document.getElementById('nameOfMedicine1').value, document.getElementById('quantityMeds1').value)" class="ml-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg  p-2 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Add to list
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editfollowupdate" class="block mb-1 font-semibold text-gray-900 dark:text-white">Follow-up Date</label>
-                        <input type="date" name="editfollowupdate" id="editfollowupdate" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder="">
-                    </div>
-                    <div class="content-center  col-span-2">
-                        <label for="editremarks" class="block mb-1 font-semibold text-gray-900 dark:text-white">Remarks</label>
-                        <input type="text" name="editremarks" id="editremarks" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " placeholder=" ">
-                    </div>
-                    <div class="col-span-4">
-                        <h3 class=" my-auto w-full font-semibold text-gray-900 ">Laboratory: </h3>
-                    </div>
-                    <div class="ml-4 grid grid-cols-4  col-span-4 gap-1">
-                        <div class="col-span-2">
-                            <label for="editfbs" class="block my-auto  font-semibold text-gray-900 ">FBS: </label>
-                            <input type="text" value="" name="editfbs" id="editfbs" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        </div>
-
-                        <div class="col-span-2">
-                            <label for="editcholesterol" class="block my-auto  font-semibold text-gray-900 ">Cholesterol: </label>
-                            <input type="text" name="editcholesterol" id="editcholesterol" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        </div>
-
-                        <div class="col-span-2">
-                            <label for="edittriglycerides" class="block my-auto  font-semibold text-gray-900 ">Triglycerides: </label>
-                            <input type="text" name="edittriglycerides" id="edittriglycerides" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        </div>
-
-                        <div class="col-span-2">
-                            <label for="edithdl" class="block my-auto  font-semibold text-gray-900 ">HDL: </label>
-                            <input type="text" name="edithdl" id="edithdl" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        </div>
-                        <div class="col-span-2">
-                            <label for="editldl" class="block my-auto  font-semibold text-gray-900 ">LDL: </label>
-                            <input type="text" name="editldl" id="editldl" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        </div>
-                        <div class="col-span-2">
-                            <label for="editbun" class="block my-auto  font-semibold text-gray-900 ">BUN: </label>
-                            <input type="text" name="editbun" id="editbun" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        </div>
-                        <div class="col-span-2">
-                            <label for="editcreatinine" class="block my-auto   text-gray-900 ">Creatinine: </label>
-                            <input type="text" name="editcreatinine" id="editcreatinine" class="p-2 border rounded-md w-full focus:outline-none focus:border-blue-500 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg">
-                        </div>
-                        <div class="col-span-2">
-                            <label for="editbua" class="block my-auto  font-semibold text-gray-900 ">BUA: </label>
-                            <input type="text" name="editbua" id="editbua" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        </div>
-                      
-                        <div class="col-span-2">
-                            <label for="editsgdt" class="block my-auto  font-semibold text-gray-900 ">SGOT: </label>
-                            <input type="text" name="editsgdt" id="editsgdt" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        </div>
-                        <div class="col-span-2">
-                            <label for="editsgpt" class="block my-auto  font-semibold text-gray-900 ">SGPT: </label>
-                            <input type="text" name="editsgpt" id="editsgpt" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        </div>
-                        <div class="col-span-2">
-                            <label for="edithbaic" class="block my-auto  font-semibold text-gray-900 ">HBA1C: </label>
-                            <input type="text" name="edithbaic" id="edithbaic" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        </div>
-                        <div class="col-span-2">
-                            <label for="editK" class="block my-auto  font-semibold text-gray-900 ">Potassium (K): </label>
-                            <input type="text" name="editK" id="editK" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        </div>
-                        <div class="col-span-2">
-                            <label for="editNa" class="block my-auto  font-semibold text-gray-900 ">Sodium (Na): </label>
-                            <input type="text" name="editNa" id="editNa" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        </div> <div class="col-span-2">
-                            <label for="editFT3" class="block my-auto  font-semibold text-gray-900 ">FT3: </label>
-                            <input type="text" name="editFT3" id="editFT3" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        </div> <div class="col-span-2">
-                            <label for="editFT4" class="block my-auto  font-semibold text-gray-900 ">FT4: </label>
-                            <input type="text" name="editFT4" id="editFT4" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        </div> <div class="col-span-2">
-                            <label for="editTSH" class="block my-auto  font-semibold text-gray-900 ">TSH: </label>
-                            <input type="text" name="editTSH" id="editTSH" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        </div> <div class="col-span-2">
-                            <label for="editothers" class="block my-auto  font-semibold text-gray-900 ">Others: </label>
-                            <input type="text" name="editothers" id="editothers" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
-                        </div>
-                        <div class="col-span-4 justify-center flex gap-2">
-                            <button type="submit" name="editBloodChem" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-
-                                Update Record
-                            </button>
-                        </div>
-                    </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
