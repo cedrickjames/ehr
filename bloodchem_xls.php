@@ -74,10 +74,16 @@ if ($employer == "All") {
                     <th>HDl</th>
                     <th>LDL</th>
                     <th>BUN</th>
+                    <th>Creatinine</th>
                     <th>BUA</th>
+                    <th>SGOT</th>
                     <th>SGPT</th>
-                    <th>SGDT</th>
                     <th>HBA1C</th>
+                    <th>Potassium</th>
+                    <th>Sodium</th>
+                    <th>FT3</th>
+                    <th>FT4</th>
+                    <th>TSH</th>
                     <th>Others</th>
                 </tr>
                 <?php
@@ -113,10 +119,16 @@ if ($employer == "All") {
                                             <td>" . $row['HDL'] . "</td>
                                              <td>" . $row['LDL'] . "</td>
                                               <td>" . $row['BUN'] . "</td>
+                                              <td>" . $row['creatinine'] . "</td>
                                               <td>" . $row['BUA'] . "</td>
-                                              <td>" . $row['SGPT'] . "</td>
                                               <td>" . $row['SGDT'] . "</td>
+                                              <td>" . $row['SGPT'] . "</td>
                                               <td>" . $row['HBA1C'] . "</td>
+                                              <td>" . $row['potassium'] . "</td>
+                                              <td>" . $row['sodium'] . "</td>
+                                              <td>" . $row['FT3'] . "</td>
+                                              <td>" . $row['FT4'] . "</td>
+                                              <td>" . $row['TSH'] . "</td>
                                               <td>" . $row['others'] . "</td>
                                     </tr>";
                 }
