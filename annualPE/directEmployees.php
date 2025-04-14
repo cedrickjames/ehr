@@ -25,6 +25,23 @@ if (isset($_POST['excelReport'])) {
 <?php
 }
 
+
+
+if(isset($_POST['deleteAPERecord'])){
+    $id = $_POST['APEidtodelete'];
+    $sql = "DELETE FROM `annualphysicalexam` WHERE `id` = '$id'";
+    $results = mysqli_query($con, $sql);
+   
+    if ($results) {
+      echo "<script>alert('Delete successful.');</script>";
+    } else {
+      echo "<script>alert('There is a problem with deleting record. Please contact your administrator.');</script>";
+    }
+  }
+
+
+
+
 if (isset($_POST['addAnnualPe'])) {
     $date_received = $_POST['date_received'];
     $date_performed = $_POST['date_performed'];
@@ -315,6 +332,9 @@ if (isset($_POST['addPreEmploymentImport'])) {
                                                 <li>
                                                     <a type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['idNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date_received="<?php echo $row['dateReceived']; ?>" data-date_performed="<?php echo $row['datePerformed']; ?>" data-imc="<?php echo $row['IMC']; ?>" data-oeh="<?php echo $row['OEH']; ?>" data-pe="<?php echo $row['PE']; ?>" data-cbc="<?php echo $row['CBC']; ?>" data-ua="<?php echo $row['U_A']; ?>" data-fa="<?php echo $row['FA']; ?>" data-cxr="<?php echo $row['CXR']; ?>" data-va="<?php echo $row['VA']; ?>" data-den="<?php echo $row['DEN']; ?>" data-dt="<?php echo $row['DT']; ?>" data-pt="<?php echo $row['PT']; ?>" data-others="<?php echo $row['otherTest']; ?>" data-followupstatus="<?php echo $row['followUpStatus']; ?>" data-status="<?php echo $row['status']; ?>" data-attendee="<?php echo $row['attendee']; ?>" data-confirmationdate="<?php echo $row['confirmationDate']; ?>" data-fmc="<?php echo $row['FMC']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit Annual P.E. Record</a>
                                                 </li>
+                                                <li>
+                                                    <a type="button" onclick="askdelete('<?php echo $row['id']; ?>')" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
+                                                </li>
 
                                             </ul>
 
@@ -351,6 +371,37 @@ if (isset($_POST['addPreEmploymentImport'])) {
     </div>
 
 </div>
+
+
+
+<div id="deleteAPERecordModal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+            <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="deleteAPERecordModal">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+            <div class="p-4 md:p-5 text-center">
+                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
+                <form action="" method="POST">
+                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this record?</h3>
+                <input type="text" id="APEidtodelete" name="APEidtodelete" class="hidden">
+                <button  type="submit" name="deleteAPERecord" id="deleteAPERecordModal" class=" text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                    Yes, I'm sure
+                </button>
+               
+                <button data-modal-hide="deleteAPERecordModal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No, cancel</button>
+                </form>
+              
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <div id="addPreEmpDirectEmployees" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -720,6 +771,36 @@ if (isset($_POST['addPreEmploymentImport'])) {
 </div>
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 <script>
+
+
+
+const $targetDeleteAPE = document.getElementById('deleteAPERecordModal');
+  const deleteAPEModal = {
+    placement: 'center-center',
+    backdrop: 'static',
+    backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
+    closable: true,
+    onHide: () => {
+    },
+    onShow: () => {
+
+    },
+    onToggle: () => {
+    }
+  };
+  const modaldeleteModal = new Modal($targetDeleteAPE, deleteAPEModal);
+
+
+function askdelete(id){
+
+document.getElementById("APEidtodelete").value = id;
+modaldeleteModal.toggle();
+}
+
+
+
+
+
     $(document).ready(function() {
         $('#name').change(function() {
             var selectedRfid = $(this).find('option:selected').data('rfid');
