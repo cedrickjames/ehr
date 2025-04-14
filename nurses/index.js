@@ -19,6 +19,7 @@ $(document).ready(function () {
         { "width": "1%", "targets": 0, },
         {"className": "dt-center", "targets": "_all"}
       ],
+      "order": [[0, "desc"]], 
         responsive: true,
          scrollCollapse: false,
     scrollY: '50vh'
