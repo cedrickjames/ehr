@@ -210,13 +210,13 @@ if (isset($_POST['editPreEmployment'])) {
 }
 
 // Function to check if Id Number exists in database and save non-existent ones in an array
-function isidNumberExists($con, $idNumber,$employer)
+function isNameExists($con, $name,$employer)
 {
     // Escape the Id Number to prevent SQL injection (assuming $con is your mysqli connection)
-    $idNumber = mysqli_real_escape_string($con, $idNumber);
+    // $idNumber = mysqli_real_escape_string($con, $idNumber);
 
     // Query to check if Id Number exists
-    $query = "SELECT COUNT(*) AS count FROM employeespersonalinfo WHERE idNumber = '$idNumber' AND `employer` ='$employer'";
+    $query = "SELECT COUNT(*) AS count FROM preemployment WHERE `name` = '$name' AND `employer` ='$employer'";
     $result = mysqli_query($con, $query);
 
     // Check if query execution was successful
@@ -302,13 +302,63 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
             $FMC = $row['31'];
 
             // Check if Id Number exists in db_table
-            // if (!isidNumberExists($con, $idNumber, $employer)) {
-            //     // Log error for non-existent Id Numbers
-            //     $errorLogs[] = "$idNumber, ";
-            //     array_push($failedData, [$dateReceivedFormatted, $datePerformedFormatted, $idNumber, $IMC, $OEH, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]); 
+            if (isNameExists($con, $name, $employer)) {
+                // Log error for non-existent Id Numbers
+                $errorLogs[] = "$name, ";
 
-            //     continue; // Skip saving this row
-            // }
+                array_push($failedData, [$name,$email,$birthdayFormatted,$age,$sexcorrespondingValue,$address,$civilcorrespondingValue,$employer,$building,$correspondingValue,$section,$position,$dateHiredFormatted,$dateReceivedFormatted, $datePerformedFormatted, $IMC, $OEH, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]);
+
+                // array_push($failedData, [$dateReceivedFormatted, $datePerformedFormatted, $name, $IMC, $OEH, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]); 
+
+                continue; // Skip saving this row
+            }
+            else{
+                try {
+                    $addPreEmploymentGpi = "INSERT INTO `preemployment`(`dateReceived`, `datePerformed`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`,`confirmationDate`, `FMC`, `email`, `birthday`, `age`, `sex`, `address`, `civilStatus`, `employer`, `building`, `department`, `position`, `level`, `dateHired`) VALUES ('$dateReceivedFormatted','$datePerformedFormatted','$name','$section','$IMC','$OEH','$PE','$CBC','$U_A','$FA','$CXR', '$VA', '$DEN', '$DT', '$PT', ' $otherTest', ' $followUpStatus', '$status', '$attendee','$confirmationDate', '$FMC','$email','$birthdayFormatted', '$age','$sexcorrespondingValue','$address','$civilcorrespondingValue','$employer','$building','$correspondingValue','$position','employee', '$dateHiredFormatted')";
+                    $resultInfo = mysqli_query($con, $addPreEmploymentGpi);
+        
+        
+                    // Check if query execution was successful
+                    // if ($resultInfo === false) {
+                    //     $errorLogs[] = "Failed to insert data for applicant '$name': " . mysqli_error($con);
+                    //     array_push($failedData, [$dateReceivedFormatted, $datePerformedFormatted, $IMC, $OEH, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]); 
+        
+                    // }
+                
+                    if ($resultInfo) {
+                        $count1++;
+                        // Success message (optional)
+                        // echo "<script>alert('Data imported and saved successfully!');</script>";
+                    }
+                } catch (mysqli_sql_exception $e) {
+                    // Catch the exception and get the error message
+                    $error = $e->getMessage();
+                    // Display the error in an alert
+    
+    
+                    echo "<script>alert('Error: " . addslashes($error) . "');</script>";
+                    array_push($failedData, [$name,$email,$birthdayFormatted,$age,$sexcorrespondingValue,$address,$civilcorrespondingValue,$employer,$building,$correspondingValue,$section,$position,$dateHiredFormatted,$dateReceivedFormatted, $datePerformedFormatted, $IMC, $OEH, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]);
+                    // $failedData .= "<tr>";
+                    // $failedData .= "\n<td>$idNumber</td>";
+                    // $failedData .= "\n<td>$name</td>";
+                    // $failedData .= "\n<td>$email</td>";
+                    // $failedData .= "\n<td>$birthday</td>";
+                    // $failedData .= "\n<td>$age</td>";
+                    // $failedData .= "\n<td>$sexcorrespondingValue</td>";
+                    // $failedData .= "\n<td>$address</td>";
+                    // $failedData .= "\n<td>$civilcorrespondingValue</td>";
+                    // $failedData .= "\n<td>$employer</td>";
+                    // $failedData .= "\n<td>$building</td>";
+                    // $failedData .= "\n<td>$correspondingValue</td>";
+                    // $failedData .= "\n<td>$section</td>";
+                    // $failedData .= "\n<td>$position</td>";
+                    // $failedData .= "\n<td>$dateHired</td>";
+                    // $failedData .= "</tr>";
+    
+    
+                    
+                }
+            }
 
             // If validation passes, save to database
             // $result = mysqli_query($con, "SELECT `Name`, `section` FROM `employeespersonalinfo` WHERE `idNumber` = '$idNumber' AND `employer` ='$employer'");
@@ -329,51 +379,7 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
 
            
 
-            try {
-                $addPreEmploymentGpi = "INSERT INTO `preemployment`(`dateReceived`, `datePerformed`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`,`confirmationDate`, `FMC`, `email`, `birthday`, `age`, `sex`, `address`, `civilStatus`, `employer`, `building`, `department`, `position`, `level`, `dateHired`) VALUES ('$dateReceivedFormatted','$datePerformedFormatted','$name','$section','$IMC','$OEH','$PE','$CBC','$U_A','$FA','$CXR', '$VA', '$DEN', '$DT', '$PT', ' $otherTest', ' $followUpStatus', '$status', '$attendee','$confirmationDate', '$FMC','$email','$birthdayFormatted', '$age','$sexcorrespondingValue','$address','$civilcorrespondingValue','$employer','$building','$correspondingValue','$position','employee', '$dateHiredFormatted')";
-                $resultInfo = mysqli_query($con, $addPreEmploymentGpi);
-    
-    
-                // Check if query execution was successful
-                // if ($resultInfo === false) {
-                //     $errorLogs[] = "Failed to insert data for applicant '$name': " . mysqli_error($con);
-                //     array_push($failedData, [$dateReceivedFormatted, $datePerformedFormatted, $IMC, $OEH, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]); 
-    
-                // }
             
-                if ($resultInfo) {
-                    $count1++;
-                    // Success message (optional)
-                    // echo "<script>alert('Data imported and saved successfully!');</script>";
-                }
-            } catch (mysqli_sql_exception $e) {
-                // Catch the exception and get the error message
-                $error = $e->getMessage();
-                // Display the error in an alert
-
-
-                echo "<script>alert('Error: " . addslashes($error) . "');</script>";
-                array_push($failedData, [$name,$email,$birthdayFormatted,$age,$sexcorrespondingValue,$address,$civilcorrespondingValue,$employer,$building,$correspondingValue,$section,$position,$dateHiredFormatted,$dateReceivedFormatted, $datePerformedFormatted, $IMC, $OEH, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]);
-                // $failedData .= "<tr>";
-                // $failedData .= "\n<td>$idNumber</td>";
-                // $failedData .= "\n<td>$name</td>";
-                // $failedData .= "\n<td>$email</td>";
-                // $failedData .= "\n<td>$birthday</td>";
-                // $failedData .= "\n<td>$age</td>";
-                // $failedData .= "\n<td>$sexcorrespondingValue</td>";
-                // $failedData .= "\n<td>$address</td>";
-                // $failedData .= "\n<td>$civilcorrespondingValue</td>";
-                // $failedData .= "\n<td>$employer</td>";
-                // $failedData .= "\n<td>$building</td>";
-                // $failedData .= "\n<td>$correspondingValue</td>";
-                // $failedData .= "\n<td>$section</td>";
-                // $failedData .= "\n<td>$position</td>";
-                // $failedData .= "\n<td>$dateHired</td>";
-                // $failedData .= "</tr>";
-
-
-                
-            }
         }
         $count = 1;
     }
@@ -513,7 +519,22 @@ if (isset($_POST['addPreEmploymentImport'])) {
             $unsuccessfullcount =  $highestRow - $count1 - 1;
             echo "<script>alert('There are $count1 successfully imported and $unsuccessfullcount unsuccessful!');</script>";
     $_SESSION['failedData'] = $failedData;
-    echo "<script> location.href='failedDataFromImportingPreEmp.php'; </script>";
+    if($unsuccessfullcount>=1){
+       
+        echo "<script>
+           window.onload = function() {
+    	     window.location.href = 'failedDataFromImportingPreEmp.php';
+            setTimeout(function() {
+            window.location.href = 'index.php?employer=$employer';
+                }, 3000); // Redirect to anotherPage.php after 3 seconds
+            };
+        </script>";
+
+
+    }
+    else{
+        echo "<script> location.href='index.php?employer=$employer'; </script>";
+    }
 
             // Close database connection
             // mysqli_close($con);

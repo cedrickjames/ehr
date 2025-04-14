@@ -35,6 +35,7 @@ if (!empty($failedData)) {
 // Close the output stream and exit to complete file download
 fclose($output);
 
+
 exit();
 // header("Location: index.php");
 ?>
