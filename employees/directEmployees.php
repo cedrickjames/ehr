@@ -6,6 +6,27 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
+if (isset($_GET['employer'])) {
+    $employer = $_GET['employer'];
+  } else {
+    $employer = "not found";
+  }
+  
+
+
+
+if (isset($_POST['downloadEmployeesRecord'])) {
+    
+?>
+    <script type="text/javascript">
+        window.open('EmployeesRecord_xls.php?employer=<?php echo $employer;?>', '_blank');
+        location.href='index.php?employer='+$employer;
+    </script>
+<?php
+}
+
+
+
 if (isset($_POST['addNewEmployeeManual'])) {
     $idNumber = $_POST['idNumber'];
     $name = $_POST['name'];
@@ -225,8 +246,15 @@ if(isset($_POST['deactivateUser'])){
 <div class="text-[9px] 2xl:text-lg mb-5">
     <div class="flex justify-between">
         <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]"><?php echo $employer ; ?> Employees</span></p>
+        <div>
+            <form action="" method="POST">
+            <button type="submit" name="downloadEmployeesRecord"  class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 rounded-lg  px-5 py-2.5 text-center me-2 mb-2">Download Data</button>
+            <button type="button" data-dropdown-toggle="options" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800  rounded-lg  px-5 py-2.5 text-center me-2 mb-2">Options</button>
 
-        <button type="button" data-dropdown-toggle="options" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800  rounded-lg  px-5 py-2.5 text-center me-2 mb-2">Options</button>
+            </form>
+
+        </div>
+        
         <div id="options" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
             <ul class="py-2  text-gray-700 dark:text-gray-200" aria-labelledby="options">
                 <li>
