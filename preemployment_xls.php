@@ -85,7 +85,7 @@ else{
                               
                             <td>".$row['dateReceived']."</td>
                             <td>".$row['datePerformed']."</td>
-                            <td>".$row['Name']."</td>
+                            <td>".$row['name']."</td>
                              <td>".$row['section']."</td>
                               <td>".$row['IMC']."</td>
                                <td>".$row['OEH']."</td>
