@@ -11,8 +11,7 @@ include("includes/connect.php");
 
 $con->next_result();
 
-$sql = "SELECT p.*, e.employer, e.Name, e.section, e.idNumber FROM preemployment p 
-    JOIN employeespersonalinfo e ON e.idNumber = p.idNumber WHERE p.idNumber = '$employeeid' ORDER BY `id` ASC";
+$sql = "SELECT * FROM preemployment  WHERE idNumber = '$employeeid' ORDER BY `id` ASC";
 
 ?>
 
@@ -41,10 +40,23 @@ $sql = "SELECT p.*, e.employer, e.Name, e.section, e.idNumber FROM preemployment
 
             <thead>
                 <tr>
+
+                                <th>Id Number</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Birthday</th>
+                                <th>Age</th>
+                                <th>Sex</th>
+                                <th>Address</th>
+                                <th>Civil Status</th>
+                                <th>Employer</th>
+                                <th>Building</th>
+                                <th>Department</th>
+                                <th>Section</th>
+                                <th>Position</th>
+                                <th>Date Hired</th>
                                 <th>Date received </th>
                                 <th>Date performed </th>
-                                <th>Name </th>
-                                <th>Section </th>
                                 <th>IMC</th>
                                 <th>OEH</th>
                                 <th>PE</th>
@@ -74,11 +86,22 @@ $sql = "SELECT p.*, e.employer, e.Name, e.section, e.idNumber FROM preemployment
                 $result = mysqli_query($con, $sql);
                 while ($row = mysqli_fetch_array($result)) {
                     echo "<tr>    
+                            <td>".$row['idNumber']."</td>
+                            <td>".$row['name']."</td>
+                            <td>".$row['email']."</td>
+                            <td>".$row['birthday']."</td>
+                            <td>".$row['age']."</td>
+                            <td>".$row['sex']."</td>
+                            <td>".$row['address']."</td>
+                            <td>".$row['civilStatus']."</td>
+                            <td>".$row['employer']."</td>
+                            <td>".$row['building']."</td>
+                            <td>".$row['department']."</td>
+                            <td>".$row['section']."</td>
+                            <td>".$row['position']."</td>
                               
                             <td>".$row['dateReceived']."</td>
                             <td>".$row['datePerformed']."</td>
-                            <td>".$row['Name']."</td>
-                             <td>".$row['section']."</td>
                               <td>".$row['IMC']."</td>
                                <td>".$row['OEH']."</td>
                                 <td>".$row['PE']."</td>
