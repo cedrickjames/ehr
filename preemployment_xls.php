@@ -14,14 +14,12 @@ include("includes/connect.php");
 
 $con->next_result();
 if($employer == "All"){
-    $sql = "SELECT p.*, e.employer, e.Name, e.section, e.idNumber FROM preemployment p 
-    JOIN employeespersonalinfo e ON e.idNumber = p.idNumber WHERE MONTH(p.dateReceived) = '$monthNumber'
-    AND YEAR(p.dateReceived) = '$year' ORDER BY `id` ASC";
+    $sql = "SELECT * FROM preemployment  WHERE MONTH(dateReceived) = '$monthNumber'
+    AND YEAR(dateReceived) = '$year' ORDER BY `id` ASC";
 }
 else{
-    $sql = "SELECT p.*, e.employer, e.Name, e.section, e.idNumber FROM preemployment p 
-    JOIN employeespersonalinfo e ON e.idNumber = p.idNumber WHERE e.employer = '$employer' AND MONTH(p.dateReceived) = '$monthNumber'
-    AND YEAR(p.dateReceived) = '$year' ORDER BY `id` ASC";
+    $sql = "SELECT * FROM preemployment WHERE employer = '$employer' AND MONTH(dateReceived) = '$monthNumber'
+    AND YEAR(dateReceived) = '$year' ORDER BY `id` ASC";
 }
 
 ?>
