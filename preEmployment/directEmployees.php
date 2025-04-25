@@ -214,7 +214,7 @@ if (isset($_POST['editPreEmployment'])) {
     
     $fmc = $_POST['editFmc'];
 
-    $editPreEmploymentGpi = "UPDATE `preemployment` SET `idNumber`='$idNumber', `dateReceived`='$date_received' , `datePerformed` = '$date_performed', `name`= '$name', `section`= '$section', `IMC`= '$imc', `OEH`= '$oeh', `PE`= '$pe', `CBC`= '$cbc', `U_A`= '$ua', `FA`= '$fa', `CXR`= '$cxr', `VA`= '$va', `DEN`= '$den', `DT`= '$dt', `PT`= '$pt', `otherTest`= '$others', `followUpStatus`= '$followupstatus', `status`= '$status', `attendee` = '$attendee',`confirmationDate`= '$confirmationdate', `FMC`= '$fmc' WHERE `idNumber`='$idNumber'";
+    $editPreEmploymentGpi = "UPDATE `preemployment` SET `dateReceived`='$date_received' , `datePerformed` = '$date_performed', `name`= '$name', `section`= '$section', `IMC`= '$imc', `OEH`= '$oeh', `PE`= '$pe', `CBC`= '$cbc', `U_A`= '$ua', `FA`= '$fa', `CXR`= '$cxr', `VA`= '$va', `DEN`= '$den', `DT`= '$dt', `PT`= '$pt', `otherTest`= '$others', `followUpStatus`= '$followupstatus', `status`= '$status', `attendee` = '$attendee',`confirmationDate`= '$confirmationdate', `FMC`= '$fmc' WHERE `id`='$idNumber'";
     $resultInfo = mysqli_query($con, $editPreEmploymentGpi);
 
     if ($resultInfo) {
@@ -259,68 +259,68 @@ function saveToDatabase($con, $data, $count,$employer,$format1,$format2,$sexform
     foreach ($data as $row) {
         if ($count > 0) {
 
-    
-            $name = $row['0'];
-            $email = $row['1'];
-            $birthday = $row['2'];
+            $employeeId = $row['0'];
+            $name = $row['1'];
+            $email = $row['2'];
+            $birthday = $row['3'];
             $birthdayObj = DateTime::createFromFormat(detectDateFormat($birthday), $birthday);
     $birthdayFormatted = $birthdayObj ? $birthdayObj->format('Y-m-d') : $birthday;
-            $age = $row['3'];
-            $sex = $row['4'];
+            $age = $row['4'];
+            $sex = $row['5'];
             $sexindex = array_search($sex, $sexformat1);
             $sexcorrespondingValue = $sexformat2[$sexindex] ?? null; // Use null if index doesn't exist in $format2
 
-            $address = $row['5'];
-            $civilStatus = $row['6'];
+            $address = $row['6'];
+            $civilStatus = $row['7'];
             $civilindex = array_search($civilStatus, $civilformat1);
             $civilcorrespondingValue = $civilformat2[$civilindex] ?? null;
 
             // $employer = $employer;
-            $building = $row['8'];
-            $department = $row['9'];
+            $building = $row['9'];
+            $department = $row['10'];
             $index = array_search($department, $format1);
             $correspondingValue = $format2[$index] ?? null; // Use null if index doesn't exist in $format2
-            $section = $row['10'];
-            $position = $row['11'];
-            $dateHired = $row['12'];
+            $section = $row['11'];
+            $position = $row['12'];
+            $dateHired = $row['13'];
             $dateHiredObj = DateTime::createFromFormat(detectDateFormat($dateHired), $dateHired);
 $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHired;
 
-            $dateReceived = $row['13'];
+            $dateReceived = $row['14'];
             $dateReceivedObj = DateTime::createFromFormat(detectDateFormat($dateReceived), $dateReceived);
             $dateReceivedFormatted = $dateReceivedObj ? $dateReceivedObj->format('Y-m-d') : $dateReceived;
             
-            $datePerformed = $row['14'];
+            $datePerformed = $row['15'];
             $datePerformedObj = DateTime::createFromFormat(detectDateFormat($datePerformed), $datePerformed);
             $datePerformedFormatted = $datePerformedObj ? $datePerformedObj->format('Y-m-d') : $datePerformed;
 
             // $idNumber = $row['2'];
      
 // babalikan ko to
-            $IMC = $row['15'];
-            $OEH = $row['16'];
-            $PE = $row['17'];
-            $CBC = $row['18'];
-            $U_A = $row['19'];
-            $FA = $row['20'];
-            $CXR = $row['21'];
-            $VA = $row['22'];
-            $DEN = $row['23'];
-            $DT = $row['24'];
-            $PT = $row['25'];
-            $otherTest = $row['26'];
-            $followUpStatus = $row['27'];
-            $status = $row['28'];
-            $attendee = $row['29'];
-            $confirmationDate = $row['30'];
-            $FMC = $row['31'];
+            $IMC = $row['16'];
+            $OEH = $row['17'];
+            $PE = $row['18'];
+            $CBC = $row['19'];
+            $U_A = $row['20'];
+            $FA = $row['21'];
+            $CXR = $row['22'];
+            $VA = $row['23'];
+            $DEN = $row['24'];
+            $DT = $row['25'];
+            $PT = $row['26'];
+            $otherTest = $row['27'];
+            $followUpStatus = $row['28'];
+            $status = $row['29'];
+            $attendee = $row['30'];
+            $confirmationDate = $row['31'];
+            $FMC = $row['32'];
 
             // Check if Id Number exists in db_table
             if (isNameExists($con, $name, $employer)) {
                 // Log error for non-existent Id Numbers
                 $errorLogs[] = "$name, ";
 
-                array_push($failedData, [$name,$email,$birthdayFormatted,$age,$sexcorrespondingValue,$address,$civilcorrespondingValue,$employer,$building,$correspondingValue,$section,$position,$dateHiredFormatted,$dateReceivedFormatted, $datePerformedFormatted, $IMC, $OEH, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]);
+                array_push($failedData, [$employeeId,$name,$email,$birthdayFormatted,$age,$sexcorrespondingValue,$address,$civilcorrespondingValue,$employer,$building,$correspondingValue,$section,$position,$dateHiredFormatted,$dateReceivedFormatted, $datePerformedFormatted, $IMC, $OEH, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]);
 
                 // array_push($failedData, [$dateReceivedFormatted, $datePerformedFormatted, $name, $IMC, $OEH, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]); 
 
@@ -328,7 +328,7 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
             }
             else{
                 try {
-                    $addPreEmploymentGpi = "INSERT INTO `preemployment`(`dateReceived`, `datePerformed`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`,`confirmationDate`, `FMC`, `email`, `birthday`, `age`, `sex`, `address`, `civilStatus`, `employer`, `building`, `department`, `position`, `level`, `dateHired`) VALUES ('$dateReceivedFormatted','$datePerformedFormatted','$name','$section','$IMC','$OEH','$PE','$CBC','$U_A','$FA','$CXR', '$VA', '$DEN', '$DT', '$PT', ' $otherTest', ' $followUpStatus', '$status', '$attendee','$confirmationDate', '$FMC','$email','$birthdayFormatted', '$age','$sexcorrespondingValue','$address','$civilcorrespondingValue','$employer','$building','$correspondingValue','$position','employee', '$dateHiredFormatted')";
+                    $addPreEmploymentGpi = "INSERT INTO `preemployment`(`idNumber`,`dateReceived`, `datePerformed`, `name`, `section`, `IMC`, `OEH`, `PE`, `CBC`, `U_A`, `FA`, `CXR`, `VA`, `DEN`, `DT`, `PT`, `otherTest`, `followUpStatus`, `status`, `attendee`,`confirmationDate`, `FMC`, `email`, `birthday`, `age`, `sex`, `address`, `civilStatus`, `employer`, `building`, `department`, `position`, `level`, `dateHired`) VALUES ('$employeeId','$dateReceivedFormatted','$datePerformedFormatted','$name','$section','$IMC','$OEH','$PE','$CBC','$U_A','$FA','$CXR', '$VA', '$DEN', '$DT', '$PT', ' $otherTest', ' $followUpStatus', '$status', '$attendee','$confirmationDate', '$FMC','$email','$birthdayFormatted', '$age','$sexcorrespondingValue','$address','$civilcorrespondingValue','$employer','$building','$correspondingValue','$position','employee', '$dateHiredFormatted')";
                     $resultInfo = mysqli_query($con, $addPreEmploymentGpi);
         
         
@@ -344,6 +344,16 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
                         // Success message (optional)
                         // echo "<script>alert('Data imported and saved successfully!');</script>";
                     }
+
+                    if($employeeId != '')
+                    {
+                        $addEmployeeGpi = "INSERT INTO `employeespersonalinfo`(`idNumber`, `Name`, `email`, `birthday`,`age`, `sex`, `address`, `civilStatus`, `employer`,`building`, `department`, `section`, `position`, `level`, `dateHired`) VALUES ('$employeeId','$name', '$email','$birthdayFormatted', '$age','$sexcorrespondingValue','$address','$civilcorrespondingValue','$employer','$building','$correspondingValue','$section','$position', 'employee', '$dateHiredFormatted')";
+                        $resultInfo1 = mysqli_query($con, $addEmployeeGpi);
+                    
+                    }
+
+
+
                 } catch (mysqli_sql_exception $e) {
                     // Catch the exception and get the error message
                     $error = $e->getMessage();
@@ -351,7 +361,7 @@ $dateHiredFormatted = $dateHiredObj ? $dateHiredObj->format('Y-m-d') : $dateHire
     
     
                     echo "<script>alert('Error: " . addslashes($error) . "');</script>";
-                    array_push($failedData, [$name,$email,$birthdayFormatted,$age,$sexcorrespondingValue,$address,$civilcorrespondingValue,$employer,$building,$correspondingValue,$section,$position,$dateHiredFormatted,$dateReceivedFormatted, $datePerformedFormatted, $IMC, $OEH, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]);
+                    array_push($failedData, [$employeeId,$name,$email,$birthdayFormatted,$age,$sexcorrespondingValue,$address,$civilcorrespondingValue,$employer,$building,$correspondingValue,$section,$position,$dateHiredFormatted,$dateReceivedFormatted, $datePerformedFormatted, $IMC, $OEH, $PE, $CBC, $U_A, $FA, $CXR, $VA, $DEN, $DT, $PT, $otherTest, $followUpStatus, $status, $attendee, $confirmationDate, $FMC]);
                     // $failedData .= "<tr>";
                     // $failedData .= "\n<td>$idNumber</td>";
                     // $failedData .= "\n<td>$name</td>";
@@ -1205,7 +1215,7 @@ ORDER BY p.id ASC;
                         <label for="editName" class="block mb-1  text-gray-900 dark:text-white">Name</label>
                         <input id="editName" name="editName"  class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
                     </div>
-                    <div  class="content-center  col-span-2 hidden">
+                    <div  class="content-center  col-span-2">
                         <label for="editRfid" class="block mb-1  text-gray-900 dark:text-white">ID Number</label>
                         <input type="text" name="editRfid" id="editRfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                     </div>
@@ -1615,7 +1625,7 @@ function openDelete(element){
 
     function openEditEmployee(element) {
         modalEdit.toggle();
-        // document.getElementById("editRfid").value = element.getAttribute("data-rfid");
+        document.getElementById("editRfid").value = element.getAttribute("data-rfid");
         document.getElementById("editName").value = element.getAttribute("data-name");
         document.getElementById("editSection").value = element.getAttribute("data-section");
         document.getElementById("editDate_received").value = element.getAttribute("data-date_received");
@@ -1656,6 +1666,7 @@ function openDelete(element){
     function exportTemplate() {
 
         var rows = [];
+        column0 = 'Id Number';
          column1 = 'Name';
          column2 = 'Email';
          column3 = 'Birthday';
@@ -1691,6 +1702,7 @@ function openDelete(element){
 
         rows.push(
             [
+            column0,
             column1,
             column2,
             column3,
@@ -1728,6 +1740,7 @@ function openDelete(element){
         );
 
         for (var i = 0, row; i < 1; i++) {
+            column0 = '';
             column1 = '';
             column2 = '';
             column3 = "";
@@ -1763,6 +1776,7 @@ function openDelete(element){
 
             rows.push(
                 [
+                    column0,
                     column1,
                     column2,
                     column3,

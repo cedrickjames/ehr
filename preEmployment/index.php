@@ -91,17 +91,17 @@ reader.onload = (event) => {
 
     // Convert sheet data to JSON
     const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-    const departments = jsonData.slice(1).map(row => row[9]);
+    const departments = jsonData.slice(1).map(row => row[10]);
     const uniqueDepartments = [...new Set(departments)];
 console.log(uniqueDepartments);
 document.getElementById("departmentFormat1").value=uniqueDepartments;
 
 
 
-    const sex = jsonData.slice(1).map(row => row[4]);
+    const sex = jsonData.slice(1).map(row => row[5]);
     const uniqueSex = [...new Set(sex)];
     document.getElementById("sexFormat1").value=uniqueSex;
-    const civil = jsonData.slice(1).map(row => row[6]);
+    const civil = jsonData.slice(1).map(row => row[7]);
     const uniquecivil = [...new Set(civil)];
     document.getElementById("civilFormat1").value=uniquecivil;
     // Display or process the data
