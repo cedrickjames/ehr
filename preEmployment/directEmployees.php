@@ -682,6 +682,7 @@ if (isset($_POST['addImportEmployed'])) {
                             <tr>
                                 <th>No.</th>
                                 <th>Action</th>
+                                <th>ID Number</th>
                                 <th>Employment Status</th>
                                 <th>Date received </th>
                                 <th>Date performed </th>
@@ -755,6 +756,8 @@ ORDER BY p.id ASC;
 
                                         </div>
                                     </td>
+                                    <td><?php echo $row['idNumber'] ?></td>
+
                                     <td><?php if($row['idNumber'] != null){echo "Hired";} ?></td>
 
                                     <td><?php echo $row['dateReceived'] ?></td>
@@ -1215,7 +1218,7 @@ ORDER BY p.id ASC;
                         <label for="editName" class="block mb-1  text-gray-900 dark:text-white">Name</label>
                         <input id="editName" name="editName"  class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 " readonly>
                     </div>
-                    <div  class="content-center  col-span-2">
+                    <div  class="content-center  col-span-2 hidden">
                         <label for="editRfid" class="block mb-1  text-gray-900 dark:text-white">ID Number</label>
                         <input type="text" name="editRfid" id="editRfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] 2xl:text-sm w-full rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 ">
                     </div>
