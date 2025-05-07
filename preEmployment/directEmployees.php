@@ -53,7 +53,7 @@ if (isset($_GET['employer'])) {
   } else {
     $employer = "not found";
   }
-  
+//   echo $employer;
 
 if (isset($_POST['excelReport'])) {
     $_SESSION['month'] = $_POST['month'];
@@ -68,6 +68,25 @@ if (isset($_POST['excelReport'])) {
 }
 
 
+
+if(isset($_POST['deletePreeEmployment'])){
+
+
+    $employeeNumbersString = $_POST['arrayOfUser'];
+    $sql = "DELETE FROM `preemployment` WHERE `id` IN ($employeeNumbersString)";
+    //    echo $sql;
+       $result = mysqli_query($con, $sql);
+
+       if ($result) {
+        echo "<script>alert('Delete successful.');</script>";
+        echo "<script> location.href='index.php?employer=$employer'; </script>";
+      } else {
+        echo "<script>alert('There is a problem with deleting record. Please contact your administrator.');</script>";
+      }
+     
+}
+
+
  if(isset($_POST['deletePreEmployees'])){
 
     $id = $_POST['deleteId'];
@@ -76,6 +95,7 @@ if (isset($_POST['excelReport'])) {
    
     if ($results) {
       echo "<script>alert('Delete successful.');</script>";
+      echo "<script> location.href='index.php?employer=$employer'; </script>";
     } else {
       echo "<script>alert('There is a problem with deleting record. Please contact your administrator.');</script>";
     }
@@ -634,6 +654,8 @@ if (isset($_POST['addImportEmployed'])) {
 <div class="flex justify-between">
         <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Pre-employment Records - <?php echo $employer ; ?> Employees</span></p>
         <div class="flex items-center order-2">
+        <button type="button" data-modal-target="deactivateModal" data-modal-toggle="deactivateModal" id="deactivateButton" class="hidden me-2 mx-4 text-sm font-medium text-white text-sm px-5 py-2.5 focus:outline-none bg-white rounded-lg border border-gray-200 bg-gradient-to-br from-red-600 to-red-900 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800">Delete</button>
+    
         <button type="button" data-modal-target="exportPreEmp" data-modal-toggle="exportPreEmp" class="lg:block text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Download Data</button>
 
         <button type="button" data-dropdown-toggle="options"class="lg:block text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800  font-medium rounded-lg text-[12px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2 ">Add Pre Employment</button>
@@ -675,11 +697,14 @@ if (isset($_POST['addImportEmployed'])) {
 
     <div id="" class="">
         <div class=" p-4 rounded-lg  bg-gray-50 " id="headApproval" role="tabpanel" aria-labelledby="profile-tab">
-            <form action="index.php" method="post">
+            <form  method="post">
                 <section class="mt-2 2xl:mt-10">
+                    <input type="text" class="hidden" id="arrayOfUser" name="arrayOfUser" maxlength="4000">
                     <table id="queTable" class="display text-[9px] 2xl:text-sm" style="width:100%">
                         <thead>
                             <tr>
+                                 <th>Check</th>
+
                                 <th>No.</th>
                                 <th>Action</th>
                                 <th>ID Number</th>
@@ -718,7 +743,12 @@ ORDER BY p.id ASC;
                             $result = mysqli_query($con, $sql);
                             while ($row = mysqli_fetch_assoc($result)) { ?>
                                 <tr>
+                                
                                     <td><?php echo $preEmpNo; ?></td>
+                                    <td>
+                                    <div><input id="checkBoxPreEmp" data-id="<?php echo $row['id']; ?>"  id="" type="checkbox" value="" class="preemployee-checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                </div>
+                                </td>
                                     <!-- <td> <button type="button" onclick="openEditEmployee(this)" data-rfid="<?php echo $row['idNumber']; ?>" data-name="<?php echo $row['Name']; ?>" data-section="<?php echo $row['section']; ?>" data-date_received="<?php echo $row['dateReceived']; ?>" data-date_performed="<?php echo $row['datePerformed']; ?>" data-imc="<?php echo $row['IMC']; ?>" data-oeh="<?php echo $row['OEH']; ?>" data-pe="<?php echo $row['PE']; ?>" data-cbc="<?php echo $row['CBC']; ?>" data-ua="<?php echo $row['U_A']; ?>" data-fa="<?php echo $row['FA']; ?>" data-cxr="<?php echo $row['CXR']; ?>" data-va="<?php echo $row['VA']; ?>" data-den="<?php echo $row['DEN']; ?>" data-dt="<?php echo $row['DT']; ?>" data-pt="<?php echo $row['PT']; ?>" data-others="<?php echo $row['otherTest']; ?>" data-followupstatus="<?php echo $row['followUpStatus']; ?>" data-status="<?php echo $row['status']; ?>" data-attendee="<?php echo $row['attendee']; ?>" data-confirmationdate="<?php echo $row['confirmationDate']; ?>" data-fmc="<?php echo $row['FMC']; ?>" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button></td> -->
                                     <td>
                                         <div class="content-center flex flex-wrap justify-center gap-2">
@@ -786,6 +816,32 @@ ORDER BY p.id ASC;
                         </tbody>
                     </table>
                 </section>
+
+                <div id="deactivateModal" aria-hidden="true" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="deactivateModal">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+            <div class="p-4 md:p-5 text-center">
+                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
+                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete the selected pre-employment/s?</h3>
+                <button type="submit"  name="deletePreeEmployment"  class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                    Yes, I'm sure
+                </button>
+                <button data-modal-hide="deactivateModal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No, cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
             </form>
         </div>
     </div>
@@ -1336,15 +1392,15 @@ ORDER BY p.id ASC;
                     <label for="employer" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employer</label>
 
                         <select id="employer" name="employer" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected value="GPI">GPI</option>
-                        <option value="All">All</option>
-                        <option value="Maxim">Maxim</option>
-                        <option value="Powerlane">Powerlane</option>
-                        <option value="Nippi">Nippi</option>
-                        <option value="Mangreat">Mangreat</option>
-                        <option value="Otrelo">Otrelo</option>
-                        <option value="Canteen">Canteen</option>
-                        <option value="Alarm">Alarm</option>
+                        <option <?php if($employer == "GPI"){ echo "selected";} ?> value="GPI">GPI</option>
+                        <option <?php if($employer == "All"){ echo "selected";} ?> value="All">All</option>
+                        <option <?php if($employer == "Maxim"){ echo "selected";} ?> value="Maxim">Maxim</option>
+                        <option <?php if($employer == "Powerlane"){ echo "selected";} ?> value="Powerlane">Powerlane</option>
+                        <option <?php if($employer == "Nippi"){ echo "selected";} ?> value="Nippi">Nippi</option>
+                        <option <?php if($employer == "Mangreat"){ echo "selected";} ?> value="Mangreat">Mangreat</option>
+                        <option <?php if($employer == "Otrelo"){ echo "selected";} ?> value="Otrelo">Otrelo</option>
+                        <option <?php if($employer == "Canteen"){ echo "selected";} ?> value="Canteen">Canteen</option>
+                        <option <?php if($employer == "Alarm"){ echo "selected";} ?> value="Alarm">Alarm</option>
                                                                                        
                         </select>
                         <label for="month" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Month</label>
@@ -1518,6 +1574,54 @@ ORDER BY p.id ASC;
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 <script>
 
+var arrayOfUser = [];
+        var arrayOfUserNumber = [];
+var numofselected = 0;
+
+
+$('.preemployee-checkbox').change(function() {
+
+    if ($(this).prop('checked')) {
+
+numofselected++;
+if(numofselected>=1){
+  $('#deactivateButton').removeClass('hidden');
+  }
+  else{
+
+    $('#deactivateButton').addClass('hidden');
+  }
+}
+else{
+numofselected--;
+if(numofselected==0){
+
+  $('#deactivateButton').addClass('hidden');
+
+  }
+
+    $('#numOfSelectedEmployees').text(numofselected);
+}
+
+
+
+    $('.preemployee-checkbox:checked').each(function() {
+     
+     arrayOfUser.push($(this).data('id'));
+     var checkboxId = $(this).attr('id');
+console.log(checkboxId);
+
+
+
+  
+ });
+
+ $('#arrayOfUser').val(arrayOfUser.join(','));
+ arrayOfUser = [];
+
+
+
+})
 
 const editEmployee1 = document.getElementById('editEmployee');
 

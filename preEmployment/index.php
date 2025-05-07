@@ -6,6 +6,14 @@ if(!isset($_SESSION['connected'])){
   header("location: ../logout.php");
 }
 
+
+if (isset($_GET['employer'])) {
+  $employer = $_GET['employer'];
+} else {
+  $employer = "not found";
+}
+
+
 ?>
 
 
