@@ -527,7 +527,17 @@ immediateHead.removeAttribute('required');
 var immediateEmail = document.getElementById('immediateEmail');
 immediateEmail.removeAttribute('required');
 
+
+      var emailsentcontainer = document.getElementById('emailsentcontainer').value;
+      
+      console.log(emailsentcontainer)
+if(emailsentcontainer==1){
 $('#immediateHeadSection').addClass("hidden")
+}
+else{
+$('#immediateHeadSection').removeClass("hidden")
+
+}
 
 });
 

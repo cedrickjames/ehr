@@ -433,25 +433,18 @@ if (isset($_POST['submitFromDoctorsConsultation'])) {
       try {
         //Server settings
         $mail->isSMTP();                                      // Set mailer to use SMTP
-        $mail->Host = 'mail.glorylocal.com.ph';                       // Specify main and backup SMTP servers
+        $mail->Host = 'smtp.office365.com';                       // Specify main and backup SMTP servers
         $mail->SMTPAuth = true;                               // Enable SMTP authentication
         $mail->Username = $account;     // Your Email/ Server Email
         $mail->Password = $accountpass;                     // Your Password
-        $mail->SMTPOptions = array(
-          'ssl' => array(
-            'verify_peer' => false,
-            'verify_peer_name' => false,
-            'allow_self_signed' => true
-          )
-        );
-        $mail->SMTPSecure = 'none';
-        $mail->Port = 465;
+       $mail->Port       = 587;     
+        $mail->SMTPSecure = 'tls';
 
-        //Send Email
-        // $mail->setFrom('Helpdesk'); //eto ang mag front  notificationsys01@gmail.com
+      //Send Email
+      // $mail->setFrom('Helpdesk'); //eto ang mag front  notificationsys01@gmail.com
 
-        //Recipients
-        $mail->setFrom('healthbenefits@glorylocal.com.ph', 'Health Benefits');
+      //Recipients
+      $mail->setFrom('rpa.notification@glory.com.ph', 'Health Benefits');
         foreach ($immediateEmail as $emailHead) {
           $mail->addAddress($emailHead);
       }

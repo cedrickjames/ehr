@@ -156,11 +156,15 @@ if (isset($_GET['ftw'])) {
     $ftwWithPendingLab = $row['withPendingLab'];
 
     $ftwMeds = $row['medicine'];
+
+    $emailsent = $row['emailsent'];
+
     // $immediateEmail = $row['date'];
 
 
   }
 } else {
+  $emailsent = "";
   $cnsltn = "not found";
   $ftwCategories = "";
   $ftwBuilding = "";
@@ -468,30 +472,23 @@ if (isset($_POST['addFTW'])) {
 
     require '../vendor/autoload.php';
 
-    $mail = new PHPMailer(true);
+    $mail = new PHPMailer\PHPMailer\PHPMailer();
     //  email the admin               
     try {
       //Server settings
       $mail->isSMTP();                                      // Set mailer to use SMTP
-      $mail->Host = 'mail.glorylocal.com.ph';                       // Specify main and backup SMTP servers
+      $mail->Host = 'smtp.office365.com';                       // Specify main and backup SMTP servers
       $mail->SMTPAuth = true;                               // Enable SMTP authentication
       $mail->Username = $account;     // Your Email/ Server Email
       $mail->Password = $accountpass;                     // Your Password
-      $mail->SMTPOptions = array(
-        'ssl' => array(
-          'verify_peer' => false,
-          'verify_peer_name' => false,
-          'allow_self_signed' => true
-        )
-      );
-      $mail->SMTPSecure = 'none';
-      $mail->Port = 465;
+        $mail->Port       = 587;     
+        $mail->SMTPSecure = 'tls';
 
       //Send Email
       // $mail->setFrom('Helpdesk'); //eto ang mag front  notificationsys01@gmail.com
 
       //Recipients
-      $mail->setFrom('healthbenefits@glorylocal.com.ph', 'Health Benefits');
+      $mail->setFrom('rpa.notification@glory.com.ph', 'Health Benefits');
       foreach ($immediateEmail as $emailHead) {
         $mail->addAddress($emailHead);
     }
@@ -718,6 +715,9 @@ if (isset($_POST['updateFTW'])) {
 
 
   $ftwDate = $_POST['ftwDate'];
+
+    $ftwTimeEmail = date("F j, Y", strtotime($ftwDate));
+
   $ftwTime = $_POST['ftwTime'];
   $ftwCategories = $_POST['ftwCategories'];
   $ftwBuilding = $_POST['ftwBuilding'];
@@ -743,6 +743,286 @@ if (isset($_POST['updateFTW'])) {
   $ftwOthersRemarks = $_POST['ftwOthersRemarks'];
   $ftwCompleted = isset($_POST['ftwCompleted']) ? $_POST['ftwCompleted'] : "0";
   $ftwWithPendingLab = $_POST['ftwWithPendingLab'];
+
+
+  $resendEmail = $_POST['resendEmail'];
+
+  if($resendEmail==0){
+
+
+    
+  $immediateEmail = $_POST['immediateEmail'];
+  $immediateHead = $_POST['immediateHead'];
+  $immediateHead = implode(', ', $immediateHead);
+
+
+
+  if (isset($_POST['ftwMeds']) && !empty($_POST['ftwMeds'])) {
+    $ftwMeds = $_POST['ftwMeds'];
+    $ftwMeds = implode(', ', $ftwMeds);
+    $ftwMeds = str_replace("'", "&apos;", $ftwMeds);
+    $ftwMeds = str_replace('"', '&quot;', $ftwMeds);
+    
+  }
+  else{
+    $ftwMeds="";
+  }
+  if ($ftwRemarks == "Fit to Work") {
+    $ftwUnfitReason="";
+    $ftwDaysOfRest="";
+  }
+
+  if($ftwCompleted==1){
+    $ftwWithPendingLab='';
+  }
+
+
+  
+  
+  $statusColorMedCert='black';
+  $statusColorFiling='black';
+
+
+  // echo $smoking;
+  // $sql = "INSERT INTO `fittowork`( `approval`, `department`,`idNumber`, `nurseAssisting`,`date`, `time`, `timeOfFiling`,`categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `isFitToWork`,`isMedcertRequired`,`daysOfRest`,`reasonOfUnfitToWork`,`remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`,`pendingLabDueDate`) VALUES ('head','$department','$idNumber','$nurseId','$ftwDate','$ftwTime','$timeOfFiling','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$cnsltnIntervention','$cnsltnClinicRestFrom','$cnsltnClinicRestTo','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$isMedcertRequired','$ftwDaysOfRest','$ftwUnfitReason','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab','$pendingLabDueDate')";
+  // $results = mysqli_query($con, $sql);
+
+  
+    $sql2 = "Select * FROM `sender`";
+    $result2 = mysqli_query($con, $sql2);
+    while ($list = mysqli_fetch_assoc($result2)) {
+      $account = $list["email"];
+      $accountpass = $list["password"];
+    }
+
+  if($isMedcertRequired =='noMedCert'){
+    $isMedcertRequired = 'No Medical Certificate Submitted';
+    $statusColorMedCert = 'red';
+
+  }
+  else if($isMedcertRequired=='invalidMedCert'){
+    $isMedcertRequired = 'Invalid Medical Certificate';
+    $statusColorMedCert = 'red';
+  }
+  else if($isMedcertRequired=='noNeed'){
+    $isMedcertRequired = 'Not Required';
+  }
+  else if($isMedcertRequired=='withMedCert'){
+    $isMedcertRequired = 'Medcert Provided';
+  }
+ 
+  if($timeOfFiling!='On Time'){
+    $statusColorFiling = 'red';
+  }
+
+
+    if($ftwRemarks == "Unfit to work"){
+      $subject = 'Employee Fit-to-work Status';
+      $message = '<div style="width: 1000px; font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 3px solid red; border-radius: 8px; ">
+       
+      <p>Hi <strong>' . $immediateHead . '</strong> and <strong>'.$coorHR.'</strong>,</p>
+      <p>This is to inform you that Ms./Mr. <span style="font-weight: bolder">' . $name . ' </span> visited the clinic for fit-to-work confirmation and was assessed to be <span style="color: red; font-weight: bolder">&quot;UNFIT TO WORK &quot;.</span></p>
+      
+            
+           <table style=" border-spacing: 10px;">
+            
+            <tr>
+                <td>ID Number:</td>
+                <td>&nbsp; &nbsp;'.$idNumber.'</td>
+            </tr>
+        
+            <tr>
+                <td>Date of Absence:</td>
+                <td>&nbsp;&nbsp;' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</td>
+            </tr>
+            <tr>
+                <td>No. of days absent:</td>
+                <td>&nbsp;&nbsp;' . $ftwDays . '</td>
+            </tr>
+            <tr>
+                <td> Medical Certificate:</td>
+                 <td style="color: '.$statusColorMedCert.'">&nbsp;&nbsp;'. $isMedcertRequired .'</td>
+            </tr>
+            <tr>
+                <td>Reason of Absence:</td>
+                <td> &nbsp;&nbsp;'. $ftwAbsenceReason .'</td>
+            </tr>
+             <tr>
+            <td>
+            Filing Status:</td>
+            <td style="color: '.$statusColorFiling.'">&nbsp;&nbsp;'. $timeOfFiling .'</td>
+           </tr>
+             <tr>
+            <td>
+            Date and Time of Filing :</td>
+            <td>&nbsp;&nbsp;'.$ftwTimeEmail.' '. $ftwTime .'</td>
+        </tr>
+            <tr>
+                <td>Reason For Sending Home:</td>
+                <td>&nbsp;&nbsp;'. $ftwUnfitReason .'</td>
+            </tr>
+            <tr>
+                <td>Day/s of Rest:</td>
+                <td>&nbsp;&nbsp;'. $ftwDaysOfRest .'</td>
+            </tr>
+              
+        </table>
+      
+      <p>Verified by: </p>
+      
+      <p>OH Nurse / Clinic Staff</p>
+      
+            <p style="font-size: 12px; color: #0073e6;">
+                <em>This is a generated email. Please do not reply.</em>
+            </p>
+            
+            
+        </div>';
+      
+
+    }
+    else{
+      $subject = 'Employee Fit-to-work Status';
+      $message = '<div style="width: 1000px; font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; border: 3px solid green; border-radius: 8px; ">
+       
+  <p>Hi <strong>' . $immediateHead . '</strong> and <strong>'.$coorHR.'</strong>,</p>
+  <p>This is to inform you that Ms./Mr. <span style="font-weight: bolder">' . $name . ' </span> visited the clinic for fit-to-work confirmation and was assessed to be <span style="color: green; font-weight: bolder">&quot;FIT TO WORK &quot;.</span></p>
+  
+        
+       <table style=" border-spacing: 10px;">
+        
+        <tr>
+            <td>ID Number:</td>
+            <td>&nbsp; &nbsp;'.$idNumber.'</td>
+        </tr>
+        <tr>
+            <td>Date of Absence:</td>
+            <td>&nbsp;&nbsp;' . $ftwSLDateFrom . ' to ' . $ftwSLDateTo . '</td>
+        </tr>
+        <tr>
+            <td>No. of days absent:</td>
+            <td>&nbsp;&nbsp;' . $ftwDays . '</td>
+        </tr>
+        <tr>
+            <td>Reason of Absence:</td>
+            <td> &nbsp;&nbsp;'. $ftwAbsenceReason .'</td>
+        </tr>
+        <tr>
+            <td>
+            Medical Certificate:</td>
+            <td style="color: '.$statusColorMedCert.'">&nbsp;&nbsp;'. $isMedcertRequired .'</td>
+        </tr>
+        <tr>
+            <td>
+            Filing Status:</td>
+            <td style="color: '.$statusColorFiling.'">&nbsp;&nbsp;'. $timeOfFiling .'</td>
+        </tr>
+         <tr>
+            <td>
+            Date and Time of Filing :</td>
+            <td>&nbsp;&nbsp;'.$ftwTimeEmail.' '. $ftwTime .'</td>
+        </tr>
+         
+          <tr>
+            <td>Remarks:</td>
+            <td>&nbsp;&nbsp;'. $ftwOthersRemarks .'</td>
+        </tr>
+        
+    </table>
+  
+  <p>Verified by: </p>
+  
+  <p>OH Nurse / Clinic Staff</p>
+  
+        <p style="font-size: 12px; color: #0073e6;">
+            <em>This is a generated email. Please do not reply.</em>
+        </p>
+        
+        
+    </div>';
+  
+    }
+   
+
+    require '../vendor/autoload.php';
+
+    $mail = new PHPMailer(true);
+    //  email the admin               
+    try {
+      //Server settings
+      $mail->isSMTP();                                      // Set mailer to use SMTP
+      $mail->Host = 'smtp.office365.com';                       // Specify main and backup SMTP servers
+      $mail->SMTPAuth = true;                               // Enable SMTP authentication
+      $mail->Username = $account;     // Your Email/ Server Email
+      $mail->Password = $accountpass;                     // Your Password
+      
+      $mail->Port = 587;
+      $mail->SMTPSecure = 'tls';
+      //Send Email
+      // $mail->setFrom('Helpdesk'); //eto ang mag front  notificationsys01@gmail.com
+
+      //Recipients
+      $mail->setFrom('rpa.notification@glory.com.ph', 'Health Benefits');
+      foreach ($immediateEmail as $emailHead) {
+        $mail->addAddress($emailHead);
+    }
+      // $mail->addAddress($immediateEmail);
+      $mail->AddCC($nurse_email);
+      foreach ($hremail as $email) {
+        $mail->AddCC($email);
+    }
+      $mail->isHTML(true);
+      $mail->Subject = $subject;
+      $mail->Body    = $message;
+      $mail->send();
+
+      $_SESSION['message'] = 'Message has been sent';
+
+      $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab', `timeOfFiling` = '$timeOfFiling', `isMedcertRequired` = '$isMedcertRequired', `daysOfRest` = '$ftwDaysOfRest', `reasonOfUnfitToWork` = '$ftwUnfitReason', `emailsent`='1' WHERE `id`= '$ftw';";
+  $results = mysqli_query($con, $sql);
+
+  if ($results) {
+   
+        echo "<script>alert('Fit-to-Work was successfully updates and sent to the respective personnels.') </script>";
+        echo "<script> location.href='index.php'; </script>";
+
+  } else {
+          echo "<script>alert('OOOPPSSS. There are problem with the SQL. But, I assure you that the email has been sent. Please contact your administrator and send this alert message.') </script>";
+        echo "<script> location.href='index.php'; </script>";
+  }
+
+
+
+
+
+      // header("location: form.php");
+    } catch (Exception $e) {
+      $_SESSION['message'] = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+
+      $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab', `timeOfFiling` = '$timeOfFiling', `isMedcertRequired` = '$isMedcertRequired', `daysOfRest` = '$ftwDaysOfRest', `reasonOfUnfitToWork` = '$ftwUnfitReason', `emailsent`='0' WHERE `id`= '$ftw';";
+  $results = mysqli_query($con, $sql);
+
+      if($results){
+
+        echo "<script>alert('Message could not be sent but the Fit-To-Work has been successfully updated. Please contact your administrator. ') </script>";
+        echo "<script> location.href='index.php'; </script>";
+      }
+      else{
+        echo "<script>alert('OOOPPSSS. There are problem with the SQL and sending the email. Please contact your administrator.') </script>";
+        echo "<script> location.href='index.php'; </script>";
+      }
+
+     
+      // echo "<script>alert('Message could not be sent. Mailer Error.') </script>";
+    }
+
+
+
+
+  }
+
+
+  
   // $immediateEmail = $_POST['immediateEmail'];
   // $immediateHead = $_POST['immediateHead'];
 
@@ -770,13 +1050,7 @@ if (isset($_POST['updateFTW'])) {
   //   $ftwMeds = implode(', ', $ftwMeds);
   // }
 
-  $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab', `timeOfFiling` = '$timeOfFiling', `isMedcertRequired` = '$isMedcertRequired', `daysOfRest` = '$ftwDaysOfRest', `reasonOfUnfitToWork` = '$ftwUnfitReason' WHERE `id`= '$ftw';";
-  $results = mysqli_query($con, $sql);
-  if ($results) {
-    echo "<script>alert('Record updated succesfully!')</script>";
-  } else {
-    echo "<script>alert('There's a problem updating.')</script>";
-  }
+  
 }
 
 ?>
@@ -1465,6 +1739,7 @@ if (isset($_POST['updateFTW'])) {
         <input type="date" name="pendingLabDueDate" value="<?php echo $currentDate; ?>" id="pendingLabDueDate" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
 
       </div>
+      <input type="text" class="hidden" id="emailsentcontainer" name="resendEmail" value="<?php echo $emailsent; ?>">
       <div id="immediateHeadSection" class="grid grid-cols-4 gap-4 col-span-4">
       <div class=" gap-4  col-span-2">
         <label class="block my-auto  font-semibold text-gray-900 ">Immediate Head:</label>
