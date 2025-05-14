@@ -472,7 +472,7 @@ if (isset($_POST['addFTW'])) {
 
     require '../vendor/autoload.php';
 
-    $mail = new PHPMailer\PHPMailer\PHPMailer();
+     $mail = new PHPMailer(true);
     //  email the admin               
     try {
       //Server settings
