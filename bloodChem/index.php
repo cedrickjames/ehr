@@ -278,6 +278,10 @@ $(".js-employees").select2({
       $sidebar1 ="#powerlaneside_1";
 
     }
+     else if($employer=="Natcorp"){
+      $sidebar1 ="#natcorpside_1";
+
+    }
     else if($employer=="Otrelo"){
       $sidebar1 ="#otreloside_1";
 

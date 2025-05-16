@@ -57,7 +57,13 @@ if (isset($_POST['addNewEmployeeManual'])) {
 
 if (isset($_POST['editEmployeeRecord'])) {
     // $idNumber = $_POST['editrfid'];
+
+    
+    $empIdNumberDb = $_POST['empIdNumberDb'];
+
     $idNumber = $_POST['editidNumber'];
+    $editemployer = $_POST['editemployer'];
+
     $name = $_POST['editname'];
     $email = $_POST['editemail'];
     $birthday = $_POST['editBirthday'];
@@ -66,19 +72,22 @@ if (isset($_POST['editEmployeeRecord'])) {
     $sex = $_POST['editsex'];
     $address = $_POST['editaddress'];
     $civilStatus = $_POST['editcivilStatus'];
-    $employer = $_POST['editemployer'];
+    $employer1 = $_POST['editemployer'];
     $department = $_POST['editdepartment'];
     $section = $_POST['editsection'];
     $position = $_POST['editposition'];
     $level = $_POST['editlevel'];
     $dateHired = $_POST['editdateHired'];
+    $editbuilding = $_POST['editbuilding'];
 
-    $editEmployeeGpi = "UPDATE `employeespersonalinfo` SET  `idNumber` = '$idNumber', `Name`= '$name', `email`='$email', `birthday`='$birthday',`age`= '$age', `sex`= '$sex', `address`= '$address', `civilStatus`= '$civilStatus', `employer`= '$employer', `department`= '$department', `section`= '$section', `position`= '$position', `level`= '$level', `dateHired` = '$dateHired' WHERE `idNumber`= '$idNumber' AND `employer`= '$employer'";
+    
+
+    $editEmployeeGpi = "UPDATE `employeespersonalinfo` SET  `idNumber` = '$idNumber', `Name`= '$name', `email`='$email', `birthday`='$birthday',`age`= '$age', `sex`= '$sex', `address`= '$address', `civilStatus`= '$civilStatus', `employer`= '$employer1',`building`='$editbuilding', `department`= '$department', `section`= '$section', `position`= '$position', `level`= '$level', `dateHired` = '$dateHired' WHERE `id`= '$empIdNumberDb'";
     $resultInfo = mysqli_query($con, $editEmployeeGpi);
 
     if ($resultInfo) {
         echo "<script>alert('Record Updated Successfuly!') </script>";
-        echo "<script> location.href='index.php'; </script>";
+        echo "<script> location.href='index.php?employer=$employer'; </script>";
     }
 }
 
@@ -318,7 +327,7 @@ if(isset($_POST['deactivateUser'])){
                                         <div id="dropdownDots<?php echo $queNo; ?>" class="dropdownoption z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                                             <ul class="py-2 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton<?php echo $queNo; ?>">
                                                 <li>
-                                                    <a type="button" onclick="openEditEmployee(this)"  data-idnumber="<?php echo $row['idNumber'] ?>" data-name="<?php echo $row['Name'] ?>" data-email="<?php echo $row['email'] ?>" data-age="<?php echo $row['age'] ?>" data-birthday="<?php echo $row['birthday'] ?>"  data-sex="<?php echo $row['sex'] ?>" data-building="<?php echo $row['building'] ?>" data-address="<?php echo $row['address'] ?>" data-civilstatus="<?php echo $row['civilStatus'] ?>" data-employer="<?php echo $row['employer'] ?>" data-department="<?php echo $row['department'] ?>" data-section="<?php echo $row['section'] ?>" data-position="<?php echo $row['position'] ?>" data-level="<?php echo $row['level'] ?>" data-datehired="<?php echo $row['dateHired'] ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                                    <a type="button" onclick="openEditEmployee(this)" data-id="<?php echo $row['id'] ?>"  data-idnumber="<?php echo $row['idNumber'] ?>" data-name="<?php echo $row['Name'] ?>" data-email="<?php echo $row['email'] ?>" data-age="<?php echo $row['age'] ?>" data-birthday="<?php echo $row['birthday'] ?>"  data-sex="<?php echo $row['sex'] ?>" data-building="<?php echo $row['building'] ?>" data-address="<?php echo $row['address'] ?>" data-civilstatus="<?php echo $row['civilStatus'] ?>" data-employer="<?php echo $row['employer'] ?>" data-department="<?php echo $row['department'] ?>" data-section="<?php echo $row['section'] ?>" data-position="<?php echo $row['position'] ?>" data-level="<?php echo $row['level'] ?>" data-datehired="<?php echo $row['dateHired'] ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
                                                 </li>
                                                 <li>
                                                     <a href="../nurses/fitToWork.php?rf=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Fit To Work</a>
@@ -692,6 +701,7 @@ if(isset($_POST['deactivateUser'])){
 
             <form method="POST" class="px-4 md:px-5 py-2 text-[8pt]">
                 <div class="grid gap-4 mb-4 grid-cols-2">
+                    <input type="text" class="" name="empIdNumberDb" id="empIdNumberDb">
                     <!-- <div class="col-span-2">
                         <label for="editrfid" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID Number</label>
                         <input type="text" name="editrfid" id="editrfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="">
@@ -741,8 +751,20 @@ if(isset($_POST['deactivateUser'])){
                     </div>
                     <div class="col-span-1 sm:col-span-1">
                         <label for="editemployer" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employer</label>
-                        <input type="text" name="editemployer" id="editemployer" value="<?php echo $employer; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="" readonly>
+                         <select id="editemployer" name="editemployer" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <option value="GPI">GLORY</option>
+                         <option value="Maxim">MAXIM</option>
+                            <option value="Nippi">NIPPI</option>
+                            <option value="Natcorp">NATCORP</option>
+                            <option value="Canteen">CANTEEN</option>
+                            <option value="Alarm">ALARM</option>
+                            <option value="Otrelo">OTRELO</option>
+                            <option value="Mangreat">MANGREAT</option>
+                        </select>
+                        <!-- <input type="text" name="editemployer" id="editemployer" value="<?php echo $employer; ?>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder=""> -->
                     </div>
+
+                    
                     <div class="col-span-1 sm:col-span-1">
                         <label for="editbuilding" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Building</label>
                         <input type="text" name="editbuilding"  id="editbuilding" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
@@ -868,6 +890,9 @@ function deleteEmpRecord(id){
     function openEditEmployee(element) {
         modalEdit.toggle();
        // document.getElementById("editrfid").value = element.getAttribute("data-rfid");
+       
+        document.getElementById("empIdNumberDb").value = element.getAttribute("data-id");
+
         document.getElementById("editidNumber").value = element.getAttribute("data-idnumber");
         document.getElementById("editname").value = element.getAttribute("data-name");
         document.getElementById("editemail").value = element.getAttribute("data-email");

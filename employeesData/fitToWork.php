@@ -1019,6 +1019,46 @@ if (isset($_POST['updateFTW'])) {
 
 
 
+  }else{
+    
+
+
+
+  if (isset($_POST['ftwMeds']) && !empty($_POST['ftwMeds'])) {
+    $ftwMeds = $_POST['ftwMeds'];
+    $ftwMeds = implode(', ', $ftwMeds);
+    $ftwMeds = str_replace("'", "&apos;", $ftwMeds);
+    $ftwMeds = str_replace('"', '&quot;', $ftwMeds);
+    
+  }
+  else{
+    $ftwMeds="";
+  }
+  if ($ftwRemarks == "Fit to Work") {
+    $ftwUnfitReason="";
+    $ftwDaysOfRest="";
+  }
+
+  if($ftwCompleted==1){
+    $ftwWithPendingLab='';
+  }
+
+
+
+
+ $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab', `timeOfFiling` = '$timeOfFiling', `isMedcertRequired` = '$isMedcertRequired', `daysOfRest` = '$ftwDaysOfRest', `reasonOfUnfitToWork` = '$ftwUnfitReason', `emailsent`='1' WHERE `id`= '$ftw';";
+  $results = mysqli_query($con, $sql);
+
+  if ($results) {
+   
+        echo "<script>alert('Fit-to-Work was successfully updated') </script>";
+        echo "<script> location.href='fitToWork.php'; </script>";
+
+  } else {
+          echo "<script>alert('OOOPPSSS. There are problem with the SQL. Please contact your administrator and send this alert message.') </script>";
+        echo "<script> location.href='fitToWork.php'; </script>";
+  }
+
   }
 
 

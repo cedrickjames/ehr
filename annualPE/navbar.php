@@ -333,6 +333,9 @@ while ($row = mysqli_fetch_assoc($result)) {
             <a id="powerlaneside1" href="../employees/index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
           </li>
           <li>
+            <a id="natcorpside1" href="../employees/index.php?employer=Natcorp" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NATCORP</a>
+          </li>
+          <li>
             <a id="otreloside1" href="../employees/index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
@@ -376,6 +379,9 @@ while ($row = mysqli_fetch_assoc($result)) {
           </li>
           <li>
             <a id="powerlaneside" href="../preEmployment/index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+          </li>
+            <li>
+            <a id="natcorpside" href="../preEmployment/index.php?employer=Natcorp" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NATCORP</a>
           </li>
           <li>
             <a id="otreloside" href="../preEmployment/index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
@@ -440,6 +446,9 @@ while ($row = mysqli_fetch_assoc($result)) {
             <a id="powerlaneside_" href="index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
           </li>
           <li>
+            <a id="natcorpside_" href="../annualPE/index.php?employer=Natcorp" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NATCORP</a>
+          </li>
+          <li>
             <a id="otreloside_" href="index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>
           </li>
           <li>
@@ -477,6 +486,9 @@ while ($row = mysqli_fetch_assoc($result)) {
           </li>
           <li>
             <a id="powerlaneside_1" href="../bloodChem/index.php?employer=Powerlane" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">POWERLANE</a>
+          </li>
+              <li>
+            <a id="natcorpside_1" href="../bloodChem/index.php?employer=Natcorp" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">NATCORP</a>
           </li>
           <li>
             <a id="otreloside_1" href="../bloodChem/index.php?employer=Otrelo" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">OTRELO</a>

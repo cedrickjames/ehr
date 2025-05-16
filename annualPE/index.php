@@ -76,6 +76,10 @@ $(".js-employees").select2({
       $sidebar1 ="#powerlaneside_";
 
     }
+      else if($employer=="Natcorp"){
+      $sidebar1 ="#natcorpside_";
+
+    }
     else if($employer=="Otrelo"){
       $sidebar1 ="#otreloside_";
 

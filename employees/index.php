@@ -79,6 +79,10 @@ if (isset($_GET['employer'])) {
       $sidebar1 ="#powerlaneside1";
 
     }
+      else if($employer=="Natcorp"){
+      $sidebar1 ="#natcorpside1";
+
+    }
     else if($employer=="Otrelo"){
       $sidebar1 ="#otreloside1";
 
