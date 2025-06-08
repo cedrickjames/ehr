@@ -48,6 +48,7 @@ LEFT JOIN `employeespersonalinfo` e ON e.idNumber = f.idNumber WHERE MONTH(f.dat
                     <th rowspan="2">Date</th>
                     <th rowspan="2">Time</th>
                     <th rowspan="2">Building Transaction</th>
+                    <th rowspan="2">ID Number</th>
                     <th rowspan="2">Full Name</th>
                     <th rowspan="2">Section</th>
                     <th rowspan="2">Department</th>
@@ -98,6 +99,8 @@ LEFT JOIN `employeespersonalinfo` e ON e.idNumber = f.idNumber WHERE MONTH(f.dat
                     $date = $row['date'];
                     $time =  $row['time'];
                     $building_transaction = $row['building'];
+                    $idNumber = $row['idNumber'];
+
                     $fullname = $row['Name'];
                     $section  = $row['section'];
                     $department =  $row['department'];
@@ -143,6 +146,7 @@ LEFT JOIN `employeespersonalinfo` e ON e.idNumber = f.idNumber WHERE MONTH(f.dat
                                   <td>$date</td>
                                   <td>$time</td>
                                   <td>$building_transaction</td>
+                                  <td>$idNumber</td>
                                   <td>$fullname</td>
                                   <td>$section</td>
                                      <td>$department</td>

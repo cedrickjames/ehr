@@ -58,7 +58,8 @@ if (isset($_POST['addNewEmployeeManual'])) {
 if (isset($_POST['editEmployeeRecord'])) {
     // $idNumber = $_POST['editrfid'];
 
-    
+//     editidNumber
+// editdateHired
     $empIdNumberDb = $_POST['empIdNumberDb'];
 
     $idNumber = $_POST['editidNumber'];
@@ -701,7 +702,7 @@ if(isset($_POST['deactivateUser'])){
 
             <form method="POST" class="px-4 md:px-5 py-2 text-[8pt]">
                 <div class="grid gap-4 mb-4 grid-cols-2">
-                    <input type="text" class="" name="empIdNumberDb" id="empIdNumberDb">
+                    <input type="text" class="hidden" name="empIdNumberDb" id="empIdNumberDb">
                     <!-- <div class="col-span-2">
                         <label for="editrfid" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID Number</label>
                         <input type="text" name="editrfid" id="editrfid" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="">
