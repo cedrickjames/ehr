@@ -3,7 +3,7 @@ session_start();
 include("includes/connect.php");
 
 if (isset($_SESSION['connected'])) {
-  echo $_SESSION['level'];
+  // echo $_SESSION['level'];
 if($_SESSION['level']=="doctor"){
   header("location: doctor");
 }
@@ -122,6 +122,7 @@ if (isset($_POST['login'])) {
 
 <body class="overflow-x-hidden bg-cover bg-no-repeat bg-[url('src/Background2.png')] bg-blend-multiply h-screen">
 
+
   <section class="static h-full ">
     <nav class="z-20 relative">
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -171,6 +172,11 @@ if (isset($_POST['login'])) {
           <button type="submit" name="login" class="mb-2 inline-block px-7 py-3 bg-[#2F5A8D] text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full" data-mdb-ripple="true" data-mdb-ripple-color="light">
             Proceed
           </button>
+
+          
+
+
+
           <!-- <div class="justify-center flex">
           <a href="signup.php" class="text-[#193F9F] m-auto text-xs font-bold text-center mb-10 uppercase ">Not register Yet? <span class="underline">Sign up here!</span></a>
 
@@ -183,6 +189,8 @@ if (isset($_POST['login'])) {
     </div>
 
   </section>
+
+  
 
 
 

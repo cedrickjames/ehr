@@ -1496,7 +1496,8 @@ class Worksheet extends BIFFwriter
      */
     private function writeRangeProtection(): void
     {
-        foreach ($this->phpSheet->getProtectedCells() as $range => $password) {
+        foreach ($this->phpSheet->getProtectedCellRanges() as $range => $protectedCells) {
+            $password = $protectedCells->getPassword();
             // number of ranges, e.g. 'A1:B3 C20:D25'
             $cellRanges = explode(' ', $range);
             $cref = count($cellRanges);
@@ -2373,7 +2374,7 @@ class Worksheet extends BIFFwriter
         }
 
         // Slurp the file into a string.
-        $data = (string) fread($bmp_fd, (int) filesize($bitmap));
+        $data = (string) fread($bmp_fd, (int) filesize($bitmap)); // @phpstan-ignore-line
 
         // Check that the file is big enough to be a bitmap.
         if (strlen($data) <= 0x36) {

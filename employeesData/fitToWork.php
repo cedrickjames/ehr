@@ -488,7 +488,7 @@ if (isset($_POST['addFTW'])) {
       // $mail->setFrom('Helpdesk'); //eto ang mag front  notificationsys01@gmail.com
 
       //Recipients
-      $mail->setFrom('rpa.notification@glory.com.ph', 'Health Benefits');
+      $mail->setFrom('system.notification@glory.com.ph', 'Health Benefits');
       foreach ($immediateEmail as $emailHead) {
         $mail->addAddress($emailHead);
     }
@@ -962,7 +962,7 @@ if (isset($_POST['updateFTW'])) {
       // $mail->setFrom('Helpdesk'); //eto ang mag front  notificationsys01@gmail.com
 
       //Recipients
-      $mail->setFrom('rpa.notification@glory.com.ph', 'Health Benefits');
+      $mail->setFrom('system.notification@glory.com.ph', 'Health Benefits');
       foreach ($immediateEmail as $emailHead) {
         $mail->addAddress($emailHead);
     }
