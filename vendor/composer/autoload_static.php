@@ -6,6 +6,10 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit8eb3065c8afcecbedd084bcc29338343
 {
+    public static $files = array (
+        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'Z' => 
         array (
@@ -42,8 +46,8 @@ class ComposerStaticInit8eb3065c8afcecbedd084bcc29338343
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -75,6 +79,16 @@ class ComposerStaticInit8eb3065c8afcecbedd084bcc29338343
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'H' => 
+        array (
+            'HTMLPurifier' => 
+            array (
+                0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
+            ),
+        ),
+    );
+
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Stringable' => __DIR__ . '/..' . '/myclabs/php-enum/stubs/Stringable.php',
@@ -85,6 +99,7 @@ class ComposerStaticInit8eb3065c8afcecbedd084bcc29338343
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit8eb3065c8afcecbedd084bcc29338343::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit8eb3065c8afcecbedd084bcc29338343::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit8eb3065c8afcecbedd084bcc29338343::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit8eb3065c8afcecbedd084bcc29338343::$classMap;
 
         }, null, ClassLoader::class);
