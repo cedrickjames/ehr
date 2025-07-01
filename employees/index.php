@@ -99,6 +99,10 @@ if (isset($_GET['employer'])) {
       $sidebar1 ="#canteenside1";
 
     }
+    else{
+      $sidebar1 ="#all";
+
+    }
     ?>
 
     $("<?php echo $sidebar1; ?>").addClass("bg-[#82c7cc]");

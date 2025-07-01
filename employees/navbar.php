@@ -388,6 +388,9 @@ while ($row = mysqli_fetch_assoc($result)) {
         </a>
         <ul id="companies1" class="hidden  py-2 space-y-2">
           <li>
+            <a id="all" href="index.php?employer=All" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">All</a>
+          </li>
+          <li>
             <a id="gpiside1" href="index.php?employer=GPI" class="flex items-center w-full p-2  transition duration-75 rounded-lg pl-11 group ">GPI</a>
           </li>
           <li>

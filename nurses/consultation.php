@@ -33,6 +33,8 @@ if(!isset($_SESSION['connected'])){
   <link rel="stylesheet" href="../node_modules/DataTables/datatables.min.css">
   <script src="../node_modules/flowbite/dist/datepicker.js"></script>
   <link href="../node_modules/select2/dist/css/select2.min.css" rel="stylesheet" />
+  <link href="../node_modules/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
+
 <link rel="stylesheet" type="text/css" href="../node_modules/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css"/>
 <link rel="stylesheet" type="text/css" href="../styles.css"/>
 
@@ -66,6 +68,8 @@ if(!isset($_SESSION['connected'])){
 </div>
 
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../node_modules/flatpickr/dist/flatpickr.min.js"></script>
+
 
 <script type="text/javascript" src="../node_modules/DataTables/datatables.min.js"></script>
     <script type="text/javascript" src="../node_modules/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js"></script>
@@ -74,6 +78,18 @@ if(!isset($_SESSION['connected'])){
 
     <script type="text/javascript" src="index.js"></script>
 <script>
+
+$(document).ready(function() {
+    $("#currentTime").flatpickr({
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: "h:i K", // 12-hour format with AM/PM
+      time_24hr: false
+    });
+  });
+
+
+
     
 $("#consultationSide").addClass("text-white bg-gradient-to-r from-[#004AAD] to-[#5DE0E6]");
 $("#sidehistory").removeClass("bg-gray-200");

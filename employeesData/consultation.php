@@ -6,6 +6,13 @@ if (isset($_GET['rf'])) {
   $idNumber = "not found";
 }
 
+if (isset($_GET['employer'])) {
+  $employer = $_GET['employer'];
+} else {
+  $employer = "not found";
+}
+
+
 $sqluserinfo = "SELECT employeespersonalinfo.idNumber, employeespersonalinfo.*
 FROM queing
 INNER JOIN employeespersonalinfo ON employeespersonalinfo.idNumber = queing.idNumber where employeespersonalinfo.idNumber = '$idNumber';";
@@ -228,7 +235,7 @@ $status = 'doc';
 
   if ($results) {
     echo "<script>alert('Successfull') </script>";
-    echo "<script> location.href='index.php'; </script>";
+    echo "<script> location.href='../employees/index.php?employer=$employer'; </script>";
   }
 }
 
@@ -423,7 +430,16 @@ if($cnsltnCompleted){
       </div>
       <div class="col-span-2">
         <label class="block  my-auto font-semibold text-gray-900 ">Time: </label>
-        <input type="text" name="cnsltnTime" id="currentTime" name="currentTime" value="<?php echo $ftwTime; ?>" class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ">
+        
+<input 
+   type="text" 
+   name="cnsltnTime" 
+  id="currentTime" 
+   value="<?php echo htmlspecialchars($ftwTime); ?>" 
+   class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+  >
+
+        <!-- <input type="text" name="cnsltnTime" id="currentTime" name="currentTime"  class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "> -->
       </div>
       <div class="hidden col-span-2">
 

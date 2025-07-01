@@ -304,8 +304,14 @@ if(isset($_POST['deactivateUser'])){
                         <tbody>
                             <?php
                             $queNo = 1;
-                            $sql = "SELECT * FROM `employeespersonalinfo` WHERE `employer` = '$employer' ORDER BY `Name` ASC; 
-                    ";
+                            if($employer=="All"){
+                            $sql = "SELECT * FROM `employeespersonalinfo`  ORDER BY `Name` ASC;";
+
+                            }
+                            else{
+                            $sql = "SELECT * FROM `employeespersonalinfo` WHERE `employer` = '$employer' ORDER BY `Name` ASC;";
+
+                            }
                             $result = mysqli_query($con, $sql);
                             while ($row = mysqli_fetch_assoc($result)) {
 
@@ -334,7 +340,7 @@ if(isset($_POST['deactivateUser'])){
                                                     <a href="../nurses/fitToWork.php?rf=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Fit To Work</a>
                                                 </li>
                                                 <li>
-                                                    <a href="../nurses/consultation.php?rf=<?php echo $row['idNumber']; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Consultation</a>
+                                                    <a href="../nurses/consultation.php?rf=<?php echo $row['idNumber']; ?>&employer=<?php echo $employer; ?>" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medical Consultation</a>
                                                 </li>
                                                 <!-- <li>
                                                     <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dental Consultation</a>
