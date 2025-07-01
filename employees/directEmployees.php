@@ -305,7 +305,7 @@ if(isset($_POST['deactivateUser'])){
                             <?php
                             $queNo = 1;
                             if($employer=="All"){
-                            $sql = "SELECT * FROM `employeespersonalinfo`  ORDER BY `Name` ASC;";
+                            $sql = "SELECT * FROM `employeespersonalinfo` WHERE `employer` IN ('Maxim','GPI','Natcorp','Powerlane','Nippi','Alarm','Otrelo','Mangreat','Canteen') ORDER BY `Name` ASC;";
 
                             }
                             else{
