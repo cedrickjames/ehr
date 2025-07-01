@@ -335,6 +335,23 @@ $("#medicineDivs").removeClass("hidden");
     });
 });
 
+    var selectedOptions = $('#immediateHead').find('option:selected'); // Get all selected options
+    var emailSelect = $('#immediateEmail');
+
+    // Clear existing emails to re-sync with selected heads
+    emailSelect.empty();
+
+    selectedOptions.each(function() {
+        var selectedEmail = $(this).data('email');
+        emailSelect.append($('<option>', {
+            value: selectedEmail,
+            text: selectedEmail,
+            selected: true
+        }));
+    });
+
+
+
     $("#categoriesSelect").change(function() {
       if ($(this).val() === "counted") {
         $("#medicineDivs").removeClass("hidden");

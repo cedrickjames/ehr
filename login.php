@@ -3,7 +3,7 @@ session_start();
 include("includes/connect.php");
 
 if (isset($_SESSION['connected'])) {
-  echo $_SESSION['level'];
+  // echo $_SESSION['level'];
 if($_SESSION['level']=="doctor"){
   header("location: doctor");
 }

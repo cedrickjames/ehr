@@ -158,6 +158,8 @@ if (isset($_GET['ftw'])) {
     $ftwMeds = $row['medicine'];
 
     $emailsent = $row['emailsent'];
+    $immediateHead = $row['immediateHead'];
+
 
     // $immediateEmail = $row['date'];
 
@@ -488,7 +490,7 @@ if (isset($_POST['addFTW'])) {
       // $mail->setFrom('Helpdesk'); //eto ang mag front  notificationsys01@gmail.com
 
       //Recipients
-      $mail->setFrom('rpa.notification@glory.com.ph', 'Health Benefits');
+      $mail->setFrom('system.notification@glory.com.ph', 'Health Benefits');
       foreach ($immediateEmail as $emailHead) {
         $mail->addAddress($emailHead);
     }
@@ -504,7 +506,7 @@ if (isset($_POST['addFTW'])) {
 
       $_SESSION['message'] = 'Message has been sent';
 
-      $sql = "INSERT INTO `fittowork`( `approval`, `department`,`idNumber`, `nurseAssisting`,`date`, `time`, `timeOfFiling`,`categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `isFitToWork`,`isMedcertRequired`,`daysOfRest`,`reasonOfUnfitToWork`,`remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`,`pendingLabDueDate`,`emailsent`) VALUES ('head','$department','$idNumber','$nurseId','$ftwDate','$ftwTime','$timeOfFiling','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$cnsltnIntervention','$cnsltnClinicRestFrom','$cnsltnClinicRestTo','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$isMedcertRequired','$ftwDaysOfRest','$ftwUnfitReason','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab','$pendingLabDueDate',1)";
+      $sql = "INSERT INTO `fittowork`( `approval`, `department`,`idNumber`, `nurseAssisting`,`date`, `time`, `timeOfFiling`,`categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `isFitToWork`,`isMedcertRequired`,`daysOfRest`,`reasonOfUnfitToWork`,`remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`,`pendingLabDueDate`,`emailsent`,`immediateHead`, `immediateHeadEmail`) VALUES ('head','$department','$idNumber','$nurseId','$ftwDate','$ftwTime','$timeOfFiling','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$cnsltnIntervention','$cnsltnClinicRestFrom','$cnsltnClinicRestTo','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$isMedcertRequired','$ftwDaysOfRest','$ftwUnfitReason','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab','$pendingLabDueDate',1,'$immediateHead','$immediateEmail')";
       $results = mysqli_query($con, $sql);
 
       if($results){
@@ -523,7 +525,7 @@ if (isset($_POST['addFTW'])) {
     } catch (Exception $e) {
       $_SESSION['message'] = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
 
-      $sql = "INSERT INTO `fittowork`( `approval`, `department`,`idNumber`, `nurseAssisting`,`date`, `time`, `timeOfFiling`,`categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `isFitToWork`,`isMedcertRequired`,`daysOfRest`,`reasonOfUnfitToWork`,`remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`,`pendingLabDueDate`,`emailsent`) VALUES ('head','$department','$idNumber','$nurseId','$ftwDate','$ftwTime','$timeOfFiling','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$cnsltnIntervention','$cnsltnClinicRestFrom','$cnsltnClinicRestTo','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$isMedcertRequired','$ftwDaysOfRest','$ftwUnfitReason','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab','$pendingLabDueDate',0)";
+      $sql = "INSERT INTO `fittowork`( `approval`, `department`,`idNumber`, `nurseAssisting`,`date`, `time`, `timeOfFiling`,`categories`, `building`, `confinementType`, `medicalCategory`,`medicine`, `fromDateOfSickLeave`, `toDateOfSickLeave`,`days`, `reasonOfAbsence`, `diagnosis`, `intervention`, `clinicRestFrom`, `clinicRestTo`, `bloodChemistry`, `cbc`, `urinalysis`, `fecalysis`, `xray`, `others`, `bp`, `temp`, `02sat`, `pr`, `rr`, `isFitToWork`,`isMedcertRequired`,`daysOfRest`,`reasonOfUnfitToWork`,`remarks`, `otherRemarks`, `statusComplete`, `withPendingLab`,`pendingLabDueDate`,`emailsent`,`immediateHead`, `immediateHeadEmail`) VALUES ('head','$department','$idNumber','$nurseId','$ftwDate','$ftwTime','$timeOfFiling','$ftwCategories','$ftwBuilding','$ftwConfinement','$ftwMedCategory','$ftwMeds','$ftwSLDateFrom','$ftwSLDateTo','$ftwDays','$ftwAbsenceReason','$ftwDiagnosis','$cnsltnIntervention','$cnsltnClinicRestFrom','$cnsltnClinicRestTo','$ftwBloodChem','$ftwCbc','$ftwUrinalysis','$ftwFecalysis','$ftwXray','$ftwOthersLab','$ftwBp','$ftwTemp','$ftw02Sat','$ftwPr','$ftwRr','$ftwRemarks','$isMedcertRequired','$ftwDaysOfRest','$ftwUnfitReason','$ftwRemarks','$ftwOthersRemarks','$ftwCompleted','$ftwWithPendingLab','$pendingLabDueDate',0,'$immediateHead','$immediateEmail')";
       $results = mysqli_query($con, $sql);
 
       if($results){
@@ -962,7 +964,7 @@ if (isset($_POST['updateFTW'])) {
       // $mail->setFrom('Helpdesk'); //eto ang mag front  notificationsys01@gmail.com
 
       //Recipients
-      $mail->setFrom('rpa.notification@glory.com.ph', 'Health Benefits');
+      $mail->setFrom('system.notification@glory.com.ph', 'Health Benefits');
       foreach ($immediateEmail as $emailHead) {
         $mail->addAddress($emailHead);
     }
@@ -978,7 +980,7 @@ if (isset($_POST['updateFTW'])) {
 
       $_SESSION['message'] = 'Message has been sent';
 
-      $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab', `timeOfFiling` = '$timeOfFiling', `isMedcertRequired` = '$isMedcertRequired', `daysOfRest` = '$ftwDaysOfRest', `reasonOfUnfitToWork` = '$ftwUnfitReason', `emailsent`='1' WHERE `id`= '$ftw';";
+      $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab', `timeOfFiling` = '$timeOfFiling', `isMedcertRequired` = '$isMedcertRequired', `daysOfRest` = '$ftwDaysOfRest', `reasonOfUnfitToWork` = '$ftwUnfitReason', `emailsent`='1',`immediateHead`='$immediateHead',`immediateHeadEmail`='$immediateEmail' WHERE `id`= '$ftw';";
   $results = mysqli_query($con, $sql);
 
   if ($results) {
@@ -999,7 +1001,7 @@ if (isset($_POST['updateFTW'])) {
     } catch (Exception $e) {
       $_SESSION['message'] = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
 
-      $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab', `timeOfFiling` = '$timeOfFiling', `isMedcertRequired` = '$isMedcertRequired', `daysOfRest` = '$ftwDaysOfRest', `reasonOfUnfitToWork` = '$ftwUnfitReason', `emailsent`='0' WHERE `id`= '$ftw';";
+      $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab', `timeOfFiling` = '$timeOfFiling', `isMedcertRequired` = '$isMedcertRequired', `daysOfRest` = '$ftwDaysOfRest', `reasonOfUnfitToWork` = '$ftwUnfitReason', `emailsent`='0' ,`immediateHead`='$immediateHead',`immediateHeadEmail`='$immediateEmail' WHERE `id`= '$ftw';";
   $results = mysqli_query($con, $sql);
 
       if($results){
@@ -1046,7 +1048,7 @@ if (isset($_POST['updateFTW'])) {
 
 
 
- $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab', `timeOfFiling` = '$timeOfFiling', `isMedcertRequired` = '$isMedcertRequired', `daysOfRest` = '$ftwDaysOfRest', `reasonOfUnfitToWork` = '$ftwUnfitReason', `emailsent`='1' WHERE `id`= '$ftw';";
+ $sql = "UPDATE `fittowork` SET `date`='$ftwDate',`time`='$ftwTime',`categories`='$ftwCategories',`building`='$ftwBuilding',`confinementType`='$ftwConfinement',`medicalCategory`='$ftwMedCategory',`medicine`='$ftwMeds',`fromDateOfSickLeave`='$ftwSLDateFrom',`toDateOfSickLeave`='$ftwSLDateTo',`days`='$ftwDays',`reasonOfAbsence`='$ftwAbsenceReason',`diagnosis`='$ftwDiagnosis',`bloodChemistry`='$ftwBloodChem',`cbc`='$ftwCbc',`urinalysis`='$ftwUrinalysis',`fecalysis`='$ftwFecalysis',`xray`='$ftwXray',`others`='$ftwOthersLab',`bp`='$ftwBp',`temp`='$ftwTemp',`02sat`='$ftw02Sat',`pr`='$ftwPr',`rr`='$ftwRr',`remarks`='$ftwRemarks',`otherRemarks`='$ftwOthersRemarks',`statusComplete`='$ftwCompleted',`withPendingLab`='$ftwWithPendingLab', `timeOfFiling` = '$timeOfFiling', `isMedcertRequired` = '$isMedcertRequired', `daysOfRest` = '$ftwDaysOfRest', `reasonOfUnfitToWork` = '$ftwUnfitReason', `emailsent`='1',`immediateHead`='$immediateHead',`immediateHeadEmail`='$immediateEmail' WHERE `id`= '$ftw';";
   $results = mysqli_query($con, $sql);
 
   if ($results) {
@@ -1793,7 +1795,14 @@ if (isset($_POST['updateFTW'])) {
             $immediateName = $list["Name"];
             $email = $list["email"];
 
-            echo "<option value='$immediateName' data-email='$email' >$immediateName</option>";
+            if ($immediateHead == $immediateName){
+            echo "<option selected value='$immediateName' data-email='$email' >$immediateName</option>";
+
+            }
+            else{
+            echo "<option  value='$immediateName' data-email='$email' >$immediateName</option>";
+
+            }
           }
           ?>
 
