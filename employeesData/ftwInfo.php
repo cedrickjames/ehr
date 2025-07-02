@@ -39,8 +39,9 @@ exit;
 <div class="text-[9px] 2xl:text-lg mb-5">
 <div class="flex justify-between">
 <form id="excelReport" class="flex justify-between w-full" action="" method="POST">
-        <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Fit To Work History</span></p>
-        <button type="submit" name="exportIndividualFitToWork"  class="lg:block text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Export</button>
+        <input type="hidden" id="employeeid" name="employeeid" value="<?php echo $idNumber; ?>">
+<p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Fit To Work History</span></p>
+        <button type="button" onclick="exportIndividualFitToWork()"   class="lg:block text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Export</button>
 </form>
         
     </div>
@@ -193,6 +194,22 @@ exit;
 </div>
 
 
+<script>
+function exportIndividualFitToWork() {
+    const employeeId = document.getElementById('employeeid').value;
+
+    if (!employeeId) {
+        console.error("Employee ID not found!");
+        return;
+    }
+
+    // Open the Excel report in a new tab
+    window.open('../fittowork_xls_individual.php?employeeid=' + encodeURIComponent(employeeId), '_blank');
+
+    // Redirect the current page
+    window.location.href = '../nurses/fitToWork.php?rf=' + encodeURIComponent(employeeId);
+}
+</script>
 
 
 <script>

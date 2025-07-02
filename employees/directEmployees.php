@@ -257,11 +257,20 @@ if(isset($_POST['deactivateUser'])){
     <div class="flex justify-between">
         <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]"><?php echo $employer ; ?> Employees</span></p>
         <div>
-            <form action="" method="POST">
-            <button type="submit" name="downloadEmployeesRecord"  class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 rounded-lg  px-5 py-2.5 text-center me-2 mb-2">Download Data</button>
-            <button type="button" data-dropdown-toggle="options" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800  rounded-lg  px-5 py-2.5 text-center me-2 mb-2">Options</button>
+           <form id="downloadForm" method="POST">
+    <input type="hidden" name="employer" id="employer1" value="GPI">
 
-            </form>
+    <button type="button" id="downloadEmployeeRecord" onclick="downloadEmployeesRecord()" class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 rounded-lg px-5 py-2.5 text-center me-2 mb-2">
+        Download Data
+    </button>
+
+    <button type="button" data-dropdown-toggle="options" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 rounded-lg px-5 py-2.5 text-center me-2 mb-2">
+        Options
+    </button>
+</form>
+
+
+           
 
         </div>
         
@@ -830,6 +839,29 @@ if(isset($_POST['deactivateUser'])){
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+<script>
+function downloadEmployeesRecord() {
+    const employer = document.getElementById('employer1')?.value;
+
+    if (!employer) {
+        console.error("Employer not found!");
+        return;
+    }
+
+    // Open the Excel file in a new tab
+    window.open('EmployeesRecord_xls.php?employer=' + encodeURIComponent(employer), '_blank');
+
+    // Redirect the current page
+    window.location.href = 'index.php?employer=' + encodeURIComponent(employer);
+}
+</script>
 
 
 <script>

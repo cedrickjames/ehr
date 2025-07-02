@@ -402,7 +402,7 @@ if (isset($_POST['updateVax'])) {
                                                     echo $year; ?>" name="year" id="year" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
                     </div>
 
-                    <button type="submit" name="excelReport" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <button type="submit" type="button" onclick="generateVaccinationExcel()" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Generate Excel
                     </button>
 
@@ -748,6 +748,21 @@ if (isset($_POST['updateVax'])) {
 </div>
 
 
+<script>
+function generateVaccinationExcel() {
+    const month = document.getElementById('month').value;
+    const year = document.getElementById('year').value;
+    const vax = document.getElementById('vax').value;
+
+    // Open the Excel report in a new tab
+    window.open('../vaccination_xls.php?month=' + encodeURIComponent(month) +
+                '&year=' + encodeURIComponent(year) +
+                '&vax=' + encodeURIComponent(vax), '_blank');
+
+    // Redirect the current page
+    window.location.href = '../nurses/vaccination.php';
+}
+</script>
 
 
 

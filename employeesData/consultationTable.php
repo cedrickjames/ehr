@@ -54,11 +54,24 @@ if(isset($_POST['deleteConsRecord'])){
 
 <div class="text-[9px] 2xl:text-lg mb-5">
 <div class="flex justify-between">
-<form id="excelReport" class="flex justify-between w-full" action="" method="POST">
+<!-- <form id="excelReport" class="flex justify-between w-full" action="" method="POST">
         <p class="mb-2 my-auto"><span class=" self-center text-md font-semibold whitespace-nowrap   text-[#193F9F]">Previous Consultation</span></p>
         <button type="submit" name="exportIndividualConsultation"  class="lg:block text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">Export</button>
-</form>
+</form> -->
         
+<form id="excelReport" class="flex justify-between w-full" method="POST">
+     <p class="mb-2 my-auto">
+     <span class="self-center text-md font-semibold whitespace-nowrap text-[#193F9F]">
+    Previous Consultation
+    </span>
+     </p>
+     <input type="hidden" name="employeeid" id="employeeid" value="<?php echo $idNumber; ?>">
+     <button type="button" onclick="exportIndividualConsultation()" 
+     class="lg:block text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-[8px] 2xl:text-sm px-5 py-2.5 text-center me-2 mb-2 mx-3 md:mx-2">
+     Export
+     </button>
+</form>
+
     </div>
     <div id="" class="">
         <div class=" p-4 rounded-lg  bg-gray-50 " id="headApproval" role="tabpanel" aria-labelledby="profile-tab">
@@ -178,6 +191,21 @@ if(isset($_POST['deleteConsRecord'])){
 
 <script>
 
+
+function exportIndividualConsultation() {
+    const employeeId = document.getElementById('employeeid')?.value;
+
+    if (!employeeId) {
+        console.error("Employee ID not found!");
+        return;
+    }
+
+    // Open the Excel report in a new tab
+    window.open('../consultation_xls_individual.php?employeeid=' + employeeId, '_blank');
+
+    // Redirect the current page
+    window.location.href = '../nurses/consultation.php?rf=' + employeeId;
+}
 
 
 const $targetDeleteCons = document.getElementById('deleteConsultationRecord');

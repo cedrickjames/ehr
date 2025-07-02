@@ -756,15 +756,15 @@ if (isset($_POST['addBloodChemImport'])) {
 
                         <select id="employer" name="employer" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
-                            <option selected value="GPI">GPI</option>
+                            <option <?php if ($employer=="GPI") {echo "selected" ;}?>  value="GPI">GPI</option>
                             <option value="All">All</option>
-                            <option value="Maxim">Maxim</option>
-                            <option value="Powerlane">Powerlane</option>
-                            <option value="Nippi">Nippi</option>
-                            <option value="Mangreat">Mangreat</option>
-                            <option value="Otrelo">Otrelo</option>
-                            <option value="Canteen">Canteen</option>
-                            <option value="Alarm">Alarm</option>
+                            <option <?php if ($employer=="Maxim") {echo "selected" ;}?> value="Maxim">Maxim</option>
+                            <option <?php if ($employer=="Powerlane") {echo "selected" ;}?> value="Powerlane">Powerlane</option>
+                            <option <?php if ($employer=="Nippi") {echo "selected" ;}?> value="Nippi">Nippi</option>
+                            <option <?php if ($employer=="Mangreat") {echo "selected" ;}?> value="Mangreat">Mangreat</option>
+                            <option <?php if ($employer=="Otrelo") {echo "selected" ;}?> value="Otrelo">Otrelo</option>
+                            <option <?php if ($employer=="Canteen") {echo "selected" ;}?> value="Canteen">Canteen</option>
+                            <option <?php if ($employer=="Alarm") {echo "selected" ;}?> value="Alarm">Alarm</option>
 
                         </select>
                         <label for="month" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Month</label>
@@ -793,8 +793,8 @@ if (isset($_POST['addBloodChemImport'])) {
 
 
                 </div>
-
-                <button type="submit" name="excelReport" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                                                                 
+                <button type="button" onclick="generateBloodChemExcel()"  class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     Generate Excel
                 </button>
             </form>
@@ -1669,6 +1669,21 @@ if (isset($_POST['addBloodChemImport'])) {
     </div>
 </div>
 
+<script>
+function generateBloodChemExcel() {
+    const month = document.getElementById('month').value;
+    const year = document.getElementById('year').value;
+    const employer = document.getElementById('employer').value;
+
+    // Open the Excel report in a new tab
+    window.open('../bloodchem_xls.php?month=' + encodeURIComponent(month) +
+                '&year=' + encodeURIComponent(year) +
+                '&employer=' + encodeURIComponent(employer), '_blank');
+
+    // Redirect the current page
+    window.location.href = 'index.php?employer=' + encodeURIComponent(employer);
+}
+</script>
 
 
 

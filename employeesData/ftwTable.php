@@ -1,18 +1,26 @@
 <?php
-
 if (isset($_POST['excelReport'])) {
     $_SESSION['month'] = $_POST['month'];
     $_SESSION['year'] = $_POST['year'];
-  
-?>
+    ?>
     <script type="text/javascript">
-       
-        window.open('../fittowork_xls.php?month=<?php echo $_SESSION['month']; ?>&year=<?php echo $_SESSION['year']; ?>', '_blank');
-        location.href='../nurses/fitToWork.php';
+        // Store values in JS variables
+        var month = "<?php echo $_SESSION['month']; ?>";
+        var year = "<?php echo $_SESSION['year']; ?>";
+
+        // Open new tab
+        window.open('../fittowork_xls.php?month=' + month + '&year=' + year, '_blank');
+
+        // Redirect current page after a short delay
+        setTimeout(function() {
+            window.location.href = '../nurses/fitToWork.php';
+        }, 500);
     </script>
-<?php
-exit;
+    <?php
+    exit;
 }
+
+
 
 
 
@@ -274,6 +282,10 @@ if (isset($_POST['updateFTW2'])) {
                 <form id="excelReport" class="space-y-6" action="" method="POST">
                     <div>
 
+
+            <!-- <input type="hidden" name="month" id="month" value="<?php echo $_SESSION['month']; ?>">
+            <input type="hidden" name="year" id="year" value="<?php echo $_SESSION['year']; ?>"> -->
+
                         <label for="month" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Month</label>
 
                         <select id="month" name="month" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -301,7 +313,7 @@ if (isset($_POST['updateFTW2'])) {
                                                     echo $year; ?>" name="year" id="year" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
                     </div>
 
-                    <button type="submit" name="excelReport" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <button type="button" onclick="submitAndOpen()"  class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Generate Excel
                     </button>
 
@@ -616,7 +628,20 @@ if (isset($_POST['updateFTW2'])) {
 </div>
 
 
+
 <script>
+
+function submitAndOpen() {
+    const form = document.getElementById('reportForm');
+    const month = document.getElementById('month').value;
+    const year = document.getElementById('year').value;
+
+    // Open the popup BEFORE the form submission
+    window.open('../fittowork_xls.php?month=' + month + '&year=' + year, '_blank');
+
+    // Submit the form (to set session and redirect)
+    form.submit();
+}
 
 const $targetDeactivateUser = document.getElementById('deleteFTWRecord');
   const deactivateModal = {
